@@ -1,5 +1,5 @@
 name: storyboard_image_prompt
-description: "分镜图像提示词组装模板"
+description: "storyboard image prompt text Zu Zhuang template"
 category: storyboard
 version: "1.5"
 author: "AI Video Studio"
@@ -7,18 +7,18 @@ created_at: "2025-12-19"
 updated_at: "2026-01-12"
 
 variables:
-  base_prompt:
-    type: string
-    required: true
-    description: "基础提示词"
-  reference_notes:
-    type: list
-    required: false
-    description: "参考图像说明列表（dict: type/name）"
+ base_prompt:
+ type: string
+ required: true
+ description: "basic prompt text"
+ reference_notes:
+ type: list
+ required: false
+ description: "Can Kao image Shuo Ming list(dict: type/name)"
 
 usage_examples:
-  - base_prompt: "夜色中的仓库，景别: 中景"
-    reference_notes:
-      - type: "frame"
-      - type: "character"
-        name: "主角"
+ - base_prompt: "Ye Se Zhong De Cang Ku, Jing Bie: medium shot"
+ reference_notes:
+ - type: "frame"
+ - type: "character"
+ name: "Protagonist"

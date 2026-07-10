@@ -1,5 +1,5 @@
 """
-CLI命令模块
+CLI command module
 
-提供与FastAPI集成的命令行接口
+Provides command-line interfaces integrated with FastAPI
 """

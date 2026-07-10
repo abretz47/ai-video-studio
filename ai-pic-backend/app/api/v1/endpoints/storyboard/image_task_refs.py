@@ -229,7 +229,7 @@ def _resolve_character_refs(frame, scene_no, ctx, prompt, reference_notes):
         vip = ctx.vip_map.get(cid)
         name = getattr(vip, "name", None) if vip else None
         if not isinstance(name, str) or not name.strip():
-            name = f"角色{cid}"
+            name = f"Character {cid}"
         img_url = ctx.char_image_map.get(cid)
         if not img_url:
             try:

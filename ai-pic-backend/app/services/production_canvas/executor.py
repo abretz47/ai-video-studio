@@ -40,8 +40,8 @@ def _execute_script_generation(
     if request.episode_id is None:
         return blocked_result(
             request,
-            title="Script Skill 等待剧集上下文",
-            detail="需要先绑定 episode_id，之后才会提交现有 SCRIPT_GENERATION 任务。",
+            title="Script Skill waiting episode context",
+            detail="need first Bang Ding episode_id, Zhi Hou Cai will submit existing SCRIPT_GENERATION Ren Wu.",
             required_inputs=["episode_id"],
         )
 
@@ -63,8 +63,8 @@ def _execute_script_generation(
     return _running_response(
         skill_id="script.generate",
         label=skill.label if skill else "Script Skill",
-        title="已提交现有剧本生成任务",
-        detail="后台已通过现有 SCRIPT_GENERATION Celery worker 执行。",
+        title="submit existing script Sheng Cheng Ren Wu",
+        detail="background through existing SCRIPT_GENERATION Celery worker execute.",
         task=task,
         outputs={"episode_id": request.episode_id},
         reuse_targets=skill.reuse_targets if skill else [],
@@ -82,8 +82,8 @@ def _execute_storyboard_generation(
     if script is None:
         return blocked_result(
             request,
-            title="Storyboard Skill 等待剧本上下文",
-            detail="需要先绑定 script_id，之后才会提交现有 STORYBOARD_GENERATION 任务。",
+            title="Storyboard Skill waiting script context",
+            detail="need first Bang Ding script_id, Zhi Hou Cai will submit existing STORYBOARD_GENERATION Ren Wu.",
             required_inputs=["script_id"],
         )
 
@@ -99,8 +99,8 @@ def _execute_storyboard_generation(
     return _running_response(
         skill_id="storyboard.plan",
         label=skill.label if skill else "Storyboard Skill",
-        title="已提交现有分镜生成任务",
-        detail="后台已通过现有 STORYBOARD_GENERATION Celery worker 执行。",
+        title="submit existing storyboard Sheng Cheng Ren Wu",
+        detail="background through existing STORYBOARD_GENERATION Celery worker execute.",
         task=task,
         outputs={"script_id": script.id, "episode_id": script.episode_id},
         reuse_targets=skill.reuse_targets if skill else [],
@@ -118,8 +118,8 @@ def _execute_timeline_pipeline(
     if script is None:
         return blocked_result(
             request,
-            title="Timeline Skill 等待剧本上下文",
-            detail="需要先绑定 script_id，之后才会提交现有 TIMELINE_PIPELINE 任务。",
+            title="Timeline Skill waiting script context",
+            detail="need first Bang Ding script_id, Zhi Hou Cai will submit existing TIMELINE_PIPELINE Ren Wu.",
             required_inputs=["script_id"],
         )
 
@@ -135,8 +135,8 @@ def _execute_timeline_pipeline(
     return _running_response(
         skill_id="timeline.assemble",
         label=skill.label if skill else "Timeline Skill",
-        title="已提交现有时间线流水线任务",
-        detail="后台已通过现有 TIMELINE_PIPELINE Celery worker 执行。",
+        title="submit existing time Xian Liu Shui Xian Ren Wu",
+        detail="background through existing TIMELINE_PIPELINE Celery worker execute.",
         task=task,
         outputs={"script_id": script.id, "episode_id": script.episode_id},
         reuse_targets=skill.reuse_targets if skill else [],
@@ -204,6 +204,6 @@ def execute_canvas_skill(
     return blocked_result(
         request,
         title=f"{request.skill} 暂未接入自动执行",
-        detail="当前 Skill 已登记后台复用目标，但还没有接入明确的任务派发器。",
+        detail="current Skill Yi Deng Ji background Fu Yong target, Dan Hai missing Jie Ru clear Ren Wu Pai Fa Qi.",
         required_inputs=["dispatcher"],
     )

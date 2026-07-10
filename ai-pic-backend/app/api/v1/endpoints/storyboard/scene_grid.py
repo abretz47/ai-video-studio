@@ -52,8 +52,8 @@ async def generate_scene_grid_sheet(
         "environment_refs": request.environment_refs or [],
     }
     task = Task(
-        title=f"宫格分镜图生成 - 剧本{script_id} 场景{request.scene_number}",
-        description="异步生成场景宫格分镜大图",
+        title=f"Generate storyboard grid image - script {script_id} scene {request.scene_number}",
+        description="Generate scene storyboard grid images asynchronously",
         task_type=TaskType.STORYBOARD_IMAGE_GENERATION,
         prompt=f"Scene grid sheet for script {script_id} scene {request.scene_number}",
         parameters=json.dumps(payload, ensure_ascii=False),
@@ -86,8 +86,8 @@ async def generate_scene_grid_video(
         "prompt": request.prompt,
     }
     task = Task(
-        title=f"宫格成片生成 - 剧本{script_id} 场景{request.scene_number}",
-        description="异步从宫格分镜图生成连续成片",
+        title=f"Generate grid-based final cut - script {script_id} scene {request.scene_number}",
+        description="Generate a continuous final cut asynchronously from storyboard grid images",
         task_type=TaskType.VIDEO_GENERATION,
         prompt=f"Scene grid video for script {script_id} scene {request.scene_number}",
         parameters=json.dumps(payload, ensure_ascii=False),

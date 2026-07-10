@@ -164,7 +164,7 @@ async def run_virtual_ip_image_generation(
     )
 
     if not result:
-        raise HTTPException(status_code=500, detail="AI图像生成失败")
+        raise HTTPException(status_code=500, detail="AI image generation failed")
     return result
 
 
@@ -214,7 +214,7 @@ def resolve_local_image_info(result: Dict[str, Any]) -> Dict[str, Any]:
     """Resolve local file details for generated image."""
     local_file_path = result.get("local_file_path")
     if not local_file_path or not os.path.exists(local_file_path):
-        raise HTTPException(status_code=500, detail="图像文件生成失败")
+        raise HTTPException(status_code=500, detail="Image file generation failed")
     file_size = os.path.getsize(local_file_path)
     filename = os.path.basename(local_file_path)
     relative_path = result.get("relative_path") or f"/uploads/{filename}"

@@ -16,15 +16,15 @@ def build_hook_schedule(
     opening_hook = (
         hook_plan.get("opening_hook")
         or _first_non_empty(episode.get("summary"), story.get("main_conflict"))
-        or "开场直接抛出本集核心冲突或身份/证据爆点"
+        or "Kai Chang directly Pao Chu Ben Ji core conflict or Shen Fen/evidence Bao Dian"
     )
     payoff = (
         hook_plan.get("payoff_plan")
         or _first_non_empty(episode.get("payoff"), story.get("resolution"))
-        or "主角必须赢到一个具体收获，并用可拍动作兑现爽点"
+        or "Zhu Jue Bi Xu Ying to a specific Shou Huo, Bing Yong can Pai action Dui Xian Shuang Dian"
     )
     cliffhanger = _first_from_list(marketing.get("cliffhanger_plan")) or (
-        "结尾留下更大危机或未解真相，不做完全收束"
+        "Jie Wei Liu Xia Geng Da crisis or Wei Jie truth, not Zuo Wan Quan Shou Shu"
     )
 
     conflict_ladder: List[Dict[str, Any]] = []
@@ -46,7 +46,7 @@ def build_hook_schedule(
         summary = _first_non_empty(episode.get("summary"), story.get("synopsis"))
         if summary:
             conflict_ladder.append(
-                {"sequence": 1, "description": str(summary), "timing": "中段"}
+                {"sequence": 1, "description": str(summary), "timing": "Zhong Duan"}
             )
 
     ad_candidate_beats = []
@@ -91,16 +91,16 @@ def render_production_requirements(
     if base_additional_requirements:
         sections.append(str(base_additional_requirements).strip())
     sections.append(
-        "## 生产级剧本链路要求\n"
-        "严格遵守以下 hook_schedule。剧本必须把 opening_hook、conflict_ladder、"
-        "payoff、cliffhanger 写成可拍动作、短对白和明确场景事件。\n"
+        "## production Ji script Lian Lu requirement\n"
+        "Yan Ge Zun Shou Yi Xia hook_schedule.script Bi Xu opening_hook, conflict_ladder, "
+        "payoff, cliffhanger Xie Cheng can Pai action, Duan dialogue and clear scene Shi Jian.\n"
         f"{json.dumps(hook_schedule, ensure_ascii=False, indent=2)}"
     )
     sections.append(_commercial_score_contract())
     if attempt_no > 1 and rewrite_guidance:
         sections.append(
-            "## 自动返修要求\n"
-            "上一版 ScriptScore 未达标，请在保留角色与基本因果的前提下重写：\n"
+            "## automatic Fan Xiu requirement\n"
+            "on Yi Ban ScriptScore Wei Da Biao, Qing in Bao Liu character and Ji Ben Yin Guo Qian Ti below Zhong Xie: \n"
             + "\n".join(f"- {item}" for item in rewrite_guidance if item)
             + "\n\n"
             + _rewrite_closure_contract(rewrite_guidance)
@@ -110,41 +110,41 @@ def render_production_requirements(
 
 def _commercial_score_contract() -> str:
     return (
-        "## 商业评分硬交付清单\n"
-        "本轮生成必须能直接通过 ScriptScore：overall_score >= 4.5，"
+        "## Shang Ye Ping Fen Ying Jiao Fu Qing Dan\n"
+        "Ben Lun Sheng Cheng Bi Xu Neng directly through ScriptScore: overall_score >= 4.5, "
         "conflict_intensity / character_recognizability / cultural_fit / "
-        "clip_ability / logic_coherence 每项 >= 4.2。不要只在说明里承诺，"
-        "必须落到正文、场景 summary、structured_script_contract.beats、"
-        "dialogue_lines 和 action_lines。\n"
-        "- 角色辨识度：主角每场至少 2 次具名出场、1 个稳定行为标签、"
-        "1 句可复用短对白；配角/反派必须写清可见动机和当场选择，"
-        "禁止只写“助理/篡改者/团队成员”而不交代行为标签。\n"
-        "- 逻辑一致性：每个指控必须有可见证据链：信息来源 -> 现场验证 -> "
-        "客户/合同/权限/文件后果；录音、日志、短信、合同、原始文件第一次出现时"
-        "必须写清是谁拿出、从哪里来、屏幕上出现什么。\n"
-        "- 嫌疑人/反派动机：不能被主角一问就承认；必须先抗拒、试图离开、"
-        "删除文件或甩锅，并通过转账记录、上级短信、绩效威胁、债务或合同利益"
-        "露出具体动机。\n"
-        "- 助理/配角功能：助理必须有具名动作标签和不可替代贡献，例如拦住嫌疑人、"
-        "调出云端日志、锁定删除时间戳、把客户倒计时提醒给主角；不能只说“马上查”。\n"
-        "- 私下对峙合理性：走廊/办公室对峙必须有外部压力，例如客户60秒后离场、"
-        "合同即将作废、文件正在删除、助理堵住出口或权限即将失效；"
-        "录音/证据获取不能靠巧合。\n"
-        "- 无明确配角名时必须主动命名并稳定使用：客户张总、助理小陈、"
-        "篡改者陈默/李明等；禁止在正文或对白里只写“客户/助理/篡改者”。\n"
-        "- 职场数据/合同题材必须使用强桥段：客户张总给出60秒撤单倒计时，"
-        "助理小陈锁住云端日志并拦住嫌疑人，篡改者陈默先抢手机/删文件/甩锅，"
-        "随后被转账短信或上级威胁短信暴露动机；主角固定短对白可用“数字不会撒谎，看时间戳”。\n"
-        "- 第二场必须具备广告切片强度：陈默手指停在删除确认键、小陈挡住出口、"
-        "张总电话倒计时只剩15秒、AP夺回手机或按下取消删除；陈默动机必须在画面上出现，"
-        "例如短信“改完给你20万，不做就裁你”或银行到账提醒，不能只说“上级让我做”。\n"
-        "- 素材可剪性：正文必须内置 15s、30s、60s 三类投流片段，"
-        "每类都要有首帧动作、关键台词、结果变化和卡点/CTA；"
-        "每 60 秒至少 2 个台词+画面双钩子。\n"
-        "- 冲突强度：0-3 秒直接爆外部损失或威胁；每场都要新增阻力、"
-        "代价或倒计时，不能只重复举文件、看屏幕、解释误会。\n"
-        "- 文化适配：用合同、客户、权限、证据、责任链推进冲突，"
-        "避免工具式对白和敏感可复制的违规细节。"
+        "clip_ability/logic_coherence Mei Xiang >= 4.2.Bu Yao only in note Li Cheng Nuo, "
+        "Bi Xu Luo Dao body text, scene summary, structured_script_contract.beats, "
+        "dialogue_lines and action_lines.\n"
+        "- character Bian Shi Du: Zhu Jue Mei Chang Zhi Shao 2 Ci Ju Ming Chu Chang, 1 Ge Wen Ding Xing Wei tag, "
+        "1 Ju can Fu Yong Duan dialogue; Pei Jue/Fan Pai Bi Xu Xie Qing Ke Jian Dong Ji and Dang Chang Xuan Ze, "
+        "Jin Zhi only Xie"Zhu Li/Cuan Gai Zhe/Tuan Dui Cheng Yuan"Er not Jiao Dai Xing Wei tag.\n"
+        "- Luo Ji Yi Zhi Xing: Mei Ge Zhi Kong Bi Xu has Ke Jian evidence Lian: Xin Xi Lai Yuan -> Xian Chang validation -> "
+        "customer/contract/permission/file Hou Guo; recording, log, text message, contract, Original fileDi Yi Ci Chu Xian when"
+        "Bi Xu Xie Qing Shi Shui Na Chu, Cong Na Li Lai, screen on Chu Xian Shen Me.\n"
+        "- Xian Yi Ren/Fan Pai Dong Ji: cannot Zhu Jue Yi Wen Jiu Cheng Ren; Bi Xu first Kang Ju, Shi Tu Li Kai, "
+        "delete file or Shuai Guo, and through Zhuan Zhang Ji Lu, Shang Ji text message, Ji Xiao threat, Zhai Wu or contract Li Yi"
+        "Lu Chu specific Dong Ji.\n"
+        "- Zhu Li/Pei Jue feature: Zhu Li Bi Xu has Ju Ming action tag and not allowed Ti Dai Gong Xian, for example Lan Zhu Xian Yi Ren, "
+        "Diao Chu cloud log, lock delete time Chuo, customer countdown Ti Xing Gei Zhu Jue; cannot only Shuo"Ma Shang Cha".\n"
+        "- Si Xia Dui Zhi He Li Xing: Zou Lang/Ban Gong Shi Dui Zhi Bi Xu has Wai Bu Ya Li, for example customer60seconds after Li Chang, "
+        "contract Ji Jiang Zuo Fei, file Zheng Zai delete, Zhu Li Du Zhu Chu Kou or permission Ji Jiang Shi Xiao; "
+        "recording/evidence get cannot Kao Qiao He.\n"
+        "- none clear Pei Jue Ming Shi Bi Xu Zhu Dong Ming Ming and Wen Ding Shi Yong: customer Zhang Zong, Zhu Li Xiao Chen, "
+        "Cuan Gai Zhe Chen Mo/Li Ming Deng; Jin Zhi in body text or dialogue Li only Xie"customer/Zhu Li/Cuan Gai Zhe".\n"
+        "- Zhi Chang data/contract Ti Cai Bi Xu Shi Yong Qiang Qiao Duan: customer Zhang Zong Gei Chu60seconds Che Dan countdown, "
+        "Zhu Li Xiao Chen Suo Zhu cloud log and Lan Zhu Xian Yi Ren, Cuan Gai Zhe Chen Mo Xian Qiang phone/Shan file/Shuai Guo, "
+        "Sui Hou Zhuan Zhang text message or Shang Ji threat text message Bao Lu Dong Ji; Zhu Jue Gu Ding Duan dialogue available"Shu Zi Bu Hui Sa Huang, Kan time Chuo".\n"
+        "- Di Er Chang Bi Xu Ju Bei Guang Gao Qie Pian Qiang Du: Chen Mo Shou Zhi Ting in delete Que Ren Jian, Xiao Chen Dang Zhu Chu Kou, "
+        "Zhang Zong Dian Hua countdown only Sheng15seconds, APDuo Hui phone or An below Qu Xiao delete; Chen Mo Dong Ji Bi Xu in frame on Chu Xian, "
+        "for example text message"Gai Wan Gei you20Wan, not Zuo Jiu Cai you"or Yin Hang to Zhang Ti Xing, cannot only Shuo"Shang Ji Rang I Zuo".\n"
+        "- Su Cai can Jian Xing: body text Bi Xu Nei Zhi 15s, 30s, 60s San Lei Tou Liu Pian Duan, "
+        "Mei Lei all Yao has first frame action, key line, Jie Guo change and cliffhanger/CTA; "
+        "Mei 60 seconds Zhi Shao 2 Ge line+frame Shuang Gou Zi.\n"
+        "- conflict Qiang Du: 0-3 seconds directly Bao Wai Bu Sun Shi or threat; Mei Chang all Yao Xin Zeng Zu Li, "
+        "Dai Jia or countdown, cannot only Chong Fu Ju file, Kan screen, Jie Shi Wu Hui.\n"
+        "- Wen Hua Shi Pei: Yong contract, customer, permission, evidence, Ze Ren Lian advance conflict, "
+        "avoid Gong Ju Shi dialogue and Min Gan can Fu Zhi Wei Gui Xi Jie."
     )
 
 
@@ -152,16 +152,16 @@ def _rewrite_closure_contract(rewrite_guidance: List[str]) -> str:
     actionable = [str(item).strip() for item in rewrite_guidance if str(item).strip()]
     checklist = "\n".join(
         f"{idx}. 针对「{item}」：必须新增或改写至少 1 个 visible_event、"
-        "1 个 action_line、1 句短对白和 1 个外部后果；不能只改旁白或说明。"
+        "1 Ge action_line, 1 Ju Duan dialogue and 1 Ge Wai Bu Hou Guo; cannot Zhi Gai narration or note."
         for idx, item in enumerate(actionable[:8], start=1)
     )
     return (
-        "## 返修落地校验\n"
-        "生成前先逐条消除上一版风险；生成结果里必须能看到以下变化：\n"
+        "## Fan Xiu Luo Di Jiao Yan\n"
+        "Sheng Cheng Qian Xian Zhu Tiao Xiao Chu on Yi Ban Feng Xian; Sheng Cheng Jie Guo Li Bi Xu Neng Kan Dao Yi Xia change: \n"
         f"{checklist}\n"
-        "如果上一版被指出角色辨识弱、过渡平、动机不足、逻辑跳跃或素材不足，"
-        "本版必须新增具名人物动作、证据来源镜头、客户态度变化镜头，以及"
-        "15s/30s/60s 可剪片段，不允许复用上一版的同一组动作节奏。"
+        "Ru Guo on Yi Ban Zhi Chu character Bian Shi Ruo, Guo Du Ping, Dong Ji insufficient, Luo Ji Tiao Yue or Su Cai insufficient, "
+        "Ben Ban Bi Xu Xin Zeng Ju Ming character action, evidence Lai Yuan shot, customer Tai Du change shot, Yi Ji"
+        "15s/30s/60s Ke Jian Pian Duan, not Yun Xu Fu Yong on Yi Ban Tong Yi Zu action Jie Zou."
     )
 
 

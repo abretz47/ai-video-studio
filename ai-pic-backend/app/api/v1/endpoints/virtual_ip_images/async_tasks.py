@@ -41,7 +41,7 @@ def process_virtual_ip_image_task(
                 .first()
             )
             if not virtual_ip:
-                raise RuntimeError("虚拟IP不存在")
+                raise RuntimeError("Virtual IP does not exist")
 
             import anyio
 
@@ -90,7 +90,7 @@ async def _generate_and_persist_image(
         reference_images=payload.get("reference_images") or None,
     )
     if not result:
-        raise RuntimeError("AI图像生成失败")
+        raise RuntimeError("AI image generation failed")
 
     additional_prompts_list = payload.get("additional_prompts") or []
     is_default_bool = bool(payload.get("is_default"))
@@ -112,7 +112,7 @@ async def _generate_and_persist_image(
 
     local_file_path = result.get("local_file_path")
     if not local_file_path or not os.path.exists(local_file_path):
-        raise RuntimeError("图像文件生成失败")
+        raise RuntimeError("Image file generation failed")
 
     file_size = os.path.getsize(local_file_path)
     filename = os.path.basename(local_file_path)

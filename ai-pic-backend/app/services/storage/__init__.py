@@ -1,7 +1,7 @@
 """
-存储服务模块
+Cun Chu service module
 
-提供各种云存储服务的统一接口
+Ti Gong Ge Zhong Yun Cun Chu service unified API
 """
 
 from .oss_service import OSSService, oss_service

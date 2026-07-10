@@ -1,163 +1,163 @@
 #!/usr/bin/env python3
 """
-MySQL连接测试脚本
+MySQLconnection test Jiao Ben
 
-测试MySQL数据库连接和基本操作
+testMySQLdatabase connection He Ji Ben Cao Zuo
 """
 
 import sys
 from pathlib import Path
 
-# 添加项目根目录到Python路径
+# Tian Jia project Gen Mu Lu toPythonpath
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 
 def test_mysql_connection():
-    """测试MySQL连接"""
-    print("=" * 60)
-    print("MySQL连接测试")
-    print("=" * 60)
+ """testMySQLconnection"""
+ print("=" * 60)
+ print("MySQLLian Jie Ce Shi")
+ print("=" * 60)
 
-    try:
-        # 测试PyMySQL直接连接
-        print("1. 测试PyMySQL直接连接...")
-        import pymysql
+ try:
+ # testPyMySQLZhi Jie Lian Jie
+ print("1. testPyMySQLZhi Jie Lian Jie...")
+ import pymysql
 
-        connection = pymysql.connect(
-            host="127.0.0.1",
-            port=13306,
-            user="root",
-            password="Pa88word",
-            database="ai_video_studio",
-            charset="utf8mb4",
-        )
+ connection = pymysql.connect(
+ host="127.0.0.1",
+ port=13306,
+ user="root",
+ password="Pa88word",
+ database="ai_video_studio",
+ charset="utf8mb4",
+)
 
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT VERSION()")
-            version = cursor.fetchone()[0]
-            print(f"   ✅ MySQL版本: {version}")
+ with connection.cursor() as cursor:
+ cursor.execute("SELECT VERSION()")
+ version = cursor.fetchone()[0]
+ print(f" ✅ MySQLBan Ben: {version}")
 
-            cursor.execute("SELECT DATABASE()")
-            database = cursor.fetchone()[0]
-            print(f"   ✅ 当前数据库: {database}")
+ cursor.execute("SELECT DATABASE()")
+ database = cursor.fetchone()[0]
+ print(f" ✅ Dang Qian database: {database}")
 
-            cursor.execute("SHOW TABLES")
-            tables = cursor.fetchall()
-            print(f"   ✅ 表数量: {len(tables)}")
-            if tables:
-                print(f"   表列表: {[table[0] for table in tables]}")
+ cursor.execute("SHOW TABLES")
+ tables = cursor.fetchall()
+ print(f" ✅ Biao Shu Liang: {len(tables)}")
+ if tables:
+ print(f" Biao Lie Biao: {[table[0] for table in tables]}")
 
-        connection.close()
-        print("   ✅ PyMySQL连接测试成功")
+ connection.close()
+ print(" ✅ PyMySQLconnection test success")
 
-    except Exception as e:
-        print(f"   ❌ PyMySQL连接失败: {str(e)}")
-        return False
+ except Exception as e:
+ print(f" ❌ PyMySQLLian Jie Shi Bai: {str(e)}")
+ return False
 
-    try:
-        # 测试SQLAlchemy连接
-        print("\n2. 测试SQLAlchemy连接...")
-        from app.core.database import engine
-        from sqlalchemy import text
+ try:
+ # testSQLAlchemyconnection
+ print("\n2. testSQLAlchemyconnection...")
+ from app.core.database import engine
+ from sqlalchemy import text
 
-        with engine.connect() as conn:
-            result = conn.execute(text("SELECT VERSION()"))
-            version = result.fetchone()[0]
-            print(f"   ✅ SQLAlchemy连接成功，MySQL版本: {version}")
+ with engine.connect() as conn:
+ result = conn.execute(text("SELECT VERSION()"))
+ version = result.fetchone()[0]
+ print(f" ✅ SQLAlchemyLian Jie Cheng Gong, MySQLBan Ben: {version}")
 
-            result = conn.execute(text("SELECT DATABASE()"))
-            database = result.fetchone()[0]
-            print(f"   ✅ 当前数据库: {database}")
+ result = conn.execute(text("SELECT DATABASE()"))
+ database = result.fetchone()[0]
+ print(f" ✅ Dang Qian database: {database}")
 
-    except Exception as e:
-        print(f"   ❌ SQLAlchemy连接失败: {str(e)}")
-        return False
+ except Exception as e:
+ print(f" ❌ SQLAlchemyLian Jie Shi Bai: {str(e)}")
+ return False
 
-    try:
-        # 测试配置加载
-        print("\n3. 测试配置加载...")
-        from app.core.config import settings
+ try:
+ # test configuration Jia Zai
+ print("\n3. test configuration Jia Zai...")
+ from app.core.config import settings
 
-        print(f"   ✅ 数据库URL: {settings.DATABASE_URL}")
-        print(f"   ✅ 项目名称: {settings.PROJECT_NAME}")
+ print(f" ✅ databaseURL: {settings.DATABASE_URL}")
+ print(f" ✅ Xiang Mu Ming Cheng: {settings.PROJECT_NAME}")
 
-    except Exception as e:
-        print(f"   ❌ 配置加载失败: {str(e)}")
-        return False
+ except Exception as e:
+ print(f" ❌ configuration Jia Zai failed: {str(e)}")
+ return False
 
-    print("\n" + "=" * 60)
-    print("✅ 所有连接测试通过!")
-    print("=" * 60)
-    return True
+ print("\n" + "=" * 60)
+ print("✅ Suo You connection Ce Shi Tong Guo!")
+ print("=" * 60)
+ return True
 
 
 def test_database_operations():
-    """测试数据库基本操作"""
-    print("\n" + "=" * 60)
-    print("数据库操作测试")
-    print("=" * 60)
+ """test database Ji Ben Cao Zuo"""
+ print("\n" + "=" * 60)
+ print("database operation test")
+ print("=" * 60)
 
-    try:
-        from app.core.database import engine
-        from sqlalchemy import text
+ try:
+ from app.core.database import engine
+ from sqlalchemy import text
 
-        with engine.connect() as conn:
-            # 创建测试表
-            print("1. 创建测试表...")
-            conn.execute(
-                text(
-                    """
-                CREATE TABLE IF NOT EXISTS test_table (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(100) NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-            """
-                )
-            )
-            conn.commit()
-            print("   ✅ 测试表创建成功")
+ with engine.connect() as conn:
+ # create test table
+ print("1. create test table...")
+ conn.execute(
+ text(
+ """
+ CREATE TABLE IF NOT EXISTS test_table (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ name VARCHAR(100) NOT NULL,
+ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+ """
+)
+)
+ conn.commit()
+ print(" ✅ test table create success")
 
-            # 插入测试数据
-            print("\n2. 插入测试数据...")
-            conn.execute(
-                text(
-                    """
-                INSERT INTO test_table (name) VALUES ('测试数据')
-            """
-                )
-            )
-            conn.commit()
-            print("   ✅ 测试数据插入成功")
+ # Cha Ru Ce Shi Shu Ju
+ print("\n2. Cha Ru Ce Shi Shu Ju...")
+ conn.execute(
+ text(
+ """
+ INSERT INTO test_table (name) VALUES ('Ce Shi Shu Ju')
+ """
+)
+)
+ conn.commit()
+ print(" ✅ Ce Shi Shu Ju Cha Ru success")
 
-            # 查询测试数据
-            print("\n3. 查询测试数据...")
-            result = conn.execute(text("SELECT * FROM test_table"))
-            rows = result.fetchall()
-            print(f"   ✅ 查询到 {len(rows)} 条记录")
-            for row in rows:
-                print(f"      ID: {row[0]}, Name: {row[1]}, Created: {row[2]}")
+ # Cha Xun Ce Shi Shu Ju
+ print("\n3. Cha Xun Ce Shi Shu Ju...")
+ result = conn.execute(text("SELECT * FROM test_table"))
+ rows = result.fetchall()
+ print(f" ✅ Cha Xun Dao {len(rows)} Tiao Ji Lu")
+ for row in rows:
+ print(f" ID: {row[0]}, Name: {row[1]}, Created: {row[2]}")
 
-            # 清理测试表
-            print("\n4. 清理测试表...")
-            conn.execute(text("DROP TABLE IF EXISTS test_table"))
-            conn.commit()
-            print("   ✅ 测试表清理成功")
+ # clean up test table
+ print("\n4. clean up test table...")
+ conn.execute(text("DROP TABLE IF EXISTS test_table"))
+ conn.commit()
+ print(" ✅ test table clean up success")
 
-        print("\n" + "=" * 60)
-        print("✅ 数据库操作测试通过!")
-        print("=" * 60)
-        return True
+ print("\n" + "=" * 60)
+ print("✅ database operation Ce Shi Tong Guo!")
+ print("=" * 60)
+ return True
 
-    except Exception as e:
-        print(f"   ❌ 数据库操作测试失败: {str(e)}")
-        return False
+ except Exception as e:
+ print(f" ❌ database operation test failed: {str(e)}")
+ return False
 
 
 if __name__ == "__main__":
-    success = test_mysql_connection()
-    if success:
-        test_database_operations()
-    else:
-        sys.exit(1)
+ success = test_mysql_connection()
+ if success:
+ test_database_operations()
+ else:
+ sys.exit(1)

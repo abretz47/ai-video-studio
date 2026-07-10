@@ -52,7 +52,7 @@ async def generate_video(
     if not api_key:
         return AIResponse(
             success=False,
-            error="GoogleProvider 未配置 API Key",
+            error="GoogleProvider API key is not configured",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.VIDEO_GENERATION,
@@ -62,7 +62,7 @@ async def generate_video(
     if client is None:
         return AIResponse(
             success=False,
-            error="Google 客户端未初始化",
+            error="Google client is not initialized",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.VIDEO_GENERATION,
@@ -85,7 +85,7 @@ async def generate_video(
     if not prompt and not image_url:
         return AIResponse(
             success=False,
-            error="缺少视频生成提示词或首帧图像",
+            error="missing videoGeneration promptHuo Shou Zhen image",
             provider=provider_name,
             model=model_id,
             task_type=AITaskType.VIDEO_GENERATION,
@@ -124,7 +124,7 @@ async def generate_video(
         if not operation_name:
             return AIResponse(
                 success=False,
-                error="Google Veo 响应缺少 operation name",
+                error="Google Veo response missing operation name",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.VIDEO_GENERATION,
@@ -146,7 +146,7 @@ async def generate_video(
         if not operation:
             return AIResponse(
                 success=False,
-                error="Google Veo 生成任务失败或超时",
+                error="Google Veo Sheng Cheng Ren Wu failed or Chao Shi",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.VIDEO_GENERATION,
@@ -164,7 +164,7 @@ async def generate_video(
         if not (video_uri or video_bytes):
             return AIResponse(
                 success=False,
-                error="Google Veo 响应未返回视频内容",
+                error="Google Veo response not return video content",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.VIDEO_GENERATION,

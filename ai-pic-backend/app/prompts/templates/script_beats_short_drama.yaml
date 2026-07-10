@@ -1,64 +1,64 @@
 name: script_beats_short_drama
-description: "短剧 beat-level 剧本结构生成模板"
+description: "short drama beat-level script structure generate template"
 category: script
 version: "1.0"
 output_format: "JSON"
 expected_fields:
-  - contract_version
-  - scenes
+ - contract_version
+ - scenes
 
 variables:
-  story:
-    type: dict
-    required: true
-    description: "故事信息"
+ story:
+ type: dict
+ required: true
+ description: "Gu Shi Xin Xi"
 
-  episode:
-    type: dict
-    required: true
-    description: "剧集信息"
+ episode:
+ type: dict
+ required: true
+ description: "Ju Ji Xin Xi"
 
-  scenes:
-    type: list
-    required: true
-    description: "场景列表"
+ scenes:
+ type: list
+ required: true
+ description: "Chang Jing Lie Biao"
 
-  language:
-    type: string
-    required: false
-    description: "语言"
-    default: "zh-CN"
+ language:
+ type: string
+ required: false
+ description: "language"
+ default: "zh-CN"
 
-  dialogue_style:
-    type: string
-    required: false
-    description: "对白风格"
-    default: "natural"
+ dialogue_style:
+ type: string
+ required: false
+ description: "Dui Bai Feng Ge"
+ default: "natural"
 
-  target_chars_per_episode:
-    type: number
-    required: false
-    description: "目标正文长度"
-    default: 1300
+ target_chars_per_episode:
+ type: number
+ required: false
+ description: "target Zheng Wen Chang Du"
+ default: 1300
 
-  additional_requirements:
-    type: string
-    required: false
-    description: "特殊要求"
+ additional_requirements:
+ type: string
+ required: false
+ description: "Te Shu Yao Qiu"
 
-  generation_mode:
-    type: string
-    required: false
-    description: "生成模式"
-    default: "standard"
+ generation_mode:
+ type: string
+ required: false
+ description: "Sheng Cheng Mo Shi"
+ default: "standard"
 
-  production_mode:
-    type: boolean
-    required: false
-    description: "是否为 production async 生成"
-    default: false
+ production_mode:
+ type: boolean
+ required: false
+ description: "Shi Fou Wei production async generate"
+ default: false
 
-  script_score_thresholds:
-    type: dict
-    required: false
-    description: "production ScriptScore 通过阈值"
+ script_score_thresholds:
+ type: dict
+ required: false
+ description: "production ScriptScore Tong Guo Yu Zhi"

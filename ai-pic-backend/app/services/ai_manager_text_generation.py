@@ -58,7 +58,7 @@ async def generate_text_with_fallback(
 
     if not available_providers:
         return failure_responses.manager_failure_response(
-            error="没有可用的文本生成提供商",
+            error="missing available text Sheng Cheng provider",
             model=model,
             task_type=AITaskType.STORY_GENERATION,
             model_type=AIModelType.TEXT_GENERATION,
@@ -117,7 +117,7 @@ async def generate_text_with_fallback(
         except Exception as exc:
             if not enable_fallback:
                 return failure_responses.exception_failure_response(
-                    action="文本生成失败",
+                    action="text Sheng Cheng failed",
                     exc=exc,
                     provider=provider_name,
                     model=model,
@@ -129,7 +129,7 @@ async def generate_text_with_fallback(
             available_providers.remove(provider_name)
 
     return failure_responses.manager_failure_response(
-        error="所有文本生成提供商都失败了",
+        error="all text Sheng Cheng provider all failed",
         model=last_model_used,
         task_type=AITaskType.STORY_GENERATION,
         model_type=AIModelType.TEXT_GENERATION,

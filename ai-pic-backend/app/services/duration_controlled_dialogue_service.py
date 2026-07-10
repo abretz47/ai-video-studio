@@ -1,8 +1,8 @@
 """
-时长精控对白生成服务
+duration Jing Kong dialogue Sheng Cheng service
 
-混合模式：使用 Duration Orchestrator 进行预算分配和验证，
-使用模块化 scene audio generator 进行实际 TTS 生成。
+Hun He mode: Shi Yong Duration Orchestrator Jin Xing Yu Suan Fen Pei and validation, 
+Shi Yong Mo Kuai Hua scene audio generator Jin Xing Shi Ji TTS Sheng Cheng.
 """
 
 import logging
@@ -23,12 +23,12 @@ from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 
-# 日志前缀，便于日志过滤
+# log Qian Zhui, Bian Yu log Guo Lv
 LOG_PREFIX = "DurationControl"
 
 
 def _scene_to_dict(scene: Scene) -> Dict[str, Any]:
-    """将 Scene ORM 对象转换为字典。"""
+    """ Scene ORM Dui Xiang Zhuan Huan as Zi Dian."""
     return {
         "scene_number": getattr(scene, "scene_number", None),
         "id": getattr(scene, "id", None),
@@ -55,7 +55,7 @@ async def generate_dialogue_with_duration_control(
     timing_model: Optional[str] = None,
     progress_callback: Optional[Callable[[str], None]] = None,
 ) -> Dict[str, Any]:
-    """使用 Duration Orchestrator 进行时长精控对白生成。"""
+    """Shi Yong Duration Orchestrator Jin Xing duration Jing Kong dialogue Sheng Cheng."""
     start_time = time.time()
     total_duration_minutes = getattr(episode, "duration_minutes", None) or 3
     scenes_data = [_scene_to_dict(s) for s in scenes]
@@ -73,10 +73,10 @@ async def generate_dialogue_with_duration_control(
         },
     )
 
-    # ========== Phase 1: 预算分配 ==========
+    # ========== Phase 1: Yu Suan Fen Pei ==========
     phase1_start = time.time()
     if progress_callback:
-        progress_callback("Phase 1/3: 分配场景时长预算...")
+        progress_callback("Phase 1/3: Fen Pei scene when Zhang Yu Suan...")
 
     budget_state = {
         "episode_id": episode.id,
@@ -108,7 +108,7 @@ async def generate_dialogue_with_duration_control(
             "timing": {"phase1_budget_ms": int(phase1_duration * 1000)},
         }
 
-    # 记录预算分配结果
+    # Ji Lu Yu Suan Fen Pei Jie Guo
     budget_summary = [
         {"scene": b.scene_number, "target_s": b.target_duration_seconds}
         for b in scene_budgets
@@ -124,7 +124,7 @@ async def generate_dialogue_with_duration_control(
         },
     )
 
-    # ========== Phase 2: 逐场景生成 ==========
+    # ========== Phase 2: Zhu scene Sheng Cheng ==========
     phase2 = await generate_scene_audio_with_budgets(
         db,
         story=story,
@@ -145,10 +145,10 @@ async def generate_dialogue_with_duration_control(
     scene_timings = phase2["scene_timings"]
     phase2_duration = phase2["phase_duration"]
 
-    # ========== Phase 3: 最终验证 ==========
+    # ========== Phase 3: Zui Zhong validation ==========
     phase3_start = time.time()
     if progress_callback:
-        progress_callback("Phase 3/3: 验证总时长...")
+        progress_callback("Phase 3/3: validation total duration...")
 
     validation_state = {
         "episode_id": episode.id,
@@ -165,7 +165,7 @@ async def generate_dialogue_with_duration_control(
     success = final_validation.get("passed", False)
     phase3_duration = time.time() - phase3_start
 
-    # 统计失败的场景
+    # Tong Ji failed scene
     failed_scenes = [r for r in generation_results if not r.get("success")]
     if failed_scenes:
         success = False
@@ -173,7 +173,7 @@ async def generate_dialogue_with_duration_control(
     total_time = time.time() - start_time
     duration_ratio = final_validation.get("duration_ratio", 0)
 
-    # 最终日志
+    # Zui Zhong log
     logger.info(
         f"{LOG_PREFIX}: 流程完成",
         extra={
@@ -199,7 +199,7 @@ async def generate_dialogue_with_duration_control(
     )
 
     if progress_callback:
-        status = "通过" if success else "未通过"
+        status = "through" if success else "not through"
         progress_callback(
             f"完成: {status} (时长比 {duration_ratio:.1%}, " f"耗时 {total_time:.1f}s)"
         )
@@ -208,11 +208,11 @@ async def generate_dialogue_with_duration_control(
         "success": success,
         "episode_id": episode.id,
         "script_id": script.id,
-        # 预算信息
+        # Yu Suan Xin Xi
         "scene_budgets": [b.to_dict() for b in scene_budgets],
-        # 生成结果
+        # Sheng Cheng Jie Guo
         "generation_results": generation_results,
-        # 统计信息
+        # Tong Ji Xin Xi
         "statistics": {
             "total_target_duration_seconds": total_duration_minutes * 60,
             "total_actual_duration_seconds": round(total_actual_duration, 2),
@@ -221,16 +221,16 @@ async def generate_dialogue_with_duration_control(
             "successful_count": len(scenes) - len(failed_scenes),
             "failed_count": len(failed_scenes),
         },
-        # 验证结果
+        # validation Jie Guo
         "final_validation": final_validation,
-        # 时序信息
+        # Shi Xu Xin Xi
         "timing": {
             "total_ms": int(total_time * 1000),
             "phase1_budget_ms": int(phase1_duration * 1000),
             "phase2_generation_ms": int(phase2_duration * 1000),
             "phase3_validation_ms": int(phase3_duration * 1000),
         },
-        # 推理日志
+        # Tui Li log
         "reasoning": validation_result.get("reasoning", []),
         "errors": validation_result.get("errors", []),
     }

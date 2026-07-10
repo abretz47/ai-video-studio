@@ -25,8 +25,8 @@ class StoryboardGenerationMixin:
         selected_scenes: Optional[List[int]] = None,
         prefer_graph: bool = True,
     ) -> Optional[Dict[str, Any]]:
-        """基于剧本信息生成分镜（Storyboard）"""
-        # 优先尝试 LangGraph ReAct 管线（如可用），确保其它调用点也默认走「规划+生成」路径
+        """Ji Yu script Xin Xi Sheng Cheng Fen Jing(Storyboard)"""
+        # priority Chang Shi LangGraph ReAct Guan Xian(for example available), Que Bao Qi Ta call Dian Ye default Zou「Gui Hua+Sheng Cheng」path
         if prefer_graph and getattr(self, "storyboard_reasoner", None):
             try:
                 graph_result = await self.storyboard_reasoner.generate(
@@ -72,7 +72,7 @@ class StoryboardGenerationMixin:
                     exc,
                 )
 
-        # LangGraph 未可用或结果不合法时，回退至原有 AI 管理器直连管线
+        # LangGraph not available or Jie Guo not He Fa when, fallback Zhi Yuan You AI manager Zhi Lian Guan Xian
         if self.ai_manager:
             try:
                 context_text = build_storyboard_context(script)

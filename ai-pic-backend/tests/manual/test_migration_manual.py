@@ -6,66 +6,66 @@ from alembic import command
 from alembic.config import Config
 from sqlalchemy import create_engine, inspect
 
-# 创建临时数据库
+# create temporary database
 db_fd, db_path = tempfile.mkstemp(suffix=".db")
 os.close(db_fd)
 
 try:
-    db_url = f"sqlite:///{db_path}"
-    print(f"测试数据库: {db_url}")
+ db_url = f"sqlite:///{db_path}"
+ print(f"test database: {db_url}")
 
-    # 配置Alembic
-    alembic_cfg = Config("alembic.ini")
-    alembic_cfg.set_main_option("sqlalchemy.url", db_url)
+ # configurationAlembic
+ alembic_cfg = Config("alembic.ini")
+ alembic_cfg.set_main_option("sqlalchemy.url", db_url)
 
-    print("运行迁移...")
+ print("Yun Xing Qian Yi...")
 
-    # 手动运行迁移脚本
+ # Shou Dong run migration Jiao Ben
 
-    # 创建引擎
-    engine = create_engine(db_url)
+ # Chuang Jian Yin Qing
+ engine = create_engine(db_url)
 
-    # 手动创建表
-    print("手动创建表...")
-    from app.core.database import Base
+ # Shou Dong create table
+ print("Shou Dong create table...")
+ from app.core.database import Base
 
-    Base.metadata.create_all(engine)
+ Base.metadata.create_all(engine)
 
-    # 检查表
-    inspector = inspect(engine)
-    tables = inspector.get_table_names()
+ # Jian Cha Biao
+ inspector = inspect(engine)
+ tables = inspector.get_table_names()
 
-    print("手动创建后的表:")
-    for table in tables:
-        print(f"  - {table}")
+ print("Shou Dong create Hou De table:")
+ for table in tables:
+ print(f" - {table}")
 
-    engine.dispose()
+ engine.dispose()
 
-    # 现在尝试用alembic升级
-    print("\n现在尝试alembic升级...")
-    try:
-        command.upgrade(alembic_cfg, "head")
-        print("Alembic升级成功")
-    except Exception as e:
-        print(f"Alembic升级失败: {e}")
-        import traceback
+ # Xian Zai Chang Shi Yongalembicescalate
+ print("\nXian Zai Chang Shialembicescalate...")
+ try:
+ command.upgrade(alembic_cfg, "head")
+ print("AlembicSheng Ji Cheng Gong")
+ except Exception as e:
+ print(f"AlembicSheng Ji Shi Bai: {e}")
+ import traceback
 
-        traceback.print_exc()
+ traceback.print_exc()
 
-    # 再次检查表
-    engine = create_engine(db_url)
-    inspector = inspect(engine)
-    tables = inspector.get_table_names()
+ # Zai Ci Jian Cha Biao
+ engine = create_engine(db_url)
+ inspector = inspect(engine)
+ tables = inspector.get_table_names()
 
-    print("Alembic升级后的表:")
-    for table in tables:
-        print(f"  - {table}")
+ print("Alembicescalate Hou De table:")
+ for table in tables:
+ print(f" - {table}")
 
-    engine.dispose()
+ engine.dispose()
 
 finally:
-    if os.path.exists(db_path):
-        try:
-            os.unlink(db_path)
-        except:
-            pass
+ if os.path.exists(db_path):
+ try:
+ os.unlink(db_path)
+ except:
+ pass

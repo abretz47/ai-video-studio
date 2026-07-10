@@ -64,15 +64,15 @@ CONFLICT_ADJUSTMENTS: dict[str, float] = {
 # --- Keywords for Stage Direction Parsing ---
 # Map keywords in stage directions to pause durations
 STAGE_DIRECTION_KEYWORDS: dict[str, int] = {
-    "长时间沉默": 3000,
-    "沉默良久": 2500,
-    "沉默": 2000,
-    "停顿": 1000,
-    "短暂停顿": 500,
-    "略作停顿": 600,
-    "思考": 1200,
-    "犹豫": 800,
-    "叹气": 600,
+    "Zhang Shi Jian Chen Mo": 3000,
+    "Chen Mo Liang Jiu": 2500,
+    "Chen Mo": 2000,
+    "Ting Dun": 1000,
+    "Duan Zan Ting Dun": 500,
+    "Lve Zuo Ting Dun": 600,
+    "thoughtful": 1200,
+    "You Yu": 800,
+    "Tan Qi": 600,
     "deep breath": 800,
     "long pause": 2500,
     "pause": 1000,
@@ -81,35 +81,35 @@ STAGE_DIRECTION_KEYWORDS: dict[str, int] = {
 }
 
 # --- System Prompts ---
-TIMELINE_SYSTEM_PROMPT = """你是一个专业的影视音频剪辑师和导演助理。
-你的任务是为对白音频添加恰当的停顿和间隔，使对话节奏自然流畅，符合场景情绪。
+TIMELINE_SYSTEM_PROMPT = """you Shi a professional Ying Shi audio Jian Ji Shi and Dao Yan Zhu Li.
+you Ren Wu Shi as dialogue audio Tian Jia Qia Dang Ting Dun and Jian Ge, Shi Dui Hua Jie Zou Zi Ran Liu Chang, Fu He sceneEmotion.
 
-核心原则：
-1. 情绪过渡：强烈情绪变化（如愤怒→平静）需要更长停顿让观众消化
-2. 戏剧张力：高冲突场景需要更短停顿保持紧张感
-3. 角色切换：不同角色之间的对话需要自然的呼吸空间
-4. 语义完整：句号后比逗号停顿更长，问答之间需要反应时间
-5. 避免单调：不要让所有停顿都一样长，需要节奏变化
+core Yuan Ze: 
+1. EmotionGuo Du: Qiang LieEmotionchange(for example angry→calm)need Geng Zhang Ting Dun Rang Guan Zhong Xiao Hua
+2. Xi Ju Zhang Li: Gao conflict scene need Geng Duan Ting Dun keep Jin Zhang Gan
+3. character Qie Huan: Bu Tong character Zhi Jian Dui Hua need Zi Ran Hu Xi Kong Jian
+4. Yu Yi complete: Ju Hao after Bi Dou Hao Ting Dun Geng Zhang, Wen Da Zhi Jian need Fan Ying Shi Jian
+5. avoid Dan Diao: Bu Yao Rang all Ting Dun all Yi Yang Zhang, need Jie Zou change
 
-时长范围：100ms（最短）到 5000ms（最长）
-推荐范围：200ms - 1500ms
+when Zhang range: 100ms(Zui Duan)to 5000ms(Zui Zhang)
+Tui Jian range: 200ms - 1500ms
 
-输出严格按照 JSON 格式。"""
+output strict An Zhao JSON format."""
 
-TIMELINE_REPAIR_PROMPT = """上一次生成的时间轴计划未通过验证。
-请修正以下问题，确保满足所有约束条件。
+TIMELINE_REPAIR_PROMPT = """on Yi Ci Sheng Cheng timeline Ji Hua not through validation.
+Qing Xiu Zheng Yi Xia Wen Ti, Que Bao Man Zu all Yue Shu Tiao Jian.
 
-约束条件：
-- 最小间隔：{min_gap_ms}ms
-- 最大间隔：{max_gap_ms}ms
-- 平均间隔范围：{min_avg_gap_ms}ms - {max_avg_gap_ms}ms
-- 节奏需要变化，避免所有间隔都相同
+Yue Shu Tiao Jian: 
+- Zui Xiao Jian Ge: {min_gap_ms}ms
+- maximum Jian Ge: {max_gap_ms}ms
+- Ping Jun Jian Ge range: {min_avg_gap_ms}ms - {max_avg_gap_ms}ms
+- Jie Zou need change, avoid all Jian Ge all Xiang Tong
 
-验证错误：
+validation error: 
 {validation_errors}
 
-原计划：
+Yuan Ji Hua: 
 {original_plan}
 
-请调整 timing_decisions 中的 duration_ms 值。
-保持节奏的自然变化，输出修正后的完整 JSON。"""
+Qing adjust timing_decisions in duration_ms Zhi.
+keep Jie Zou Zi Ran change, output Xiu Zheng after complete JSON."""

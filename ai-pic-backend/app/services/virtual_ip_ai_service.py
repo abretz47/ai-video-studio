@@ -1,10 +1,10 @@
 """
 Virtual IP AI Generation Service
-专门为虚拟IP创建提供AI生成功能
+Zhuan Men as Xu NiIPcreate Ti GongAISheng Cheng feature
 
-注意：
-- 不再直接依赖 AsyncOpenAI，而是复用统一的 AIService / AIServiceManager。
-- 文本提示词改为通过 prompt_manager + virtual_ip_creation 模板管理。
+Zhu Yi: 
+- Bu Zai directly Yi Lai AsyncOpenAI, Er Shi Fu Yong unified AIService/AIServiceManager.
+- text prompt Ci change to through prompt_manager + virtual_ip_creation template Guan Li.
 """
 
 import time
@@ -27,10 +27,10 @@ VIRTUAL_IP_CONTENT_FILL_MODEL = DEEPSEEK_V4_FLASH_MODEL
 
 
 class VirtualIPAIService:
-    """虚拟IP AI生成服务"""
+    """Xu NiIP AISheng Cheng service"""
 
     def __init__(self):
-        # 复用全局 AIService 管理器，保持模型选择与日志统一
+        # Fu Yong Quan Ju AIService manager, keep model Xuan Ze and log unified
         self.ai_service = ai_service
         self.ai_manager = getattr(ai_service, "ai_manager", None)
         self.logger = get_logger(__name__)
@@ -42,16 +42,16 @@ class VirtualIPAIService:
         style_preference: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        根据基本信息生成完整的虚拟IP，包含详细生成信息。
+ Gen Ju Ji Ben Xin Xi Sheng Cheng complete Xu NiIP, Bao Han detailed Sheng Cheng Xin Xi.
 
-        逻辑：
-        - 优先通过 prompt_manager + virtual_ip_creation 模板生成结构化 JSON，再映射到描述/背景/小传。
-        - 当 AI 管理器不可用或解析失败时，回退到本地模板文案。
+ Luo Ji: 
+ - priority through prompt_manager + virtual_ip_creation template Sheng Cheng Jie Gou Hua JSON, then Ying She to description/background/Xiao Zhuan.
+ - Dang AI manager not allowed Yong or parse failed when, fallback to local template Wen An.
         """
         temperature = 0.7
         start_time = time.time()
 
-        # 默认使用本地模板作为兜底
+        # default Shi Yong local template Zuo Wei fallback
         content: Dict[str, Any] = generate_template_content(name, basic_info)
         prompts_used: List[str] = ["Template-based generation"]
         tokens_used = 0
@@ -60,7 +60,7 @@ class VirtualIPAIService:
 
         if self.ai_manager:
             try:
-                steps.append("正在生成虚拟IP完整设定（描述/背景/小传）...")
+                steps.append("Zheng Zai Sheng Cheng Xu NiIPcomplete setting(description/background/Xiao Zhuan)...")
                 profile, prompt, model_used, usage = (
                     await self._generate_profile_with_ai(
                         name=name,
@@ -74,16 +74,16 @@ class VirtualIPAIService:
                     prompts_used = [f"虚拟IP设定: {prompt[:100]}..."]
                 usage = usage or {}
                 tokens_used = int(usage.get("total_tokens") or 0)
-                steps.append("生成完成!")
+                steps.append("Sheng Cheng complete!")
             except Exception as e:
-                # 失败时记录并回退到模板
+                # failed when Ji Lu and fallback to template
                 self.logger.warning(
-                    "VirtualIPAIService.generate_complete_ip_with_details 出错，使用模板兜底: %s",
+                    "VirtualIPAIService.generate_complete_ip_with_details Chu Cuo, Shi Yong template fallback: %s",
                     e,
                 )
-                steps.append("AI 生成失败，使用模板兜底")
+                steps.append("AI Sheng Cheng failed, Shi Yong template fallback")
         else:
-            steps.append("AI 管理器不可用，使用模板兜底")
+            steps.append("AI manager not allowed Yong, Shi Yong template fallback")
 
         generation_details = {
             "model": model_used,
@@ -91,7 +91,7 @@ class VirtualIPAIService:
             "prompts_used": prompts_used,
             "tokens_used": tokens_used,
             "generation_time": round(time.time() - start_time, 2),
-            "steps": steps or ["生成完成!"],
+            "steps": steps or ["Sheng Cheng complete!"],
         }
 
         return {
@@ -106,7 +106,7 @@ class VirtualIPAIService:
         style_preference: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        根据基本信息生成完整的虚拟IP（简化版，保持向后兼容）
+ Gen Ju Ji Ben Xin Xi Sheng Cheng complete Xu NiIP(Jian Hua Ban, keep Xiang after Jian Rong)
         """
         result = await self.generate_complete_ip_with_details(
             name, basic_info, style_preference
@@ -121,8 +121,8 @@ class VirtualIPAIService:
         image_category: str = "portrait",
     ) -> str:
         """
-        根据角色信息生成用于AI绘画的风格提示词。
-        优先通过统一 AI 管理器生成中文提示词，失败时回退到本地模板。
+ Gen JuCharacter informationSheng Cheng Yong YuAIHui Hua style prompt Ci.
+ priority through unified AI manager Sheng Cheng Zhong Wen prompt Ci, failed when fallback to local template.
         """
         if not self.ai_manager:
             return generate_template_style_prompt(name, description, image_category)
@@ -158,7 +158,7 @@ class VirtualIPAIService:
             return text
         except Exception as e:
             self.logger.warning(
-                "VirtualIPAIService.generate_style_prompt 失败，使用模板兜底: %s",
+                "VirtualIPAIService.generate_style_prompt failed, Shi Yong template fallback: %s",
                 e,
             )
             return generate_template_style_prompt(name, description, image_category)
@@ -171,8 +171,8 @@ class VirtualIPAIService:
         temperature: float = 0.7,
     ) -> tuple[Dict[str, Any], Optional[str], str, Dict[str, Any]]:
         """
-        使用 prompt_manager + virtual_ip_creation 模板生成完整的角色设定，
-        并映射到 description / background_story / biography 三段文案。
+ Shi Yong prompt_manager + virtual_ip_creation template Sheng Cheng complete character setting, 
+ and Ying She to description/background_story/biography San Duan Wen An.
         """
         variables: Dict[str, Any] = {
             "name": name,
@@ -189,7 +189,7 @@ class VirtualIPAIService:
             PromptTemplate.VIRTUAL_IP_CREATION.value,
             variables,
         )
-        self.logger.info("VirtualIP 生成提示词: %s", prompt[:200])
+        self.logger.info("VirtualIP Generation prompt: %s", prompt[:200])
 
         response = await self.ai_manager.generate_text(
             prompt=prompt,
@@ -215,12 +215,12 @@ class VirtualIPAIService:
                     profile = data
             except Exception as e:
                 self.logger.warning(
-                    "VirtualIPAIService._generate_profile_with_ai 解析JSON失败，将使用模板兜底: %s",
+                    "VirtualIPAIService._generate_profile_with_ai parseJSONfailed, Shi Yong template fallback: %s",
                     e,
                 )
 
         if not profile:
-            # 使用模板内容兜底
+            # Shi Yong template content fallback
             return (
                 generate_template_content(name, basic_info),
                 prompt,
@@ -236,5 +236,5 @@ class VirtualIPAIService:
         return content, prompt, response.model or "unknown", response.usage or {}
 
 
-# 全局实例
+# Quan Ju instance
 virtual_ip_ai_service = VirtualIPAIService()

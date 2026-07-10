@@ -1,6 +1,6 @@
 """
-数据种子文件: admin_user
-创建时间: 2025-08-14 00:48:59
+Seed data file: admin_user
+Created at: 2025-08-14 00:48:59
 """
 
 from app.core.database import SessionLocal
@@ -8,24 +8,24 @@ from app.models import *
 
 
 def seed_data():
-    """执行数据种子"""
+    """Execute the data seed."""
     db = SessionLocal()
     try:
         from app.core.security import get_password_hash
 
-        # 检查admin用户是否已存在
+        # Check whether the admin user already exists
         existing_admin = db.query(User).filter(User.username == "admin").first()
         if existing_admin:
-            print("Admin用户已存在，跳过创建")
+            print("Admin user already exists, skipping creation")
             return
 
-        # 创建默认admin用户
+        # Create the default admin user
         hashed_password = get_password_hash("Ai7dio")
         admin_user = User(
             username="admin",
             email="admin@ai-video-studio.com",
             hashed_password=hashed_password,
-            full_name="系统管理员",
+            full_name="System Administrator",
             is_active=True,
             is_superuser=True,
         )
@@ -34,13 +34,13 @@ def seed_data():
         db.commit()
         db.refresh(admin_user)
 
-        print("✅ 默认admin用户创建成功")
-        print("   用户名: admin")
-        print("   密码: Ai7dio")
-        print("   邮箱: admin@ai-video-studio.com")
+        print("✅ Default admin user created successfully")
+        print("   Username: admin")
+        print("   Password: Ai7dio")
+        print("   Email: admin@ai-video-studio.com")
 
     except Exception as e:
-        print(f"种子数据执行失败: {e}")
+        print(f"Seed data execution failed: {e}")
         db.rollback()
         raise
     finally:
@@ -48,22 +48,22 @@ def seed_data():
 
 
 def rollback_data():
-    """回滚种子数据"""
+    """Roll back seed data."""
     db = SessionLocal()
     try:
-        # 删除admin用户
+        # Delete the admin user
         admin_user = db.query(User).filter(User.username == "admin").first()
         if admin_user:
             db.delete(admin_user)
             db.commit()
-            print("✅ Admin用户已删除")
+            print("✅ Admin user deleted")
         else:
-            print("Admin用户不存在")
+            print("Admin user does not exist")
 
-        print("种子数据 admin_user 回滚成功")
+        print("Seed data admin_user rolled back successfully")
 
     except Exception as e:
-        print(f"种子数据回滚失败: {e}")
+        print(f"Seed data rollback failed: {e}")
         db.rollback()
         raise
     finally:

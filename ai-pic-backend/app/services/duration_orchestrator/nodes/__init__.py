@@ -1,7 +1,7 @@
 """
-Duration Orchestrator LangGraph 节点
+Duration Orchestrator LangGraph node
 
-每个节点负责 StateGraph 中的一个处理步骤。
+Mei Ge node responsible for StateGraph in a process Bu Zhou.
 """
 
 from app.services.duration_orchestrator.nodes.allocate_budget import (

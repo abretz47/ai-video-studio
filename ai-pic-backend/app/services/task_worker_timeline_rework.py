@@ -20,7 +20,7 @@ def timeline_clip_rework_video_generate_task(
 
     with get_task_db() as db:
         if not ai_service.ai_manager:
-            raise RuntimeError("AI管理器未初始化，无法提交视频重做任务")
+            raise RuntimeError("AImanager not Chu Shi Hua, unable to submit video Zhong Zuo Ren Wu")
         service = TimelineClipVideoReworkSubmissionService(db, ai_service.ai_manager)
         service.submit(task_id=task_id, payload=payload, user_id=user_id)
     persist_task_agent_run(

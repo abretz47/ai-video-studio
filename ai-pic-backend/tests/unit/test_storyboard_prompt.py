@@ -2,56 +2,56 @@ from app.services.ai_service import _build_storyboard_context
 
 
 def test_build_storyboard_context_includes_scene_details():
-    script_payload = {
-        "story": {
-            "title": "城市奇遇记",
-            "genre": "都市",
-            "theme": "人与人的信任",
-            "world_building": "现代城市，夜幕霓虹",
-        },
-        "episode": {
-            "episode_number": 1,
-            "title": "初遇",
-            "summary": "主角在夜市偶遇神秘女子，卷入误会",
-            "duration_minutes": 15,
-            "scene_count": 3,
-        },
-        "scenes": [
-            {
-                "description": "小李在夜市摊位挑选饰品，灯光昏黄，人声鼎沸。",
-                "location": "夜市主街",
-                "time": "夜",
-                "characters": ["小李", "摊主阿姨"],
-            },
-            {
-                "description": "神秘女子在小巷回头，雨后的路面倒映霓虹。",
-                "location": "夜市后巷",
-                "time": "雨后夜晚",
-                "characters": ["神秘女子"],
-                "notes": "需要表达紧张氛围",
-            },
-        ],
-        "scene_indices": [1, 2],
-        "dialogues": [
-            {"scene_number": 1, "content": "小李：这只手链多少钱？"},
-            {"scene_number": 2, "content": "神秘女子：别跟着我。"},
-        ],
-        "stage_directions": [
-            {"scene_number": 1, "content": "镜头跟随手部动作，浅景深"},
-            {"scene_number": 2, "content": "背光剪影，慢推"},
-        ],
-        "content": "小李穿梭在夜市的人群中，四处张望……",
-    }
+ script_payload = {
+ "story": {
+ "title": "City Adventure",
+ "genre": "urban",
+ "theme": "trust between people",
+ "world_building": "a modern city under neon night lights",
+ },
+ "episode": {
+ "episode_number": 1,
+ "title": "First Encounter",
+ "summary": "The protagonist meets a mysterious woman at the night market and gets drawn into a misunderstanding",
+ "duration_minutes": 15,
+ "scene_count": 3,
+ },
+ "scenes": [
+ {
+ "description": "Xiao Li Zai Ye Shi Tan Wei Tiao Xuan Shi Pin, Deng Guang Hun Huang, Ren Sheng Ding Fei.",
+ "location": "Night Market Main Street",
+ "time": "night",
+ "characters": ["Alex Li", "Tan Zhu A Yi"],
+ },
+ {
+ "description": "The mysterious woman turns around in the alley as neon reflects on the wet road.",
+ "location": "Night Market Back Alley",
+ "time": "post-rain night",
+ "characters": ["Mysterious Woman"],
+ "notes": "Xu Yao Biao Da tense Fen Wei",
+ },
+ ],
+ "scene_indices": [1, 2],
+ "dialogues": [
+ {"scene_number": 1, "content": "Alex Li: Zhe only Shou Lian Duo Shao Qian?"},
+ {"scene_number": 2, "content": "Mysterious Woman: Stop following me."},
+ ],
+ "stage_directions": [
+ {"scene_number": 1, "content": "camera Gen Sui Shou Bu action, Qian Jing Shen"},
+ {"scene_number": 2, "content": "Bei Guang Jian Ying, Man Tui"},
+ ],
+ "content": "Xiao Li weaves through the night-market crowd, looking around...",
+ }
 
-    context = _build_storyboard_context(script_payload)
+ context = _build_storyboard_context(script_payload)
 
-    assert "故事背景" in context
-    assert "剧集信息" in context
-    assert "场景 1" in context
-    assert "地点:夜市主街" in context
-    assert "对白:小李：这只手链多少钱？" in context
-    assert "舞台:镜头跟随手部动作" in context
-    assert "剧本文本片段" in context
-    assert "场景 2" in context
-    assert "备注:需要表达紧张氛围" in context
-    assert "角色:神秘女子" in context
+ assert "Gu Shi Bei Jing" in context
+ assert "Ju Ji Xin Xi" in context
+ assert "scene 1" in context
+ assert "location:Night Market Main Street" in context
+ assert "dialogue:Alex Li: Zhe only Shou Lian Duo Shao Qian?" in context
+ assert "Wu Tai:camera Gen Sui Shou Bu action" in context
+ assert "script Wen Ben Pian Duan" in context
+ assert "scene 2" in context
+ assert "Bei Zhu:Xu Yao Biao Da tense Fen Wei" in context
+ assert "character:Mysterious Woman" in context

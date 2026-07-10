@@ -1,7 +1,7 @@
 """
-Duration Orchestrator 状态定义
+Duration Orchestrator status Ding Yi
 
-定义 LangGraph StateGraph 所需的状态数据结构。
+Ding Yi LangGraph StateGraph Suo need status Shu Ju Jie Gou.
 """
 
 from dataclasses import dataclass, field
@@ -10,50 +10,50 @@ from typing import Any, Dict, List, Optional
 
 
 class SceneStatus(str, Enum):
-    """场景生成状态"""
+    """scene Sheng Cheng status"""
 
-    PENDING = "pending"  # 待处理
-    IN_PROGRESS = "in_progress"  # 处理中
-    COMMITTED = "committed"  # 已提交（验证通过）
-    FAILED = "failed"  # 失败（达到最大重试次数）
+    PENDING = "pending"  # Dai Chu Li
+    IN_PROGRESS = "in_progress"  # process in
+    COMMITTED = "committed"  # submit(validation through)
+    FAILED = "failed"  # failed(reach maximum retry Ci Shu)
 
 
 @dataclass
 class SceneBudget:
-    """单个场景的时长预算"""
+    """Dan Ge scene duration Yu Suan"""
 
-    # 基础标识
+    # basic Biao Shi
     scene_number: int
-    scene_index: int  # 在场景列表中的索引 (0-based)
+    scene_index: int  # in scene list in index (0-based)
 
-    # 时长目标
+    # when Zhang target
     target_duration_seconds: int
-    target_word_count: int  # 目标对白字数
+    target_word_count: int  # target dialogue word count
 
-    # 容差范围
-    min_duration_seconds: int  # 最小可接受时长 (target * 0.85)
-    max_duration_seconds: int  # 最大可接受时长 (target * 1.15)
+    # Rong Cha range
+    min_duration_seconds: int  # Zui Xiao can Jie Shou when Zhang (target * 0.85)
+    max_duration_seconds: int  # maximum can Jie Shou when Zhang (target * 1.15)
 
-    # 运行时状态
+    # run when status
     status: SceneStatus = SceneStatus.PENDING
     attempt_count: int = 0
 
-    # 实际结果
+    # Shi Ji Jie Guo
     actual_duration_seconds: Optional[float] = None
     actual_word_count: Optional[int] = None
     actual_dialogue_count: Optional[int] = None
 
-    # 失败/重试信息
+    # failed/retry Xin Xi
     last_rejection_reason: Optional[str] = None
     adjustment_hint: Optional[str] = None
 
-    # 生成结果引用
+    # Sheng Cheng Jie Guo Yin Yong
     script_scene_data: Optional[Dict[str, Any]] = None
     tts_results: Optional[List[Dict[str, Any]]] = None
     scene_beats: Optional[List[Dict[str, Any]]] = None
 
     def is_within_tolerance(self) -> bool:
-        """检查实际时长是否在容差范围内"""
+        """check Shi Ji when Zhang Shi Fou in Rong Cha range interior"""
         if self.actual_duration_seconds is None:
             return False
         return (
@@ -63,19 +63,19 @@ class SceneBudget:
         )
 
     def duration_ratio(self) -> Optional[float]:
-        """计算实际时长与目标时长的比例"""
+        """Ji Suan Shi Ji duration and target duration ratio"""
         if self.actual_duration_seconds is None or self.target_duration_seconds == 0:
             return None
         return self.actual_duration_seconds / self.target_duration_seconds
 
     def duration_diff_seconds(self) -> Optional[float]:
-        """计算时长差异 (秒)，正数表示超时，负数表示不足"""
+        """Ji Suan when Zhang Cha Yi (seconds), Zheng Shu Biao Shi Chao Shi, Fu Shu Biao Shi insufficient"""
         if self.actual_duration_seconds is None:
             return None
         return self.actual_duration_seconds - self.target_duration_seconds
 
     def to_dict(self) -> Dict[str, Any]:
-        """转换为字典"""
+        """Zhuan Huan as Zi Dian"""
         return {
             "scene_number": self.scene_number,
             "scene_index": self.scene_index,
@@ -97,38 +97,38 @@ class SceneBudget:
 
 @dataclass
 class OrchestratorState:
-    """Duration Orchestrator 的全局状态"""
+    """Duration Orchestrator Quan Ju status"""
 
     # ==========================================================================
-    # 输入参数
+    # input parameters
     # ==========================================================================
     episode_id: int
     script_id: int
     story_id: int
     total_duration_minutes: int
 
-    # Episode Agent 产出的场景列表 (原始数据)
+    # Episode Agent Chan Chu scene list (Yuan Shi Shu Ju)
     scenes_from_episode: List[Dict[str, Any]] = field(default_factory=list)
 
     # ==========================================================================
-    # 预算分配结果
+    # Yu Suan Fen Pei Jie Guo
     # ==========================================================================
     scene_budgets: List[SceneBudget] = field(default_factory=list)
-    buffer_seconds: int = 0  # 预留 buffer
+    buffer_seconds: int = 0  # Yu Liu buffer
 
     # ==========================================================================
-    # 场景生成结果
+    # scene Sheng Cheng Jie Guo
     # ==========================================================================
     committed_scenes: List[Dict[str, Any]] = field(default_factory=list)
 
     # ==========================================================================
-    # 时长跟踪
+    # when Zhang Gen Zong
     # ==========================================================================
     committed_duration_seconds: float = 0.0
     remaining_budget_seconds: float = 0.0
 
     # ==========================================================================
-    # 流程控制
+    # Liu Cheng Kong Zhi
     # ==========================================================================
     current_scene_index: int = 0
     phase: str = (
@@ -136,7 +136,7 @@ class OrchestratorState:
     )
 
     # ==========================================================================
-    # 最终结果
+    # Zui Zhong Jie Guo
     # ==========================================================================
     final_duration_seconds: Optional[float] = None
     final_duration_ratio: Optional[float] = None
@@ -144,46 +144,46 @@ class OrchestratorState:
     storyboard_frames_count: int = 0
 
     # ==========================================================================
-    # 推理日志
+    # Tui Li log
     # ==========================================================================
     reasoning: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
 
     # ==========================================================================
-    # 辅助方法
+    # Fu Zhu Fang Fa
     # ==========================================================================
 
     def get_current_budget(self) -> Optional[SceneBudget]:
-        """获取当前正在处理的场景预算"""
+        """get current Zheng Zai process scene Yu Suan"""
         if 0 <= self.current_scene_index < len(self.scene_budgets):
             return self.scene_budgets[self.current_scene_index]
         return None
 
     def get_pending_budgets(self) -> List[SceneBudget]:
-        """获取所有待处理的场景预算"""
+        """get all Dai Chu Li scene Yu Suan"""
         return [b for b in self.scene_budgets if b.status == SceneStatus.PENDING]
 
     def get_committed_budgets(self) -> List[SceneBudget]:
-        """获取所有已提交的场景预算"""
+        """get all submit scene Yu Suan"""
         return [b for b in self.scene_budgets if b.status == SceneStatus.COMMITTED]
 
     def get_failed_budgets(self) -> List[SceneBudget]:
-        """获取所有失败的场景预算"""
+        """get all failed scene Yu Suan"""
         return [b for b in self.scene_budgets if b.status == SceneStatus.FAILED]
 
     def all_scenes_processed(self) -> bool:
-        """检查是否所有场景都已处理完成"""
+        """check Shi Fou all scene all process complete"""
         return all(
             b.status in (SceneStatus.COMMITTED, SceneStatus.FAILED)
             for b in self.scene_budgets
         )
 
     def total_target_duration(self) -> int:
-        """计算所有场景的目标时长总和"""
+        """Ji Suan all scene target when Zhang Zong He"""
         return sum(b.target_duration_seconds for b in self.scene_budgets)
 
     def total_actual_duration(self) -> float:
-        """计算所有已提交场景的实际时长总和"""
+        """Ji Suan all submit scene Shi Ji when Zhang Zong He"""
         return sum(
             b.actual_duration_seconds or 0
             for b in self.scene_budgets
@@ -191,19 +191,19 @@ class OrchestratorState:
         )
 
     def total_retry_count(self) -> int:
-        """计算总重试次数"""
+        """Ji Suan Zong retry Ci Shu"""
         return sum(max(0, b.attempt_count - 1) for b in self.scene_budgets)
 
     def add_reasoning(self, msg: str) -> None:
-        """添加推理日志"""
+        """Tian Jia Tui Li log"""
         self.reasoning.append(msg)
 
     def add_error(self, msg: str) -> None:
-        """添加错误日志"""
+        """Tian Jia error log"""
         self.errors.append(msg)
 
     def to_dict(self) -> Dict[str, Any]:
-        """转换为字典 (用于持久化和日志)"""
+        """Zhuan Huan as Zi Dian (Yong Yu Chi Jiu Hua and log)"""
         return {
             "episode_id": self.episode_id,
             "script_id": self.script_id,
@@ -224,7 +224,7 @@ class OrchestratorState:
         }
 
     def summary(self) -> Dict[str, Any]:
-        """生成状态摘要"""
+        """Sheng Cheng status summary"""
         committed = self.get_committed_budgets()
         failed = self.get_failed_budgets()
         pending = self.get_pending_budgets()

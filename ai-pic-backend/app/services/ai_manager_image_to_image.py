@@ -73,7 +73,7 @@ async def image_to_image_with_fallback(
 
     if not available_providers:
         return failure_responses.manager_failure_response(
-            error="没有可用的图生图提供商",
+            error="missing available Tu Sheng Tu provider",
             model=model,
             task_type=AITaskType.SCENE_GENERATION,
             model_type=AIModelType.IMAGE_TO_IMAGE,
@@ -135,7 +135,7 @@ async def image_to_image_with_fallback(
                 style_resolution_meta,
             )
             if not response.success:
-                last_error = (response.error or "").strip() or "未知错误"
+                last_error = (response.error or "").strip() or "Unknown error"
                 last_provider = provider_name
                 last_model = effective_model
             if response.success or not enable_fallback:
@@ -147,7 +147,7 @@ async def image_to_image_with_fallback(
             last_model = effective_model
             if not enable_fallback:
                 return failure_responses.exception_failure_response(
-                    action="图生图失败",
+                    action="Tu Sheng Tu failed",
                     exc=exc,
                     provider=provider_name,
                     model=effective_model,
@@ -191,7 +191,7 @@ async def image_to_image_with_fallback(
         )
 
     return failure_responses.manager_failure_response(
-        error="所有图生图提供商都失败了（未捕获到具体错误信息）",
+        error="all Tu Sheng Tu provider all failed(not Bu Huo to specific Cuo Wu Xin Xi)",
         model=model,
         task_type=AITaskType.SCENE_GENERATION,
         model_type=AIModelType.IMAGE_TO_IMAGE,

@@ -1,7 +1,7 @@
 """
-预算分配节点
+Yu Suan Fen Pei node
 
-根据剧集总时长和场景数量，分配每个场景的时长预算和字数目标。
+Gen Ju episode total duration and scene Shu Liang, Fen Pei Mei Ge scene duration Yu Suan and word count target.
 """
 
 import logging
@@ -17,26 +17,26 @@ logger = logging.getLogger(__name__)
 
 def allocate_budget_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    预算分配节点。
+ Yu Suan Fen Pei node.
 
-    根据 total_duration_minutes 和 scenes_from_episode 计算每个场景的时长预算。
+ Gen Ju total_duration_minutes and scenes_from_episode Ji Suan Mei Ge scene duration Yu Suan.
 
-    输入状态:
-        - total_duration_minutes: 剧集总时长（分钟）
-        - scenes_from_episode: Episode Agent 产出的场景列表
+ input status:
+ - total_duration_minutes: episode total duration(minutes)
+ - scenes_from_episode: Episode Agent Chan Chu scene list
 
-    输出状态更新:
-        - scene_budgets: 场景预算列表
-        - buffer_seconds: 预留 buffer 秒数
-        - remaining_budget_seconds: 剩余可分配秒数
-        - phase: 更新为 "generating"
-        - reasoning: 添加分配日志
+ output status update:
+ - scene_budgets: scene Yu Suan list
+ - buffer_seconds: Yu Liu buffer Miao Shu
+ - remaining_budget_seconds: Sheng Yu can Fen Pei Miao Shu
+ - phase: update as "generating"
+ - reasoning: Tian Jia Fen Pei log
     """
     total_duration_minutes = state.get("total_duration_minutes", 0)
     scenes = state.get("scenes_from_episode", [])
 
     logger.info(
-        "allocate_budget_node: 开始分配预算",
+        "allocate_budget_node: Kai Shi Fen Pei Yu Suan",
         extra={
             "episode_id": state.get("episode_id"),
             "total_duration_minutes": total_duration_minutes,
@@ -45,24 +45,24 @@ def allocate_budget_node(state: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     if not scenes:
-        error_msg = "无场景可分配，请先生成剧集场景"
+        error_msg = "none scene can Fen Pei, Qing Xian Sheng Cheng episode scene"
         logger.error(error_msg)
         return {
             "phase": "failed",
             "errors": state.get("errors", []) + [error_msg],
         }
 
-    # 分配预算
+    # Fen Pei Yu Suan
     budgets, buffer_seconds = allocate_scene_budgets(
         total_duration_minutes=total_duration_minutes,
         scenes=scenes,
     )
 
-    # 计算剩余可分配秒数
+    # Ji Suan Sheng Yu can Fen Pei Miao Shu
     total_allocated = sum(b.target_duration_seconds for b in budgets)
     remaining = total_duration_minutes * 60 - buffer_seconds - total_allocated
 
-    # 生成分配摘要
+    # Sheng Cheng Fen Pei summary
     summary = format_budget_summary(budgets)
     logger.info(f"allocate_budget_node: 分配完成\n{summary}")
 
@@ -85,12 +85,12 @@ def allocate_budget_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def should_proceed_to_generation(state: Dict[str, Any]) -> str:
     """
-    路由函数：判断是否应该进入生成阶段。
+ Lu You function: determine Shi Fou Ying Gai Jin Ru Sheng Cheng Jie Duan.
 
     Returns:
-        "generate" - 有待处理的场景，进入生成阶段
-        "assemble" - 所有场景已处理，进入组装阶段
-        "failed" - 发生错误
+ "generate" - You Dai process scene, Jin Ru Sheng Cheng Jie Duan
+ "assemble" - all scene process, Jin Ru assemble Jie Duan
+ "failed" - Fa Sheng error
     """
     phase = state.get("phase", "")
 
@@ -101,7 +101,7 @@ def should_proceed_to_generation(state: Dict[str, Any]) -> str:
     if not budgets:
         return "failed"
 
-    # 检查是否有待处理的场景
+    # check Shi Fou You Dai process scene
     from app.services.duration_orchestrator.state import SceneStatus
 
     pending = [b for b in budgets if b.status == SceneStatus.PENDING]

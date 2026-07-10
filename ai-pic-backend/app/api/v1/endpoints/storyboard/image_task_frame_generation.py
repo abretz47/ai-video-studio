@@ -67,7 +67,7 @@ def _prepare_prompt_context(
     )
     if options.get("require_reference_images") and not ref_images:
         raise RuntimeError(
-            f"分镜帧 {idx + 1} 缺少参考图，请先绑定场景环境或镜头角色参考图后再生成画面"
+            f"Storyboard frame {idx + 1} is missing a reference image. Bind a scene environment or shot character reference image before generating the visual."
         )
 
     compiled_prompt = compile_storyboard_image_prompt(
@@ -161,7 +161,7 @@ def _generation_callback(options, ai_service):
                 ai_service=ai_service,
             )
         except Exception as exc:
-            print(f"图像生成失败: {exc}")
+            print(f"Image generation failed: {exc}")
         return None
 
     return _gen
@@ -190,7 +190,7 @@ def _persist_callback(script_id, ai_service):
                 require_upload=bool(oss_service),
             )
         except Exception as exc:
-            print(f"分镜图像持久化失败 idx={frame_index}: {exc}")
+            print(f"Failed to persist storyboard image idx={frame_index}: {exc}")
             return None
         final_url = stored.get("oss_url") or stored.get("relative_path")
         return {"final_url": final_url, "stored": stored} if final_url else None

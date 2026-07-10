@@ -72,7 +72,7 @@ def create_generated_script(
         sync_script_scenes_to_story_structure(db, script)
     except Exception:
         logger = get_logger()
-        logger.warning("同步规范化场景失败（generate-async）", exc_info=True)
+        logger.warning("sync Gui Fan Hua scene failed(generate-async)", exc_info=True)
     return script
 
 

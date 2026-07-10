@@ -9,24 +9,24 @@ from app.services.script_score_thresholds import (
 
 _DIMENSION_REWRITE_GUIDANCE = {
     "conflict_intensity": (
-        "冲突强度需达到精品线：每场都加入新的外部代价或阻力，"
-        "开场3秒爆点、中段反杀、结尾危机升级必须可拍。"
+        "conflict Qiang Du need reach Jing Pin Xian: Mei Chang all Jia Ru Xin Wai Bu Dai Jia or Zu Li, "
+        "Kai Chang3seconds Bao Dian, Zhong Duan Fan Sha, Jie Wei crisis escalate Bi Xu can Pai."
     ),
     "character_recognizability": (
-        "角色辨识度需达到精品线：主角每场至少有一个稳定行为标签、"
-        "一句可识别短对白，反派/配角必须有清楚动机。"
+        "character Bian Shi Du need reach Jing Pin Xian: Zhu Jue Mei Chang Zhi Shao has a Wen Ding Xing Wei tag, "
+        "Yi Ju can Shi Bie Duan dialogue, Fan Pai/Pei Jue Bi Xu has Qing Chu Dong Ji."
     ),
     "cultural_fit": (
-        "文化适配需达到精品线：减少含混或合规风险表达，"
-        "用职场合同、客户、证据、权限和责任链推动冲突。"
+        "Wen Hua Shi Pei need reach Jing Pin Xian: Jian Shao Han Hun or He Gui Feng Xian Biao Da, "
+        "Yong Zhi Chang contract, customer, evidence, permission and Ze Ren Lian drive conflict."
     ),
     "clip_ability": (
-        "素材可剪性需达到精品线：每60秒至少两个台词+画面双钩子，"
-        "明确15s/30s/60s可剪片段的首帧动作、关键台词和卡点。"
+        "Su Cai can Jian Xing need reach Jing Pin Xian: Mei60seconds Zhi Shao Liang Ge line+frame Shuang Gou Zi, "
+        "clear15s/30s/60sKe Jian Pian Duan first frame action, key line and cliffhanger."
     ),
     "logic_coherence": (
-        "逻辑一致性需达到精品线：补齐证据来源、录音/纪要/日志的取得路径、"
-        "角色首次获知信息的画面依据，以及客户态度转变的可见证据。"
+        "Luo Ji Yi Zhi Xing need reach Jing Pin Xian: Bu Qi evidence Lai Yuan, recording/Ji Yao/log Qu De path, "
+        "character Shou Ci Huo Zhi Xin Xi frame Yi Ju, Yi Ji customer Tai Du Zhuan Bian Ke Jian evidence."
     ),
 }
 
@@ -44,7 +44,7 @@ def extract_rewrite_guidance(scoring: Dict[str, Any]) -> List[str]:
     if overall and overall < PASS_OVERALL_THRESHOLD:
         items.append(
             f"整体 ScriptScore 必须提升到 {PASS_OVERALL_THRESHOLD:.1f}+；"
-            "不要只微调语气，需增加可拍反转、明确收获和更强卡点。"
+            "Bu Yao only Wei Diao Yu Qi, need increase can Pai twist, clear Shou Huo and Geng Qiang Ka Dian."
         )
 
     dims = _safe_dict(script_score.get("dimension_scores"))
@@ -77,11 +77,11 @@ def _append_asset_guidance(items: List[str], scoring: Dict[str, Any]) -> None:
     asset_count = asset_tags.get("asset_count")
     durations = asset_tags.get("durations")
     if not isinstance(asset_count, (int, float)) or asset_count < 3:
-        items.append("投流素材不足：必须内置至少 15s、30s、60s 三类可剪高能段落。")
+        items.append("Tou Liu Su Cai insufficient: Bi Xu Nei Zhi Zhi Shao 15s, 30s, 60s San Lei Ke Jian Gao Neng Duan Luo.")
     elif isinstance(durations, list) and not {15, 30, 60}.issubset(
         {int(item) for item in durations if _looks_numeric(item)}
     ):
-        items.append("投流时长覆盖不足：补齐 15s、30s、60s 的钩子、反杀和卡点片段。")
+        items.append("Tou Liu duration Fu Gai insufficient: Bu Qi 15s, 30s, 60s Gou Zi, Fan Sha and cliffhanger Pian Duan.")
 
 
 def _safe_dict(value: Any) -> Dict[str, Any]:
@@ -107,7 +107,7 @@ def _format_score(value: Any) -> str:
     try:
         return f"{float(value):.1f}"
     except (TypeError, ValueError):
-        return "缺失"
+        return "Que Shi"
 
 
 def _looks_numeric(value: Any) -> bool:

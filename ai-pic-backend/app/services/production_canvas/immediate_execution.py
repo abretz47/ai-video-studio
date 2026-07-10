@@ -25,7 +25,7 @@ def execute_brief_compose(
             skill="brief.compose",
             label=skill.label if skill else "Brief Skill",
             status="ready",
-            title="已确认生产 brief",
+            title="Que Ren production brief",
             detail=f"目标：{request.prompt}",
             outputs={
                 "prompt": request.prompt,
@@ -43,8 +43,8 @@ def execute_asset_selection(
 ) -> ProductionCanvasSkillExecuteResponse:
     skill = skill_definition("asset.select")
     selection = select_canvas_assets(db, user, request)
-    ip_names = _asset_names(selection.selected.virtual_ips) or "待选择 IP"
-    env_names = _asset_names(selection.selected.environments) or "待选择环境"
+    ip_names = _asset_names(selection.selected.virtual_ips) or "pending Xuan Ze IP"
+    env_names = _asset_names(selection.selected.environments) or "pending Xuan Ze environment"
     status = (
         "review"
         if selection.selected.virtual_ips or selection.selected.environments

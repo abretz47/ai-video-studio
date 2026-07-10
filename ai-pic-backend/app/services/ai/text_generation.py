@@ -13,13 +13,13 @@ class TextGenerationMixin:
     async def _call_text_generation_service(
         self, prompt: str, task_type: str, *, story_format: Optional[str] = None
     ) -> Optional[str]:
-        """调用文本生成服务"""
+        """call text Sheng Cheng service"""
 
-        # 尝试不同的AI服务
+        # Chang Shi Bu TongAIservice
         services = [
             self._generate_with_openai_gpt,
             self._generate_with_custom_service,
-            self._generate_with_mock_service,  # 添加模拟服务作为后备
+            self._generate_with_mock_service,  # Tian Jia mock service Zuo Wei Hou Bei
         ]
 
         for service in services:
@@ -36,7 +36,7 @@ class TextGenerationMixin:
     async def _generate_with_openai_gpt(
         self, prompt: str, task_type: str, *, story_format: Optional[str] = None
     ) -> Optional[str]:
-        """使用OpenAI GPT生成文本"""
+        """Shi YongOpenAI GPTSheng Cheng text"""
         if not self.openai_api_key:
             return None
         base_url = settings.OPENAI_BASE_URL or "https://api.openai.com/v1"
@@ -88,7 +88,7 @@ class TextGenerationMixin:
     async def _generate_with_custom_service(
         self, prompt: str, task_type: str, *, story_format: Optional[str] = None
     ) -> Optional[str]:
-        """使用自定义文本生成服务"""
+        """Shi Yong Zi Ding Yi text Sheng Cheng service"""
         if not self.base_url or not self.api_key:
             return None
 
@@ -121,29 +121,29 @@ class TextGenerationMixin:
     async def _generate_with_mock_service(
         self, prompt: str, task_type: str, *, story_format: Optional[str] = None
     ) -> Optional[str]:
-        """模拟AI服务（用于测试和演示）"""
-        await asyncio.sleep(1)  # 模拟处理时间
+        """mockAIservice(Yong Yu Ce Shi and Yan Shi)"""
+        await asyncio.sleep(1)  # mock process time
 
         if task_type == "story_outline":
             return """{
-                "premise": "这是一个关于友情与成长的现代都市故事。",
-                "synopsis": "主人公们在面临生活挑战时，通过相互支持和理解，最终实现了个人成长和友谊的升华。故事通过日常生活中的小事件，展现了现代年轻人的生活态度和价值观。",
-                "main_conflict": "主人公面临职业选择和人际关系的双重困扰，需要在理想与现实之间找到平衡。",
-                "resolution": "通过朋友们的帮助和自我反思，主人公找到了适合自己的道路，同时加深了与朋友们的友谊。",
+ "premise": "Zhe Shi a Guan Yu You Qing and Cheng Zhang Xian Dai Du Shi story.",
+ "synopsis": "Zhu Ren Gong Men in Mian Lin Sheng Huo Tiao Zhan when, through Xiang Hu Zhi Chi and Li Jie, Zui Zhong Shi Xian Ge Ren Cheng Zhang and You Yi Sheng Hua.story through Ri Chang Sheng Huo in Xiao Shi Jian, Zhan Xian Xian Dai Nian Qing Ren Sheng Huo Tai Du and Jia Zhi Guan.",
+ "main_conflict": "Zhu Ren Gong Mian Lin Zhi Ye Xuan Ze and Ren Ji Guan Xi Shuang Chong Kun Rao, need in Li Xiang and Xian Shi Zhi Jian Zhao Dao Ping Heng.",
+ "resolution": "through Peng You Men Bang Zhu and Zi Wo Fan Si, Zhu Ren Gong Zhao Dao Shi He Zi Ji Dao Lu, Tong Shi Jia Shen and Peng You Men You Yi.",
                 "character_relationships": {
-                    "protagonist_friend": "深厚的友谊，相互支持",
-                    "group_dynamics": "团结互助的友好关系"
+ "protagonist_friend": "Shen Hou You Yi, Xiang Hu Zhi Chi",
+ "group_dynamics": "Tuan Jie Hu Zhu You Hao Guan Xi"
                 },
                 "main_characters": [
                     {
-                        "name": "主人公A",
+ "name": "Zhu Ren GongA",
                         "role": "protagonist",
-                        "description": "积极向上的年轻人"
+ "description": "Ji Ji Xiang Shang Nian Qing Ren"
                     },
                     {
-                        "name": "主人公B",
+ "name": "Zhu Ren GongB",
                         "role": "supporting",
-                        "description": "智慧可靠的朋友"
+ "description": "Zhi Hui Ke Kao Peng You"
                     }
                 ]
             }"""
@@ -152,16 +152,16 @@ class TextGenerationMixin:
                 "episodes": [
                     {
                         "episode_number": 1,
-                        "title": "新的开始",
-                        "summary": "介绍主要角色和背景设定",
+ "title": "Xin Kai Shi",
+ "summary": "Jie ShaoMain characterand background setting",
                         "plot_points": [
-                            {"description": "角色出场", "timing": "开场"},
-                            {"description": "背景介绍", "timing": "前10分钟"},
-                            {"description": "冲突铺垫", "timing": "中段"}
+ {"description": "角色出场", "timing": "开场"},
+ {"description": "背景介绍", "timing": "前10分钟"},
+ {"description": "冲突铺垫", "timing": "中段"}
                         ],
-                        "character_arcs": {"protagonist": "初始状态展示"},
+ "character_arcs": {"protagonist": "初始状态展示"},
                         "conflicts": [
-                            {"description": "内心困扰的初步展现", "intensity": "low"}
+ {"description": "内心困扰的初步展现", "intensity": "low"}
                         ],
                         "scene_count": 5
                     }
@@ -169,14 +169,14 @@ class TextGenerationMixin:
             }"""
         if task_type == "script_generation":
             return """{
-                "content": "FADE IN:\\n\\nINT. 客厅 - 日\\n\\n主人公坐在沙发上，思考着什么...\\n\\n主人公\\n（自言自语）\\n今天又是新的一天呢。\\n\\nFADE OUT.",
+ "content": "FADE IN:\\n\\nINT. Ke Ting - day\\n\\nZhu Ren Gong Zuo Zai Sha Fa on, thoughtful Zhe Shen Me...\\n\\nZhu Ren Gong\\n(Zi Yan Zi Yu)\\nJin Tian You Shi Xin Yi Tian Ne.\\n\\nFADE OUT.",
                 "scenes": [
-                    {"scene_number": 1, "location": "客厅", "time": "日", "description": "主人公独自思考"}
+ {"scene_number": 1, "location": "客厅", "time": "日", "description": "主人公独自思考"}
                 ],
                 "dialogues": [
-                    {"character": "主人公", "content": "今天又是新的一天呢。", "emotion": "thoughtful"}
+ {"character": "主人公", "content": "今天又是新的一天呢.", "emotion": "thoughtful"}
                 ],
-                "stage_directions": ["主人公坐在沙发上，思考着什么"]
+ "stage_directions": ["Zhu Ren Gong Zuo Zai Sha Fa on, thoughtful Zhe Shen Me"]
             }"""
 
-        return "这是一个模拟的AI生成内容，用于测试和演示目的。"
+        return "Zhe Shi a mockAISheng Cheng content, Yong Yu Ce Shi and Yan Shi Mu Di."

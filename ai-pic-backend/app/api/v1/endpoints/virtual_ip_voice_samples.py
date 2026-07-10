@@ -13,8 +13,8 @@ router = APIRouter()
 
 
 class VirtualIPVoiceSampleRequest(BaseModel):
-    source_url: str = Field(..., description="试听音频的源URL")
-    preview_text: Optional[str] = Field(None, description="用于生成试听的文本")
+    source_url: str = Field(..., description="Source URL of the preview audio")
+    preview_text: Optional[str] = Field(None, description="Text used to generate the preview")
 
 
 class VirtualIPVoiceSampleResponse(BaseModel):
@@ -30,12 +30,12 @@ async def save_voice_sample_by_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """保存虚拟IP试听音频并转存 OSS（按 ID）。
+    """Save virtual IP preview audio and transfer it to OSS (by ID).
 
-    示例请求:
-    {"source_url": "https://example.com/audio.mp3", "preview_text": "你好，我是小雅。"}
+    Example request:
+    {"source_url": "https://example.com/audio.mp3", "preview_text": "Hello, I am Xiaoya."}
 
-    示例响应:
+    Example response:
     {"success": true, "data": {"sample_url": "https://oss/...", "sample_source_url": "..."}}
     """
     service = VirtualIPVoiceSampleService(VirtualIPRepository(db))
@@ -55,12 +55,12 @@ async def save_voice_sample_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """保存虚拟IP试听音频并转存 OSS（按 business_id）。
+    """Save virtual IP preview audio and transfer it to OSS (by business_id).
 
-    示例请求:
-    {"source_url": "https://example.com/audio.mp3", "preview_text": "你好，我是小雅。"}
+    Example request:
+    {"source_url": "https://example.com/audio.mp3", "preview_text": "Hello, I am Xiaoya."}
 
-    示例响应:
+    Example response:
     {"success": true, "data": {"sample_url": "https://oss/...", "sample_source_url": "..."}}
     """
     service = VirtualIPVoiceSampleService(VirtualIPRepository(db))

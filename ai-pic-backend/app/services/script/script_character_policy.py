@@ -160,8 +160,8 @@ def enforce_script_character_policy(
     Policy:
       - Only Story-registered and Episode-registered characters may appear.
       - Episode characters take priority over Story characters when names conflict.
-      - Allow generic functional roles, such as 路人/店员/客户/团队成员.
-      - Missing dialogue speaker is treated as 旁白.
+ - Allow generic functional roles, such as Lu Ren/clerk/customer/Tuan Dui Cheng Yuan.
+ - Missing dialogue speaker is treated as narration.
 
     Args:
         story: Story object with character registry
@@ -179,7 +179,7 @@ def enforce_script_character_policy(
         for dlg in dialogues:
             if not isinstance(dlg, dict):
                 continue
-            dlg.setdefault("character", "旁白")
+            dlg.setdefault("character", "narration")
         return ScriptCharacterPolicyResult(
             unknown_names=[],
             canonical_names=[],

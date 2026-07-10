@@ -164,8 +164,8 @@ def _fuzzy_match(char_name: str, text: str) -> bool:
     """Check if character name appears in text with fuzzy matching.
 
     Handles cases like:
-    - "快递员" in "一个快递员走进来"
-    - "医生" in "李医生检查病人"
+ - "Kuai Di Yuan" in "a Kuai Di Yuan Zou Jin Lai"
+ - "Yi Sheng" in "Li Yi Sheng check Bing Ren"
     """
     # Direct substring match
     if char_name in text:
@@ -173,13 +173,13 @@ def _fuzzy_match(char_name: str, text: str) -> bool:
 
     # Try with common prefixes/suffixes
     patterns = [
-        char_name + "走",
-        char_name + "说",
-        char_name + "看",
-        char_name + "站",
-        "一个" + char_name,
-        "一位" + char_name,
-        char_name + "来",
+        char_name + "Zou",
+        char_name + "Shuo",
+        char_name + "Kan",
+        char_name + "Zhan",
+        "a" + char_name,
+        "Yi Wei" + char_name,
+        char_name + "Lai",
     ]
 
     for pattern in patterns:
@@ -203,13 +203,13 @@ def _extract_appearance_hints(stage_direction: str, char_name: str) -> List[str]
 
     # Common appearance patterns
     patterns = [
-        r"穿着([\u4e00-\u9fa5]+)",  # 穿着...
-        r"戴着([\u4e00-\u9fa5]+)",  # 戴着...
-        r"背着([\u4e00-\u9fa5]+)",  # 背着...
-        r"拿着([\u4e00-\u9fa5]+)",  # 拿着...
-        r"([\u4e00-\u9fa5]{2,6})制服",  # ...制服
-        r"([\u4e00-\u9fa5]{2,6})装扮",  # ...装扮
-        r"(年轻|年长|中年|年迈)(的)?([\u4e00-\u9fa5]+)",  # 年龄描述
+        r"Chuan Zhe([\u4e00-\u9fa5]+)",  # Chuan Zhe...
+        r"Dai Zhe([\u4e00-\u9fa5]+)",  # Dai Zhe...
+        r"Bei Zhe([\u4e00-\u9fa5]+)",  # Bei Zhe...
+        r"Na Zhe([\u4e00-\u9fa5]+)",  # Na Zhe...
+        r"([\u4e00-\u9fa5]{2,6})Zhi Fu",  # ...Zhi Fu
+        r"([\u4e00-\u9fa5]{2,6})Zhuang Ban",  # ...Zhuang Ban
+        r"(Nian Qing|Nian Zhang|Zhong Nian|Nian Mai)()?([\u4e00-\u9fa5]+)",  # Nian Ling description
     ]
 
     for pattern in patterns:

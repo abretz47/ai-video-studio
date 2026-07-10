@@ -37,28 +37,28 @@ class VisualContinuityValidator(BaseValidator):
 
     # Visual element keywords for consistency checking
     COSTUME_KEYWORDS = {
-        "zh": ["穿着", "衣服", "裙子", "外套", "西装", "T恤", "衬衫", "裤子", "制服"],
+        "zh": ["Chuan Zhe", "Yi Fu", "Qun Zi", "Wai Tao", "Xi Zhuang", "TXu", "Chen Shan", "Ku Zi", "Zhi Fu"],
         "en": ["wearing", "dress", "suit", "shirt", "jacket", "pants", "uniform"],
     }
 
     HAIRSTYLE_KEYWORDS = {
-        "zh": ["发型", "长发", "短发", "卷发", "直发", "马尾", "发色"],
+        "zh": ["Fa Xing", "Chang Fa", "Duan Fa", "Juan Fa", "Zhi Fa", "Ma Yi", "Fa Se"],
         "en": ["hair", "hairstyle", "ponytail", "braid", "short hair", "long hair"],
     }
 
     PROP_KEYWORDS = {
-        "zh": ["手持", "拿着", "戴着", "背着", "带有", "手中", "眼镜", "帽子", "包"],
+        "zh": ["Shou Chi", "Na Zhe", "Dai Zhe", "Bei Zhe", "Dai You", "Shou Zhong", "Yan Jing", "Mao Zi", "Bao"],
         "en": ["holding", "carrying", "wearing", "glasses", "hat", "bag", "phone"],
     }
 
     # Position keywords for movement detection
     POSITION_KEYWORDS = {
         "zh": {
-            "left": ["左侧", "左边", "画面左"],
-            "right": ["右侧", "右边", "画面右"],
-            "center": ["中央", "中间", "正中"],
-            "foreground": ["前景", "近处", "前方"],
-            "background": ["背景", "远处", "后方"],
+            "left": ["Zuo Ce", "Zuo Bian", "frame Zuo"],
+            "right": ["You Ce", "You Bian", "frame You"],
+            "center": ["Zhong Yang", "Zhong Jian", "Zheng Zhong"],
+            "foreground": ["Qian Jing", "Jin Chu", "Qian Fang"],
+            "background": ["background", "Yuan Chu", "Hou Fang"],
         },
         "en": {
             "left": ["left", "left side"],
@@ -71,32 +71,32 @@ class VisualContinuityValidator(BaseValidator):
 
     # Pose keywords for transition checking
     POSE_KEYWORDS = {
-        "sitting": {"zh": ["坐着", "坐在", "坐姿"], "en": ["sitting", "seated"]},
-        "standing": {"zh": ["站着", "站立", "站姿"], "en": ["standing"]},
-        "lying": {"zh": ["躺着", "躺在", "卧姿"], "en": ["lying", "laying"]},
-        "walking": {"zh": ["走着", "走动", "行走"], "en": ["walking"]},
-        "running": {"zh": ["跑着", "奔跑"], "en": ["running"]},
+        "sitting": {"zh": ["Zuo Zhe", "Zuo Zai", "Zuo Zi"], "en": ["sitting", "seated"]},
+        "standing": {"zh": ["Zhan Zhe", "Zhan Li", "Zhan Zi"], "en": ["standing"]},
+        "lying": {"zh": ["Tang Zhe", "Tang in", "Wo Zi"], "en": ["lying", "laying"]},
+        "walking": {"zh": ["Zou Zhe", "Zou Dong", "Xing Zou"], "en": ["walking"]},
+        "running": {"zh": ["Pao Zhe", "Ben Pao"], "en": ["running"]},
     }
 
     # Composition rule keywords
     COMPOSITION_KEYWORDS = {
         "rule_of_thirds": {
-            "zh": ["三分法", "三分构图", "黄金分割"],
+            "zh": ["San Fen Fa", "San Fen Gou Tu", "Huang Jin Fen Ge"],
             "en": ["rule of thirds", "thirds"],
         },
         "leading_lines": {
-            "zh": ["引导线", "视线引导"],
+            "zh": ["Yin Dao Xian", "Shi Xian Yin Dao"],
             "en": ["leading lines", "guiding lines"],
         },
         "depth": {
-            "zh": ["景深", "前景", "中景", "背景", "虚化"],
+            "zh": ["Jing Shen", "Qian Jing", "medium shot", "background", "Xu Hua"],
             "en": ["depth", "depth of field", "bokeh", "shallow depth"],
         },
     }
 
     # Dialogue state keywords
     MOUTH_SPEAKING_KEYWORDS = {
-        "zh": ["说话", "说道", "喊道", "叫道", "开口", "张嘴"],
+        "zh": ["Shuo Hua", "Shuo Dao", "Han Dao", "Jiao Dao", "Kai Kou", "Zhang Zui"],
         "en": ["saying", "speaking", "talking", "shouting", "mouth open"],
     }
 
@@ -680,13 +680,13 @@ class VisualContinuityValidator(BaseValidator):
         # Extract core keywords (remove context)
         core_keywords = [
             # Costume
-            "裙子", "西装", "衬衫", "外套", "裤子", "制服", "T恤",
+            "Qun Zi", "Xi Zhuang", "Chen Shan", "Wai Tao", "Ku Zi", "Zhi Fu", "TXu",
             "dress", "suit", "shirt", "jacket", "pants", "uniform",
             # Colors
-            "红色", "蓝色", "黑色", "白色", "绿色", "黄色",
+            "Hong Se", "Lan Se", "Hei Se", "Bai Se", "Lv Se", "Huang Se",
             "red", "blue", "black", "white", "green", "yellow",
             # Hairstyle
-            "长发", "短发", "卷发", "直发", "马尾",
+            "Chang Fa", "Duan Fa", "Juan Fa", "Zhi Fa", "Ma Yi",
             "long hair", "short hair", "ponytail",
         ]
 

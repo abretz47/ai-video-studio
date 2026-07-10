@@ -13,34 +13,34 @@ _HAS_QUOTE_RE = re.compile(r"[“\"「『‘]")
 
 _GENERIC_NARRATION_SPEAKERS = {
     "",
-    "旁白",
-    "画外音",
-    "旁白/画外音",
+    "narration",
+    "Hua Wai Yin",
+    "narration/Hua Wai Yin",
     "narrator",
     "voiceover",
 }
 
 _ACTION_PROSE_PREFIXES = (
-    "冲突升级：",
-    "冲突升级:",
-    "爽点：",
-    "爽点:",
-    "卡点：",
-    "卡点:",
+    "conflict escalate: ",
+    "conflict escalate:",
+    "Shuang Dian: ",
+    "Shuang Dian:",
+    "cliffhanger: ",
+    "cliffhanger:",
 )
 
 _NARRATION_CUES = (
-    "女主",
-    "男主",
-    "镜头",
-    "特写",
-    "屏幕",
-    "画面",
-    "会议室",
-    "办公区",
-    "公寓",
-    "咖啡馆",
-    "面试现场",
+    "Nv Zhu",
+    "Nan Zhu",
+    "shot",
+    "close-up",
+    "screen",
+    "frame",
+    "Hui Yi Shi",
+    "Ban Gong Qu",
+    "Gong Yu",
+    "Ka Fei Guan",
+    "Mian Shi Xian Chang",
 )
 
 
@@ -74,16 +74,16 @@ def split_audio_dialogues_and_action_blocks(
     for dlg in dialogues or []:
         if not isinstance(dlg, dict):
             continue
-        speaker = str(dlg.get("character") or "旁白")
+        speaker = str(dlg.get("character") or "narration")
         content = str(dlg.get("content") or "").strip()
         if not content:
             continue
 
-        if speaker in {"旁白", "路人", "店员"} and _HAS_QUOTE_RE.search(content):
+        if speaker in {"narration", "Lu Ren", "clerk"} and _HAS_QUOTE_RE.search(content):
             split = split_prose_dialogue_block(
                 content,
                 alias_to_canonical=alias_to_canonical,
-                default_speaker="旁白",
+                default_speaker="narration",
             )
             if len(split) >= 2:
                 for seg in split:

@@ -1,19 +1,19 @@
 """
-Duration Orchestrator 常量配置
+Duration Orchestrator Chang Liang configuration
 
-所有时长相关的阈值、容差、速率等配置集中管理。
+all when Zhang related Yu Zhi, Rong Cha, Su Lv Deng configuration Ji Zhong Guan Li.
 """
 
 # =============================================================================
-# 时长容差配置
+# duration Rong Cha configuration
 # =============================================================================
 
-# 场景级时长容差 (±15%)
+# scene Ji duration Rong Cha (±15%)
 DURATION_TOLERANCE_SCENE_LOW = 0.85
 DURATION_TOLERANCE_SCENE_HIGH = 1.15
 DURATION_TOLERANCE_SCENE = (DURATION_TOLERANCE_SCENE_LOW, DURATION_TOLERANCE_SCENE_HIGH)
 
-# 剧集级时长容差 (±10%)
+# episode Ji duration Rong Cha (±10%)
 DURATION_TOLERANCE_EPISODE_LOW = 0.90
 DURATION_TOLERANCE_EPISODE_HIGH = 1.10
 DURATION_TOLERANCE_EPISODE = (
@@ -21,83 +21,83 @@ DURATION_TOLERANCE_EPISODE = (
     DURATION_TOLERANCE_EPISODE_HIGH,
 )
 
-# TTS 估算容差 (使用实际时长时 ±20%，估算时长时 ±40%)
+# TTS Gu Suan Rong Cha (Shi Yong Shi Ji duration when ±20%, Gu Suan duration when ±40%)
 TTS_TOLERANCE_ACTUAL = (0.80, 1.20)
 TTS_TOLERANCE_ESTIMATED = (0.60, 1.40)
 
 # =============================================================================
-# 重试配置
+# retry configuration
 # =============================================================================
 
-# 单场景最大重试次数
+# Dan scene maximum retry Ci Shu
 MAX_RETRY_ATTEMPTS = 3
 
-# TTS 采样估算时的样本数量
+# TTS sampling Gu Suan when Yang Ben Shu Liang
 TTS_SAMPLE_COUNT = 3
 
-# 对白数量阈值：低于此值时全量 TTS，否则采样
+# dialogue Shu Liang Yu Zhi: Di Yu Ci Zhi when Quan Liang TTS, Fou Ze sampling
 TTS_FULL_GENERATION_THRESHOLD = 5
 
 # =============================================================================
-# 语速与字数配置
+# Yu Su and word count configuration
 # =============================================================================
 
-# 中文 TTS 语速 (字/秒)
+# Zhong Wen TTS Yu Su (character/seconds)
 #
-# 重要：这里的“字”按代码实现约定等同于 `len(text)` 的字符数（中文为主）。
-# 早期采用 2.25 字/秒（135 字/分钟）会显著高估对白时长，导致：
-# - 生成阶段对白字数偏少
-# - 后续对白音频/时间轴出现明显“音频过短、间隙过大”的漂移
+# Zhong Yao: here"character"An Dai Ma Shi Xian Yue Ding Deng Tong Yu `len(text)` Zi Fu Shu(Zhong Wen Wei Zhu).
+# Zao Qi Cai Yong 2.25 character/seconds(135 character/minutes)will Xian Zhu Gao Gu dialogue when Zhang, Dao Zhi: 
+# - Sheng Cheng Jie Duan dialogue word count Pian Shao
+# - subsequent dialogue audio/timeline Chu Xian Ming Xian"audio Guo Duan, Jian Xi Guo Da"Piao Yi
 #
-# 实测校准：基于 MySQL `scene_beats` 中 `beat_type='dialogue'` 的统计，
-# 平均语速约 4.7 字/秒（≈282 字/分钟）。
+# Shi Ce Jiao Zhun: Ji Yu MySQL `scene_beats` in `beat_type='dialogue'` Tong Ji, 
+# Ping Jun Yu Su Yue 4.7 character/seconds(≈282 character/minutes).
 WORDS_PER_SECOND_SLOW = 3.8
 WORDS_PER_SECOND_NORMAL = 4.7
 WORDS_PER_SECOND_FAST = 5.6
-WORDS_PER_SECOND = WORDS_PER_SECOND_NORMAL  # 默认使用正常语速（与线上数据校准）
+WORDS_PER_SECOND = WORDS_PER_SECOND_NORMAL  # default Shi Yong Zheng Chang Yu Su(and Xian on data Jiao Zhun)
 
-# 每字平均 TTS 时长 (毫秒)
+# Mei Zi Ping Jun TTS when Zhang (Hao Miao)
 MS_PER_CHAR_DEFAULT = 150
 
-# 每句对白平均字数
+# Mei Ju dialogue Ping Jun word count
 WORDS_PER_DIALOGUE = 25
 
 # =============================================================================
-# 预算分配配置
+# Yu Suan Fen Pei configuration
 # =============================================================================
 
-# 预留 buffer 比例 (用于场景间过渡、空镜头、动作等非对白时间)
-# 0.05 = 5% - 太少，实际短剧中非对白时间约占 15-25%
-# 0.15 = 15% - 平衡：给转场、BGM 留空间，但保证足够对白
-# 0.30 = 30% - 太多，导致对白不足
+# Yu Liu buffer ratio (Yong Yu scene Jian Guo Du, Kong shot, action Deng Fei dialogue time)
+# 0.05 = 5% - Tai Shao, Shi Ji short drama Zhong Fei dialogue time Yue Zhan 15-25%
+# 0.15 = 15% - Ping Heng: Gei Zhuan Chang, BGM Liu Kong Jian, Dan Bao Zheng Zu Gou dialogue
+# 0.30 = 30% - Tai multiple, Dao Zhi dialogue insufficient
 BUFFER_RATIO = 0.15
 
-# 对白密度因子 (用于计算目标字数)
-# 即使是对白场景，也不是 100% 都在说话，需要考虑：
-# - 停顿、语气词、情绪表达
-# - 角色反应时间
-# - 环境音/BGM 段落
-# 0.90 = 90% 的时间用于对白朗读（短剧节奏快，对白密集）
+# dialogue Mi Du Yin Zi (Yong Yu Ji Suan target word count)
+# Ji Shi Shi dialogue scene, Ye Bu Shi 100% all in Shuo Hua, need consider: 
+# - Ting Dun, Yu Qi Ci, EmotionBiao Da
+# - character Fan Ying Shi Jian
+# - environment Yin/BGM Duan Luo
+# 0.90 = 90% time Yong Yu dialogue Lang Du(short drama Jie Zou Kuai, dialogue Mi Ji)
 DIALOGUE_DENSITY_FACTOR = 0.90
 
-# 默认场景时长 (秒)，当场景无 estimated_duration_seconds 时使用
+# default scene when Zhang (seconds), Dang scene none estimated_duration_seconds when Shi Yong
 DEFAULT_SCENE_DURATION_SECONDS = 30
 
-# 最小场景时长 (秒)
+# Zui Xiao scene when Zhang (seconds)
 MIN_SCENE_DURATION_SECONDS = 10
 
-# 最大场景时长 (秒)
+# maximum scene when Zhang (seconds)
 MAX_SCENE_DURATION_SECONDS = 120
 
 # =============================================================================
-# 调整建议配置
+# adjust suggestion configuration
 # =============================================================================
 
-# 调整建议中每句对白的平均字数
+# adjust suggestion in Mei Ju dialogue Ping Jun word count
 ADJUSTMENT_WORDS_PER_DIALOGUE = 20
 
-# 时长不足时的最小增加字数
+# when Zhang insufficient when Zui Xiao increase word count
 MIN_WORD_ADJUSTMENT = 20
 
-# 时长过长时的最小删减字数
+# when Zhang Guo Chang when Zui Xiao Shan Jian word count
 MIN_WORD_REDUCTION = 20

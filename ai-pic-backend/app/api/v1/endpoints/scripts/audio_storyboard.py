@@ -56,7 +56,7 @@ async def generate_storyboard_from_audio_timeline_async(
     """Queue async storyboard placeholder generation from episode audio timeline."""
     script = load_script_with_access(db, script_id, current_user)
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     story = script.episode.story if script.episode else None
     episode = script.episode if script.episode else None
@@ -64,8 +64,8 @@ async def generate_storyboard_from_audio_timeline_async(
     params["script_id"] = script_id
 
     task = Task(
-        title=friendly_task_title("分镜占位生成", script, episode, story),
-        description="根据对白时间轴生成分镜帧占位（audio_timeline）",
+        title=friendly_task_title("Storyboard placeholder generation", script, episode, story),
+        description="Generate storyboard frame placeholders from the dialogue timeline (audio_timeline)",
         task_type=TaskType.STORYBOARD_GENERATION,
         prompt=(
             "Storyboard placeholder generation from audio timeline "
@@ -121,7 +121,7 @@ def _process_script_audio_storyboard_task(
             if not episode:
                 raise RuntimeError("episode_not_found")
 
-            update_task_progress(db, task, "根据时间轴生成分镜帧占位中…")
+            update_task_progress(db, task, "Generating storyboard frame placeholders from the timeline...")
             generate_storyboard_from_episode_audio_timeline(
                 db,
                 script=script,
@@ -136,13 +136,13 @@ def _process_script_audio_storyboard_task(
         if task:
             task.status = TaskStatus.COMPLETED
             task.result_file_path = f"script:{script_id}:storyboard_from_audio_timeline"
-            update_task_progress(db, task, "分镜帧占位生成完成")
+            update_task_progress(db, task, "Storyboard frame placeholder generation completed")
     except Exception as exc:
         task = TaskRepository(db).get_by_id(task_id)
         if task:
             task.status = TaskStatus.FAILED
             task.error_message = str(exc)
-            update_task_progress(db, task, f"分镜帧占位生成失败：{exc}")
+            update_task_progress(db, task, f"Storyboard frame placeholder generation failed: {exc}")
     finally:
         db.close()
 

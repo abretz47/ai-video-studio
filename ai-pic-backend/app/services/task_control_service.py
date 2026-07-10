@@ -28,7 +28,7 @@ class TaskControlService:
         ):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="任务不存在",
+                detail="Task not found",
             )
         allowed = TASK_STATUS_TRANSITIONS.get(task.status, set())
         if TaskStatus.CANCELLED not in allowed:
@@ -37,7 +37,7 @@ class TaskControlService:
                 detail=f"当前状态 {task.status.value} 不允许取消",
             )
         task.status = TaskStatus.CANCELLED
-        task.error_message = "已被用户取消"
+        task.error_message = "user Qu Xiao"
         self.db.commit()
         self.db.refresh(task)
         return task

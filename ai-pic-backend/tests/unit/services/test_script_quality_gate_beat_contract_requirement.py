@@ -8,54 +8,54 @@ from app.services.narrative_quality_gate import evaluate_script_quality_gate
 
 
 def _script_content() -> dict[str, Any]:
-    return {
-        "content": "\n".join(
-            [
-                "【音效】砰！门被撞开。",
-                "Scene 1 客厅 - 夜",
-                "林雪抓住账本，警报声逼近。",
-                "林雪：别动！账本上为什么有你的名字？",
-                "陈默：不是我，有人改过它。",
-            ]
-        ),
-        "scenes": [{"scene_number": 1, "description": "林雪在客厅逼问陈默。"}],
-        "dialogues": [
-            {
-                "scene_number": 1,
-                "character": "林雪",
-                "content": "别动！账本上为什么有你的名字？",
-            },
-            {"scene_number": 1, "character": "陈默", "content": "有人改过它。"},
-        ],
-        "stage_directions": [
-            {"scene_number": 1, "content": "林雪抓住账本，警报声逼近。"}
-        ],
-        "metadata": {},
-    }
+ return {
+ "content": "\n".join(
+ [
+ "【sound effect】Bang! The door is forced open.",
+ "Scene 1 living room - night",
+ "Lin Xue Zhua Zhu ledger, Jing Bao Sheng Bi Jin.",
+ "Lin Xue: don't move!ledger Shang why You you De name?",
+ "Chen Mo: Bu Shi Wo, someone altered it.",
+ ]
+),
+ "scenes": [{"scene_number": 1, "description": "Lin Xue Zai living room press Chen Mo."}],
+ "dialogues": [
+ {
+ "scene_number": 1,
+ "character": "Lin Xue",
+ "content": "don't move!ledger Shang why You you De name?",
+ },
+ {"scene_number": 1, "character": "Chen Mo", "content": "someone altered it."},
+ ],
+ "stage_directions": [
+ {"scene_number": 1, "content": "Lin Xue Zhua Zhu ledger, Jing Bao Sheng Bi Jin."}
+ ],
+ "metadata": {},
+ }
 
 
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_script_gate_requires_beat_contract_when_requested() -> None:
-    gate = await evaluate_script_quality_gate(
-        content=_script_content(),
-        story={"characters": [{"name": "林雪"}, {"name": "陈默"}]},
-        result={},
-        require_beat_contract=True,
-    )
+ gate = await evaluate_script_quality_gate(
+ content=_script_content(),
+ story={"characters": [{"name": "Lin Xue"}, {"name": "Chen Mo"}]},
+ result={},
+ require_beat_contract=True,
+)
 
-    blocking_ids = {issue["id"] for issue in gate["blocking_issues"]}
-    assert "script_beat_contract_required" in blocking_ids
+ blocking_ids = {issue["id"] for issue in gate["blocking_issues"]}
+ assert "script_beat_contract_required" in blocking_ids
 
 
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_script_gate_does_not_require_beat_contract_by_default() -> None:
-    gate = await evaluate_script_quality_gate(
-        content=_script_content(),
-        story={"characters": [{"name": "林雪"}, {"name": "陈默"}]},
-        result={},
-    )
+ gate = await evaluate_script_quality_gate(
+ content=_script_content(),
+ story={"characters": [{"name": "Lin Xue"}, {"name": "Chen Mo"}]},
+ result={},
+)
 
-    all_check_ids = {check["id"] for check in gate["checks"]}
-    assert "script_beat_contract_required" not in all_check_ids
+ all_check_ids = {check["id"] for check in gate["checks"]}
+ assert "script_beat_contract_required" not in all_check_ids

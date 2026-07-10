@@ -46,7 +46,7 @@ async def generate_dialogue_tts_phase(
         if not content.strip():
             continue
 
-        speaker = dlg.get("character") or "旁白"
+        speaker = dlg.get("character") or "narration"
         voice_config, speaker_kind = await _voice_config(
             db,
             story_char_map,

@@ -115,7 +115,7 @@ def queue_storyboard_image_generation(
     }
     task = Task(
         title=f"分镜画面生成 - 剧本{script_id}",
-        description="分镜生成后的自动画面任务，使用场景/角色参考图生成首尾帧",
+        description="storyboard Sheng Cheng after automatic frame Ren Wu, Shi Yong scene/character reference Tu Sheng Cheng Shou Wei Zhen",
         task_type=TaskType.STORYBOARD_IMAGE_GENERATION,
         prompt=f"Storyboard image generation for script {script_id}",
         parameters=json.dumps(payload, ensure_ascii=False),

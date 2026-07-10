@@ -122,8 +122,8 @@ class CharacterPresenceValidator:
             frame_chars = characters_in_frames.get(scene_num, set())
             missing = speakers - frame_chars
 
-            # Allow narrator/旁白 to be missing
-            missing = {c for c in missing if c not in {"旁白", "Narrator", "narrator"}}
+            # Allow narrator/narration to be missing
+            missing = {c for c in missing if c not in {"narration", "Narrator", "narrator"}}
 
             if missing:
                 missing_appearances.append({

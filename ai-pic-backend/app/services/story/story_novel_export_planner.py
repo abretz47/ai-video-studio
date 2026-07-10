@@ -25,12 +25,12 @@ def plan_intro_from_plan(
     question_detail = (
         plan.get("question_detail")
         if isinstance(plan.get("question_detail"), str)
-        else "想看一个有钩子、有反转、节奏在线的长文故事，最好是连续更新那种。"
+        else "Xiang Kan a has Gou Zi, has twist, Jie Zou Zai Xian Zhang Wen story, Zui Hao Shi Lian Xu update Na Zhong."
     )
     narrator_profile = (
         plan.get("narrator_profile")
         if isinstance(plan.get("narrator_profile"), str)
-        else "利益相关：写过一些长文故事。以下为个人经历改编，细节请勿深究。"
+        else "Li Yi related: Xie Guo Yi Xie Zhang Wen story.Yi Xia as Ge Ren Jing Li Gai Bian, Xi Jie Qing Wu Shen Jiu."
     )
     running_summary_seed = (
         plan.get("running_summary_seed")
@@ -97,7 +97,7 @@ def _normalize_plan_chapters(
         if not title:
             title = f"更新 {idx}"
         if not cliffhanger_hint:
-            cliffhanger_hint = "下一章出现意外转折，局势骤然升级。"
+            cliffhanger_hint = "below Yi Zhang Chu Xian Yi Wai Zhuan Zhe, Ju Shi Zhou Ran escalate."
 
         chapters.append(
             {
@@ -211,9 +211,9 @@ def _fallback_zhihu_plan(
         if not chapter_title:
             chapter_title = f"更新 {idx}"
         if not chapter_goal:
-            chapter_goal = "推进主线冲突并埋下新的因果。"
+            chapter_goal = "advance Zhu Xian conflict and Mai below Xin Yin Guo."
         if not cliffhanger_hint:
-            cliffhanger_hint = "章末出现意外转折，下一章局势骤然升级。"
+            cliffhanger_hint = "Zhang Mo Chu Xian Yi Wai Zhuan Zhe, below Yi Zhang Ju Shi Zhou Ran escalate."
 
         chapters.append(
             {
@@ -226,9 +226,9 @@ def _fallback_zhihu_plan(
         )
 
     return {
-        "question_title": title or "如何评价这个故事？",
-        "question_detail": "想看一个有钩子、有反转、节奏在线的长文故事，最好是连续更新那种。\\n麻烦来点真实细节，不要空泛。",
-        "narrator_profile": "利益相关：写过一些长文故事。以下为个人经历改编，细节请勿深究。",
+        "question_title": title or "Ru He Ping Jia Zhe Ge story?",
+        "question_detail": "Xiang Kan a has Gou Zi, has twist, Jie Zou Zai Xian Zhang Wen story, Zui Hao Shi Lian Xu update Na Zhong.\\nMa Fan Lai Dian Zhen Shi Xi Jie, Bu Yao Kong Fan.",
+        "narrator_profile": "Li Yi related: Xie Guo Yi Xie Zhang Wen story.Yi Xia as Ge Ren Jing Li Gai Bian, Xi Jie Qing Wu Shen Jiu.",
         "running_summary_seed": running_summary_seed or "",
         "chapters": chapters,
     }
@@ -296,13 +296,13 @@ async def generate_zhihu_chapter_beats(
                 (
                     f"承接上一章卡点：{previous_cliffhanger}（继续现场，交代卡点之后发生了什么）"
                     if previous_cliffhanger
-                    else "用一个具体场景快速入戏，抛出本章冲突。"
+                    else "Yong a specific scene quick Ru Xi, Pao Chu Ben Zhang conflict."
                 ),
-                "引入新的阻碍或对立面，迫使主角行动。",
-                "通过一场具体互动/对话推进冲突与信息揭示。",
-                "出现一次误会、反转或代价，抬高情绪与风险。",
-                "主角做出关键选择，为后续埋下因果。",
-                "把局势推到章末钩子前的临界点。",
+                "Yin Ru Xin Zu Ai or Dui Li Mian, Po Shi Zhu Jue Xing Dong.",
+                "through Yi Chang specific Hu Dong/Dui Hua advance conflict and Xin Xi reveal.",
+                "Chu Xian Yi Ci Wu Hui, twist or Dai Jia, Tai GaoEmotionand Feng Xian.",
+                "Zhu Jue Zuo Chu key Xuan Ze, as subsequent Mai below Yin Guo.",
+                "Ju Shi Tui Dao Zhang Mo Gou Zi before Lin Jie Dian.",
             ][: 5 - len(fallback)]
         )
     elif previous_cliffhanger:

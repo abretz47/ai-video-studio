@@ -37,20 +37,20 @@ class EnvironmentImageGenerateParams:
     def __init__(
         self,
         prompt: str | None = Query(
-            None, description="生成提示词，不填则用环境描述/名称"
+            None, description="Generation prompt; uses the environment description/name when omitted"
         ),
-        model: str | None = Query(None, description="模型，形如 provider:model_id"),
+        model: str | None = Query(None, description="Model, in the form provider:model_id"),
         generation_profile: str | None = Query(
             None,
-            description="生成参数档位（后端按 provider+model 解析默认 steps/cfg/negative_prompt）",
+            description="Generation parameter tier (backend resolves default steps/cfg/negative_prompt by provider+model)",
         ),
-        count: int = Query(1, ge=1, le=4, description="生成数量"),
-        size: str | None = Query(None, description="分辨率/尺寸，如 1024x1024 或 2K"),
-        aspect_ratio: str | None = Query(None, description="画幅比例，如 16:9、1:1"),
-        seed: int | None = Query(None, description="随机种子（可选）"),
-        steps: int | None = Query(None, description="采样步数（可选）"),
-        cfg_scale: float | None = Query(None, description="CFG scale（可选）"),
-        negative_prompt: str | None = Query(None, description="反向提示词（可选）"),
+        count: int = Query(1, ge=1, le=4, description="Generation count"),
+        size: str | None = Query(None, description="Resolution/size, such as 1024x1024 or 2K"),
+        aspect_ratio: str | None = Query(None, description="Aspect ratio, such as 16:9 or 1:1"),
+        seed: int | None = Query(None, description="Random seed (optional)"),
+        steps: int | None = Query(None, description="Sampling steps (optional)"),
+        cfg_scale: float | None = Query(None, description="CFG scale (optional)"),
+        negative_prompt: str | None = Query(None, description="Negative prompt (optional)"),
     ) -> None:
         self.prompt = prompt
         self.model = model
@@ -74,7 +74,7 @@ async def generate_environment_images(
 ):
     env = get_owned_environment_or_404(db, env_id, current_user)
     if not ai_service.ai_manager:
-        raise HTTPException(status_code=503, detail="AI管理器未初始化，无法生成环境图")
+        raise HTTPException(status_code=503, detail="AI manager is not initialized; cannot generate environment images")
 
     payload = await read_json_payload(request)
 
@@ -116,7 +116,7 @@ async def generate_environment_images_async(
     """Async environment text-to-image: create Task and delegate to Celery."""
     env = get_owned_environment_or_404(db, env_id, current_user)
     if not ai_service.ai_manager:
-        raise HTTPException(status_code=503, detail="AI管理器未初始化，无法生成环境图")
+        raise HTTPException(status_code=503, detail="AI manager is not initialized; cannot generate environment images")
 
     body = await read_json_payload(request)
 
@@ -136,8 +136,8 @@ async def generate_environment_images_async(
     payload = build_environment_text_to_image_task_payload(env_id=env.id, request=req)
 
     task = Task(
-        title=f"环境文生图 - 环境{env_id}",
-        description="异步生成环境图像",
+        title=f"Environment text-to-image - environment {env_id}",
+        description="Generate environment images asynchronously",
         task_type=TaskType.ENVIRONMENT_IMAGE_GENERATION,
         prompt=compose_environment_prompt(env, req.prompt),
         parameters=json.dumps(payload, ensure_ascii=False),

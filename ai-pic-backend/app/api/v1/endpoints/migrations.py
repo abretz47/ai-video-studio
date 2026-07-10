@@ -1,7 +1,7 @@
 """
-数据库迁移API端点
+Database migration API endpoints
 
-提供通过API访问迁移状态和管理功能
+Provides API access to migration status and management operations
 """
 
 from typing import Any, Dict, List
@@ -14,9 +14,9 @@ from pydantic import BaseModel
 router = APIRouter()
 
 
-# 响应模型
+# Response models
 class MigrationStatusResponse(BaseModel):
-    """迁移状态响应"""
+    """Migration status response"""
 
     current_revision: str | None
     head_revision: str | None
@@ -28,7 +28,7 @@ class MigrationStatusResponse(BaseModel):
 
 
 class MigrationHistoryItem(BaseModel):
-    """迁移历史项"""
+    """Migration history item"""
 
     revision: str
     down_revision: str | None
@@ -39,7 +39,7 @@ class MigrationHistoryItem(BaseModel):
 
 
 class ValidationResult(BaseModel):
-    """验证结果"""
+    """Validation result"""
 
     valid: bool
     errors: List[str]
@@ -47,7 +47,7 @@ class ValidationResult(BaseModel):
 
 
 class SchemaDiff(BaseModel):
-    """模式差异"""
+    """Schema diff"""
 
     has_changes: bool
     changes: List[str]
@@ -56,59 +56,59 @@ class SchemaDiff(BaseModel):
 
 
 class OperationResult(BaseModel):
-    """操作结果"""
+    """Operation result"""
 
     success: bool
     message: str
     details: Dict[str, Any] | None = None
 
 
-# 依赖函数
+# Dependency functions
 def check_admin_permission():
-    """检查管理员权限（示例，实际应根据认证系统实现）"""
-    # TODO: 实现实际的权限检查
-    # 在生产环境中，这里应该检查用户是否有数据库管理权限
+    """Check administrator privileges (example; should be implemented according to the authentication system)"""
+    # TODO: Implement actual permission checks
+    # In production, this should verify whether the user has database management privileges
     pass
 
 
 @router.get("/status", response_model=MigrationStatusResponse)
 async def get_migration_status():
-    """获取数据库迁移状态"""
+    """Get database migration status"""
     try:
         status = migration_manager.check_migration_status()
         return MigrationStatusResponse(**status)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取迁移状态失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get migration status: {str(e)}")
 
 
 @router.get("/history", response_model=List[MigrationHistoryItem])
 async def get_migration_history():
-    """获取迁移历史"""
+    """Get migration history"""
     try:
         history = migration_manager.get_migration_history()
         return [MigrationHistoryItem(**item) for item in history]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取迁移历史失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get migration history: {str(e)}")
 
 
 @router.get("/validate", response_model=ValidationResult)
 async def validate_migrations():
-    """验证迁移文件完整性"""
+    """Validate migration file integrity"""
     try:
         validation = migration_manager.validate_migrations()
         return ValidationResult(**validation)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"验证迁移失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Migration validation failed: {str(e)}")
 
 
 @router.get("/schema-diff", response_model=SchemaDiff)
 async def get_schema_diff():
-    """获取当前数据库与模型的差异"""
+    """Get the diff between the current database and the models"""
     try:
         diff = migration_manager.get_schema_diff()
         return SchemaDiff(**diff)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取模式差异失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get schema diff: {str(e)}")
 
 
 @router.post("/upgrade", response_model=OperationResult)
@@ -118,25 +118,25 @@ async def upgrade_database(
     backup: bool = True,
     _: None = Depends(check_admin_permission),
 ):
-    """升级数据库（后台任务）"""
+    """Upgrade database (background task)"""
     try:
-        # 检查当前状态
+        # Check current status
         status = migration_manager.check_migration_status()
 
         if not status["needs_upgrade"] and revision == "head":
             return OperationResult(
-                success=True, message="数据库已是最新版本", details=status
+                success=True, message="Database is already at the latest version", details=status
             )
 
-        # 验证迁移文件
+        # Validate migration files
         validation = migration_manager.validate_migrations()
         if not validation["valid"]:
             raise HTTPException(
                 status_code=400,
-                detail=f"迁移文件验证失败: {'; '.join(validation['errors'])}",
+                detail=f"Migration file validation failed: {'; '.join(validation['errors'])}",
             )
 
-        # 在后台执行升级
+        # Perform upgrade in the background
         def perform_upgrade():
             try:
                 if backup and "mysql" in settings.DATABASE_URL:
@@ -144,14 +144,14 @@ async def upgrade_database(
 
                 migration_manager.upgrade(revision)
             except Exception as e:
-                # 这里可以记录错误日志或发送通知
-                print(f"后台升级失败: {e}")
+                # Errors can be logged or notifications sent here
+                print(f"Background upgrade failed: {e}")
 
         background_tasks.add_task(perform_upgrade)
 
         return OperationResult(
             success=True,
-            message=f"数据库升级任务已启动，目标版本: {revision}",
+            message=f"Database upgrade task started, target revision: {revision}",
             details={
                 "current_revision": status["current_revision"],
                 "target_revision": revision,
@@ -161,26 +161,26 @@ async def upgrade_database(
     except MigrationError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"升级数据库失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database upgrade failed: {str(e)}")
 
 
 @router.post("/create-migration", response_model=OperationResult)
 async def create_migration(
     message: str, autogenerate: bool = True, _: None = Depends(check_admin_permission)
 ):
-    """创建新的迁移文件"""
+    """Create a new migration file"""
     try:
         if not message.strip():
-            raise HTTPException(status_code=400, detail="迁移描述不能为空")
+            raise HTTPException(status_code=400, detail="Migration description cannot be empty")
 
         revision = migration_manager.create_migration(message, autogenerate)
 
-        # 获取模式差异信息
+        # Get schema diff information
         diff = migration_manager.get_schema_diff() if autogenerate else None
 
         return OperationResult(
             success=True,
-            message=f"迁移创建成功: {message}",
+            message=f"Migration created successfully: {message}",
             details={
                 "revision": revision,
                 "message": message,
@@ -192,31 +192,31 @@ async def create_migration(
     except MigrationError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"创建迁移失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to create migration: {str(e)}")
 
 
 @router.post("/stamp", response_model=OperationResult)
 async def stamp_revision(revision: str, _: None = Depends(check_admin_permission)):
-    """标记数据库版本"""
+    """Stamp database version"""
     try:
         migration_manager.stamp(revision)
 
         return OperationResult(
             success=True,
-            message=f"版本标记成功: {revision}",
+            message=f"Version stamped successfully: {revision}",
             details={"revision": revision},
         )
 
     except MigrationError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"版本标记失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Version stamp failed: {str(e)}")
 
 
-# 健康检查端点
+# Health check endpoint
 @router.get("/health")
 async def migration_health_check():
-    """迁移系统健康检查"""
+    """Migration system health check"""
     try:
         status = migration_manager.check_migration_status()
         validation = migration_manager.validate_migrations()
@@ -242,28 +242,28 @@ async def migration_health_check():
         return {"status": "unhealthy", "error": str(e), "timestamp": "unknown"}
 
 
-# 开发环境特殊端点（生产环境应禁用）
+# Development-only endpoints (should be disabled in production)
 @router.post("/reset-database", response_model=OperationResult)
 async def reset_database(
     confirm: bool = False, _: None = Depends(check_admin_permission)
 ):
-    """重置数据库（危险操作，仅开发环境）"""
-    if settings.PROJECT_NAME != "AI图片生成API" or not confirm:
-        raise HTTPException(status_code=403, detail="此操作仅在开发环境可用且需要确认")
+    """Reset database (dangerous operation, development only)"""
+    if settings.PROJECT_NAME != "AI Image Generation API" or not confirm:
+        raise HTTPException(status_code=403, detail="This operation is only available in development and requires confirmation")
 
     try:
-        # 先备份
+        # Back up first
         backup_file = migration_manager.backup_before_migration()
 
-        # 降级到base
+        # Downgrade to base
         migration_manager.downgrade("base")
 
-        # 重新升级
+        # Upgrade again
         migration_manager.upgrade("head")
 
         return OperationResult(
             success=True,
-            message="数据库重置成功",
+            message="Database reset successfully",
             details={
                 "backup_file": backup_file,
                 "new_status": migration_manager.check_migration_status(),
@@ -271,44 +271,44 @@ async def reset_database(
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"数据库重置失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database reset failed: {str(e)}")
 
 
-# 数据种子相关端点
+# Data seed endpoints
 @router.post("/seeds/run", response_model=OperationResult)
 async def run_seed(
     seed_name: str | None = None,
     run_all: bool = False,
     _: None = Depends(check_admin_permission),
 ):
-    """运行数据种子"""
+    """Run data seeds"""
     try:
         if run_all:
             count = data_seeder.run_all_seeds()
             return OperationResult(
                 success=True,
-                message=f"成功运行 {count} 个种子",
+                message=f"Successfully ran {count} seeds",
                 details={"seeds_count": count},
             )
         elif seed_name:
             data_seeder.run_seed(seed_name)
             return OperationResult(
                 success=True,
-                message=f"种子运行成功: {seed_name}",
+                message=f"Seed ran successfully: {seed_name}",
                 details={"seed_name": seed_name},
             )
         else:
             raise HTTPException(
-                status_code=400, detail="请指定种子名称或设置 run_all=true"
+                status_code=400, detail="Specify a seed name or set run_all=true"
             )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"运行种子失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to run seeds: {str(e)}")
 
 
 @router.get("/info")
 async def get_migration_info():
-    """获取迁移系统信息"""
+    """Get migration system information"""
     return {
         "database_url": (
             settings.DATABASE_URL.split("@")[-1]

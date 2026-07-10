@@ -24,16 +24,16 @@ from scripts.harness.production_quality_report import (
 )
 
 DEFAULT_PREMISES = [
-    "夜班卡通机器人发现奖金清零，必须在倒计时内找出是谁改了时间轴。",
-    "卡通机甲剪辑师上线错误资产，客户马上验收，队友却说这是唯一证据。",
-    "蓝色卡通机器人收到被删除的对白，发现它才是真正的合同条款。",
-    "卡通角色导演坚持不用真人素材，却被要求十分钟交付一条安全样片。",
-    "素材库里的卡通角色突然换脸，主角必须证明这是供应商回调问题。",
-    "机器人制片助理发现第二段视频没有角色，必须阻止整片发布。",
-    "卡通工作室的配音文件错位，主角通过一句台词识破内鬼。",
-    "一张角色参考图被所有镜头复用，却在最后一帧露出隐藏标记。",
-    "机器人项目经理要在客户关单前修好 Timeline 回填，否则全组白做。",
-    "卡通审片员发现成片没有剧情钩子，三秒内重排出真正的反转。",
+    "Night-shift cartoon robot discovers the bonus has been zeroed out and must find who changed the timeline before the countdown ends.",
+    "Cartoon mech editor goes live with wrong assets; the client is about to review and the teammate says it's the only evidence.",
+    "Blue cartoon robot receives deleted dialogue and discovers it is the real contract terms.",
+    "Cartoon character director refuses to use live-action footage but is required to deliver a safe sample in ten minutes.",
+    "A cartoon character in the asset library suddenly has a different face; the protagonist must prove it's a supplier callback issue.",
+    "Robot production assistant discovers the second video has no characters and must stop the full release.",
+    "A cartoon studio's voice file is misaligned; the protagonist identifies the insider through a single line of dialogue.",
+    "One character reference image is reused across all shots but reveals a hidden marker in the final frame.",
+    "The robot project manager must fix the timeline backfill before the client closes the ticket, or the whole team's work is wasted.",
+    "The cartoon reviewer discovers the final cut has no story hook and re-orders a real reversal within three seconds.",
 ]
 
 

@@ -109,24 +109,24 @@ class ScriptQualityValidator:
 
     # Keywords indicating unnatural/expository dialogue (Chinese)
     EXPOSITION_KEYWORDS = [
-        "正如你所知",
-        "你知道",
-        "众所周知",
-        "我来告诉你",
-        "让我解释",
-        "事情是这样的",
-        "你可能不知道",
-        "我必须告诉你",
-        "其实",
-        "原来",
-        "换句话说",
-        "也就是说",
-        "简单来说",
-        "总而言之",
-        "长话短说",
-        "事实上",
-        "实际上",
-        "说实话",
+        "Zheng Ru you Suo Zhi",
+        "you Zhi Dao",
+        "Zhong Suo Zhou Zhi",
+        "Wo Lai Gao Su you",
+        "Rang I Jie Shi",
+        "Shi Qing Shi Zhe Yang",
+        "you Ke Neng not Zhi Dao",
+        "I Bi Xu Gao Su you",
+        "Qi Shi",
+        "Yuan Lai",
+        "Huan Ju Hua Shuo",
+        "Ye Jiu Shi Shuo",
+        "Jian Dan Lai Shuo",
+        "Zong Er Yan Zhi",
+        "Chang Hua Duan Shuo",
+        "Shi Shi Shang",
+        "Shi Ji Shang",
+        "Shuo Shi Hua",
     ]
 
     # Keywords indicating natural dialogue patterns
@@ -135,30 +135,30 @@ class ScriptQualityValidator:
         r"！",
         r"？",
         r"…",  # Hesitation, emotion, questions
-        r"嗯",
-        r"啊",
-        r"哦",
-        r"呃",  # Interjections
-        r"不是吗",
-        r"对吧",
-        r"是吗",  # Tag questions
-        r"你说呢",
-        r"怎么样",  # Seeking opinion
+        r"N",
+        r"A",
+        r"O",
+        r"E",  # Interjections
+        r"Bu Shi Ma",
+        r"Dui Ba",
+        r"Shi Ma",  # Tag questions
+        r"you Shuo Ne",
+        r"Zen Me Yang",  # Seeking opinion
     ]
 
     # Emotion categories for arc analysis (ordered: intense checked first for priority)
     EMOTION_CATEGORIES = {
-        "intense": ["震惊", "愤怒", "狂喜", "恐惧", "绝望", "激动", "崩溃", "爆发"],
-        "positive": ["开心", "高兴", "兴奋", "愉快", "满足", "感动", "温暖", "期待"],
-        "negative": ["悲伤", "焦虑", "担忧", "痛苦", "失望", "难过", "沮丧", "伤心"],
-        "neutral": ["平静", "冷静", "思考", "沉默", "疑惑", "好奇", "犹豫", "纠结"],
+        "intense": ["shocked", "angry", "Kuang Xi", "fear", "Jue Wang", "excited", "Beng Kui", "eruption"],
+        "positive": ["happy", "happy", "excited", "pleasant", "Man Zu", "Gan Dong", "Wen Nuan", "Qi Dai"],
+        "negative": ["sad", "anxious", "worried", "Tong Ku", "Shi Wang", "sad", "frustrated", "sad"],
+        "neutral": ["calm", "calm", "thoughtful", "Chen Mo", "Yi Huo", "Hao Qi", "You Yu", "Jiu Jie"],
     }
 
     # Keywords for subtext detection (surface vs underlying)
     SUBTEXT_PATTERNS = {
-        "surface_positive": ["没事", "很好", "不要紧", "没关系", "挺好的"],
-        "surface_negative": ["可能", "也许", "或许", "不一定", "说不准"],
-        "underlying_tension": ["但是", "不过", "然而", "可惜", "只是"],
+        "surface_positive": ["Mei Shi", "Hen Hao", "Bu Yao Jin", "Mei Guan Xi", "Ting Hao"],
+        "surface_negative": ["Ke Neng", "Ye Xu", "Huo Xu", "not Yi Ding", "Shuo Bu Zhun"],
+        "underlying_tension": ["Dan Shi", "Bu Guo", "Ran Er", "Ke Xi", "Zhi Shi"],
     }
 
     def __init__(self) -> None:
@@ -198,12 +198,12 @@ class ScriptQualityValidator:
                 ScriptQualityIssue(
                     issue_type=ScriptQualityIssueType.UNNATURAL_DIALOGUE,
                     severity=ScriptQualitySeverity.WARNING,
-                    message="对白整体自然度偏低，可能过于书面化",
+                    message="dialogue Zheng Ti Zi Ran Du Pian Di, Ke Neng Guo Yu Shu Mian Hua",
                     details={"score": result.dialogue_authenticity_score},
                     suggestions=[
-                        "增加口语化表达",
-                        "添加停顿和语气词",
-                        "减少长句，增加对话感",
+                        "increase Kou Yu Hua Biao Da",
+                        "Tian Jia Ting Dun and Yu Qi Ci",
+                        "Jian Shao Chang Ju, increase Dui Hua Gan",
                     ],
                 )
             )
@@ -325,7 +325,7 @@ class ScriptQualityValidator:
             return True
 
         # Check for explanation patterns
-        if len(content) > 100 and "是" in content and "因为" in content:
+        if len(content) > 100 and "Shi" in content and "Yin Wei" in content:
             return True
 
         return False
@@ -361,9 +361,9 @@ class ScriptQualityValidator:
                         scene_number=scene_num,
                         details={"exposition_indices": exp_indices},
                         suggestions=[
-                            "通过动作和表情展示，而非直接讲述",
-                            "将信息融入自然对话中",
-                            "分散信息到多个场景",
+                            "through action and Biao Qing Zhan Shi, Er Fei directly Jiang Shu",
+                            "Xin Xi Rong Ru Zi Ran Dui Hua in",
+                            "Fen San Xin Xi to Duo Ge scene",
                         ],
                     )
                 )
@@ -400,9 +400,9 @@ class ScriptQualityValidator:
                     message=f"对白与动作比例失衡 ({ratio:.1f}:1)，存在'说话头'风险",
                     details={"ratio": ratio},
                     suggestions=[
-                        "增加角色动作描写",
-                        "在对话间穿插反应镜头",
-                        "添加环境交互",
+                        "increase character action Miao Xie",
+                        "in Dui Hua Jian Chuan Cha Fan Ying shot",
+                        "Tian Jia environment Jiao Hu",
                     ],
                 )
             )
@@ -413,7 +413,7 @@ class ScriptQualityValidator:
                     severity=ScriptQualitySeverity.INFO,
                     message=f"动作描写较多，对白较少 ({ratio:.1f}:1)",
                     details={"ratio": ratio},
-                    suggestions=["确保关键情感通过对白传达"],
+                    suggestions=["Que Bao key Qing Gan through dialogue Chuan Da"],
                 )
             )
 
@@ -481,7 +481,7 @@ class ScriptQualityValidator:
                             "emotion": arc.entry_emotion,
                             "count": len(arc.emotion_sequence),
                         },
-                        suggestions=["考虑在场景中设置情绪转折点"],
+                        suggestions=["consider in scene in She ZhiEmotionZhuan Zhe Dian"],
                     )
                 )
 
@@ -502,7 +502,7 @@ class ScriptQualityValidator:
                                 "entry": arc.entry_emotion,
                                 "exit": arc.exit_emotion,
                             },
-                            suggestions=["增加过渡情绪", "铺垫情绪转变的原因"],
+                            suggestions=["increase Guo DuEmotion", "ForeshadowingEmotionZhuan Bian Yuan Yin"],
                         )
                     )
 
@@ -558,12 +558,12 @@ class ScriptQualityValidator:
                 ScriptQualityIssue(
                     issue_type=ScriptQualityIssueType.MISSING_SUBTEXT,
                     severity=ScriptQualitySeverity.INFO,
-                    message="对白潜台词较少，角色表达过于直白",
+                    message="dialogue Qian Tai Ci Jiao Shao, character Biao Da Guo Yu Zhi Bai",
                     details={"subtext_ratio": round(subtext_ratio, 2)},
                     suggestions=[
-                        "让角色说的和想的不完全一致",
-                        "通过行为暗示真实想法",
-                        "使用间接表达增加层次",
+                        "Rang character Shuo and Xiang not Wan Quan Yi Zhi",
+                        "through Xing Wei An Shi Zhen Shi Xiang Fa",
+                        "Shi Yong Jian Jie Biao Da increase Ceng Ci",
                     ],
                 )
             )
@@ -606,8 +606,8 @@ class ScriptQualityValidator:
                             "occurrences": len(indices),
                         },
                         suggestions=[
-                            "使用不同的表达方式",
-                            "赋予角色独特的语言风格",
+                            "Shi Yong Bu Tong Biao Da Fang Shi",
+                            "Fu Yu character Du Te Yu Yan style",
                         ],
                     )
                 )

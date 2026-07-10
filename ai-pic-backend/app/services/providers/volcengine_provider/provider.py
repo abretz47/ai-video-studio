@@ -1,5 +1,5 @@
 """
-Volcengine (火山引擎) service provider.
+Volcengine (Volcengine Yin Qing) service provider.
 
 Supports text generation, image generation, video generation, and TTS.
 """

@@ -6,13 +6,13 @@ from tests.unit.services.script.test_beat_contract_normalizer import _valid_cont
 
 @pytest.mark.unit
 def test_quality_gate_rejects_generic_dramatic_purpose():
-    payload = _valid_contract()
-    for beat in payload["scenes"][0]["beats"]:
-        beat["dramatic_purpose"] = "推进剧情。"
-    contract = normalize_script_beat_contract(payload)
+ payload = _valid_contract()
+ for beat in payload["scenes"][0]["beats"]:
+ beat["dramatic_purpose"] = "Tui Jin Ju Qing."
+ contract = normalize_script_beat_contract(payload)
 
-    report = evaluate_beat_contract_quality(contract)
+ report = evaluate_beat_contract_quality(contract)
 
-    failed = {item["check_id"] for item in report["failed_checks"]}
-    assert report["passed"] is False
-    assert "beat_dramatic_purpose_specificity" in failed
+ failed = {item["check_id"] for item in report["failed_checks"]}
+ assert report["passed"] is False
+ assert "beat_dramatic_purpose_specificity" in failed

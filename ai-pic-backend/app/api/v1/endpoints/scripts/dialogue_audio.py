@@ -64,7 +64,7 @@ async def generate_script_dialogue_audio_async(
     """Queue async generation of scene dialogue audio and scene beats."""
     script = load_script_with_access(db, script_id, current_user)
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     story = script.episode.story if script.episode else None
     episode = script.episode if script.episode else None
@@ -72,8 +72,8 @@ async def generate_script_dialogue_audio_async(
     params["script_id"] = script_id
 
     task = Task(
-        title=friendly_task_title("对白音轨生成", script, episode, story),
-        description="生成场景对白音轨（scene）",
+        title=friendly_task_title("Dialogue audio generation", script, episode, story),
+        description="Generate scene dialogue audio (scene)",
         task_type=TaskType.DIALOGUE_AUDIO_GENERATION,
         prompt=f"Dialogue audio generation for script {script_id}",
         parameters=json.dumps(params, ensure_ascii=False),
@@ -152,7 +152,7 @@ def _process_script_dialogue_audio_task(
                 update_task_progress(
                     db,
                     task,
-                    f"时长精控模式：正在编排 {len(scenes)} 个场景",
+                    f"Precise duration mode: arranging {len(scenes)} scenes",
                 )
 
                 def _progress_cb(message: str) -> None:
@@ -177,7 +177,7 @@ def _process_script_dialogue_audio_task(
                         update_task_progress(
                             db,
                             task,
-                            f"时长验证未通过：{ratio:.1%}（允许±10%）",
+                            f"Duration validation failed: {ratio:.1%} (allowed ±10%)",
                         )
                     else:
                         raise RuntimeError(
@@ -185,7 +185,7 @@ def _process_script_dialogue_audio_task(
                         )
                 else:
                     ratio = result.get("statistics", {}).get("duration_ratio", 0)
-                    update_task_progress(db, task, f"时长精控完成：{ratio:.1%}")
+                    update_task_progress(db, task, f"Precise duration control completed: {ratio:.1%}")
                 return
 
             episode_duration_minutes = getattr(episode, "duration_minutes", None)
@@ -203,14 +203,14 @@ def _process_script_dialogue_audio_task(
                         update_task_progress(
                             db,
                             task,
-                            f"生成对白音轨：{idx}/{total}（跳过 {skipped}） 场景 {scene.scene_number}",
+                            f"Generating dialogue audio: {idx}/{total} (skipped {skipped}) scene {scene.scene_number}",
                         )
                         continue
 
                 update_task_progress(
                     db,
                     task,
-                    f"生成对白音轨：{idx}/{total}（跳过 {skipped}） 场景 {scene.scene_number}",
+                    f"Generating dialogue audio: {idx}/{total} (skipped {skipped}) scene {scene.scene_number}",
                 )
 
                 scene_target = getattr(scene, "estimated_duration_seconds", None)
@@ -234,13 +234,13 @@ def _process_script_dialogue_audio_task(
         if task:
             task.status = TaskStatus.COMPLETED
             task.result_file_path = f"script:{script_id}:dialogue_audio"
-            update_task_progress(db, task, "对白音轨生成完成")
+            update_task_progress(db, task, "Dialogue audio generation completed")
     except Exception as exc:
         task = TaskRepository(db).get_by_id(task_id)
         if task:
             task.status = TaskStatus.FAILED
             task.error_message = str(exc)
-            update_task_progress(db, task, f"对白音轨生成失败：{exc}")
+            update_task_progress(db, task, f"Dialogue audio generation failed: {exc}")
     finally:
         db.close()
 

@@ -1,6 +1,6 @@
-"""中间件模块
+"""Zhong Jian Jian module
 
-提供用户认证、权限控制、请求日志、异常处理等中间件
+Ti Gong user Ren Zheng, permission Kong Zhi, request log, exception process Deng Zhong Jian Jian
 """
 
 import logging
@@ -22,21 +22,21 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
 class UserPermissionLevel:
-    """用户权限级别枚举"""
+    """user permission Ji Bie Mei Ju"""
 
-    BASIC_AUTH = "basic_auth"  # 基础认证（仅登录）
-    ACTIVE_USER = "active_user"  # 活跃用户（激活+审批）
-    ADMIN = "admin"  # 管理员权限
-    SUPERUSER = "superuser"  # 超级用户权限
+    BASIC_AUTH = "basic_auth"  # basic Ren Zheng(only Deng Lu)
+    ACTIVE_USER = "active_user"  # Huo Yue user(Ji Huo+Shen Pi)
+    ADMIN = "admin"  # administrator permission
+    SUPERUSER = "superuser"  # Chao Ji user permission
 
 
 def get_current_user_basic(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ) -> User:
-    """基础用户认证 - 仅验证token有效性"""
+    """basic user Ren Zheng - only validationtokenYou Xiao Xing"""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="无法验证凭据",
+        detail="unable to validation Ping Ju",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
@@ -58,35 +58,35 @@ def get_current_user_basic(
 def get_current_active_user(
     current_user: User = Depends(get_current_user_basic),
 ) -> User:
-    """获取当前活跃用户 - 需要通过审批且账户激活"""
-    # 检查账户是否被锁定
+    """get current Huo Yue user - need through Shen Pi Qie account Ji Huo"""
+    # check account Shi Fou lock
     if current_user.is_account_locked:
         raise HTTPException(
             status_code=status.HTTP_423_LOCKED,
-            detail="账户已被锁定，请联系管理员或稍后再试",
+            detail="account lock, Qing Lian Xi administrator or Shao Hou Zai Shi",
         )
 
-    # 检查用户是否可以登录
+    # Jian Cha Yong Hu Shi FouCanDeng Lu
     if not current_user.can_login:
-        # 具体的错误信息
+        # specific Cuo Wu Xin Xi
         if not current_user.email_verified:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="邮箱未验证，请先验证邮箱"
+                status_code=status.HTTP_403_FORBIDDEN, detail="You Xiang not validation, Qing first validation You Xiang"
             )
         elif not current_user.is_approved:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="账户待管理员审批，请耐心等待",
+                detail="account pending administrator Shen Pi, Qing Nai Xin waiting",
             )
         elif not current_user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="账户已被停用，请联系管理员",
+                detail="account Ting Yong, Qing Lian Xi administrator",
             )
         else:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="账户状态异常，请联系管理员",
+                detail="account status exception, Qing Lian Xi administrator",
             )
 
     return current_user
@@ -95,10 +95,10 @@ def get_current_active_user(
 def get_current_admin_user(
     current_user: User = Depends(get_current_active_user),
 ) -> User:
-    """获取当前管理员用户"""
+    """get current administrator user"""
     if not current_user.is_admin and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="需要管理员权限"
+            status_code=status.HTTP_403_FORBIDDEN, detail="need administrator permission"
         )
     return current_user
 
@@ -106,16 +106,16 @@ def get_current_admin_user(
 def get_current_superuser(
     current_user: User = Depends(get_current_active_user),
 ) -> User:
-    """获取当前超级用户"""
+    """get current Chao Ji user"""
     if not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="需要超级用户权限"
+            status_code=status.HTTP_403_FORBIDDEN, detail="need Chao Ji user permission"
         )
     return current_user
 
 
 def require_permission(permission_level: str) -> Callable:
-    """权限装饰器工厂"""
+    """permission Zhuang Shi Qi Gong Chang"""
     permission_functions = {
         UserPermissionLevel.BASIC_AUTH: get_current_user_basic,
         UserPermissionLevel.ACTIVE_USER: get_current_active_user,
@@ -129,35 +129,35 @@ def require_permission(permission_level: str) -> Callable:
     return permission_functions[permission_level]
 
 
-# 别名函数，方便使用
+# Bie Ming function, Fang Bian Shi Yong
 def require_basic_auth() -> User:
-    """要求基础认证"""
+    """requirement basic Ren Zheng"""
     return Depends(get_current_user_basic)
 
 
 def require_active_user() -> User:
-    """要求活跃用户"""
+    """requirement Huo Yue user"""
     return Depends(get_current_active_user)
 
 
 def require_admin() -> User:
-    """要求管理员权限"""
+    """requirement administrator permission"""
     return Depends(get_current_admin_user)
 
 
 def require_superuser() -> User:
-    """要求超级用户权限"""
+    """requirement Chao Ji user permission"""
     return Depends(get_current_superuser)
 
 
 def record_user_login(user: User, db: Session, success: bool = True):
-    """记录用户登录"""
+    """Ji Lu user Deng Lu"""
     if success:
         user.last_login_at = datetime.utcnow()
-        user.failed_login_attempts = 0  # 成功登录时重置失败次数
+        user.failed_login_attempts = 0  # successful Deng Lu when Zhong Zhi failed Ci Shu
     else:
         user.failed_login_attempts += 1
-        # 超过5次失败尝试，锁定账户1小时
+        # Chao Guo5Ci failed Chang Shi, lock account1Xiao Shi
         if user.failed_login_attempts >= 5:
             from datetime import timedelta
 

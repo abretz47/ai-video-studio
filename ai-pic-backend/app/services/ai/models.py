@@ -8,7 +8,7 @@ from .manager import AIModelType, ProviderPriority
 
 class ModelRegistryMixin:
     def get_ai_providers_status(self) -> Dict[str, Any]:
-        """获取AI提供商状态"""
+        """getAIprovider status"""
         if not self.ai_manager:
             return {}
         return self.ai_manager.get_provider_status()
@@ -19,7 +19,7 @@ class ModelRegistryMixin:
         source: str = "auto",
     ) -> List[Dict[str, Any]]:
         """
-        统一列出模型，支持按类型和来源过滤。
+ unified Lie Chu model, support An Lei Xing and Lai Yuan Guo Lv.
 
         model_type_alias:
           - 'text' / 'text_generation'
@@ -79,7 +79,7 @@ class ModelRegistryMixin:
         priority: str = None,
         max_requests_per_minute: int = None,
     ):
-        """更新提供商配置"""
+        """update provider configuration"""
         priority_enum = None
         if priority:
             priority_map = {
@@ -98,7 +98,7 @@ class ModelRegistryMixin:
         )
 
     async def _reload_model_cache(self) -> None:
-        """拉取并缓存常用模型列表，按模型类型分组。"""
+        """La Qu and cache Chang Yong model list, An model type Fen Zu."""
         if not self.ai_manager:
             return
 
@@ -116,12 +116,12 @@ class ModelRegistryMixin:
                 models = await self.ai_manager.list_models(model_type=mt, source="auto")
                 cache[key] = models or []
             except Exception as exc:  # pragma: no cover - cache warm guard
-                self.logger.warning("模型缓存加载失败 key=%s err=%s", key, exc)
+                self.logger.warning("model cache Jia Zai failed key=%s err=%s", key, exc)
                 cache[key] = []
         self.model_cache = cache
 
     def _warm_model_cache(self) -> None:
-        """同步调用以初始化模型缓存；如失败仅记录日志，不中断启动。"""
+        """sync call Yi Chu Shi Hua model cache; for example failed only Ji Lu log, not Zhong Duan Qi Dong."""
         if not self.ai_manager:
             return
         try:
@@ -129,10 +129,10 @@ class ModelRegistryMixin:
         except RuntimeError:
             pass
         else:
-            self.logger.info("检测到运行中的事件循环，跳过模型缓存预热")
+            self.logger.info("Jian Ce to run in Shi Jian Xun Huan, Tiao Guo model cache Yu Re")
             return
 
         try:
             asyncio.run(self._reload_model_cache())
         except Exception as exc:  # pragma: no cover - init guard
-            self.logger.warning("模型缓存初始化失败: %s", exc)
+            self.logger.warning("model cache Chu Shi Hua failed: %s", exc)

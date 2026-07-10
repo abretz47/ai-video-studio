@@ -7,23 +7,23 @@ created_at: "2026-01-30"
 updated_at: "2026-05-13"
 
 variables:
-  speaker:
-    type: string
-    required: true
-    description: "说话者（可包含简短身份提示）"
-  intent:
-    type: string
-    required: false
-    description: "语气意图（如 质问/辩解/追问）"
-  expression:
-    type: string
-    required: true
-    description: "微表情和眼神描述"
-  gesture:
-    type: string
-    required: true
-    description: "肢体动作和说话节奏"
-  shot_goal:
-    type: string
-    required: true
-    description: "镜头要表达的剧情目标"
+ speaker:
+ type: string
+ required: true
+ description: "Shuo Hua Zhe(Ke Bao Han Jian Duan identity prompt)"
+ intent:
+ type: string
+ required: false
+ description: "Yu Qi Yi Tu(Ru Zhi Wen/Bian Jie/Zhui Wen)"
+ expression:
+ type: string
+ required: true
+ description: "Wei Biao Qing He Yan Shen description"
+ gesture:
+ type: string
+ required: true
+ description: "Zhi Ti action He Shuo Hua pacing"
+ shot_goal:
+ type: string
+ required: true
+ description: "camera Yao Biao Da De drama target"

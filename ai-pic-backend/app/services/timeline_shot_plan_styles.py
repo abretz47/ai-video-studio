@@ -4,7 +4,7 @@ from __future__ import annotations
 def style_prompt_instruction(style: str) -> str:
     if style == "live_action":
         return (
-            "真人电影 style: use believable human actors, practical production "
+            "Zhen Ren film style: use believable human actors, practical production "
             "design, cinematic lighting, real camera/lens language, non-cartoon "
             "treatment; do not force cartoon styling."
         )

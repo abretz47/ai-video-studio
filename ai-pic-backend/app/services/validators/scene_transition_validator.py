@@ -83,12 +83,12 @@ class SceneTransitionValidator:
 
     # Time of day categories for transition validation
     TIME_CATEGORIES = {
-        "dawn": ["dawn", "sunrise", "daybreak", "黎明", "拂晓", "日出"],
-        "morning": ["morning", "am", "早上", "上午", "早晨"],
-        "noon": ["noon", "midday", "正午", "中午"],
-        "afternoon": ["afternoon", "pm", "下午"],
-        "evening": ["evening", "dusk", "sunset", "傍晚", "黄昏", "日落"],
-        "night": ["night", "midnight", "late night", "夜晚", "深夜", "半夜", "晚上"],
+        "dawn": ["dawn", "sunrise", "daybreak", "Li Ming", "Fu Xiao", "Ri Chu"],
+        "morning": ["morning", "am", "Zao Shang", "morning", "Zao Chen"],
+        "noon": ["noon", "midday", "Zheng Wu", "Zhong Wu"],
+        "afternoon": ["afternoon", "pm", "afternoon"],
+        "evening": ["evening", "dusk", "sunset", "dusk", "twilight", "Ri Luo"],
+        "night": ["night", "midnight", "late night", "Ye Wan", "Shen Ye", "Ban Ye", "evening"],
     }
 
     # Valid time progressions (key can transition to values)
@@ -104,28 +104,28 @@ class SceneTransitionValidator:
     # Major cities and their approximate travel times (in hours) to other cities
     # This is simplified - real implementation would use a proper distance/time API
     CITY_TRAVEL_TIMES: Dict[str, Dict[str, float]] = {
-        "北京": {"上海": 5, "广州": 8, "深圳": 8, "成都": 6, "杭州": 5, "西安": 4},
-        "上海": {"北京": 5, "广州": 6, "深圳": 6, "成都": 7, "杭州": 1, "西安": 6},
-        "广州": {"北京": 8, "上海": 6, "深圳": 0.5, "成都": 6, "杭州": 5, "西安": 7},
-        "深圳": {"北京": 8, "上海": 6, "广州": 0.5, "成都": 6, "杭州": 5, "西安": 7},
+        "Beijing": {"Shanghai": 5, "Guangzhou": 8, "Shenzhen": 8, "Chengdu": 6, "Hangzhou": 5, "Xi an": 4},
+        "Shanghai": {"Beijing": 5, "Guangzhou": 6, "Shenzhen": 6, "Chengdu": 7, "Hangzhou": 1, "Xi an": 6},
+        "Guangzhou": {"Beijing": 8, "Shanghai": 6, "Shenzhen": 0.5, "Chengdu": 6, "Hangzhou": 5, "Xi an": 7},
+        "Shenzhen": {"Beijing": 8, "Shanghai": 6, "Guangzhou": 0.5, "Chengdu": 6, "Hangzhou": 5, "Xi an": 7},
     }
 
     # Character states that restrict actions
     RESTRICTIVE_STATES = {
-        "injured": ["受伤", "injured", "hurt", "wounded", "伤"],
-        "unconscious": ["昏迷", "unconscious", "passed out", "晕倒"],
-        "sick": ["生病", "sick", "ill", "病"],
-        "exhausted": ["疲惫", "exhausted", "tired", "累"],
-        "restrained": ["被绑", "restrained", "tied up", "captured", "囚禁"],
+        "injured": ["Shou Shang", "injured", "hurt", "wounded", "Shang"],
+        "unconscious": ["Hun Mi", "unconscious", "passed out", "Yun Dao"],
+        "sick": ["Sheng Bing", "sick", "ill", "Bing"],
+        "exhausted": ["Pi Bei", "exhausted", "tired", "Lei"],
+        "restrained": ["Bei Bang", "restrained", "tied up", "captured", "Qiu Jin"],
     }
 
     # Actions that conflict with restrictive states
     STATE_ACTION_CONFLICTS = {
-        "injured": ["running", "fighting", "跑", "打斗", "激烈运动", "追逐"],
-        "unconscious": ["speaking", "walking", "说话", "行走", "任何动作"],
-        "sick": ["intense activity", "激烈活动"],
-        "exhausted": ["marathon", "马拉松", "长跑"],
-        "restrained": ["free movement", "自由行动", "逃跑"],
+        "injured": ["running", "fighting", "Pao", "Da Dou", "Ji Lie Yun Dong", "Zhui Zhu"],
+        "unconscious": ["speaking", "walking", "Shuo Hua", "Xing Zou", "any action"],
+        "sick": ["intense activity", "Ji Lie Huo Dong"],
+        "exhausted": ["marathon", "Ma La Song", "Chang Pao"],
+        "restrained": ["free movement", "Zi You Xing Dong", "Tao Pao"],
     }
 
     def __init__(self) -> None:
@@ -138,7 +138,7 @@ class SceneTransitionValidator:
         """Normalize time of day string to category.
 
         Args:
-            time_str: Time of day string (e.g., "morning", "早上")
+ time_str: Time of day string (e.g., "morning", "Zao Shang")
 
         Returns:
             Normalized time category or None
@@ -157,7 +157,7 @@ class SceneTransitionValidator:
         """Extract city name from location string.
 
         Args:
-            location: Location string (e.g., "北京市朝阳区")
+ location: Location string (e.g., "Bei Jing Shi Chao Yang Qu")
 
         Returns:
             City name or None
@@ -173,8 +173,8 @@ class SceneTransitionValidator:
 
         # Try to extract city pattern
         city_patterns = [
-            r"(\w+)市",  # X市
-            r"(\w+)省",  # X省
+            r"(\w+)Shi",  # XShi
+            r"(\w+)Sheng",  # XSheng
             r"in (\w+)",  # in City
             r"(\w+), ",  # City,
         ]
@@ -215,7 +215,7 @@ class SceneTransitionValidator:
                 message=f"时间跳跃不连贯：从 {from_time}({from_scene.time_of_day}) 到 {to_time}({to_scene.time_of_day})",
                 from_scene=from_scene.scene_number,
                 to_scene=to_scene.scene_number,
-                fix_suggestion="添加过渡场景或时间标记说明时间流逝（如'数小时后'、'第二天'）",
+                fix_suggestion="Tian Jia Guo Du scene or time Biao Ji note time Liu Shi(for example'Shu Xiao Shi after', 'Di Er Tian')",
             )
 
         return None
@@ -259,7 +259,7 @@ class SceneTransitionValidator:
                 to_scene=to_scene.scene_number,
                 from_location=from_scene.location,
                 to_location=to_scene.location,
-                fix_suggestion="添加交通/旅行场景或时间标记说明旅途",
+                fix_suggestion="Tian Jia Jiao Tong/Lv Xing scene or time Biao Ji note Lv Tu",
             )
 
         # If travel time > 2 hours, check if time of day supports it
@@ -480,21 +480,21 @@ class SceneTransitionValidator:
 
             if issue.issue_type == TransitionIssueType.GEOGRAPHIC_IMPOSSIBILITY:
                 suggestion["suggested_actions"] = [
-                    "添加交通/旅行过渡场景",
-                    "调整到达场景的时间设定",
-                    "考虑使用'X小时后'、'第二天'等时间标记",
+                    "Tian Jia Jiao Tong/Lv Xing Guo Du scene",
+                    "adjust Dao Da scene time setting",
+                    "consider Shi Yong'XXiao Shi after', 'Di Er Tian'Deng time Biao Ji",
                 ]
             elif issue.issue_type == TransitionIssueType.TIME_DISCONTINUITY:
                 suggestion["suggested_actions"] = [
-                    "添加过渡场景展示时间流逝",
-                    "使用字幕/旁白说明时间变化",
-                    "调整场景顺序使时间连贯",
+                    "Tian Jia Guo Du scene Zhan Shi time Liu Shi",
+                    "Shi Yong Zi Mu/narration note time change",
+                    "adjust scene Shun Xu Shi time Lian Guan",
                 ]
             elif issue.issue_type == TransitionIssueType.CHARACTER_STATE_VIOLATION:
                 suggestion["suggested_actions"] = [
-                    "添加角色恢复/状态变化的过渡",
-                    "修改角色在新场景的动作",
-                    "在场景开头说明时间已过去足够久",
+                    "Tian Jia character Hui Fu/status change Guo Du",
+                    "Xiu Gai character in Xin scene action",
+                    "in scene Kai Tou note time Guo Qu Zu Gou Jiu",
                 ]
 
             suggestions.append(suggestion)

@@ -46,7 +46,7 @@ def calibrate_commercial_anchor_score(
         strengths=_dedupe_strings(
             [
                 *result.strengths,
-                "正文已命中客户撤单倒计时、锁日志/拦人、陈默转账裁员动机、AP时间戳对白和证据链锚点。",
+                "body text Ming Zhong customer Che Dan countdown, Suo log/Lan Ren, Chen Mo Zhuan Zhang Cai Yuan Dong Ji, APtime Chuo dialogue and evidence Lian Mao Dian.",
             ]
         ),
         risks=[
@@ -78,22 +78,22 @@ def _compute_verdict(overall: float, dimensions: ScriptScoreDimensions) -> str:
 
 def _commercial_data_contract_anchors(script_content: str) -> Dict[str, bool]:
     text = "".join(str(script_content or "").split())
-    evidence_markers = ["原始文件", "云端日志", "时间戳", "录音", "会议纪要", "短信"]
+    evidence_markers = ["Original file", "cloud log", "time Chuo", "recording", "Hui Yi Ji Yao", "text message"]
     evidence_count = sum(1 for marker in evidence_markers if marker in text)
     return {
-        "customer_deadline": "60秒" in text
-        and ("合同作废" in text or "撤单" in text),
+        "customer_deadline": "60seconds" in text
+        and ("contract Zuo Fei" in text or "Che Dan" in text),
         "log_lock_and_block": (
-            "日志已锁" in text or "锁定云端日志" in text or "锁图标" in text
+            "log Yi Suo" in text or "lock cloud log" in text or "Suo Tu Biao" in text
         )
-        and ("挡住" in text or "拦" in text or "删除确认" in text or "删除键" in text),
-        "visible_antagonist_motive": "20万" in text
-        and ("裁你" in text or "住院费" in text or "到账" in text),
-        "ap_signature_line": "看时间戳" in text or "数字不会撒谎" in text,
+        and ("Dang Zhu" in text or "Lan" in text or "delete Que Ren" in text or "delete Jian" in text),
+        "visible_antagonist_motive": "20Wan" in text
+        and ("Cai you" in text or "Zhu Yuan Fei" in text or "to Zhang" in text),
+        "ap_signature_line": "Kan time Chuo" in text or "Shu Zi Bu Hui Sa Huang" in text,
         "evidence_chain": evidence_count >= 4,
-        "clip_hooks": all(marker in text for marker in ("60秒", "15秒", "30秒")),
-        "unresolved_threat": "30秒" in text
-        and ("下一个停职" in text or "远程删除" in text or "原始文件将在30秒后删除" in text),
+        "clip_hooks": all(marker in text for marker in ("60seconds", "15seconds", "30 seconds")),
+        "unresolved_threat": "30 seconds" in text
+        and ("below a Ting Zhi" in text or "Yuan Cheng delete" in text or "Original filein30 secondsafter delete" in text),
     }
 
 
@@ -101,15 +101,15 @@ def _risk_contradicted_by_commercial_anchors(risk: str) -> bool:
     return any(
         marker in risk
         for marker in (
-            "动机不够明确",
-            "男二动机需补充",
-            "动机仅靠短信",
-            "第2场过渡略平",
-            "缺乏足够的张力",
-            "因果关系不够明确",
-            "逻辑链条有待加强",
-            "角色辨识度不够高",
-            "配角个性化不足",
+            "Dong Ji Bu Gou clear",
+            "Nan Er Dong Ji need Bu Chong",
+            "Dong Ji Jin Kao text message",
+            "Di2Chang Guo Du Lve Ping",
+            "Que Fa Zu Gou Zhang Li",
+            "Yin Guo Guan Xi Bu Gou clear",
+            "Luo Ji Lian Tiao You Dai Jia Qiang",
+            "character Bian Shi Du Bu Gou Gao",
+            "Pei Jue Ge Xing Hua insufficient",
         )
     )
 

@@ -120,7 +120,7 @@ async def generate_text(
     if not api_key:
         return AIResponse(
             success=False,
-            error="Google API key 未配置",
+            error="Google API key not configuration",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.STORY_GENERATION,
@@ -130,7 +130,7 @@ async def generate_text(
     if client is None:
         return AIResponse(
             success=False,
-            error="Google 客户端未初始化",
+            error="Google client is not initialized",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.STORY_GENERATION,
@@ -221,7 +221,7 @@ async def generate_text(
         if not full_text:
             return AIResponse(
                 success=False,
-                error="Gemini 返回为空",
+                error="Gemini return Wei Kong",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.STORY_GENERATION,

@@ -40,7 +40,7 @@ async def persist_environment_images(
         except Exception as exc:
             errors.append(f"{image_url}: {exc}")
             logger.warning(
-                "环境图像持久化失败 | env_id=%s image_url=%s error=%s",
+                "environment image Chi Jiu Hua failed | env_id=%s image_url=%s error=%s",
                 getattr(env, "id", None),
                 image_url,
                 exc,
@@ -51,7 +51,7 @@ async def persist_environment_images(
         if not final_url:
             errors.append(f"{image_url}: missing persisted URL")
             logger.warning(
-                "环境图像未返回可用路径 | env_id=%s image_url=%s stored=%s",
+                "environment image not return available path | env_id=%s image_url=%s stored=%s",
                 getattr(env, "id", None),
                 image_url,
                 stored,
@@ -60,7 +60,7 @@ async def persist_environment_images(
         saved.append(final_url)
 
     if not saved:
-        detail = errors[0] if errors else "未找到可用的持久化结果"
+        detail = errors[0] if errors else "Wei Zhao Dao available Chi Jiu Hua Jie Guo"
         raise RuntimeError(f"环境图像持久化失败: {detail}")
 
     refs = env.reference_images or []

@@ -1,7 +1,7 @@
 """
-时长验证节点
+when Zhang validation node
 
-验证场景的实际 TTS 时长是否在目标范围内。
+validation scene Shi Ji TTS when Zhang Shi Fou in target range interior.
 """
 
 import logging
@@ -16,35 +16,35 @@ logger = logging.getLogger(__name__)
 
 def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    时长验证节点。
+ when Zhang validation node.
 
-    验证当前场景的实际 TTS 时长是否在目标范围内。
+ validation current scene Shi Ji TTS when Zhang Shi Fou in target range interior.
 
-    输入状态:
-        - scene_budgets: 场景预算列表
-        - current_scene_index: 当前场景索引
+ input status:
+ - scene_budgets: scene Yu Suan list
+ - current_scene_index: current scene index
 
-    输出状态更新:
-        - scene_budgets: 更新验证结果
-        - reasoning: 添加验证日志
+ output status update:
+ - scene_budgets: update validation Jie Guo
+ - reasoning: Tian Jia validation log
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
 
     if current_index >= len(budgets):
-        logger.warning("validate_duration_node: 当前索引越界")
+        logger.warning("validate_duration_node: current index Yue Jie")
         return {}
 
     budget: SceneBudget = budgets[current_index]
 
-    # 检查是否有实际时长数据
+    # check Shi Fou has Shi Ji when Zhang data
     if budget.actual_duration_seconds is None:
         logger.warning(
             f"validate_duration_node: 场景 {budget.scene_number} 无实际时长数据"
         )
         return {}
 
-    # 验证时长
+    # validation when Zhang
     is_valid = budget.is_within_tolerance()
     ratio = budget.duration_ratio()
 
@@ -63,7 +63,7 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
     reasoning = state.get("reasoning", [])
 
     if is_valid:
-        # 验证通过
+        # validation through
         budget.status = SceneStatus.COMMITTED
         budget.last_rejection_reason = None
         budget.adjustment_hint = None
@@ -74,9 +74,9 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
             f"{budget.target_duration_seconds}s ({ratio:.0%})"
         )
     else:
-        # 验证失败
+        # validation failed
         if budget.attempt_count >= MAX_RETRY_ATTEMPTS:
-            # 达到最大重试次数，强制接受
+            # reach maximum retry Ci Shu, Qiang Zhi Jie Shou
             budget.status = SceneStatus.COMMITTED
             reasoning.append(
                 f"场景 {budget.scene_number} 达到最大重试次数 ({MAX_RETRY_ATTEMPTS})，"
@@ -85,7 +85,7 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
             )
             logger.warning(f"场景 {budget.scene_number} 达到最大重试次数，强制接受")
         else:
-            # 生成调整建议
+            # Sheng Cheng adjust suggestion
             actual_ms = int(budget.actual_duration_seconds * 1000)
             actual_words = budget.actual_word_count or 0
 
@@ -114,12 +114,12 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def should_commit_or_retry(state: Dict[str, Any]) -> str:
     """
-    路由函数：判断是否应该提交或重试当前场景。
+ Lu You function: determine Shi Fou Ying Gai submit or retry current scene.
 
     Returns:
-        "commit" - 验证通过，提交场景
-        "retry" - 验证失败，需要重试
-        "next" - 进入下一个场景
+ "commit" - validation through, submit scene
+ "retry" - validation failed, need retry
+ "next" - Jin Ru below a scene
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
@@ -139,11 +139,11 @@ def should_commit_or_retry(state: Dict[str, Any]) -> str:
 
 def check_all_scenes_done(state: Dict[str, Any]) -> str:
     """
-    路由函数：检查是否所有场景都已处理完成。
+ Lu You function: check Shi Fou all scene all process complete.
 
     Returns:
-        "done" - 所有场景已处理，进入组装阶段
-        "continue" - 还有待处理的场景
+ "done" - all scene process, Jin Ru assemble Jie Duan
+ "continue" - Hai You Dai Chu Li scene
     """
     budgets = state.get("scene_budgets", [])
 

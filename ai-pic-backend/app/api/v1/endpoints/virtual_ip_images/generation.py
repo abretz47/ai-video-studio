@@ -95,7 +95,7 @@ async def generate_virtual_ip_image(
         reference_images=reference_images or None,
     )
     if not result:
-        raise HTTPException(status_code=500, detail="AI图像生成失败")
+        raise HTTPException(status_code=500, detail="AI image generation failed")
     db_image = persist_virtual_ip_image(db, virtual_ip, result, params)
     return VirtualIPImageResponse.from_orm(db_image)
 
@@ -147,8 +147,8 @@ async def generate_virtual_ip_image_async(
 
     # Create task
     task = Task(
-        title=f"虚拟IP文生图 - {virtual_ip.name}",
-        description="异步生成虚拟IP图像",
+        title=f"Virtual IP text-to-image - {virtual_ip.name}",
+        description="Generate virtual IP images asynchronously",
         task_type=TaskType.VIRTUAL_IP_IMAGE_GENERATION,
         prompt=f"VirtualIP image gen for {virtual_ip.name}",
         parameters=json.dumps(payload, ensure_ascii=False),

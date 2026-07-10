@@ -72,8 +72,8 @@ def infer_conflict_level(conflict_notes: Optional[str]) -> str:
 
     text = str(conflict_notes).lower()
 
-    high_keywords = ["激烈", "紧张", "对峙", "高潮", "冲突", "对抗", "争吵", "争执"]
-    low_keywords = ["平静", "温馨", "日常", "轻松", "和谐", "安宁"]
+    high_keywords = ["Ji Lie", "tense", "Dui Zhi", "climax", "conflict", "Dui Kang", "Zheng Chao", "Zheng Zhi"]
+    low_keywords = ["calm", "Wen Xin", "Ri Chang", "Qing Song", "He Xie", "An Ning"]
 
     for kw in high_keywords:
         if kw in text:
@@ -121,7 +121,7 @@ def build_dialogue_contexts(
         contexts.append(
             DialogueContext(
                 index=idx,
-                speaker=str(dlg.get("character") or "旁白"),
+                speaker=str(dlg.get("character") or "narration"),
                 content=str(dlg.get("content") or ""),
                 emotion=(
                     dlg.get("emotion") if isinstance(dlg.get("emotion"), str) else None
@@ -233,19 +233,19 @@ def _normalize_emotion(emotion: Optional[str]) -> str:
 
     # Map Chinese emotions to standard
     mapping = {
-        "高兴": "happy",
-        "开心": "happy",
-        "喜悦": "happy",
-        "悲伤": "sad",
-        "难过": "sad",
-        "愤怒": "angry",
-        "生气": "angry",
-        "恐惧": "fearful",
-        "害怕": "fearful",
-        "惊讶": "surprised",
-        "平静": "calm",
-        "低语": "whisper",
-        "耳语": "whisper",
+        "happy": "happy",
+        "happy": "happy",
+        "joy": "happy",
+        "sad": "sad",
+        "sad": "sad",
+        "angry": "angry",
+        "angry": "angry",
+        "fear": "fearful",
+        "afraid": "fearful",
+        "surprised": "surprised",
+        "calm": "calm",
+        "Di Yu": "whisper",
+        "Er Yu": "whisper",
     }
 
     return mapping.get(emotion, emotion)
@@ -349,7 +349,7 @@ def format_dialogue_for_prompt(contexts: list[DialogueContext]) -> str:
     total_duration_ms = 0
 
     for ctx in contexts:
-        emotion_str = ctx.emotion or "无标注"
+        emotion_str = ctx.emotion or "none Biao Zhu"
         action_str = f"（{ctx.action}）" if ctx.action else ""
         prev_str = f"前一句情绪: {ctx.prev_emotion}" if ctx.prev_emotion else ""
 

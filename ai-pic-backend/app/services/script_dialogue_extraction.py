@@ -14,9 +14,9 @@ _QUOTE_PAIRS = (
     ("'", "'"),
 )
 _SPEECH_HINT_RE = re.compile(
-    r"(?:说|道|问|答|喊|叫|嘟囔|询问|回应|低语|开口|自言自语|皱眉|耸肩|一笑|喘着气|坚定|无奈)"
+    r"(?:Shuo|Dao|Wen|Da|Han|Jiao|Du Nang|Xun Wen|Hui Ying|Di Yu|Kai Kou|Zi Yan Zi Yu|Zhou Mei|Song Jian|Yi Xiao|Chuan Zhe Qi|Jian Ding|Wu Nai)"
 )
-_PRONOUN_RE = re.compile(r"^[，,。；;\s]*(?:他|她|TA|ta)")
+_PRONOUN_RE = re.compile(r"^[,,.;;\s]*(?:Ta|Ta|TA|ta)")
 
 
 def extract_dialogues_from_scene_summary(
@@ -130,7 +130,7 @@ def _pronoun_context_name(before: str, known_names: List[str]) -> str | None:
         non_possessive = [
             (pos, name)
             for pos, name in matches
-            if not segment[pos + len(name) :].startswith("的")
+            if not segment[pos + len(name) :].startswith("")
         ]
         return (non_possessive or matches)[0][1]
     return _nearest_known_name(before, known_names, reverse=True)

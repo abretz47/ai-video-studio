@@ -1,8 +1,8 @@
 """
-剧本评分与投流素材服务模块
+script Ping Fen and Tou Liu Su Cai service module
 
-提供 HookScore/ScriptScore 评分功能，用于评估短剧剧本的投流效果与制作可行性。
-提供 TrafficSheet 生成功能，从剧本中提炼 15/30/60 秒投流素材。
+Ti Gong HookScore/ScriptScore Ping Fen feature, Yong Yu Ping Gu short drama script Tou Liu Xiao Guo and Zhi Zuo Ke Xing Xing.
+Ti Gong TrafficSheet Sheng Cheng feature, Cong script in Ti Lian 15/30/60 seconds Tou Liu Su Cai.
 """
 
 from .script_score_db import score_script_from_db

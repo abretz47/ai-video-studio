@@ -1,178 +1,178 @@
 """
-重试准备节点单元测试
+retry Zhun Bei Jie Dian Dan Yuan Ce Shi
 
-测试 Duration Orchestrator 的重试准备逻辑。
+test Duration Orchestrator De retry Zhun Bei logic.
 """
 
 import pytest
 from app.services.duration_orchestrator.constants import MAX_RETRY_ATTEMPTS
 from app.services.duration_orchestrator.nodes.prepare_retry import (
-    prepare_retry_node,
-    should_retry_or_fail,
+ prepare_retry_node,
+ should_retry_or_fail,
 )
 from app.services.duration_orchestrator.state import SceneBudget, SceneStatus
 
 
 class TestPrepareRetryNode:
-    """测试重试准备节点"""
+ """test retry Zhun Bei Jie Dian"""
 
-    @pytest.fixture
-    def base_state(self):
-        """基础测试状态"""
-        return {
-            "scene_budgets": [
-                SceneBudget(
-                    scene_number=1,
-                    scene_index=0,
-                    target_duration_seconds=60,
-                    target_word_count=135,
-                    min_duration_seconds=51,
-                    max_duration_seconds=69,
-                    actual_duration_seconds=30,  # 太短
-                    actual_word_count=68,
-                    attempt_count=1,
-                ),
-            ],
-            "current_scene_index": 0,
-            "generated_dialogues": {
-                1: [{"scene_number": 1, "content": "测试对白"}],
-            },
-            "reasoning": [],
-        }
+ @pytest.fixture
+ def base_state(self):
+ """basic Ce Shi Zhuang Tai"""
+ return {
+ "scene_budgets": [
+ SceneBudget(
+ scene_number=1,
+ scene_index=0,
+ target_duration_seconds=60,
+ target_word_count=135,
+ min_duration_seconds=51,
+ max_duration_seconds=69,
+ actual_duration_seconds=30, # Tai Duan
+ actual_word_count=68,
+ attempt_count=1,
+),
+ ],
+ "current_scene_index": 0,
+ "generated_dialogues": {
+ 1: [{"scene_number": 1, "content": "Ce Shi Dui Bai"}],
+ },
+ "reasoning": [],
+ }
 
-    def test_generates_adjustment_hint(self, base_state):
-        """生成调整建议"""
-        result = prepare_retry_node(base_state)
+ def test_generates_adjustment_hint(self, base_state):
+ """generate Tiao Zheng Jian Yi"""
+ result = prepare_retry_node(base_state)
 
-        budget = result["scene_budgets"][0]
-        assert budget.adjustment_hint is not None
-        assert budget.last_rejection_reason == "duration_too_short"
+ budget = result["scene_budgets"][0]
+ assert budget.adjustment_hint is not None
+ assert budget.last_rejection_reason == "duration_too_short"
 
-    def test_clears_generated_dialogues(self, base_state):
-        """清空已生成的对白"""
-        result = prepare_retry_node(base_state)
+ def test_clears_generated_dialogues(self, base_state):
+ """Qing Kong Yi generate De dialogue"""
+ result = prepare_retry_node(base_state)
 
-        assert 1 not in result["generated_dialogues"]
+ assert 1 not in result["generated_dialogues"]
 
-    def test_status_remains_pending(self, base_state):
-        """状态保持为待处理"""
-        result = prepare_retry_node(base_state)
+ def test_status_remains_pending(self, base_state):
+ """status keep Wei Dai Chu Li"""
+ result = prepare_retry_node(base_state)
 
-        budget = result["scene_budgets"][0]
-        assert budget.status == SceneStatus.PENDING
+ budget = result["scene_budgets"][0]
+ assert budget.status == SceneStatus.PENDING
 
-    def test_updates_reasoning(self, base_state):
-        """更新推理日志"""
-        result = prepare_retry_node(base_state)
+ def test_updates_reasoning(self, base_state):
+ """update Tui Li Ri Zhi"""
+ result = prepare_retry_node(base_state)
 
-        assert len(result["reasoning"]) > 0
-        assert "重试" in result["reasoning"][0]
+ assert len(result["reasoning"]) > 0
+ assert "retry" in result["reasoning"][0]
 
-    def test_force_commit_at_max_retries(self, base_state):
-        """达到最大重试次数时强制提交"""
-        base_state["scene_budgets"][0].attempt_count = MAX_RETRY_ATTEMPTS
+ def test_force_commit_at_max_retries(self, base_state):
+ """Da Dao Zui Da retry Ci Shu Shi Qiang Zhi Ti Jiao"""
+ base_state["scene_budgets"][0].attempt_count = MAX_RETRY_ATTEMPTS
 
-        result = prepare_retry_node(base_state)
+ result = prepare_retry_node(base_state)
 
-        budget = result["scene_budgets"][0]
-        assert budget.status == SceneStatus.COMMITTED
-        assert budget.last_rejection_reason == "max_retries_exceeded"
+ budget = result["scene_budgets"][0]
+ assert budget.status == SceneStatus.COMMITTED
+ assert budget.last_rejection_reason == "max_retries_exceeded"
 
-    def test_index_out_of_bounds(self, base_state):
-        """索引越界时返回空"""
-        base_state["current_scene_index"] = 99
+ def test_index_out_of_bounds(self, base_state):
+ """Suo Yin Yue Jie Shi return Kong"""
+ base_state["current_scene_index"] = 99
 
-        result = prepare_retry_node(base_state)
+ result = prepare_retry_node(base_state)
 
-        assert result == {}
+ assert result == {}
 
-    def test_duration_too_long_hint(self, base_state):
-        """时长过长的调整建议"""
-        base_state["scene_budgets"][0].actual_duration_seconds = 90  # 太长
-        base_state["scene_budgets"][0].actual_word_count = 200
+ def test_duration_too_long_hint(self, base_state):
+ """Shi length Guo Chang De Tiao Zheng Jian Yi"""
+ base_state["scene_budgets"][0].actual_duration_seconds = 90 # Tai Zhang
+ base_state["scene_budgets"][0].actual_word_count = 200
 
-        result = prepare_retry_node(base_state)
+ result = prepare_retry_node(base_state)
 
-        budget = result["scene_budgets"][0]
-        assert budget.last_rejection_reason == "duration_too_long"
-        assert "删减" in budget.adjustment_hint
+ budget = result["scene_budgets"][0]
+ assert budget.last_rejection_reason == "duration_too_long"
+ assert "Shan Jian" in budget.adjustment_hint
 
 
 class TestShouldRetryOrFail:
-    """测试路由函数"""
+ """test Lu You Han Shu"""
 
-    def test_retry_when_pending(self):
-        """待处理时重试"""
-        state = {
-            "scene_budgets": [
-                SceneBudget(
-                    scene_number=1,
-                    scene_index=0,
-                    target_duration_seconds=60,
-                    target_word_count=135,
-                    min_duration_seconds=51,
-                    max_duration_seconds=69,
-                    status=SceneStatus.PENDING,
-                    attempt_count=1,
-                ),
-            ],
-            "current_scene_index": 0,
-        }
+ def test_retry_when_pending(self):
+ """Dai Chu Li Shi retry"""
+ state = {
+ "scene_budgets": [
+ SceneBudget(
+ scene_number=1,
+ scene_index=0,
+ target_duration_seconds=60,
+ target_word_count=135,
+ min_duration_seconds=51,
+ max_duration_seconds=69,
+ status=SceneStatus.PENDING,
+ attempt_count=1,
+),
+ ],
+ "current_scene_index": 0,
+ }
 
-        result = should_retry_or_fail(state)
+ result = should_retry_or_fail(state)
 
-        assert result == "retry"
+ assert result == "retry"
 
-    def test_commit_when_committed(self):
-        """已提交时返回 commit"""
-        state = {
-            "scene_budgets": [
-                SceneBudget(
-                    scene_number=1,
-                    scene_index=0,
-                    target_duration_seconds=60,
-                    target_word_count=135,
-                    min_duration_seconds=51,
-                    max_duration_seconds=69,
-                    status=SceneStatus.COMMITTED,
-                ),
-            ],
-            "current_scene_index": 0,
-        }
+ def test_commit_when_committed(self):
+ """Yi Ti Jiao Shi return commit"""
+ state = {
+ "scene_budgets": [
+ SceneBudget(
+ scene_number=1,
+ scene_index=0,
+ target_duration_seconds=60,
+ target_word_count=135,
+ min_duration_seconds=51,
+ max_duration_seconds=69,
+ status=SceneStatus.COMMITTED,
+),
+ ],
+ "current_scene_index": 0,
+ }
 
-        result = should_retry_or_fail(state)
+ result = should_retry_or_fail(state)
 
-        assert result == "commit"
+ assert result == "commit"
 
-    def test_commit_at_max_retries(self):
-        """达到最大重试次数时返回 commit"""
-        state = {
-            "scene_budgets": [
-                SceneBudget(
-                    scene_number=1,
-                    scene_index=0,
-                    target_duration_seconds=60,
-                    target_word_count=135,
-                    min_duration_seconds=51,
-                    max_duration_seconds=69,
-                    status=SceneStatus.PENDING,
-                    attempt_count=MAX_RETRY_ATTEMPTS,
-                ),
-            ],
-            "current_scene_index": 0,
-        }
+ def test_commit_at_max_retries(self):
+ """Da Dao Zui Da retry Ci Shu Shi return commit"""
+ state = {
+ "scene_budgets": [
+ SceneBudget(
+ scene_number=1,
+ scene_index=0,
+ target_duration_seconds=60,
+ target_word_count=135,
+ min_duration_seconds=51,
+ max_duration_seconds=69,
+ status=SceneStatus.PENDING,
+ attempt_count=MAX_RETRY_ATTEMPTS,
+),
+ ],
+ "current_scene_index": 0,
+ }
 
-        result = should_retry_or_fail(state)
+ result = should_retry_or_fail(state)
 
-        assert result == "commit"
+ assert result == "commit"
 
-    def test_commit_when_index_exceeds(self):
-        """索引超出时返回 commit"""
-        state = {
-            "scene_budgets": [],
-            "current_scene_index": 0,
-        }
+ def test_commit_when_index_exceeds(self):
+ """Suo Yin Chao Chu Shi return commit"""
+ state = {
+ "scene_budgets": [],
+ "current_scene_index": 0,
+ }
 
-        result = should_retry_or_fail(state)
+ result = should_retry_or_fail(state)
 
-        assert result == "commit"
+ assert result == "commit"

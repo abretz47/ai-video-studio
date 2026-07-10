@@ -34,7 +34,7 @@ class StoryContext(ContextSpec):
         ),
         FieldSpec(
             name="genre",
-            description="Story genre (e.g., 悬疑, 都市, 古装)",
+            description="Story genre (e.g., Xuan Yi, Du Shi, Gu Zhuang)",
             priority=FieldPriority.HIGH,
             required=True,
             validator=is_non_empty_string,
@@ -74,7 +74,7 @@ class StoryContext(ContextSpec):
         ),
         FieldSpec(
             name="tone",
-            description="Story tone (e.g., 轻松, 紧张, 温馨)",
+            description="Story tone (e.g., Qing Song, tense, Wen Xin)",
             priority=FieldPriority.MEDIUM,
         ),
         FieldSpec(

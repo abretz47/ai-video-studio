@@ -118,23 +118,23 @@ def _coerce_malformed_contract(payload: Any) -> dict[str, Any] | None:
         return None
     candidate = deepcopy(payload)
     candidate.setdefault("contract_version", "script-beat-v1")
-    candidate.setdefault("title", "AP短剧")
-    candidate.setdefault("logline", "AP用证据核实被篡改的数据。")
+    candidate.setdefault("title", "APshort drama")
+    candidate.setdefault("logline", "APYong evidence He Shi Cuan Gai data.")
     for index, scene in enumerate(candidate["scenes"], start=1):
         if not isinstance(scene, dict):
             continue
         scene.setdefault("scene_number", index)
-        scene.setdefault("slug_line", "内. 会议室 - 日")
-        scene.setdefault("location", "会议室")
-        scene.setdefault("time_of_day", "日")
+        scene.setdefault("slug_line", "interior. Hui Yi Shi - day")
+        scene.setdefault("location", "Hui Yi Shi")
+        scene.setdefault("time_of_day", "day")
         scene.setdefault("estimated_duration_seconds", 15)
         scene.setdefault("dramatic_role", scene_role(index, len(candidate["scenes"])))
         scene["conflict"] = {
             **dict(scene.get("conflict") or {}),
-            "question": (scene.get("summary") or "AP如何锁定篡改证据？"),
-            "stakes": "若不澄清，300万项目合同当场作废，客户终止签字验收。",
-            "opposition": "客户质疑、被篡改文件和手机匿名短信阻止AP核实。",
-            "turn": "AP把投影数字、原始文件和团队反应对齐，锁定篡改来源。",
+            "question": (scene.get("summary") or "APRu He lock Cuan Gai evidence?"),
+            "stakes": "if not Cheng Qing, 300Wan Xiang Mu contract Dang Chang Zuo Fei, customer Zhong Zhi Qian Zi Yan Shou.",
+            "opposition": "customer Zhi Yi, Cuan Gai file and phone Ni Ming text message Zu ZhiAPHe Shi.",
+            "turn": "APTou Ying Shu Zi, Original fileand Tuan Dui Fan Ying Dui Qi, lock Cuan Gai Lai Yuan.",
         }
         _ensure_scene(scene, index - 1, len(candidate["scenes"]))
     return candidate
@@ -142,9 +142,9 @@ def _coerce_malformed_contract(payload: Any) -> dict[str, Any] | None:
 
 def _ensure_scene(scene: dict[str, Any], index: int, count: int) -> list[dict[str, Any]]:
     scene.setdefault("scene_number", index + 1)
-    scene.setdefault("slug_line", "内. 会议室 - 日")
-    scene.setdefault("location", "会议室")
-    scene.setdefault("time_of_day", "日")
+    scene.setdefault("slug_line", "interior. Hui Yi Shi - day")
+    scene.setdefault("location", "Hui Yi Shi")
+    scene.setdefault("time_of_day", "day")
     scene.setdefault("estimated_duration_seconds", 15)
     scene.setdefault("dramatic_role", scene_role(index + 1, count))
     beats = scene.setdefault("beats", [])
@@ -159,7 +159,7 @@ def _ensure_scene(scene: dict[str, Any], index: int, count: int) -> list[dict[st
             beats[order - 1] = beat
         beat["order_index"] = order
         beat.setdefault("beat_type", "conflict" if order < 3 else "reveal")
-        beat.setdefault("dramatic_purpose", "AP用屏幕证据推进核实。")
+        beat.setdefault("dramatic_purpose", "APYong screen evidence advance He Shi.")
         beat.setdefault("visible_event", progression_event("AP", order))
         beat.setdefault(
             "action_lines",

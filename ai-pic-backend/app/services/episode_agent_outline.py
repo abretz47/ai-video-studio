@@ -83,7 +83,7 @@ async def generate_step_outlines(
         "episode_contract_version": "episode_contract_v1",
     }
 
-    await progress("剧集大纲：调用模型")
+    await progress("episode Da Gang: call model")
     outline_prompt = prompt_manager.render_prompt(
         PromptTemplate.EPISODE_STEP_OUTLINE.value, outline_variables
     )

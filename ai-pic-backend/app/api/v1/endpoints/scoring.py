@@ -1,7 +1,7 @@
 """
-剧本评分与投流表 API 端点
+Script scoring and traffic-sheet API endpoints
 
-提供 HookScore/ScriptScore 评分接口和 Traffic Sheet 生成接口。
+Provides HookScore/ScriptScore scoring endpoints and Traffic Sheet generation endpoints.
 """
 
 from typing import Optional
@@ -22,35 +22,35 @@ router = APIRouter()
 
 
 class ScoreScriptRequest(BaseModel):
-    """剧本评分请求"""
+    """Script scoring request"""
 
-    script_id: Optional[int] = Field(None, description="剧本 ID（从数据库加载）")
-    script_content: Optional[str] = Field(None, description="剧本内容（直接传入）")
-    story_title: Optional[str] = Field(None, description="故事标题")
-    story_genre: Optional[str] = Field(None, description="故事类型")
-    market_region: Optional[str] = Field(None, description="目标市场")
-    micro_genre: Optional[str] = Field(None, description="微类型")
-    episode_number: Optional[int] = Field(None, description="剧集编号")
-    episode_title: Optional[str] = Field(None, description="剧集标题")
-    prefer_provider: Optional[str] = Field(None, description="优先使用的 AI 提供商")
-    prefer_model: Optional[str] = Field(None, description="优先使用的模型")
+    script_id: Optional[int] = Field(None, description="Script ID (loaded from the database)")
+    script_content: Optional[str] = Field(None, description="Script content (passed directly)")
+    story_title: Optional[str] = Field(None, description="Story title")
+    story_genre: Optional[str] = Field(None, description="Story genre")
+    market_region: Optional[str] = Field(None, description="Target market")
+    micro_genre: Optional[str] = Field(None, description="Micro-genre")
+    episode_number: Optional[int] = Field(None, description="Episode number")
+    episode_title: Optional[str] = Field(None, description="Episode title")
+    prefer_provider: Optional[str] = Field(None, description="Preferred AI provider")
+    prefer_model: Optional[str] = Field(None, description="Preferred model")
 
 
 class GenerateTrafficSheetRequest(BaseModel):
-    """投流表生成请求"""
+    """Traffic-sheet generation request"""
 
-    script_id: Optional[int] = Field(None, description="剧本 ID（从数据库加载）")
-    script_content: Optional[str] = Field(None, description="剧本内容（直接传入）")
-    episode_number: int = Field(..., description="剧集编号")
-    episode_id: Optional[int] = Field(None, description="剧集 ID")
-    episode_title: Optional[str] = Field(None, description="剧集标题")
-    episode_summary: Optional[str] = Field(None, description="剧集概要")
-    story_title: Optional[str] = Field(None, description="故事标题")
-    story_genre: Optional[str] = Field(None, description="故事类型")
-    market_region: Optional[str] = Field(None, description="目标市场")
-    micro_genre: Optional[str] = Field(None, description="微类型")
-    prefer_provider: Optional[str] = Field(None, description="优先使用的 AI 提供商")
-    prefer_model: Optional[str] = Field(None, description="优先使用的模型")
+    script_id: Optional[int] = Field(None, description="Script ID (loaded from the database)")
+    script_content: Optional[str] = Field(None, description="Script content (passed directly)")
+    episode_number: int = Field(..., description="Episode number")
+    episode_id: Optional[int] = Field(None, description="Episode ID")
+    episode_title: Optional[str] = Field(None, description="Episode title")
+    episode_summary: Optional[str] = Field(None, description="Episode summary")
+    story_title: Optional[str] = Field(None, description="Story title")
+    story_genre: Optional[str] = Field(None, description="Story genre")
+    market_region: Optional[str] = Field(None, description="Target market")
+    micro_genre: Optional[str] = Field(None, description="Micro-genre")
+    prefer_provider: Optional[str] = Field(None, description="Preferred AI provider")
+    prefer_model: Optional[str] = Field(None, description="Preferred model")
 
 
 # ========== Endpoints ==========
@@ -62,32 +62,32 @@ async def score_script(
     db: Session = Depends(get_db),
 ) -> ScriptScoreResult:
     """
-    评估剧本质量。
+    Evaluate script quality.
 
-    评分维度：
-    - 冲突强度 (0-5)
-    - 角色辨识度 (0-5)
-    - 文化适配 (0-5)
-    - 素材可剪性 (0-5)
-    - 逻辑一致性 (0-5)
+    Scoring dimensions:
+    - Conflict intensity (0-5)
+    - Character distinctiveness (0-5)
+    - Cultural fit (0-5)
+    - Editability of source material (0-5)
+    - Logical consistency (0-5)
 
-    判定阈值：
-    - Pass: 总分 >= 4.0 且无维度 < 3.5
-    - Review: 总分 3.5-3.9 或任一维度 3.0-3.4
-    - Rewrite: 总分 < 3.5 或任一维度 < 3.0
+    Decision thresholds:
+    - Pass: total score >= 4.0 and no dimension < 3.5
+    - Review: total score 3.5-3.9 or any dimension 3.0-3.4
+    - Rewrite: total score < 3.5 or any dimension < 3.0
     """
-    # 必须提供 script_id 或 script_content
+    # Either script_id or script_content must be provided
     if not request.script_id and not request.script_content:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="必须提供 script_id 或 script_content",
+            detail="Either script_id or script_content must be provided",
         )
 
     from app.services.ai_service import ai_service
 
     score_service = ScriptScoreService(ai_service)
 
-    # 如果提供了 script_id，从数据库加载
+    # If script_id is provided, load from the database
     if request.script_id:
         from app.services.scoring import score_script_from_db
 
@@ -106,7 +106,7 @@ async def score_script(
                 detail=str(e),
             )
 
-    # 使用直接传入的内容
+    # Use directly provided content
     story_ctx = None
     if request.story_title or request.story_genre or request.market_region:
         story_ctx = {
@@ -140,31 +140,31 @@ async def generate_traffic_sheet(
     db: Session = Depends(get_db),
 ) -> TrafficSheet:
     """
-    从剧本生成投流表（Traffic Sheet）。
+    Generate a traffic sheet from a script (Traffic Sheet).
 
-    生成 15/30/60 秒投流素材，包含：
-    - asset_id: 素材唯一标识
-    - duration_seconds: 时长
-    - hook_type: 钩子类型
-    - key_line: 字幕锚点
-    - visual_hook: 视觉钩子
-    - shot_list: 关键镜头列表
-    - cliff_or_cta: 卡点/CTA 文案
+    Generate 15/30/60-second traffic assets, including:
+    - asset_id: Unique asset identifier
+    - duration_seconds: Duration
+    - hook_type: Hook type
+    - key_line: Subtitle anchor
+    - visual_hook: Visual hook
+    - shot_list: List of key shots
+    - cliff_or_cta: Beat/CTA copy
 
-    目标：每 10 集产出 15s 12-20 条 + 30s 6-10 条 + 60s 2-4 条
+    Target: for every 10 episodes, produce 12-20 15s assets, 6-10 30s assets, and 2-4 60s assets
     """
-    # 必须提供 script_id 或 script_content
+    # Either script_id or script_content must be provided
     if not request.script_id and not request.script_content:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="必须提供 script_id 或 script_content",
+            detail="Either script_id or script_content must be provided",
         )
 
     from app.services.ai_service import ai_service
 
     traffic_service = TrafficSheetService(ai_service)
 
-    # 如果提供了 script_id，从数据库加载
+    # If script_id is provided, load from the database
     if request.script_id:
         from app.services.scoring import generate_traffic_sheet_from_db
 
@@ -183,7 +183,7 @@ async def generate_traffic_sheet(
                 detail=str(e),
             )
 
-    # 使用直接传入的内容
+    # Use directly provided content
     story_ctx = None
     if request.story_title or request.story_genre or request.market_region:
         story_ctx = {
@@ -215,7 +215,7 @@ async def get_script_score(
     db: Session = Depends(get_db),
 ) -> ScriptScoreResult:
     """
-    根据剧本 ID 获取评分（便捷接口）。
+    Get the score by script ID (convenience endpoint).
     """
     from app.services.ai_service import ai_service
     from app.services.scoring import score_script_from_db
@@ -244,7 +244,7 @@ async def get_traffic_sheet(
     db: Session = Depends(get_db),
 ) -> TrafficSheet:
     """
-    根据剧本 ID 生成投流表（便捷接口）。
+    Generate the traffic sheet by script ID (convenience endpoint).
     """
     from app.services.ai_service import ai_service
     from app.services.scoring import generate_traffic_sheet_from_db

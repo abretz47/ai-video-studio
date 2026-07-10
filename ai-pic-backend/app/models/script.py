@@ -17,67 +17,67 @@ from sqlalchemy.orm import relationship
 
 
 class Story(SoftDeleteBusinessMixin, Base):
-    """故事概要模型"""
+    """story outline model"""
 
     __tablename__ = "stories"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(
-        Integer, ForeignKey("users.id"), nullable=True, comment="所属用户ID"
+        Integer, ForeignKey("users.id"), nullable=True, comment="Suo Shu userID"
     )
-    title = Column(String(255), nullable=False, comment="故事标题")
+    title = Column(String(255), nullable=False, comment="story title")
     story_format = Column(
         String(32),
         nullable=False,
         default="short_drama",
-        comment="故事形态：short_drama/tv_series/film",
+        comment="story Xing Tai: short_drama/tv_series/film",
     )
-    genre = Column(String(50), nullable=False, comment="故事类型")
-    theme = Column(String(255), comment="故事主题")
-    target_audience = Column(String(100), comment="目标受众")
-    duration_minutes = Column(Integer, comment="预计总时长（分钟）")
+    genre = Column(String(50), nullable=False, comment="story type")
+    theme = Column(String(255), comment="story Zhu Ti")
+    target_audience = Column(String(100), comment="target Shou Zhong")
+    duration_minutes = Column(Integer, comment="Yu Ji total duration(minutes)")
     default_aspect_ratio = Column(
         String(8),
         nullable=False,
         default="9:16",
-        comment="默认画幅：9:16/16:9",
+        comment="default Hua Fu: 9:16/16:9",
     )
 
-    # 故事内容
-    premise = Column(Text, comment="故事前提")
-    synopsis = Column(Text, comment="故事概要")
-    main_conflict = Column(Text, comment="主要冲突")
-    resolution = Column(Text, comment="解决方案")
+    # story content
+    premise = Column(Text, comment="story Qian Ti")
+    synopsis = Column(Text, comment="story outline")
+    main_conflict = Column(Text, comment="Main conflict")
+    resolution = Column(Text, comment="Jie Jue Fang An")
 
-    # 角色信息
-    main_characters = Column(JSON, comment="主要角色列表")
-    character_relationships = Column(JSON, comment="角色关系")
+    # Character information
+    main_characters = Column(JSON, comment="Main characterlist")
+    character_relationships = Column(JSON, comment="character relationship")
 
-    # 设定信息
-    setting_time = Column(String(100), comment="时间设定")
-    setting_location = Column(String(255), comment="地点设定")
-    world_building = Column(Text, comment="世界观设定")
+    # setting Xin Xi
+    setting_time = Column(String(100), comment="time setting")
+    setting_location = Column(String(255), comment="Di Dian setting")
+    world_building = Column(Text, comment="Shi Jie Guan setting")
 
-    # AI生成相关
-    generation_prompt = Column(Text, comment="生成提示词")
-    ai_model = Column(String(50), comment="使用的AI模型")
-    generation_params = Column(JSON, comment="生成参数")
+    # AI generation related
+    generation_prompt = Column(Text, comment="Generation prompt")
+    ai_model = Column(String(50), comment="AI model used")
+    generation_params = Column(JSON, comment="Generation parameters")
 
-    # 状态和元数据
+    # Status and metadata
     status = Column(
-        String(20), default="draft", comment="状态：draft, approved, published"
+        String(20), default="draft", comment="status: draft, approved, published"
     )
-    is_public = Column(Boolean, default=False, comment="是否公开")
-    tags = Column(JSON, comment="标签列表")
-    extra_metadata = Column(JSON, comment="额外元数据")
+    is_public = Column(Boolean, default=False, comment="Shi Fou Gong Kai")
+    tags = Column(JSON, comment="Tag list")
+    extra_metadata = Column(JSON, comment="Additional metadata")
 
-    # 时间戳
-    created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
+    # time Chuo
+    created_at = Column(DateTime, default=datetime.utcnow, comment="create time")
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间"
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="update time"
     )
 
-    # 关系
+    # relationship
     episodes = relationship(
         "Episode", back_populates="story", cascade="all, delete-orphan"
     )
@@ -87,54 +87,54 @@ class Story(SoftDeleteBusinessMixin, Base):
 
 
 class Episode(SoftDeleteBusinessMixin, Base):
-    """剧集模型"""
+    """episode model"""
 
     __tablename__ = "episodes"
 
     id = Column(Integer, primary_key=True, index=True)
     story_id = Column(
-        Integer, ForeignKey("stories.id"), nullable=False, comment="故事ID"
+        Integer, ForeignKey("stories.id"), nullable=False, comment="storyID"
     )
     story_business_id = Column(
-        String(32), index=True, nullable=True, comment="业务主键：故事 business_id"
+        String(32), index=True, nullable=True, comment="Ye Wu Zhu Jian: story business_id"
     )
-    episode_number = Column(Integer, nullable=False, comment="集数")
-    title = Column(String(255), nullable=False, comment="剧集标题")
+    episode_number = Column(Integer, nullable=False, comment="Ji Shu")
+    title = Column(String(255), nullable=False, comment="episode title")
 
-    # 剧集内容
-    summary = Column(Text, comment="剧集概要")
-    plot_points = Column(JSON, comment="情节要点")
-    character_arcs = Column(JSON, comment="角色发展")
-    conflicts = Column(JSON, comment="冲突点")
+    # episode content
+    summary = Column(Text, comment="episode outline")
+    plot_points = Column(JSON, comment="Qing Jie Yao Dian")
+    character_arcs = Column(JSON, comment="character Fa Zhan")
+    conflicts = Column(JSON, comment="Chong Tu Dian")
 
-    # 技术信息
-    duration_minutes = Column(Integer, comment="预计时长（分钟）")
-    scene_count = Column(Integer, comment="场景数量")
+    # Ji Shu Xin Xi
+    duration_minutes = Column(Integer, comment="Yu Ji when Zhang(minutes)")
+    scene_count = Column(Integer, comment="scene Shu Liang")
     aspect_ratio = Column(
         String(8),
         nullable=True,
-        comment="可选画幅覆盖：9:16/16:9（为空则继承 Story.default_aspect_ratio）",
+        comment="can Xuan Hua Fu Fu Gai: 9:16/16:9(as Kong Ze Ji Cheng Story.default_aspect_ratio)",
     )
 
-    # AI生成相关
-    generation_prompt = Column(Text, comment="生成提示词")
-    ai_model = Column(String(50), comment="使用的AI模型")
-    generation_params = Column(JSON, comment="生成参数")
+    # AI generation related
+    generation_prompt = Column(Text, comment="Generation prompt")
+    ai_model = Column(String(50), comment="AI model used")
+    generation_params = Column(JSON, comment="Generation parameters")
 
-    # 状态和元数据
+    # Status and metadata
     status = Column(
-        String(20), default="draft", comment="状态：draft, approved, published"
+        String(20), default="draft", comment="status: draft, approved, published"
     )
-    tags = Column(JSON, comment="标签列表")
-    extra_metadata = Column(JSON, comment="额外元数据")
+    tags = Column(JSON, comment="Tag list")
+    extra_metadata = Column(JSON, comment="Additional metadata")
 
-    # 时间戳
-    created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
+    # time Chuo
+    created_at = Column(DateTime, default=datetime.utcnow, comment="create time")
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间"
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="update time"
     )
 
-    # 关系
+    # relationship
     story = relationship("Story", back_populates="episodes")
     scripts = relationship(
         "Script", back_populates="episode", cascade="all, delete-orphan"
@@ -145,102 +145,102 @@ class Episode(SoftDeleteBusinessMixin, Base):
 
 
 class Script(SoftDeleteBusinessMixin, Base):
-    """剧本模型"""
+    """script model"""
 
     __tablename__ = "scripts"
 
     id = Column(Integer, primary_key=True, index=True)
     episode_id = Column(
-        Integer, ForeignKey("episodes.id"), nullable=False, comment="剧集ID"
+        Integer, ForeignKey("episodes.id"), nullable=False, comment="episodeID"
     )
     episode_business_id = Column(
-        String(32), index=True, nullable=True, comment="业务主键：剧集 business_id"
+        String(32), index=True, nullable=True, comment="Ye Wu Zhu Jian: episode business_id"
     )
-    title = Column(String(255), nullable=False, comment="剧本标题")
+    title = Column(String(255), nullable=False, comment="script title")
 
-    # 剧本内容
-    content = Column(Text, comment="剧本内容")
-    scenes = Column(JSON, comment="场景列表")
-    dialogues = Column(JSON, comment="对话列表")
-    stage_directions = Column(JSON, comment="舞台指示")
+    # script content
+    content = Column(Text, comment="script content")
+    scenes = Column(JSON, comment="scene list")
+    dialogues = Column(JSON, comment="Dui Hua list")
+    stage_directions = Column(JSON, comment="Wu Tai Zhi Shi")
 
-    # 格式信息
-    format_type = Column(String(50), default="screenplay", comment="剧本格式类型")
-    language = Column(String(10), default="zh-CN", comment="语言")
+    # format Xin Xi
+    format_type = Column(String(50), default="screenplay", comment="script format type")
+    language = Column(String(10), default="zh-CN", comment="Yu Yan")
 
-    # 技术信息
-    page_count = Column(Integer, comment="页数")
-    word_count = Column(Integer, comment="字数")
-    character_count = Column(Integer, comment="字符数")
+    # Ji Shu Xin Xi
+    page_count = Column(Integer, comment="Ye Shu")
+    word_count = Column(Integer, comment="word count")
+    character_count = Column(Integer, comment="Zi Fu Shu")
 
-    # AI生成相关
-    generation_prompt = Column(Text, comment="生成提示词")
-    ai_model = Column(String(50), comment="使用的AI模型")
-    generation_params = Column(JSON, comment="生成参数")
+    # AI generation related
+    generation_prompt = Column(Text, comment="Generation prompt")
+    ai_model = Column(String(50), comment="AI model used")
+    generation_params = Column(JSON, comment="Generation parameters")
 
-    # 状态和元数据
+    # Status and metadata
     status = Column(
-        String(20), default="draft", comment="状态：draft, approved, published"
+        String(20), default="draft", comment="status: draft, approved, published"
     )
-    version = Column(String(20), default="1.0", comment="版本号")
-    tags = Column(JSON, comment="标签列表")
-    extra_metadata = Column(JSON, comment="额外元数据")
-    storyboard_plan = Column(JSON, comment="最新分镜规划")
-    storyboard_version = Column(Integer, default=1, comment="分镜版本号")
-    storyboard_updated_at = Column(DateTime, comment="分镜最近更新时间")
+    version = Column(String(20), default="1.0", comment="Ban Ben Hao")
+    tags = Column(JSON, comment="Tag list")
+    extra_metadata = Column(JSON, comment="Additional metadata")
+    storyboard_plan = Column(JSON, comment="Zui Xin storyboard Gui Hua")
+    storyboard_version = Column(Integer, default=1, comment="storyboard Ban Ben Hao")
+    storyboard_updated_at = Column(DateTime, comment="storyboard Zui Jin update time")
 
-    # 时间戳
-    created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
+    # time Chuo
+    created_at = Column(DateTime, default=datetime.utcnow, comment="create time")
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间"
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="update time"
     )
 
-    # 关系
+    # relationship
     episode = relationship("Episode", back_populates="scripts")
 
 
 class StoryCharacter(SoftDeleteBusinessMixin, Base):
-    """故事角色关联模型"""
+    """story character Guan Lian model"""
 
     __tablename__ = "story_characters"
 
     id = Column(Integer, primary_key=True, index=True)
     story_id = Column(
-        Integer, ForeignKey("stories.id"), nullable=False, comment="故事ID"
+        Integer, ForeignKey("stories.id"), nullable=False, comment="storyID"
     )
     story_business_id = Column(
-        String(32), index=True, nullable=True, comment="业务主键：故事 business_id"
+        String(32), index=True, nullable=True, comment="Ye Wu Zhu Jian: story business_id"
     )
     virtual_ip_id = Column(
-        Integer, ForeignKey("virtual_ips.id"), nullable=False, comment="虚拟IP ID"
+        Integer, ForeignKey("virtual_ips.id"), nullable=False, comment="Xu NiIP ID"
     )
     virtual_ip_business_id = Column(
-        String(32), index=True, nullable=True, comment="业务主键：虚拟IP business_id"
+        String(32), index=True, nullable=True, comment="Ye Wu Zhu Jian: Xu NiIP business_id"
     )
 
-    # 角色信息
-    character_name = Column(String(100), comment="角色名称")
+    # Character information
+    character_name = Column(String(100), comment="character name")
     role_type = Column(
-        String(50), comment="角色类型：protagonist, antagonist, supporting"
+        String(50), comment="character type: protagonist, antagonist, supporting"
     )
-    importance = Column(Integer, default=1, comment="重要度：1-5")
+    importance = Column(Integer, default=1, comment="Zhong Yao Du: 1-5")
 
-    # 角色设定
-    personality = Column(Text, comment="性格特点")
-    background = Column(Text, comment="背景故事")
-    motivation = Column(Text, comment="动机")
-    character_arc = Column(Text, comment="角色发展弧线")
+    # character setting
+    personality = Column(Text, comment="Xing Ge Te Dian")
+    background = Column(Text, comment="background story")
+    motivation = Column(Text, comment="Dong Ji")
+    character_arc = Column(Text, comment="character Fa Zhan Hu Xian")
 
-    # 关系设定
-    relationships = Column(JSON, comment="与其他角色的关系")
+    # relationship setting
+    relationships = Column(JSON, comment="and Qi Ta character relationship")
 
-    # 时间戳
-    created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
+    # time Chuo
+    created_at = Column(DateTime, default=datetime.utcnow, comment="create time")
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间"
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="update time"
     )
 
-    # 关系
+    # relationship
     story = relationship("Story", back_populates="story_characters")
     virtual_ip = relationship("VirtualIP")
 
@@ -259,29 +259,29 @@ class StoryCharacter(SoftDeleteBusinessMixin, Base):
 
 
 class ScriptTemplate(SoftDeleteBusinessMixin, Base):
-    """剧本模板模型"""
+    """script template model"""
 
     __tablename__ = "script_templates"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, comment="模板名称")
-    category = Column(String(50), comment="模板分类")
+    name = Column(String(255), nullable=False, comment="template name")
+    category = Column(String(50), comment="template Fen Lei")
 
-    # 模板内容
-    template_content = Column(Text, comment="模板内容")
-    structure = Column(JSON, comment="结构定义")
-    variables = Column(JSON, comment="变量定义")
+    # template content
+    template_content = Column(Text, comment="template content")
+    structure = Column(JSON, comment="structure Ding Yi")
+    variables = Column(JSON, comment="Bian Liang Ding Yi")
 
-    # 使用信息
-    usage_count = Column(Integer, default=0, comment="使用次数")
-    rating = Column(Float, comment="评分")
+    # Shi Yong Xin Xi
+    usage_count = Column(Integer, default=0, comment="Shi Yong Ci Shu")
+    rating = Column(Float, comment="Ping Fen")
 
-    # 状态
-    is_active = Column(Boolean, default=True, comment="是否激活")
-    is_public = Column(Boolean, default=False, comment="是否公开")
+    # status
+    is_active = Column(Boolean, default=True, comment="Shi Fou Ji Huo")
+    is_public = Column(Boolean, default=False, comment="Shi Fou Gong Kai")
 
-    # 时间戳
-    created_at = Column(DateTime, default=datetime.utcnow, comment="创建时间")
+    # time Chuo
+    created_at = Column(DateTime, default=datetime.utcnow, comment="create time")
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="更新时间"
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, comment="update time"
     )

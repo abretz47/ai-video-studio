@@ -16,10 +16,10 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class RequestFormatter(logging.Formatter):
-    """自定义日志格式化器，支持请求追踪"""
+    """Zi Ding Yi log Ge Shi Hua Qi, support request Zhui Zong"""
 
     def formatTime(self, record, datefmt=None):
-        """格式化时间为北京时间"""
+        """Ge Shi Hua time as Beijing time"""
         bj_time = pytz.timezone("Asia/Shanghai")
         ct = datetime.fromtimestamp(record.created, bj_time)
         if datefmt:
@@ -32,21 +32,21 @@ class RequestFormatter(logging.Formatter):
         return s
 
     def format(self, record):
-        """添加请求上下文信息到日志记录"""
+        """Tian Jia request context Xin Xi to log Ji Lu"""
         for key, value in get_log_context().items():
             setattr(record, key, value)
         return super().format(record)
 
 
 class FeishuLogHandler(logging.Handler):
-    """飞书Webhook日志处理器，用于错误通知"""
+    """Fei ShuWebhooklog Chu Li Qi, Yong Yu error Tong Zhi"""
 
     def __init__(self, webhook_url: str):
         super().__init__(level=logging.ERROR)
         self.webhook_url = webhook_url
 
     def emit(self, record):
-        """发送错误日志到飞书"""
+        """Fa Song error log to Fei Shu"""
         log_entry = self.format(record)
         payload = {
             "msg_type": "text",
@@ -56,19 +56,19 @@ class FeishuLogHandler(logging.Handler):
             response = requests.post(self.webhook_url, json=payload, timeout=5)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            # 避免循环日志，直接print错误
+            # avoid Xun Huan log, directlyprinterror
             print(f"Failed to send log to Feishu: {e}")
 
 
 class ColoredRequestFormatter(RequestFormatter, colorlog.ColoredFormatter):
-    """彩色日志格式化器"""
+    """Cai Se log Ge Shi Hua Qi"""
 
     def __init__(self, fmt, **kwargs):
         super().__init__(fmt, **kwargs)
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
-    """FastAPI日志中间件"""
+    """FastAPIlog Zhong Jian Jian"""
 
     async def dispatch(self, request: Request, call_next):
         request_id = (
@@ -114,8 +114,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             reset_log_context()
 
     def _get_client_ip(self, request: Request) -> str:
-        """获取客户端真实IP"""
-        # 尝试从代理头获取真实IP
+        """get client Zhen ShiIP"""
+        # Chang Shi Cong Dai Li Tou get Zhen ShiIP
         if "X-Forwarded-For" in request.headers:
             return request.headers["X-Forwarded-For"].split(",")[0].strip()
         elif "X-Real-IP" in request.headers:
@@ -126,7 +126,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
     async def _log_request_with_body(
         self, request: Request, logger: logging.Logger, body: bytes
     ):
-        """记录请求信息（使用已读取的body，避免重复读取）"""
+        """Ji Lu request Xin Xi(Shi Yong readbody, avoid Chong Fu read)"""
         method = request.method
         url = str(request.url)
         logger.info(f"Request started: {method} {url}")
@@ -150,10 +150,10 @@ class LoggingMiddleware(BaseHTTPMiddleware):
     async def _log_response(
         self, response: Response, logger: logging.Logger, process_time: float
     ):
-        """记录响应信息"""
+        """Ji Lu response Xin Xi"""
         status_code = response.status_code
 
-        # 根据状态码选择日志级别
+        # Gen Ju status Ma Xuan Ze log Ji Bie
         if status_code >= 500:
             log_level = logging.ERROR
         elif status_code >= 400:
@@ -183,33 +183,33 @@ def setup_logging(
     backup_count: int = 7,
 ) -> logging.Logger:
     """
-    设置应用日志配置
+ She Zhi Ying Yong log configuration
 
     Args:
-        app_name: 应用名称
-        log_level: 日志级别
-        log_dir: 日志目录
-        enable_file_logging: 是否启用文件日志
-        enable_console_logging: 是否启用控制台日志
-        enable_jsonl_logging: 是否启用 JSONL 日志
-        feishu_webhook_url: 飞书Webhook URL（可选）
-        jsonl_log_path: JSONL 日志文件路径
-        backup_count: 日志备份数量
+ app_name: Ying Yong name
+ log_level: log Ji Bie
+ log_dir: log Mu Lu
+ enable_file_logging: Shi Fou Qi Yong file log
+ enable_console_logging: Shi Fou Qi Yong Kong Zhi Tai log
+ enable_jsonl_logging: Shi Fou Qi Yong JSONL log
+ feishu_webhook_url: Fei ShuWebhook URL(can Xuan)
+ jsonl_log_path: JSONL log file path
+ backup_count: log backup Shu Liang
 
     Returns:
-        配置好的logger实例
+ configuration Haologgerinstance
     """
-    # 创建logger
+    # createlogger
     logger = logging.getLogger(app_name)
     logger.setLevel(getattr(logging, log_level.upper()))
 
-    # 清除现有处理器
+    # Qing Chu existing Chu Li Qi
     logger.handlers.clear()
 
-    # 获取主机名
+    # get Zhu Ji Ming
     host_name = socket.gethostname()
 
-    # 日志格式
+    # log format
     log_format = (
         "%(asctime)s [%(levelname)s] ai-video-studio.com/ai-video-studio "
         + host_name
@@ -217,7 +217,7 @@ def setup_logging(
     )
     formatter = RequestFormatter(log_format)
 
-    # 彩色控制台日志格式
+    # Cai Se Kong Zhi Tai log format
     color_log_format = (
         "%(log_color)s%(asctime)s [%(levelname)s] ai-video-studio.com/ai-video-studio "
         + host_name
@@ -234,7 +234,7 @@ def setup_logging(
         },
     )
 
-    # 文件日志处理器
+    # file log Chu Li Qi
     if enable_file_logging:
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
@@ -246,7 +246,7 @@ def setup_logging(
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
-    # 控制台日志处理器
+    # Kong Zhi Tai log Chu Li Qi
     if enable_console_logging:
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(color_formatter)
@@ -255,7 +255,7 @@ def setup_logging(
     if enable_jsonl_logging:
         logger.addHandler(JsonlLogHandler(jsonl_log_path))
 
-    # 飞书日志处理器（仅错误级别）
+    # Fei Shu log Chu Li Qi(only error Ji Bie)
     if feishu_webhook_url:
         feishu_handler = FeishuLogHandler(feishu_webhook_url)
         feishu_handler.setFormatter(formatter)
@@ -264,7 +264,7 @@ def setup_logging(
     else:
         logger.info("Feishu error notification disabled")
 
-    # 禁止日志传播到根logger
+    # Jin Zhi log Chuan Bo to Genlogger
     logger.propagate = False
 
     logger.info(f"Logging initialized for {app_name}")
@@ -272,5 +272,5 @@ def setup_logging(
 
 
 def get_logger(name: str = "ai-video-studio") -> logging.Logger:
-    """获取应用logger实例"""
+    """get Ying Yongloggerinstance"""
     return logging.getLogger(name)

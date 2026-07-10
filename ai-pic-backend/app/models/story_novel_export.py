@@ -17,23 +17,23 @@ class StoryNovelExport(SoftDeleteBusinessMixin, Base):
         String(32),
         nullable=True,
         index=True,
-        comment="业务主键：故事 business_id",
+        comment="Ye Wu Zhu Jian: story business_id",
     )
     task_id = Column(Integer, ForeignKey("tasks.id"), nullable=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
 
-    style = Column(String(32), nullable=False, default="zhihu", comment="输出风格")
-    target_words = Column(Integer, nullable=False, comment="目标字数")
-    chapter_count = Column(Integer, nullable=True, comment="章节数")
-    total_words = Column(Integer, nullable=True, comment="实际字数")
-    model = Column(String(128), nullable=True, comment="文本生成模型（原样）")
-    temperature = Column(Float, nullable=True, comment="生成温度")
+    style = Column(String(32), nullable=False, default="zhihu", comment="output style")
+    target_words = Column(Integer, nullable=False, comment="target word count")
+    chapter_count = Column(Integer, nullable=True, comment="Zhang Jie Shu")
+    total_words = Column(Integer, nullable=True, comment="Shi Ji word count")
+    model = Column(String(128), nullable=True, comment="text Sheng Cheng model(Yuan Yang)")
+    temperature = Column(Float, nullable=True, comment="Sheng Cheng Wen Du")
 
-    file_relative_path = Column(String(512), nullable=True, comment="导出文件相对路径")
+    file_relative_path = Column(String(512), nullable=True, comment="Dao Chu file Xiang Dui Lu Jing")
     content_text = Column(
         Text().with_variant(mysql.LONGTEXT(), "mysql"),
         nullable=False,
-        comment="导出内容文本（可能较长）",
+        comment="Dao Chu content text(Ke Neng Jiao Zhang)",
     )
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())

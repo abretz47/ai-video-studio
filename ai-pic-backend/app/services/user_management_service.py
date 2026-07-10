@@ -1,6 +1,6 @@
-"""用户管理服务
+"""user Guan Li service
 
-提供用户激活、审批、角色管理等核心业务逻辑
+Ti Gong user Ji Huo, Shen Pi, character Guan Li Deng core Ye Wu Luo Ji
 """
 
 import json
@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session
 
 
 class UserManagementService:
-    """用户管理服务类"""
+    """user Guan Li service Lei"""
 
     def __init__(self, db: Session):
         self.db = db
@@ -29,10 +29,10 @@ class UserManagementService:
         role_filter: Optional[str] = None,
         search: Optional[str] = None,
     ) -> Tuple[List[User], int]:
-        """获取用户列表"""
+        """get user list"""
         query = self.db.query(User).filter(User.is_deleted == False)  # noqa: E712
 
-        # 状态筛选
+        # status Shai Xuan
         if status_filter == "pending":
             query = query.filter(
                 and_(User.is_active == False, User.is_approved == False)
@@ -44,7 +44,7 @@ class UserManagementService:
         elif status_filter == "locked":
             query = query.filter(User.account_locked_until > datetime.utcnow())
 
-        # 角色筛选
+        # character Shai Xuan
         if role_filter == "admin":
             query = query.filter(User.is_admin == True)
         elif role_filter == "superuser":
@@ -54,7 +54,7 @@ class UserManagementService:
                 and_(User.is_admin == False, User.is_superuser == False)
             )
 
-        # 搜索
+        # Sou Suo
         if search:
             search_term = f"%{search}%"
             query = query.filter(
@@ -65,10 +65,10 @@ class UserManagementService:
                 )
             )
 
-        # 获取总数
+        # get Zong Shu
         total = query.count()
 
-        # 分页
+        # Fen Ye
         offset = (page - 1) * size
         users = query.order_by(desc(User.created_at)).offset(offset).limit(size).all()
 
@@ -82,14 +82,14 @@ class UserManagementService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> User:
-        """审批用户"""
+        """Shen Pi user"""
         user = (
             self.db.query(User)
             .filter(User.id == user_id, User.is_deleted == False)  # noqa: E712
             .first()
         )
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User not found")
 
         old_values = {
             "is_approved": user.is_approved,
@@ -109,7 +109,7 @@ class UserManagementService:
             user.is_active = False
             action = "USER_REJECTED"
         else:
-            raise HTTPException(status_code=400, detail="无效的操作类型")
+            raise HTTPException(status_code=400, detail="Wu Xiao Cao Zuo type")
 
         new_values = {
             "is_approved": user.is_approved,
@@ -119,7 +119,7 @@ class UserManagementService:
             "reason": approval_data.reason,
         }
 
-        # 记录审计日志
+        # Record audit log
         self._create_audit_log(
             user_id=user_id,
             admin_user_id=admin_user.id,
@@ -144,18 +144,18 @@ class UserManagementService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> User:
-        """更新用户角色"""
+        """update user character"""
         user = (
             self.db.query(User)
             .filter(User.id == user_id, User.is_deleted == False)  # noqa: E712
             .first()
         )
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User not found")
 
-        # 防止降级自己的权限
+        # Fang Zhi Jiang Ji Zi Ji permission
         if user.id == admin_user.id:
-            raise HTTPException(status_code=400, detail="不能修改自己的权限")
+            raise HTTPException(status_code=400, detail="cannot Xiu Gai Zi Ji permission")
 
         old_values = {"is_admin": user.is_admin, "is_superuser": user.is_superuser}
 
@@ -166,7 +166,7 @@ class UserManagementService:
 
         new_values = {"is_admin": user.is_admin, "is_superuser": user.is_superuser}
 
-        # 记录审计日志
+        # Record audit log
         self._create_audit_log(
             user_id=user_id,
             admin_user_id=admin_user.id,
@@ -191,18 +191,18 @@ class UserManagementService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> User:
-        """暂停用户"""
+        """Zan Ting user"""
         user = (
             self.db.query(User)
             .filter(User.id == user_id, User.is_deleted == False)  # noqa: E712
             .first()
         )
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User not found")
 
-        # 防止暂停自己
+        # Fang Zhi Zan Ting Zi Ji
         if user.id == admin_user.id:
-            raise HTTPException(status_code=400, detail="不能暂停自己的账户")
+            raise HTTPException(status_code=400, detail="cannot Zan Ting Zi Ji account")
 
         old_values = {
             "is_active": user.is_active,
@@ -222,7 +222,7 @@ class UserManagementService:
             "duration_hours": duration_hours,
         }
 
-        # 记录审计日志
+        # Record audit log
         self._create_audit_log(
             user_id=user_id,
             admin_user_id=admin_user.id,
@@ -245,10 +245,10 @@ class UserManagementService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> User:
-        """重新激活用户"""
+        """retry Ji Huo user"""
         user = self.db.query(User).filter(User.id == user_id).first()
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User not found")
 
         old_values = {
             "is_active": user.is_active,
@@ -266,7 +266,7 @@ class UserManagementService:
             "failed_login_attempts": user.failed_login_attempts,
         }
 
-        # 记录审计日志
+        # Record audit log
         self._create_audit_log(
             user_id=user_id,
             admin_user_id=admin_user.id,
@@ -289,16 +289,16 @@ class UserManagementService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> bool:
-        """删除用户"""
+        """delete user"""
         user = self.db.query(User).filter(User.id == user_id).first()
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User not found")
 
-        # 防止删除自己
+        # Fang Zhi delete Zi Ji
         if user.id == admin_user.id:
-            raise HTTPException(status_code=400, detail="不能删除自己的账户")
+            raise HTTPException(status_code=400, detail="cannot delete Zi Ji account")
 
-        # 记录删除前的用户信息
+        # Ji Lu delete before user Xin Xi
         user_info = {
             "id": user.id,
             "username": user.username,
@@ -307,7 +307,7 @@ class UserManagementService:
             "created_at": user.created_at.isoformat() if user.created_at else None,
         }
 
-        # 记录审计日志
+        # Record audit log
         self._create_audit_log(
             user_id=user_id,
             admin_user_id=admin_user.id,
@@ -324,7 +324,7 @@ class UserManagementService:
         return True
 
     def get_user_stats(self) -> UserStatsResponse:
-        """获取用户统计信息"""
+        """get user Tong Ji Xin Xi"""
         total_users = self.db.query(User).count()
         active_users = self.db.query(User).filter(User.is_active == True).count()
         pending_approval = (
@@ -335,7 +335,7 @@ class UserManagementService:
         suspended_users = self.db.query(User).filter(User.is_active == False).count()
         admin_users = self.db.query(User).filter(User.is_admin == True).count()
 
-        # 最近7天注册用户数
+        # Zui Jin7Tian Zhu Ce Yong Hu Shu
         seven_days_ago = datetime.utcnow() - timedelta(days=7)
         recent_registrations = (
             self.db.query(User).filter(User.created_at >= seven_days_ago).count()
@@ -351,10 +351,10 @@ class UserManagementService:
         )
 
     def generate_activation_token(self, user_id: int) -> str:
-        """生成用户激活令牌"""
+        """Sheng Cheng user Ji Huo Ling Pai"""
         user = self.db.query(User).filter(User.id == user_id).first()
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User not found")
 
         token = str(uuid.uuid4())
         user.activation_token = token
@@ -365,7 +365,7 @@ class UserManagementService:
         return token
 
     def verify_activation_token(self, token: str) -> Optional[User]:
-        """验证激活令牌"""
+        """validation Ji Huo Ling Pai"""
         user = (
             self.db.query(User)
             .filter(
@@ -387,7 +387,7 @@ class UserManagementService:
         return user
 
     def reset_failed_login_attempts(self, user_id: int) -> User:
-        """重置失败登录次数"""
+        """Zhong Zhi failed Deng Lu Ci Shu"""
         user = self.db.query(User).filter(User.id == user_id).first()
         if user:
             user.failed_login_attempts = 0
@@ -397,11 +397,11 @@ class UserManagementService:
         return user
 
     def increment_failed_login_attempts(self, user_id: int) -> User:
-        """增加失败登录次数"""
+        """increase failed Deng Lu Ci Shu"""
         user = self.db.query(User).filter(User.id == user_id).first()
         if user:
             user.failed_login_attempts += 1
-            # 超过5次失败尝试，锁定账户1小时
+            # Chao Guo5Ci failed Chang Shi, lock account1Xiao Shi
             if user.failed_login_attempts >= 5:
                 user.account_locked_until = datetime.utcnow() + timedelta(hours=1)
             self.db.commit()
@@ -418,7 +418,7 @@ class UserManagementService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
     ) -> UserAuditLog:
-        """创建审计日志"""
+        """create Shen Ji log"""
         audit_log = UserAuditLog(
             user_id=user_id,
             admin_user_id=admin_user_id,
@@ -430,14 +430,14 @@ class UserManagementService:
         )
 
         self.db.add(audit_log)
-        self.db.flush()  # 确保ID被分配但不提交事务
+        self.db.flush()  # Que BaoIDFen Pei Dan not submit Shi Wu
 
         return audit_log
 
     def get_user_audit_logs(
         self, user_id: int, page: int = 1, size: int = 20
     ) -> Tuple[List[UserAuditLog], int]:
-        """获取用户审计日志"""
+        """get user Shen Ji log"""
         query = self.db.query(UserAuditLog).filter(UserAuditLog.user_id == user_id)
         total = query.count()
 

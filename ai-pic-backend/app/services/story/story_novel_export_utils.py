@@ -7,8 +7,8 @@ from typing import Optional
 
 from fastapi import HTTPException
 
-ZH_SUMMARY_MARKER = "【本章小结】"
-ZH_CLIFFHANGER_MARKER = "【本章卡点】"
+ZH_SUMMARY_MARKER = "[Ben Zhang Xiao Jie]"
+ZH_CLIFFHANGER_MARKER = "[Ben Zhang cliffhanger]"
 
 NOVEL_RESULT_PREFIX = "novel_file:"
 

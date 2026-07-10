@@ -52,12 +52,12 @@ def run_episode_generation_task(
         task = task_repo.get_by_id(task_id)
         if task:
             task.status = TaskStatus.PROCESSING
-            _update_task_progress(db, task, "剧集生成：准备调用模型")
+            _update_task_progress(db, task, "episode Sheng Cheng: Zhun Bei call model")
 
         request = EpisodeGenerationRequest.model_validate(request_dict)
         story = StoryRepository(db).get_by_user(request.story_id, user_id)
         if not story:
-            raise RuntimeError("故事不存在")
+            raise RuntimeError("Story not found")
 
         story_data = build_story_data(story)
         apply_marketing_overrides(story_data, build_marketing_overrides(request))
@@ -78,7 +78,7 @@ def run_episode_generation_task(
                 prompt=meta.get("prompt"),
                 agent_run=outline_agent_run,
             )
-            _progress("剧集生成：大纲校验通过，写入故事信息")
+            _progress("episode Sheng Cheng: Da Gang Jiao Yan through, write story Xin Xi")
             ensure_outline_treatment(db, story, outlines, meta)
 
         def _on_episode(episode_obj: Dict[str, Any], meta: Dict[str, Any]) -> None:
@@ -113,7 +113,7 @@ def run_episode_generation_task(
             ),
         )
         if not result:
-            raise RuntimeError("AI剧集生成失败")
+            raise RuntimeError("AIepisode Sheng Cheng failed")
 
         process_episode_generation_result(
             db=db,
@@ -196,7 +196,7 @@ def _complete_task(
     final_desc = (
         f"剧集生成完成：共写入 {len(created_ids)} 集"
         if created_ids
-        else "剧集生成完成但无新剧集写入"
+        else "episode Sheng Cheng complete Dan none Xin Ju Ji write"
     )
     _update_task_progress(db, task, final_desc)
 

@@ -7,7 +7,7 @@ DIALOGUE_RE = re.compile(
     r"^([\u4e00-\u9fa5A-Za-z0-9·（）()VvOoSs\.\s，,、]{1,40})[：:]\s*(.+)$"
 )
 SCENE_HEADER_RE = re.compile(
-    r"(^\[第?\d+场\])|(^场景\s*\d+)|(^Scene\s*\d+)|(^INT\.|^EXT\.)|(^第\d+集)|(^\d+[-－]\d+\s+(内|外|内/外|外/内)\.)",
+    r"(^\[Di?\d+Chang\])|(^scene\s*\d+)|(^Scene\s*\d+)|(^INT\.|^EXT\.)|(^Di\d+Ji)|(^\d+[-－]\d+\s+(interior|exterior|interior/exterior|exterior/interior)\.)",
     re.I,
 )
 TAG_RE = re.compile(r"【([^】]+)】")
@@ -20,49 +20,49 @@ class PhraseRule:
     suggestion: str
 
 
-# “不可拍”/“不可直接拍摄”的常见表述（仅对非对白行做提示）
+# "not allowed Pai"/"not allowed directly Pai She"Chang Jian Biao Shu(only Dui Fei dialogue Xing Zuo prompt)
 UNFILMABLE_PHRASES: list[PhraseRule] = [
     PhraseRule(
-        "他感到", "error", "改为可拍动作：低头、手抠衣角、呼吸急促、眼眶发红等。"
+        "Ta Gan Dao", "error", "change to can Pai action: Di Tou, Shou Kou Yi Jiao, Hu Xi Ji Cu, Yan Kuang Fa Hong Deng."
     ),
-    PhraseRule("她感到", "error", "改为可拍动作：后退半步、手指发抖、强撑微笑等。"),
-    PhraseRule("感到", "warn", "避免心理描写，改为镜头可见的动作/表情/环境变化。"),
-    PhraseRule("觉得", "warn", "避免主观判断，改为镜头可见的动作/物理反馈。"),
-    PhraseRule("气氛", "warn", "改为可拍信号：灯光忽灭、风吹倒物体、远处警笛等。"),
-    PhraseRule("氛围", "warn", "改为可拍信号：光影、环境音、道具变化。"),
-    PhraseRule("关系破裂", "error", "改为可拍构图：两人左右两端、背对背、拒绝对视等。"),
-    PhraseRule("两人关系", "warn", "改为具体动作与空间关系，不要抽象描述关系。"),
-    PhraseRule("悲伤", "warn", "改为可拍动作：眼眶发红、吞咽、手指抠紧等。"),
-    PhraseRule("愤怒", "warn", "改为可拍动作：咬牙、拳头攥紧、杯子震动等。"),
-    PhraseRule("压抑", "warn", "改为可拍信号：沉闷低频声、灯光闪烁、空间逼仄构图。"),
+    PhraseRule("Ta Gan Dao", "error", "change to can Pai action: Hou Tui Ban Bu, Shou Zhi Fa Dou, Qiang Cheng Wei Xiao Deng."),
+    PhraseRule("Gan Dao", "warn", "avoid Xin Li Miao Xie, change to shot Ke Jian action/Biao Qing/environment change."),
+    PhraseRule("Jue De", "warn", "avoid Zhu Guan determine, change to shot Ke Jian action/Wu Li Fan Kui."),
+    PhraseRule("Qi Fen", "warn", "change to can Pai Xin Hao: Deng Guang Hu Mie, Feng Chui Dao Wu Ti, Yuan Chu Jing Di Deng."),
+    PhraseRule("atmosphere", "warn", "change to can Pai Xin Hao: Guang Ying, environment Yin, Dao Ju change."),
+    PhraseRule("relationship Po Lie", "error", "change to can Pai Gou Tu: Liang Ren Zuo You Liang Duan, Bei Dui Bei, Ju Jue Dui Shi Deng."),
+    PhraseRule("Liang Ren relationship", "warn", "change to specific action and Kong Jian relationship, Bu Yao Chou Xiang description relationship."),
+    PhraseRule("sad", "warn", "change to can Pai action: Yan Kuang Fa Hong, Tun Yan, Shou Zhi Kou Jin Deng."),
+    PhraseRule("angry", "warn", "change to can Pai action: Yao Ya, Quan Tou Zuan Jin, Bei Zi Zhen Dong Deng."),
+    PhraseRule("Ya Yi", "warn", "change to can Pai Xin Hao: Chen Men Di Pin Sheng, Deng Guang Shan Shuo, Kong Jian Bi Ze Gou Tu."),
 ]
 
 
-TEMPO_TAGS = ("快", "慢", "加速区", "减速区")
-EMOTION_TAG_KEYWORDS = ("情绪目的", "情绪目标")
-SFX_TAG_KEYWORDS = ("音效", "氛围音", "环境音")
-COMMERCIAL_ACTION_MARKERS = ("▲", "【特写】", "【特效】", "【镜头】", "切至")
+TEMPO_TAGS = ("Kuai", "Man", "Jia Su Qu", "Jian Su Qu")
+EMOTION_TAG_KEYWORDS = ("EmotionMu Di", "Emotiontarget")
+SFX_TAG_KEYWORDS = ("sound effect", "atmosphere Yin", "environment Yin")
+COMMERCIAL_ACTION_MARKERS = ("▲", "[close-up]", "[Te Xiao]", "[shot]", "Qie Zhi")
 
 HOOK_MARKERS = (
-    "【音效】",
-    "（音效",
-    "(音效",
+    "[sound effect]",
+    "(sound effect",
+    "(sound effect",
     "▲",
-    "啪",
-    "砰",
-    "咚",
+    "Pa",
+    "Peng",
+    "Dong",
     "！",
     "?",
     "？",
-    "跪",
-    "血",
-    "杀",
+    "Gui",
+    "Xue",
+    "Sha",
 )
 
 UNIMPLEMENTED_CHECKS = [
-    "动作四段式（起势→过程→落点/物理反馈→反应）",
-    "平行任务（对话时手上必须有事做）",
-    "场景极性反转（The Turn）与三重障碍递增",
-    "第三演员道具（通过物体传递关系）",
-    "同框过渡与转场逻辑标签（声音/动作/匹配）",
+    "action Si Duan Shi(Qi Shi→Guo Cheng→Luo Dian/Wu Li Fan Kui→Fan Ying)",
+    "Ping Xing Ren Wu(Dui Hua when Shou Shang Bi Xu You Shi Zuo)",
+    "scene Ji Xing twist(The Turn)and San Chong Zhang Ai Di Zeng",
+    "Di San Yan Yuan Dao Ju(through Wu Ti Chuan Di relationship)",
+    "Tong Kuang Guo Du and Zhuan Chang Luo Ji tag(Sheng Yin/action/Pi Pei)",
 ]

@@ -20,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.add_column(
         "shots",
-        sa.Column("character_ids", sa.JSON(), nullable=True, comment="参与角色ID列表"),
+        sa.Column("character_ids", sa.JSON(), nullable=True, comment="List of participating character IDs"),
     )
 
 

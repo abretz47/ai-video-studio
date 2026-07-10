@@ -34,7 +34,7 @@ async def create_episode(
         story_query = story_query.filter(Story.user_id == current_user.id)
     story = story_query.first()
     if not story:
-        raise HTTPException(status_code=404, detail="故事不存在")
+        raise HTTPException(status_code=404, detail="Story does not exist")
 
     # Check for duplicate episode number
     existing_episode = (
@@ -46,7 +46,7 @@ async def create_episode(
         .first()
     )
     if existing_episode:
-        raise HTTPException(status_code=400, detail="该集数已存在")
+        raise HTTPException(status_code=400, detail="This episode number already exists")
 
     db_episode = Episode(**episode.dict())
     db.add(db_episode)
@@ -163,7 +163,7 @@ async def update_episode(
             .first()
         )
         if existing_episode:
-            raise HTTPException(status_code=400, detail="该集数已存在")
+            raise HTTPException(status_code=400, detail="This episode number already exists")
 
     # Update episode fields
     for field, value in episode_update.dict(exclude_unset=True).items():
@@ -200,7 +200,7 @@ async def update_episode_by_business_id(
             .first()
         )
         if existing_episode:
-            raise HTTPException(status_code=400, detail="该集数已存在")
+            raise HTTPException(status_code=400, detail="This episode number already exists")
 
     for field, value in episode_update.dict(exclude_unset=True).items():
         setattr(episode, field, value)
@@ -222,7 +222,7 @@ async def delete_episode(
     episode.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
 
-    return {"message": "剧集删除成功"}
+    return {"message": "Episode deleted successfully"}
 
 
 @router.delete("/business/{episode_business_id}")
@@ -236,7 +236,7 @@ async def delete_episode_by_business_id(
     episode.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
 
-    return {"message": "剧集删除成功"}
+    return {"message": "Episode deleted successfully"}
 
 
 @router.get("/story/{story_id}")

@@ -19,47 +19,47 @@ class User(SoftDeleteBusinessMixin, Base):
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(100), nullable=True)
 
-    # 基础状态字段
-    is_active = Column(Boolean, default=False, comment="账户是否激活（默认未激活）")
-    is_superuser = Column(Boolean, default=False, comment="是否为超级用户")
-    is_admin = Column(Boolean, default=False, comment="是否为管理员")
+    # basic Zhuang Tai Zi Duan
+    is_active = Column(Boolean, default=False, comment="account Shi Fou Ji Huo(default Wei Ji Huo)")
+    is_superuser = Column(Boolean, default=False, comment="Shi Fou as Chao Ji user")
+    is_admin = Column(Boolean, default=False, comment="Shi Fou as administrator")
 
-    # 用户审批相关
-    is_approved = Column(Boolean, default=False, comment="是否已审批通过")
-    approved_at = Column(DateTime(timezone=True), nullable=True, comment="审批时间")
+    # user Shen Pi related
+    is_approved = Column(Boolean, default=False, comment="Shi Fou Shen Pi through")
+    approved_at = Column(DateTime(timezone=True), nullable=True, comment="Shen Pi time")
     approved_by_user_id = Column(
-        Integer, ForeignKey("users.id"), nullable=True, comment="审批人ID"
+        Integer, ForeignKey("users.id"), nullable=True, comment="Shen Pi RenID"
     )
 
-    # 邮箱验证相关
-    email_verified = Column(Boolean, default=False, comment="邮箱是否已验证")
-    activation_token = Column(String(255), nullable=True, comment="激活令牌")
+    # You Xiang validation related
+    email_verified = Column(Boolean, default=False, comment="You Xiang Shi Fou validation")
+    activation_token = Column(String(255), nullable=True, comment="Ji Huo Ling Pai")
     activation_token_expires = Column(
-        DateTime(timezone=True), nullable=True, comment="激活令牌过期时间"
+        DateTime(timezone=True), nullable=True, comment="Ji Huo Ling Pai Guo Qi time"
     )
 
-    # 登录相关
+    # Deng Lu related
     last_login_at = Column(
-        DateTime(timezone=True), nullable=True, comment="最后登录时间"
+        DateTime(timezone=True), nullable=True, comment="Zui Hou Deng Lu time"
     )
-    failed_login_attempts = Column(Integer, default=0, comment="失败登录次数")
+    failed_login_attempts = Column(Integer, default=0, comment="failed Deng Lu Ci Shu")
     account_locked_until = Column(
-        DateTime(timezone=True), nullable=True, comment="账户锁定到期时间"
+        DateTime(timezone=True), nullable=True, comment="account lock Dao Qi time"
     )
 
-    # 用户偏好
-    language = Column(String(10), default="zh-CN", comment="用户语言偏好")
-    timezone = Column(String(50), default="Asia/Shanghai", comment="用户时区")
+    # user Pian Hao
+    language = Column(String(10), default="zh-CN", comment="user Yu Yan Pian Hao")
+    timezone = Column(String(50), default="Asia/Shanghai", comment="user when Qu")
 
-    # 时间戳
+    # time Chuo
     created_at = Column(
-        DateTime(timezone=True), server_default=func.now(), comment="创建时间"
+        DateTime(timezone=True), server_default=func.now(), comment="create time"
     )
     updated_at = Column(
-        DateTime(timezone=True), onupdate=func.now(), comment="更新时间"
+        DateTime(timezone=True), onupdate=func.now(), comment="update time"
     )
 
-    # 关系
+    # relationship
     images = relationship("Image", back_populates="user")
     tasks = relationship("Task", back_populates="user")
     approved_by = relationship("User", remote_side=[id], backref="approved_users")
@@ -69,7 +69,7 @@ class User(SoftDeleteBusinessMixin, Base):
 
     @property
     def can_login(self):
-        """检查用户是否可以登录"""
+        """Jian Cha Yong Hu Shi FouCanDeng Lu"""
         return (
             self.is_active
             and self.is_approved
@@ -82,7 +82,7 @@ class User(SoftDeleteBusinessMixin, Base):
 
     @property
     def is_account_locked(self):
-        """检查账户是否被锁定"""
+        """check account Shi Fou lock"""
         return (
             self.account_locked_until is not None
             and self.account_locked_until > datetime.utcnow()
@@ -93,27 +93,27 @@ class User(SoftDeleteBusinessMixin, Base):
 
 
 class UserAuditLog(SoftDeleteBusinessMixin, Base):
-    """用户操作审计日志"""
+    """user Cao Zuo Shen Ji log"""
 
     __tablename__ = "user_audit_logs"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(
-        Integer, ForeignKey("users.id"), nullable=False, comment="被操作用户ID"
+        Integer, ForeignKey("users.id"), nullable=False, comment="Cao Zuo userID"
     )
     admin_user_id = Column(
-        Integer, ForeignKey("users.id"), nullable=True, comment="操作管理员ID"
+        Integer, ForeignKey("users.id"), nullable=True, comment="Cao Zuo administratorID"
     )
-    action = Column(String(50), nullable=False, comment="操作类型")
-    old_values = Column(Text, nullable=True, comment="操作前的值(JSON)")
-    new_values = Column(Text, nullable=True, comment="操作后的值(JSON)")
-    ip_address = Column(String(45), nullable=True, comment="IP地址")
-    user_agent = Column(String(500), nullable=True, comment="用户代理")
+    action = Column(String(50), nullable=False, comment="Cao Zuo type")
+    old_values = Column(Text, nullable=True, comment="Cao Zuo Qian Zhi(JSON)")
+    new_values = Column(Text, nullable=True, comment="Cao Zuo after Zhi(JSON)")
+    ip_address = Column(String(45), nullable=True, comment="IPDi Zhi")
+    user_agent = Column(String(500), nullable=True, comment="user Dai Li")
     created_at = Column(
-        DateTime(timezone=True), server_default=func.now(), comment="操作时间"
+        DateTime(timezone=True), server_default=func.now(), comment="Cao Zuo time"
     )
 
-    # 关系
+    # relationship
     user = relationship("User", foreign_keys=[user_id], backref="audit_logs")
     admin_user = relationship(
         "User", foreign_keys=[admin_user_id], backref="admin_actions"

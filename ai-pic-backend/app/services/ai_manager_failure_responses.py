@@ -65,7 +65,7 @@ def provider_prefixed_error(
     error: Optional[str],
     provider: Optional[str],
     *,
-    default_error: str = "未知错误",
+    default_error: str = "Unknown error",
 ) -> str:
     error_msg = (error or "").strip() or default_error
     if provider and not error_msg.lower().startswith(provider.lower()):
@@ -81,7 +81,7 @@ def terminal_failure_response(
     model: Optional[str],
     task_type: AITaskType,
     model_type: AIModelType,
-    default_unknown_error: str = "未知错误",
+    default_unknown_error: str = "Unknown error",
 ) -> AIResponse:
     provider = last_provider or AI_MANAGER_PROVIDER
     error = (

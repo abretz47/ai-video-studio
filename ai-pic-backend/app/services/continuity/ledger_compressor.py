@@ -23,8 +23,8 @@ class CompressionConfig:
 
 # Keywords indicating high importance
 IMPORTANCE_KEYWORDS_ZH = {
-    "high": ["关键", "重要", "核心", "致命", "真相", "秘密", "身份", "死亡", "生死"],
-    "medium": ["冲突", "转折", "悬念", "发现", "揭示", "隐藏", "证据", "线索"],
+    "high": ["key", "Zhong Yao", "core", "Zhi Ming", "truth", "secret", "Shen Fen", "Si Wang", "Sheng Si"],
+    "medium": ["conflict", "Zhuan Zhe", "suspense", "discover", "reveal", "Yin Cang", "evidence", "clue"],
 }
 
 IMPORTANCE_KEYWORDS_EN = {
@@ -208,7 +208,7 @@ def score_info_event(
     who = event.get("who") or ""
     if who in known_characters:
         score += 2.0
-    if who == "观众":
+    if who == "Guan Zhong":
         score += 1.0  # Audience knowledge is important for dramatic irony
 
     # Info content importance
@@ -217,7 +217,7 @@ def score_info_event(
 
     # How method bonus
     how = event.get("how") or ""
-    if any(kw in how for kw in ["揭示", "发现", "目击", "证据"]):
+    if any(kw in how for kw in ["reveal", "discover", "Mu Ji", "evidence"]):
         score += 1.0
 
     return score

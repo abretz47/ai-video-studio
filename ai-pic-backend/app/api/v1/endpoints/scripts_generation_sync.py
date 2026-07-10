@@ -20,6 +20,6 @@ async def generate_script(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """使用AI生成剧本"""
+    """Generate script with AI"""
     script = await generate_script_sync(db, request, current_user)
     return ScriptResponse.from_orm(script)

@@ -160,7 +160,7 @@ async def generate_image(
             model_id=model_id,
             task_type=AITaskType.PORTRAIT_GENERATION,
             model_type=AIModelType.TEXT_TO_IMAGE,
-            message="GoogleProvider 图像生成响应为空",
+            message="GoogleProvider image generation response is empty",
         )
     return AIResponse(
         success=True,
@@ -237,7 +237,7 @@ async def image_to_image(
                 model_id=model_id,
                 task_type=AITaskType.SCENE_GENERATION,
                 model_type=AIModelType.IMAGE_TO_IMAGE,
-                message="缺少参考图像",
+                message="missing reference image",
             )
         parts.extend(await inline_parts_from_urls(urls, config_timeout))
 
@@ -276,7 +276,7 @@ async def image_to_image(
             model_id=model_id,
             task_type=AITaskType.SCENE_GENERATION,
             model_type=AIModelType.IMAGE_TO_IMAGE,
-            message="GoogleProvider 图像生成响应为空",
+            message="GoogleProvider image generation response is empty",
         )
     return AIResponse(
         success=True,

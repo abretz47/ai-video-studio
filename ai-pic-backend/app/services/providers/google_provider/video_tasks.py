@@ -62,7 +62,7 @@ async def submit_video_task(
     if not api_key:
         return AIResponse(
             success=False,
-            error="GoogleProvider 未配置 API Key",
+            error="GoogleProvider API key is not configured",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.VIDEO_GENERATION,
@@ -72,7 +72,7 @@ async def submit_video_task(
     if client is None:
         return AIResponse(
             success=False,
-            error="Google 客户端未初始化",
+            error="Google client is not initialized",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.VIDEO_GENERATION,
@@ -95,7 +95,7 @@ async def submit_video_task(
     if not prompt and not image_url:
         return AIResponse(
             success=False,
-            error="缺少视频生成提示词或首帧图像",
+            error="missing videoGeneration promptHuo Shou Zhen image",
             provider=provider_name,
             model=model_id,
             task_type=AITaskType.VIDEO_GENERATION,
@@ -131,7 +131,7 @@ async def submit_video_task(
         if not operation_name:
             return AIResponse(
                 success=False,
-                error="Google Veo 响应缺少 operation name",
+                error="Google Veo response missing operation name",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.VIDEO_GENERATION,
@@ -190,7 +190,7 @@ async def fetch_video_task_status(
     if not api_key:
         return AIResponse(
             success=False,
-            error="GoogleProvider 未配置 API Key",
+            error="GoogleProvider API key is not configured",
             provider=provider_name,
             model="task_status",
             task_type=AITaskType.VIDEO_GENERATION,
@@ -201,7 +201,7 @@ async def fetch_video_task_status(
     if client is None:
         return AIResponse(
             success=False,
-            error="Google 客户端未初始化",
+            error="Google client is not initialized",
             provider=provider_name,
             model="task_status",
             task_type=AITaskType.VIDEO_GENERATION,

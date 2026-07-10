@@ -237,7 +237,7 @@ def _failed_structured_score(
 
 def _script_failure_category(exc: Exception) -> str:
     evidence = f"{type(exc).__name__}: {exc}"
-    if any(marker in evidence for marker in ("quota", "余额不足", "欠费", "overdue")):
+    if any(marker in evidence for marker in ("quota", "insufficient balance", "overdue balance", "overdue")):
         return "provider_billing_or_quota_failed"
     if "script_structured_quality_failed" in evidence:
         return "script_quality_failed"

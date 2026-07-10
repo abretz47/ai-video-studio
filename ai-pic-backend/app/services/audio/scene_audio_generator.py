@@ -156,7 +156,7 @@ def _collect_character_names(dialogues: list[dict[str, Any]]) -> list[str]:
         if not isinstance(dlg, dict):
             continue
         name = (dlg.get("character") or "").strip()
-        if not name or name == "旁白" or name in names:
+        if not name or name == "narration" or name in names:
             continue
         names.append(name)
     return names

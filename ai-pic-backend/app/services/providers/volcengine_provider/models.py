@@ -13,16 +13,16 @@ def get_available_models() -> List[ModelInfo]:
     return [
         ModelInfo(
             model_id="doubao-lite-4k",
-            name="豆包轻量版",
-            description="轻量级文本生成模型，快速响应",
+            name="Dou Bao Qing Liang Ban",
+            description="Qing Liang Ji text Sheng Cheng model, quick response",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=4096,
             capabilities=["text_generation", "conversation", "fast_response"],
         ),
         ModelInfo(
             model_id="doubao-pro-4k",
-            name="豆包专业版",
-            description="专业级文本生成模型，高质量输出",
+            name="Dou Bao Zhuan Ye Ban",
+            description="Zhuan Ye Ji text Sheng Cheng model, High qualityoutput",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=4096,
             capabilities=[
@@ -34,8 +34,8 @@ def get_available_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id="doubao-pro-32k",
-            name="豆包专业版长文本",
-            description="支持长文本处理的专业版模型",
+            name="Dou Bao Zhuan Ye Ban Zhang text",
+            description="support Zhang Wen Ben Chu Li Zhuan Ye Ban model",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=32768,
             capabilities=[
@@ -47,7 +47,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="doubao-seedream-4-5-251128",
             name="Seedream 4.5",
-            description="方舟大模型服务平台的图片生成模型（Seedream 4.5）",
+            description="Fang Zhou Da model Fu Wu Ping Tai image Sheng Cheng model(Seedream 4.5)",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpg"],
             capabilities=[
@@ -71,16 +71,16 @@ def get_available_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id="volcengine-visual-v1",
-            name="火山视觉生成V1",
-            description="高质量图像生成模型",
+            name="Volcengine Shi Jue Sheng ChengV1",
+            description="High qualityimage Sheng Cheng model",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpg"],
             capabilities=["text_to_image", "style_control", "high_resolution"],
         ),
         ModelInfo(
             model_id="volcengine-visual-pro",
-            name="火山视觉生成Pro",
-            description="专业版图像生成，支持更多风格",
+            name="Volcengine Shi Jue Sheng ChengPro",
+            description="Zhuan Ye Ban image Sheng Cheng, support Geng multiple style",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpg"],
             capabilities=["text_to_image", "multiple_styles", "ultra_quality"],
@@ -88,8 +88,8 @@ def get_available_models() -> List[ModelInfo]:
         *get_video_models(),
         ModelInfo(
             model_id="volcengine-tts-v1",
-            name="火山语音合成",
-            description="高质量语音合成服务",
+            name="Volcengine voice He Cheng",
+            description="High qualityvoice He Cheng service",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav"],
             capabilities=[

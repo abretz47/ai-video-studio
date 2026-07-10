@@ -6,7 +6,7 @@ from app.models.story_structure import Environment
 from app.prompts.manager import prompt_manager
 from app.prompts.templates import PromptTemplate
 
-DEFAULT_ENV_VARIANT_EXTRA_PROMPT = "基于参考环境图生成风格一致的变体，仅调整指定要素（如：时间/天气/灯光/材质），保持空间布局与镜头视角一致"
+DEFAULT_ENV_VARIANT_EXTRA_PROMPT = "Ji Yu reference environment Tu Sheng Cheng style Yi Zhi Bian Ti, only adjust Zhi Ding Yao Su(for example: time/Tian Qi/Deng Guang/Cai Zhi), keep Kong Jian Bu Ju and shot Shi Jiao Yi Zhi"
 
 
 def _compact_text(text: str) -> str:

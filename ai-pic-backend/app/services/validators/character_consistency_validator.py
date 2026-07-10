@@ -116,7 +116,7 @@ class CharacterConsistencyValidator:
     """
 
     # Common narrator/system names to skip
-    NARRATOR_NAMES = {"旁白", "Narrator", "narrator", "画外音", "Voice Over", "VO", "系统", "System"}
+    NARRATOR_NAMES = {"narration", "Narrator", "narrator", "Hua Wai Yin", "Voice Over", "VO", "system", "System"}
 
     def __init__(self) -> None:
         self._profiles: dict[str, CharacterProfile] = {}
@@ -297,7 +297,7 @@ class CharacterConsistencyValidator:
                 names.add(name)
 
         # Pattern 2: Stage direction [Name does something]
-        stage_pattern = r"\[([^\]]{1,20}?)\s+(?:走|说|看|做|站|坐|拿|放)"
+        stage_pattern = r"\[([^\]]{1,20}?)\s+(?:Zou|Shuo|Kan|Zuo|Zhan|Zuo|Na|Fang)"
         for match in re.finditer(stage_pattern, text):
             names.add(match.group(1).strip())
 
@@ -352,8 +352,8 @@ class CharacterConsistencyValidator:
 
         # Gender-specific handling (male/female are distinct)
         # Use exact match or word-boundary aware check to avoid "male" in "female"
-        gender_male = {"male", "man", "boy", "男", "男性", "男人"}
-        gender_female = {"female", "woman", "girl", "女", "女性", "女人"}
+        gender_male = {"male", "man", "boy", "Nan", "Nan Xing", "Nan Ren"}
+        gender_female = {"female", "woman", "girl", "Nv", "Nv Xing", "Nv Ren"}
 
         def is_gender(text: str, keywords: set) -> bool:
             # First check exact match
@@ -388,10 +388,10 @@ class CharacterConsistencyValidator:
     def _age_compatible(self, profile_age: str, found_age: str) -> bool:
         """Check if age descriptions are compatible."""
         age_groups = {
-            "child": ["child", "kid", "小孩", "儿童", "少年", "孩子"],
-            "young": ["young", "youth", "young adult", "青年", "年轻", "青春"],
-            "middle": ["middle", "middle-aged", "adult", "中年", "成年", "壮年"],
-            "elderly": ["elderly", "old", "senior", "老年", "老人", "年迈"],
+            "child": ["child", "kid", "Xiao Hai", "Er Tong", "Shao Nian", "Hai Zi"],
+            "young": ["young", "youth", "young adult", "young adult", "Nian Qing", "Qing Chun"],
+            "middle": ["middle", "middle-aged", "adult", "Zhong Nian", "Cheng Nian", "Zhuang Nian"],
+            "elderly": ["elderly", "old", "senior", "Lao Nian", "Lao Ren", "Nian Mai"],
         }
 
         p_age = profile_age.lower().strip()
@@ -432,9 +432,9 @@ class CharacterConsistencyValidator:
             ("honest", "deceptive"),
             ("brave", "cowardly"),
             ("optimistic", "pessimistic"),
-            ("内向", "外向"),
-            ("冷静", "暴躁"),
-            ("善良", "残忍"),
+            ("Nei Xiang", "Wai Xiang"),
+            ("calm", "Bao Zao"),
+            ("Shan Liang", "Can Ren"),
         ]
 
         p_lower = [t.lower() for t in profile_traits]

@@ -17,9 +17,9 @@ router = APIRouter()
 
 @router.get("/profiles", response_model=ImageGenProfilesResponse)
 async def get_image_gen_profiles(
-    model: str = Query(..., description="模型，形如 provider:model_id 或直接 model_id"),
+    model: str = Query(..., description="Model, in the form provider:model_id or just model_id"),
     mode: ImageGenMode = Query(
-        ImageGenMode.TEXT_TO_IMAGE, description="生成模式：text_to_image/image_to_image"
+        ImageGenMode.TEXT_TO_IMAGE, description="Generation mode: text_to_image/image_to_image"
     ),
     current_user: User = Depends(get_current_active_user),
 ):

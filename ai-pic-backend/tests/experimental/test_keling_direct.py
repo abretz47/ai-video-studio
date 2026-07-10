@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-直接测试可灵AI提供商
+Zhi Jie test Ke LingAIprovider
 
-绕过AI服务管理器，直接测试可灵AI提供商
+Rao GuoAIservice Guan Li Qi, Zhi Jie test Ke LingAIprovider
 """
 
 import asyncio
 import sys
 from pathlib import Path
 
-# 添加项目根目录到Python路径
+# Tian Jia project Gen Mu Lu toPythonpath
 sys.path.insert(0, str(Path(__file__).parent))
 
 from app.core.config import settings
@@ -18,75 +18,75 @@ from app.services.providers.keling_provider import KelingProvider
 
 
 async def test_keling_provider_directly():
-    """直接测试可灵AI提供商"""
-    print("🔧 直接测试可灵AI提供商")
-    print("=" * 50)
+ """Zhi Jie test Ke LingAIprovider"""
+ print("🔧 Zhi Jie test Ke LingAIprovider")
+ print("=" * 50)
 
-    if not settings.KELING_API_KEY or not settings.KELING_SECRET_KEY:
-        print("❌ 缺少可灵AI配置")
-        return
+ if not settings.KELING_API_KEY or not settings.KELING_SECRET_KEY:
+ print("❌ Que Shao Ke LingAIconfiguration")
+ return
 
-    # 创建可灵提供商配置
-    config = ProviderConfig(
-        name="keling",
-        api_key=settings.KELING_API_KEY,
-        api_secret=settings.KELING_SECRET_KEY,
-        base_url="https://klingai.com/api/v1",
-        timeout=120.0,
-    )
+ # create Ke Ling provider configuration
+ config = ProviderConfig(
+ name="keling",
+ api_key=settings.KELING_API_KEY,
+ api_secret=settings.KELING_SECRET_KEY,
+ base_url="https://klingai.com/api/v1",
+ timeout=120.0,
+)
 
-    # 创建可灵提供商实例
-    provider = KelingProvider(config)
-    print("✅ 可灵提供商创建成功")
-    print(f"   名称: {provider.name}")
-    print(f"   基础URL: {provider.base_url}")
-    print()
+ # create Ke Ling provider Shi Li
+ provider = KelingProvider(config)
+ print("✅ Ke Ling provider create success")
+ print(f" name: {provider.name}")
+ print(f" basicURL: {provider.base_url}")
+ print()
 
-    # 测试图像生成（使用修复后的重试机制）
-    print("🎨 测试图像生成...")
-    test_prompt = "一个可爱的小女孩，卡通风格，高质量"
-    print(f"提示词: {test_prompt}")
-    print("开始调用可灵AI API（支持重试）...")
+ # test image generate(use repair Hou De retry Ji Zhi)
+ print("🎨 test image generate...")
+ test_prompt = "Yi Ge Ke Ai De Xiao Nv Hai, Ka Tong Feng Ge, Gao Zhi Liang"
+ print(f"Ti Shi Ci: {test_prompt}")
+ print("start call Ke LingAI API(Zhi Chi Zhong Shi)...")
 
-    try:
-        response = await provider.generate_image(
-            prompt=test_prompt,
-            model="kling-image",
-            width=1024,
-            height=1024,
-            style="cartoon",
-        )
+ try:
+ response = await provider.generate_image(
+ prompt=test_prompt,
+ model="kling-image",
+ width=1024,
+ height=1024,
+ style="cartoon",
+)
 
-        print("\n📊 API响应:")
-        print(f"   成功: {response.success}")
-        print(f"   提供商: {response.provider}")
-        print(f"   模型: {response.model}")
+ print("\n📊 APIresponse:")
+ print(f" success: {response.success}")
+ print(f" provider: {response.provider}")
+ print(f" model: {response.model}")
 
-        if response.success:
-            print("   ✅ 生成成功!")
-            print(f"   数据: {response.data}")
-            if response.data and "images" in response.data:
-                images = response.data["images"]
-                print(f"   图像数量: {len(images)}")
-                for i, img_url in enumerate(images):
-                    print(f"   图像 {i+1}: {img_url}")
-        else:
-            print(f"   ❌ 生成失败: {response.error}")
+ if response.success:
+ print(" ✅ Sheng Cheng Cheng Gong!")
+ print(f" data: {response.data}")
+ if response.data and "images" in response.data:
+ images = response.data["images"]
+ print(f" Tu Xiang Shu Liang: {len(images)}")
+ for i, img_url in enumerate(images):
+ print(f" image {i+1}: {img_url}")
+ else:
+ print(f" ❌ Sheng Cheng Shi Bai: {response.error}")
 
-        print(f"   元数据: {response.metadata}")
+ print(f" Yuan Shu Ju: {response.metadata}")
 
-    except Exception as e:
-        print(f"❌ 提供商测试失败: {e}")
-        import traceback
+ except Exception as e:
+ print(f"❌ provider test failed: {e}")
+ import traceback
 
-        traceback.print_exc()
+ traceback.print_exc()
 
 
 async def main():
-    """主函数"""
-    await test_keling_provider_directly()
-    print("\n✨ 测试完成!")
+ """main function"""
+ await test_keling_provider_directly()
+ print("\n✨ Ce Shi Wan Cheng!")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+ asyncio.run(main())

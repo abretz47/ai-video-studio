@@ -20,7 +20,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="gpt-4o",
             name="GPT-4o",
-            description="最新的GPT-4优化版本，支持多模态",
+            description="Zui XinGPT-4You Hua version, support multiple Mo Tai",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=128000,
             supported_formats=["text", "image"],
@@ -33,7 +33,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="gpt-4-turbo",
             name="GPT-4 Turbo",
-            description="GPT-4的增强版本，更快更便宜",
+            description="GPT-4Zeng Qiang version, Geng Kuai Geng Pian Yi",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=128000,
             capabilities=["text_generation", "code_generation", "analysis"],
@@ -41,7 +41,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="gpt-3.5-turbo",
             name="GPT-3.5 Turbo",
-            description="快速且经济的文本生成模型",
+            description="quick Qie Jing Ji text Sheng Cheng model",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=16385,
             capabilities=["text_generation", "conversation", "summarization"],
@@ -50,7 +50,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="gpt-image-2",
             name="GPT Image 2",
-            description="OpenAI 最新的高质量图像生成与编辑模型",
+            description="OpenAI Zui XinHigh qualityimage Sheng Cheng and Bian Ji model",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpeg", "webp"],
             capabilities=[
@@ -119,7 +119,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="dall-e-3",
             name="DALL-E 3",
-            description="上一代高质量图像生成模型",
+            description="on Yi DaiHigh qualityimage Sheng Cheng model",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpeg"],
             capabilities=["text_to_image", "high_resolution", "detailed"],
@@ -134,7 +134,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="dall-e-2",
             name="DALL-E 2",
-            description="经典的图像生成模型，快速生成",
+            description="Jing Dian image Sheng Cheng model, quick Sheng Cheng",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpeg"],
             capabilities=[

@@ -1,7 +1,7 @@
 """
-对白生成节点
+dialogue Sheng Cheng node
 
-根据场景预算调用 ScriptLangGraphAgent 生成对白。
+Gen Ju scene Yu Suan call ScriptLangGraphAgent Sheng Cheng dialogue.
 """
 
 from typing import Any, Dict
@@ -15,28 +15,28 @@ logger = get_logger()
 
 async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    对白生成节点。
+ dialogue Sheng Cheng node.
 
-    根据当前场景的预算约束，调用 ScriptLangGraphAgent 生成对白。
+ Gen Ju current scene Yu Suan Yue Shu, call ScriptLangGraphAgent Sheng Cheng dialogue.
 
-    输入状态:
-        - scene_budgets: 场景预算列表
-        - current_scene_index: 当前场景索引
-        - script_agent: ScriptLangGraphAgent 实例
-        - episode: Episode 数据
-        - story: Story 数据
-        - generation_config: 生成配置
+ input status:
+ - scene_budgets: scene Yu Suan list
+ - current_scene_index: current scene index
+ - script_agent: ScriptLangGraphAgent instance
+ - episode: Episode data
+ - story: Story data
+ - generation_config: Sheng Cheng configuration
 
-    输出状态更新:
-        - scene_budgets: 更新生成结果
-        - generated_dialogues: 添加生成的对白
-        - reasoning: 添加生成日志
+ output status update:
+ - scene_budgets: update Sheng Cheng Jie Guo
+ - generated_dialogues: Tian Jia Sheng Cheng dialogue
+ - reasoning: Tian Jia Sheng Cheng log
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
 
     if current_index >= len(budgets):
-        logger.warning("generate_dialogue_node: 当前索引越界")
+        logger.warning("generate_dialogue_node: current index Yue Jie")
         return {}
 
     budget: SceneBudget = budgets[current_index]
@@ -46,17 +46,17 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
     generation_config = state.get("generation_config", {})
 
     if not script_agent:
-        logger.error("generate_dialogue_node: 缺少 script_agent")
+        logger.error("generate_dialogue_node: missing script_agent")
         return {
             "errors": state.get("errors", []) + ["missing_script_agent"],
         }
 
-    # 更新状态为进行中
+    # update status as Jin Xing in
     budget.status = SceneStatus.IN_PROGRESS
     budget.attempt_count += 1
 
     logger.info(
-        "generate_dialogue_node: 开始生成场景 %d 的对白",
+        "generate_dialogue_node: Kai Shi Sheng Cheng scene %d dialogue",
         budget.scene_number,
         extra={
             "event": "dialogue_generation_started",
@@ -68,12 +68,12 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
         },
     )
 
-    # 准备场景预算列表（只包含当前场景）
-    # 这样 Script Agent 可以为当前场景生成符合字数要求的对白
+    # Zhun Bei scene Yu Suan list(only Bao Han current scene)
+    # Zhe Yang Script Agent Canas current scene Sheng Cheng Fu He word count requirement dialogue
     current_budgets = [budget]
 
     try:
-        # 调用 ScriptLangGraphAgent
+        # call ScriptLangGraphAgent
         result = await script_agent.generate(
             episode=episode,
             story=story,
@@ -92,7 +92,7 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
         if not result or "error" in result:
             error_msg = result.get("error", "unknown_error") if result else "no_result"
             logger.warning(
-                "generate_dialogue_node: 场景 %d 生成失败: %s",
+                "generate_dialogue_node: scene %d Sheng Cheng failed: %s",
                 budget.scene_number,
                 error_msg,
             )
@@ -103,21 +103,21 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
                 + [f"scene_{budget.scene_number}_generation_failed: {error_msg}"],
             }
 
-        # 提取生成的对白
+        # extract Sheng Cheng dialogue
         content = result.get("content", {})
         dialogues = content.get("dialogues", []) if isinstance(content, dict) else []
 
-        # 过滤出当前场景的对白
+        # Guo Lv Chu current scene dialogue
         scene_dialogues = [
             d for d in dialogues if d.get("scene_number") == budget.scene_number
         ]
 
-        # 计算实际字数
+        # Ji Suan Shi Ji word count
         actual_word_count = count_dialogue_words(scene_dialogues)
         budget.actual_word_count = actual_word_count
 
         logger.info(
-            "generate_dialogue_node: 场景 %d 对白生成完成",
+            "generate_dialogue_node: scene %d dialogue Sheng Cheng complete",
             budget.scene_number,
             extra={
                 "event": "dialogue_generation_completed",
@@ -132,7 +132,7 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
             },
         )
 
-        # 更新已生成的对白
+        # update Sheng Cheng dialogue
         generated_dialogues = state.get("generated_dialogues", {})
         generated_dialogues[budget.scene_number] = scene_dialogues
 
@@ -152,7 +152,7 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     except Exception as exc:
         logger.exception(
-            "generate_dialogue_node: 场景 %d 生成异常",
+            "generate_dialogue_node: scene %d Sheng Cheng exception",
             budget.scene_number,
         )
         budget.status = SceneStatus.PENDING
@@ -165,12 +165,12 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def should_proceed_to_tts(state: Dict[str, Any]) -> str:
     """
-    路由函数：判断是否应该进入 TTS 试跑阶段。
+ Lu You function: determine Shi Fou Ying Gai Jin Ru TTS Shi Pao Jie Duan.
 
     Returns:
-        "tts" - 有对白，进入 TTS 阶段
-        "retry" - 无对白或失败，重试
-        "failed" - 达到最大重试次数
+ "tts" - has dialogue, Jin Ru TTS Jie Duan
+ "retry" - none dialogue or failed, retry
+ "failed" - reach maximum retry Ci Shu
     """
     from app.services.duration_orchestrator.constants import MAX_RETRY_ATTEMPTS
 

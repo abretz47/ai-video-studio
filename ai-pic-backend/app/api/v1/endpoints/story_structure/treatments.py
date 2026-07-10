@@ -27,7 +27,7 @@ router = APIRouter()
 )
 async def list_treatments(
     story_id: int,
-    latest_only: bool = Query(False, description="仅返回最新一条修订"),
+    latest_only: bool = Query(False, description="Return only the latest revision"),
     db: Session = Depends(get_db),
 ):
     items = svc.list_treatments_by_story(db, story_id)

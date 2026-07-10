@@ -6,19 +6,19 @@ from app.schemas.user import UserSummary
 from pydantic import BaseModel, Field, field_validator
 
 
-# 故事概要相关schemas
+# story outline relatedschemas
 class StoryBase(BaseModel):
     title: str = Field(..., max_length=255)
     story_format: str = Field(
         "short_drama",
-        description="故事形态：short_drama（短剧）/ tv_series（电视剧/网剧）/ film（电影）",
+        description="story Xing Tai: short_drama(short drama)/tv_series(TV series/web series)/film(film)",
     )
     genre: str = Field(..., max_length=50)
     theme: Optional[str] = Field(None, max_length=255)
     target_audience: Optional[str] = Field(None, max_length=100)
     duration_minutes: Optional[int] = Field(None, ge=1)
     default_aspect_ratio: Literal["9:16", "16:9"] = Field(
-        "9:16", description="默认画幅：9:16/16:9"
+        "9:16", description="default Hua Fu: 9:16/16:9"
     )
 
     premise: Optional[str] = None
@@ -33,7 +33,7 @@ class StoryBase(BaseModel):
     setting_location: Optional[str] = Field(None, max_length=255)
     world_building: Optional[str] = None
 
-    status: str = Field("draft", description="状态：draft, approved, published")
+    status: str = Field("draft", description="status: draft, approved, published")
     is_public: bool = False
     tags: Optional[List[str]] = None
     extra_metadata: Optional[Dict[str, Any]] = None
@@ -56,14 +56,14 @@ class StoryUpdate(BaseModel):
     title: Optional[str] = Field(None, max_length=255)
     story_format: Optional[str] = Field(
         None,
-        description="故事形态：short_drama（短剧）/ tv_series（电视剧/网剧）/ film（电影）",
+        description="story Xing Tai: short_drama(short drama)/tv_series(TV series/web series)/film(film)",
     )
     genre: Optional[str] = Field(None, max_length=50)
     theme: Optional[str] = Field(None, max_length=255)
     target_audience: Optional[str] = Field(None, max_length=100)
     duration_minutes: Optional[int] = Field(None, ge=1)
     default_aspect_ratio: Optional[Literal["9:16", "16:9"]] = Field(
-        None, description="默认画幅：9:16/16:9"
+        None, description="default Hua Fu: 9:16/16:9"
     )
 
     premise: Optional[str] = None
@@ -100,7 +100,7 @@ class StoryResponse(StoryBase):
         from_attributes = True
 
 
-# 剧集相关schemas
+# episode relatedschemas
 class EpisodeBase(BaseModel):
     episode_number: int = Field(..., ge=1)
     title: str = Field(..., max_length=255)
@@ -112,9 +112,9 @@ class EpisodeBase(BaseModel):
     scene_count: Optional[int] = Field(None, ge=1)
     aspect_ratio: Optional[Literal["9:16", "16:9"]] = Field(
         None,
-        description="可选：画幅覆盖（9:16/16:9）；为空则继承 Story.default_aspect_ratio",
+        description="can Xuan: Hua Fu Fu Gai(9:16/16:9); as Kong Ze Ji Cheng Story.default_aspect_ratio",
     )
-    status: str = Field("draft", description="状态：draft, approved, published")
+    status: str = Field("draft", description="status: draft, approved, published")
     tags: Optional[List[str]] = None
     extra_metadata: Optional[Dict[str, Any]] = None
 
@@ -134,7 +134,7 @@ class EpisodeUpdate(BaseModel):
     scene_count: Optional[int] = Field(None, ge=1)
     aspect_ratio: Optional[Literal["9:16", "16:9"]] = Field(
         None,
-        description="可选：画幅覆盖（9:16/16:9）；为空则继承 Story.default_aspect_ratio",
+        description="can Xuan: Hua Fu Fu Gai(9:16/16:9); as Kong Ze Ji Cheng Story.default_aspect_ratio",
     )
     status: Optional[str] = None
     tags: Optional[List[str]] = None
@@ -156,7 +156,7 @@ class EpisodeResponse(EpisodeBase):
         from_attributes = True
 
 
-# 剧本相关schemas
+# script relatedschemas
 class ScriptBase(BaseModel):
     title: str = Field(..., max_length=255)
     content: Optional[str] = None
@@ -165,7 +165,7 @@ class ScriptBase(BaseModel):
     stage_directions: Optional[List[Dict[str, Any]]] = None
     format_type: str = Field("screenplay", max_length=50)
     language: str = Field("zh-CN", max_length=10)
-    status: str = Field("draft", description="状态：draft, approved, published")
+    status: str = Field("draft", description="status: draft, approved, published")
     version: str = Field("1.0", max_length=20)
     tags: Optional[List[str]] = None
     extra_metadata: Optional[Dict[str, Any]] = None
@@ -231,7 +231,7 @@ class ScriptListItemResponse(BaseModel):
         from_attributes = True
 
 
-# 模板相关schemas
+# template relatedschemas
 class ScriptTemplateBase(BaseModel):
     name: str = Field(..., max_length=255)
     category: Optional[str] = Field(None, max_length=50)

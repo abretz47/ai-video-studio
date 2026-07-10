@@ -29,5 +29,5 @@ def get_story_by_identifier(
         query = query.filter(Story.user_id == current_user.id)
     story = query.first()
     if not story:
-        raise HTTPException(status_code=404, detail="故事不存在")
+        raise HTTPException(status_code=404, detail="Story does not exist")
     return story

@@ -132,7 +132,7 @@ def _pad_segments_to_target_duration_ms(
     _extend("action", max_action_ms)
     _extend("pause", max_pause_ms)
 
-    pad_text = "（转场留白）"
+    pad_text = "(Zhuan Chang Liu Bai)"
     while delta_ms > 0:
         chunk = min(delta_ms, max_action_ms)
         padded.append(

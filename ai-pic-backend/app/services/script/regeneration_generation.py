@@ -51,7 +51,7 @@ async def build_regenerated_script_payload(
         scene_budgets=scene_budgets,
     )
     if not result:
-        raise RuntimeError("AI剧本重新生成失败")
+        raise RuntimeError("AIscript retry Sheng Cheng failed")
 
     agent_run = build_agent_run(result)
     ai_content = normalize_script_content(
@@ -179,5 +179,5 @@ async def _build_regeneration_scoring(
         )
     except Exception:
         logger = get_logger("script_regenerate_task")
-        logger.warning("生成评分/投流表失败（regenerate-async）", exc_info=True)
+        logger.warning("Sheng Cheng Ping Fen/Tou Liu Biao failed(regenerate-async)", exc_info=True)
         return None

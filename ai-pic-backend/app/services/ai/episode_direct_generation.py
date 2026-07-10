@@ -146,11 +146,11 @@ def build_episode_generation_prompt(
 ) -> str:
     characters_desc = ""
     if focus_characters:
-        characters_desc = "重点角色:\n"
+        characters_desc = "Zhong Dian character:\n"
         for char in focus_characters:
             characters_desc += (
-                f"- {char.get('name', '未知角色')}: "
-                f"{char.get('description', '无描述')}\n"
+                f"- {char.get('name', 'unknown character')}: "
+                f"{char.get('description', 'none description')}\n"
             )
     return f"""
 你是一名专业的剧本创作AI助手。请根据以下故事概要生成 {episode_count} 集的剧集规划。
@@ -175,8 +175,8 @@ def build_episode_generation_prompt(
 1. 每集时长约 {episode_duration} 分钟
 2. 剧情复杂度: {plot_complexity}
 3. 节奏: {pacing}
-4. 其他要求: {additional_requirements or '无'}
-5. 风格偏好: {', '.join(style_preferences) if style_preferences else '无'}
+4. 其他要求: {additional_requirements or 'none'}
+5. 风格偏好: {', '.join(style_preferences) if style_preferences else 'none'}
 
 请为每一集提供标题、概要、主要剧情点、角色发展和冲突。
 """

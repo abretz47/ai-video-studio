@@ -1,6 +1,6 @@
-"""管理员API端点
+"""Administrator API endpoints
 
-提供用户管理、系统管理等管理员功能
+Provides administrator features such as user and system management
 """
 
 import math
@@ -31,16 +31,16 @@ def _not_deleted(query, model):
 def get_current_admin_user(
     current_user: User = Depends(get_current_active_user),
 ) -> User:
-    """获取当前管理员用户"""
+    """Get the current administrator user"""
     if not current_user.is_admin and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="需要管理员权限"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Administrator privileges required"
         )
     return current_user
 
 
 def get_client_info(request: Request) -> tuple:
-    """获取客户端信息"""
+    """Get client information"""
     ip_address = request.client.host
     user_agent = request.headers.get("user-agent")
     return ip_address, user_agent
@@ -49,19 +49,19 @@ def get_client_info(request: Request) -> tuple:
 @router.get("/users", response_model=UserListResponse)
 def list_users(
     request: Request,
-    page: int = Query(1, ge=1, description="页码"),
-    size: int = Query(20, ge=1, le=100, description="每页数量"),
+    page: int = Query(1, ge=1, description="Page number"),
+    size: int = Query(20, ge=1, le=100, description="Items per page"),
     status_filter: Optional[str] = Query(
-        None, description="状态筛选: pending, approved, suspended, locked"
+        None, description="Status filter: pending, approved, suspended, locked"
     ),
     role_filter: Optional[str] = Query(
-        None, description="角色筛选: admin, superuser, user"
+        None, description="Role filter: admin, superuser, user"
     ),
-    search: Optional[str] = Query(None, description="搜索用户名、邮箱或姓名"),
+    search: Optional[str] = Query(None, description="Search by username, email, or name"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """获取用户列表"""
+    """Get user list"""
     service = UserManagementService(db)
     users, total = service.get_users_list(
         page=page,
@@ -82,10 +82,10 @@ def get_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """获取用户详情"""
+    """Get user details"""
     user = _not_deleted(db.query(User), User).filter(User.id == user_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
+        raise HTTPException(status_code=404, detail="User does not exist")
     return user
 
 
@@ -97,7 +97,7 @@ def approve_or_reject_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """审批或拒绝用户"""
+    """Approve or reject user"""
     service = UserManagementService(db)
     ip_address, user_agent = get_client_info(request)
 
@@ -121,12 +121,12 @@ def update_user_role(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """更新用户角色"""
-    # 只有超级用户才能设置管理员权限
+    """Update user role"""
+    # Only superusers can grant administrator privileges
     if is_superuser is not None and not current_user.is_superuser:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="只有超级用户才能设置超级用户权限",
+            detail="Only superusers can grant superuser privileges",
         )
 
     service = UserManagementService(db)
@@ -148,14 +148,14 @@ def update_user_role(
 def suspend_user(
     user_id: int,
     duration_hours: Optional[int] = Query(
-        None, description="暂停时长（小时），不设置则永久暂停"
+        None, description="Suspension duration (hours); permanent if not set"
     ),
-    reason: Optional[str] = Query(None, description="暂停原因"),
+    reason: Optional[str] = Query(None, description="Suspension reason"),
     request: Request = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """暂停用户"""
+    """Suspend user"""
     service = UserManagementService(db)
     ip_address, user_agent = get_client_info(request)
 
@@ -178,7 +178,7 @@ def reactivate_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """重新激活用户"""
+    """Reactivate user"""
     service = UserManagementService(db)
     ip_address, user_agent = get_client_info(request)
 
@@ -199,11 +199,11 @@ def delete_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """删除用户"""
-    # 只有超级用户才能删除用户
+    """Delete user"""
+    # Only superusers can delete users
     if not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="只有超级用户才能删除用户"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Only superusers can delete users"
         )
 
     service = UserManagementService(db)
@@ -216,7 +216,7 @@ def delete_user(
         user_agent=user_agent,
     )
 
-    return {"message": "用户已删除", "success": success}
+    return {"message": "User deleted", "success": success}
 
 
 @router.get("/users/{user_id}/audit-logs", response_model=List[UserAuditLogResponse])
@@ -227,7 +227,7 @@ def get_user_audit_logs(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """获取用户审计日志"""
+    """Get user audit logs"""
     service = UserManagementService(db)
     logs, total = service.get_user_audit_logs(user_id, page, size)
     return logs
@@ -237,7 +237,7 @@ def get_user_audit_logs(
 def get_user_stats(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_admin_user)
 ):
-    """获取用户统计信息"""
+    """Get user statistics"""
     service = UserManagementService(db)
     return service.get_user_stats()
 
@@ -248,11 +248,11 @@ def reset_user_login_attempts(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """重置用户失败登录次数"""
+    """Reset failed login attempts for user"""
     service = UserManagementService(db)
     user = service.reset_failed_login_attempts(user_id)
     if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
+        raise HTTPException(status_code=404, detail="User does not exist")
     return user
 
 
@@ -262,10 +262,10 @@ def generate_user_activation_token(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """生成用户激活令牌"""
+    """Generate user activation token"""
     service = UserManagementService(db)
     token = service.generate_activation_token(user_id)
-    return {"activation_token": token, "message": "激活令牌已生成"}
+    return {"activation_token": token, "message": "Activation token generated"}
 
 
 @router.put("/users/{user_id}", response_model=UserAdminResponse)
@@ -276,16 +276,16 @@ def update_user_admin(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin_user),
 ):
-    """管理员更新用户信息"""
+    """Administrator updates user information"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
+        raise HTTPException(status_code=404, detail="User does not exist")
 
-    # 记录旧值
+    # Record old values
     old_values = {}
     new_values = {}
 
-    # 更新字段
+    # Update fields
     update_fields = user_update.dict(exclude_unset=True)
     for field, value in update_fields.items():
         if hasattr(user, field):
@@ -293,7 +293,7 @@ def update_user_admin(
             setattr(user, field, value)
             new_values[field] = value
 
-    # 记录审计日志
+    # Record audit log
     if old_values:
         service = UserManagementService(db)
         ip_address, user_agent = get_client_info(request)

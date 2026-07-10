@@ -25,7 +25,7 @@ class VirtualIPRepository(BaseRepository[VirtualIP]):
 
     def get_owned_by_id(self, ip_id: int, user: User) -> VirtualIP:
         if ip_id is None:
-            raise ValidationError("虚拟IP标识缺失", field="virtual_ip_id")
+            raise ValidationError("Xu NiIPBiao Shi Que Shi", field="virtual_ip_id")
         ip = self._owned_query(user).filter(self.model.id == ip_id).first()
         if not ip:
             raise NotFoundError.virtual_ip(ip_id)
@@ -33,7 +33,7 @@ class VirtualIPRepository(BaseRepository[VirtualIP]):
 
     def get_owned_by_business_id(self, business_id: str, user: User) -> VirtualIP:
         if not business_id:
-            raise ValidationError("虚拟IP标识缺失", field="virtual_ip_business_id")
+            raise ValidationError("Xu NiIPBiao Shi Que Shi", field="virtual_ip_business_id")
         ip = (
             self._owned_query(user)
             .filter(self.model.business_id == business_id)

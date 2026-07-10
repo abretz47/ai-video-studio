@@ -176,8 +176,8 @@ async def generate_storyboard_images(
 
     # Create task record
     t = Task(
-        title=f"分镜图生成 - 剧本{script_id}",
-        description="异步生成分镜图像",
+        title=f"Generate storyboard images - script {script_id}",
+        description="Generate storyboard images asynchronously",
         task_type=TaskType.STORYBOARD_IMAGE_GENERATION,
         prompt=f"Storyboard image generation for script {script_id}",
         parameters=json.dumps(payload, ensure_ascii=False),
@@ -210,8 +210,8 @@ async def generate_storyboard_video(
 
     # Create task record
     t = Task(
-        title=f"分镜视频生成 - 剧本{script_id}",
-        description="异步生成分镜视频",
+        title=f"Generate storyboard video - script {script_id}",
+        description="Generate storyboard video asynchronously",
         task_type=TaskType.VIDEO_GENERATION,
         prompt=f"Storyboard video generation for script {script_id}",
         parameters=json.dumps(payload, ensure_ascii=False),

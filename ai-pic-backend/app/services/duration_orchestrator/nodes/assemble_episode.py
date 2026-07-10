@@ -1,7 +1,7 @@
 """
-剧集组装节点
+episode assemble node
 
-合并所有场景的对白、时长信息，准备最终输出。
+He Bing all scene dialogue, when Zhang Xin Xi, Zhun Bei Zui Zhong output.
 """
 
 import logging
@@ -14,19 +14,19 @@ logger = logging.getLogger(__name__)
 
 def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    剧集组装节点。
+ episode assemble node.
 
-    合并所有已提交场景的数据，计算总时长，准备最终输出。
+ He Bing all submit scene data, Ji Suan total duration, Zhun Bei Zui Zhong output.
 
-    输入状态:
-        - scene_budgets: 场景预算列表
-        - committed_scenes: 已提交场景数据
-        - generated_dialogues: 所有生成的对白
+ input status:
+ - scene_budgets: scene Yu Suan list
+ - committed_scenes: submit scene data
+ - generated_dialogues: all Sheng Cheng dialogue
 
-    输出状态更新:
-        - assembled_episode: 组装后的剧集数据
-        - statistics: 统计信息
-        - reasoning: 添加组装日志
+ output status update:
+ - assembled_episode: assemble after episode data
+ - statistics: Tong Ji Xin Xi
+ - reasoning: Tian Jia assemble log
     """
     budgets: List[SceneBudget] = state.get("scene_budgets", [])
     committed_scenes = state.get("committed_scenes", {})
@@ -37,11 +37,11 @@ def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
     reasoning = state.get("reasoning", [])
     errors = state.get("errors", [])
 
-    # 计算总时长
+    # Ji Suan total duration
     total_actual_duration = 0.0
     total_target_duration = total_duration_minutes * 60
 
-    # 统计各场景状态
+    # Tong Ji Ge scene status
     committed_count = 0
     failed_count = 0
     total_retries = 0
@@ -56,7 +56,7 @@ def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
         total_retries += max(0, budget.attempt_count - 1)
 
-    # 组装对白列表
+    # assemble dialogue list
     all_dialogues = []
     scene_order = sorted(committed_scenes.keys())
 
@@ -64,24 +64,24 @@ def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
         scene_data = committed_scenes.get(scene_number, {})
         scene_dialogues = scene_data.get("dialogues", [])
 
-        # 确保对白有场景编号
+        # Que Bao dialogue has scene ID
         for dialogue in scene_dialogues:
             if "scene_number" not in dialogue:
                 dialogue["scene_number"] = scene_number
             all_dialogues.append(dialogue)
 
-    # 计算时长比例
+    # Ji Suan when Zhang ratio
     duration_ratio = (
         total_actual_duration / total_target_duration
         if total_target_duration > 0
         else 0
     )
 
-    # 计算平均重试次数
+    # Ji Suan Ping Jun retry Ci Shu
     avg_retries = total_retries / len(budgets) if budgets else 0
 
     logger.info(
-        "assemble_episode_node: 剧集组装完成",
+        "assemble_episode_node: episode assemble complete",
         extra={
             "episode_id": episode_id,
             "script_id": script_id,
@@ -96,7 +96,7 @@ def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
         },
     )
 
-    # 构建组装结果
+    # build assemble Jie Guo
     assembled_episode = {
         "episode_id": episode_id,
         "script_id": script_id,
@@ -119,7 +119,7 @@ def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
         "committed_scenes": committed_scenes,
     }
 
-    # 构建统计信息
+    # build Tong Ji Xin Xi
     statistics = {
         "total_target_duration_seconds": total_target_duration,
         "total_actual_duration_seconds": round(total_actual_duration, 2),

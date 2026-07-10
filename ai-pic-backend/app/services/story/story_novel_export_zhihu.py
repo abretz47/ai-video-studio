@@ -49,7 +49,7 @@ async def export_zhihu_novel_to_file(
     previous_tail = ""
     previous_cliffhanger = ""
     if progress:
-        progress("生成小说大纲（知乎体）…")
+        progress("Sheng Cheng Xiao Shuo Da Gang(Zhi Hu Ti)…")
     json_system_prompt = prompt_manager.render_prompt("system_prompt_json_strict", {})
     novel_system_prompt = prompt_manager.render_prompt("system_prompt_novel_zhihu", {})
     plan_story_payload = shrink_story_novel_payload_for_plan(story_payload)
@@ -160,7 +160,7 @@ async def export_zhihu_novel_to_file(
         if final_summary:
             running_summary = (running_summary + "\n" + final_summary).strip()
         if final_cliffhanger:
-            running_summary = (running_summary + "\n卡点：" + final_cliffhanger).strip()
+            running_summary = (running_summary + "\ncliffhanger: " + final_cliffhanger).strip()
             previous_cliffhanger = final_cliffhanger.strip()
             if len(previous_cliffhanger) > 300:
                 previous_cliffhanger = previous_cliffhanger[:300].rstrip() + "…"
@@ -170,7 +170,7 @@ async def export_zhihu_novel_to_file(
         produced_chapters += 1
     full_text = "".join(full_text_parts).strip() + "\n"
     if progress:
-        progress("写入导出文件…")
+        progress("write Dao Chu file…")
     exports_dir = Path(settings.UPLOAD_DIR) / "exports" / "novels"
     exports_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")

@@ -1,5 +1,5 @@
 name: storyboard_image_fallback
-description: "分镜图像缺省提示词模板"
+description: "storyboard image Que Sheng prompt text template"
 category: storyboard
 version: "1.1"
 author: "AI Video Studio"
@@ -7,15 +7,15 @@ created_at: "2025-12-19"
 updated_at: "2025-12-29"
 
 variables:
-  frame_index:
-    type: number
-    required: true
-    description: "分镜索引（从1开始）"
-  scene_number:
-    type: number
-    required: false
-    description: "场景编号"
+ frame_index:
+ type: number
+ required: true
+ description: "Fen Jing Suo Yin(from1start)"
+ scene_number:
+ type: number
+ required: false
+ description: "Chang Jing Bian Hao"
 
 usage_examples:
-  - frame_index: 1
-    scene_number: 2
+ - frame_index: 1
+ scene_number: 2

@@ -131,25 +131,25 @@ class TimelineQualityValidator:
     # Emotion intensity keywords (Chinese)
     EMOTION_KEYWORDS = {
         "high_intensity": [
-            "震惊", "愤怒", "恐惧", "绝望", "狂喜", "爆发", "崩溃",
-            "激动", "紧张", "危机", "高潮", "对决", "冲突",
+            "shocked", "angry", "fear", "Jue Wang", "Kuang Xi", "eruption", "Beng Kui",
+            "excited", "tense", "crisis", "climax", "Dui Jue", "conflict",
         ],
         "medium_intensity": [
-            "焦虑", "担忧", "疑惑", "期待", "好奇", "惊讶",
-            "兴奋", "不安", "紧迫", "悬念",
+            "anxious", "worried", "Yi Huo", "Qi Dai", "Hao Qi", "surprised",
+            "excited", "Bu An", "Jin Po", "suspense",
         ],
         "low_intensity": [
-            "平静", "冷静", "沉默", "思考", "淡然", "轻松",
-            "温馨", "舒缓", "宁静", "放松",
+            "calm", "calm", "Chen Mo", "thoughtful", "Dan Ran", "Qing Song",
+            "Wen Xin", "Shu Huan", "Ning Jing", "Fang Song",
         ],
     }
 
     # Dramatic pause trigger keywords
     PAUSE_TRIGGERS = {
-        "comedy": ["笑", "搞笑", "好笑", "哈哈", "逗", "滑稽"],
-        "drama": ["哭", "泪", "悲伤", "痛苦", "感动", "泪目"],
-        "suspense": ["震惊", "发现", "原来", "竟然", "真相", "秘密"],
-        "action": ["爆炸", "冲击", "碰撞", "打击", "攻击"],
+        "comedy": ["Xiao", "Gao Xiao", "Hao Xiao", "Ha Ha", "Dou", "Hua Ji"],
+        "drama": ["Ku", "Lei", "sad", "Tong Ku", "Gan Dong", "Lei Mu"],
+        "suspense": ["shocked", "discover", "Yuan Lai", "Jing Ran", "truth", "secret"],
+        "action": ["Bao Zha", "Chong Ji", "Peng Zhuang", "Da Ji", "Gong Ji"],
     }
 
     # Minimum pause duration for dramatic effect (ms)
@@ -340,8 +340,8 @@ class TimelineQualityValidator:
                         "expected_range": [wps_config["slow"], wps_config["fast"]],
                     },
                     suggestions=[
-                        "检查是否有过长停顿",
-                        "调整 TTS 语速参数",
+                        "check Shi Fou has Guo Chang Ting Dun",
+                        "adjust TTS Yu Su parameters",
                     ],
                 )
             )
@@ -356,8 +356,8 @@ class TimelineQualityValidator:
                         "expected_range": [wps_config["slow"], wps_config["fast"]],
                     },
                     suggestions=[
-                        "增加适当停顿",
-                        "调整 TTS 语速参数",
+                        "increase Shi Dang Ting Dun",
+                        "adjust TTS Yu Su parameters",
                     ],
                 )
             )
@@ -458,14 +458,14 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.EMOTION_CURVE_FLAT,
                     severity=TimelineQualitySeverity.INFO,
-                    message="情绪曲线较为平坦，缺乏起伏",
+                    message="EmotionQu Xian Jiao Wei Ping Tan, Que Fa Qi Fu",
                     details={
                         "variance": analysis.variance,
                         "average_intensity": analysis.average_intensity,
                     },
                     suggestions=[
-                        "在关键点设置情绪高潮",
-                        "增加紧张-舒缓的对比",
+                        "in Guan Jian Dian She ZhiEmotionclimax",
+                        "increase tense-Shu Huan Dui Bi",
                     ],
                 )
             )
@@ -476,14 +476,14 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.EMOTION_CURVE_CHOPPY,
                     severity=TimelineQualitySeverity.WARNING,
-                    message="情绪波动过于频繁，可能导致观众疲劳",
+                    message="EmotionBo Dong Guo Yu Pin Fan, Ke Neng Dao Zhi Guan Zhong Pi Lao",
                     details={
                         "peak_count": len(analysis.peaks),
                         "total_points": len(analysis.points),
                     },
                     suggestions=[
-                        "减少情绪转折点",
-                        "让高潮更加集中",
+                        "Jian ShaoEmotionZhuan Zhe Dian",
+                        "Rang climax Geng Jia Ji Zhong",
                     ],
                 )
             )
@@ -559,8 +559,8 @@ class TimelineQualityValidator:
                         ]
                     },
                     suggestions=[
-                        "在笑点/泪点后添加适当停顿",
-                        "让重要信息有时间沉淀",
+                        "in Xiao Dian/Lei Dian after Tian Jia Shi Dang Ting Dun",
+                        "Rang Zhong Yao Xin Xi has time Chen Dian",
                     ],
                 )
             )
@@ -588,8 +588,8 @@ class TimelineQualityValidator:
                         ]
                     },
                     suggestions=[
-                        "缩短停顿时间",
-                        "考虑用动作填充空白",
+                        "Suo Duan Ting Dun time",
+                        "consider Yong action Tian Chong Kong Bai",
                     ],
                 )
             )
@@ -619,8 +619,8 @@ class TimelineQualityValidator:
                         "drift_percent": round(drift_percent, 1),
                     },
                     suggestions=[
-                        "重新校准 WPS 参数",
-                        "检查 TTS 提供商语速设置",
+                        "retry Jiao Zhun WPS parameters",
+                        "check TTS provider Yu Su She Zhi",
                     ],
                 )
             )

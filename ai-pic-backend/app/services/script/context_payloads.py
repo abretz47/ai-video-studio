@@ -55,7 +55,7 @@ def build_character_profiles(story: Story) -> List[Dict[str, Any]]:
             profile.setdefault("arc", raw.get("arc") or raw.get("character_arc"))
         elif isinstance(raw, str):
             profile = _ensure_profile(raw)
-            profile.setdefault("description", "主要角色")
+            profile.setdefault("description", "Main character")
 
     story_characters = getattr(story, "story_characters", []) or []
     for sc in story_characters:

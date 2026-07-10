@@ -61,7 +61,7 @@ async def create_virtual_ip_image(
     if file_extension not in settings.ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"不支持的文件类型。支持的类型: {', '.join(settings.ALLOWED_EXTENSIONS)}",
+            detail=f"Unsupported file type. Supported types: {', '.join(settings.ALLOWED_EXTENSIONS)}",
         )
 
     # Read and validate file size
@@ -69,7 +69,7 @@ async def create_virtual_ip_image(
     if len(content) > settings.MAX_FILE_SIZE:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"文件大小超过限制 ({settings.MAX_FILE_SIZE / 1024 / 1024}MB)",
+            detail=f"File size exceeds the limit ({settings.MAX_FILE_SIZE / 1024 / 1024}MB)",
         )
 
     # Persist via unified abstraction: local save + optional OSS upload
@@ -87,7 +87,7 @@ async def create_virtual_ip_image(
         )
     except Exception as exc:
         raise HTTPException(
-            status_code=500, detail=f"虚拟IP图像保存失败: {exc}"
+            status_code=500, detail=f"Failed to save virtual IP image: {exc}"
         ) from exc
 
     # Clear other default images if setting as default
@@ -145,7 +145,7 @@ async def get_image_categories(
 @router.get("/{virtual_ip_id}/images", response_model=List[VirtualIPImageResponse])
 async def get_virtual_ip_images(
     virtual_ip_id: str,
-    category: Optional[str] = Query(None, description="按分类过滤"),
+    category: Optional[str] = Query(None, description="Filter by category"),
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -193,7 +193,7 @@ def download_virtual_ip_image(
     image = get_virtual_ip_image(db, virtual_ip, image_id, image_business_id)
 
     if not os.path.exists(image.file_path):
-        raise HTTPException(status_code=404, detail="图像文件不存在")
+        raise HTTPException(status_code=404, detail="Image file does not exist")
 
     return FileResponse(
         image.file_path, filename=image.original_filename, media_type=image.mime_type
@@ -249,7 +249,7 @@ async def delete_virtual_ip_image(
     image.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
 
-    return {"message": "图像删除成功"}
+    return {"message": "Image deleted successfully"}
 
 
 @router.post("/{virtual_ip_id}/images/{image_id}/set-default")
@@ -275,4 +275,4 @@ async def set_default_image(
     set_ip_default_avatar(db, virtual_ip.id, image)
     db.commit()
 
-    return {"message": "默认图像设置成功"}
+    return {"message": "Default image set successfully"}

@@ -46,7 +46,7 @@ def infer_image_provider_from_model(model: str | None) -> str | None:
 
 
 def fallback_prompt_for_image_to_image(prompt: str | None) -> str:
-    return prompt or "为当前角色生成不同视角/姿态的图像，例如背面照或全身照"
+    return prompt or "as current character Sheng Cheng Bu Tong Shi Jiao/Zi Tai image, for example Bei Mian Zhao or Quan Shen Zhao"
 
 
 async def fallback_image_to_image_as_text_to_image(
@@ -98,7 +98,7 @@ async def fallback_image_to_image_as_text_to_image(
             return ImageFallbackResult(response=text_resp)
 
         if text_resp and not text_resp.success:
-            error_value = (text_resp.error or "").strip() or "未知错误"
+            error_value = (text_resp.error or "").strip() or "Unknown error"
             return ImageFallbackResult(
                 last_error=error_value,
                 last_provider=text_resp.provider,

@@ -81,7 +81,7 @@ def get_character_display_name(character: EpisodeCharacter, db: Session) -> str:
     """
     Get display name for character.
 
-    Priority: character_name > VirtualIP.name > "临时角色{id}"
+ Priority: character_name > VirtualIP.name > "temporary character{id}"
     """
     if character.character_name:
         return character.character_name

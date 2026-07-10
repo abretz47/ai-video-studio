@@ -59,7 +59,7 @@ async def run_auto_timeline_placeholders(
     timeline_with_shot_plan = main_chain.timeline
 
     if progress_callback:
-        progress_callback("生产级链路：生成分镜占位")
+        progress_callback("production Ji Lian Lu: Sheng Cheng Fen Jing Zhan Wei")
     storyboard = generate_storyboard_support_from_timeline_spec(
         db,
         script=script,
@@ -85,7 +85,7 @@ async def run_auto_timeline_placeholders(
     db.commit()
     db.refresh(script)
     if progress_callback:
-        progress_callback("生产级链路：创建分镜画面生成任务")
+        progress_callback("production Ji Lian Lu: create storyboard frame Sheng Cheng Ren Wu")
     image_result = queue_storyboard_image_generation(
         db,
         script_id=script.id,

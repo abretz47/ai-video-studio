@@ -11,219 +11,219 @@ from tests.scripts.provider_chain_fixtures import provider_payload
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.append(str(REPO_ROOT))
 
-from scripts.harness.provider_chain_api import (  # noqa: E402
-    generate_script,
-    record_response,
-    request_json,
+from scripts.harness.provider_chain_api import (# noqa: E402
+ generate_script,
+ record_response,
+ request_json,
 )
-from scripts.harness.provider_chain_payloads import TEXT_MODEL  # noqa: E402
+from scripts.harness.provider_chain_payloads import TEXT_MODEL # noqa: E402
 
 
 def test_record_response_includes_request_duration() -> None:
-    response = requests.Response()
-    response.status_code = 200
-    response.url = "https://example.com/api"
-    response.headers["x-request-id"] = "req-1"
-    response.headers["x-harness-run-id"] = "run-1"
-    response.elapsed = timedelta(seconds=1.234)
-    response.request = requests.Request("POST", response.url).prepare()
+ response = requests.Response()
+ response.status_code = 200
+ response.url = "https://example.com/api"
+ response.headers["x-request-id"] = "req-1"
+ response.headers["x-harness-run-id"] = "run-1"
+ response.elapsed = timedelta(seconds=1.234)
+ response.request = requests.Request("POST", response.url).prepare()
 
-    chain: list[dict[str, object]] = []
-    record_response(chain, response, label="seedance-video-1")
+ chain: list[dict[str, object]] = []
+ record_response(chain, response, label="seedance-video-1")
 
-    assert chain == [
-        {
-            "label": "seedance-video-1",
-            "method": "POST",
-            "url": "https://example.com/api",
-            "status_code": 200,
-            "request_id": "req-1",
-            "harness_run_id": "run-1",
-            "duration_seconds": 1.234,
-        }
-    ]
+ assert chain == [
+ {
+ "label": "seedance-video-1",
+ "method": "POST",
+ "url": "https://example.com/api",
+ "status_code": 200,
+ "request_id": "req-1",
+ "harness_run_id": "run-1",
+ "duration_seconds": 1.234,
+ }
+ ]
 
 
 def test_request_json_raises_with_response_body() -> None:
-    response = requests.Response()
-    response.status_code = 400
-    response.url = "https://example.com/api"
-    response._content = b'{"detail":"AccountOverdueError"}'
-    response.request = requests.Request("POST", response.url).prepare()
+ response = requests.Response()
+ response.status_code = 400
+ response.url = "https://example.com/api"
+ response._content = b'{"detail":"AccountOverdueError"}'
+ response.request = requests.Request("POST", response.url).prepare()
 
-    class _Session:
-        def request(self, method, url, timeout, **kwargs):
-            return response
+ class _Session:
+ def request(self, method, url, timeout, **kwargs):
+ return response
 
-    chain: list[dict[str, object]] = []
-    with pytest.raises(requests.HTTPError, match="AccountOverdueError"):
-        request_json(
-            _Session(),
-            "POST",
-            response.url,
-            chain=chain,
-            label="seedance-video-1",
-            timeout=1,
-        )
+ chain: list[dict[str, object]] = []
+ with pytest.raises(requests.HTTPError, match="AccountOverdueError"):
+ request_json(
+ _Session(),
+ "POST",
+ response.url,
+ chain=chain,
+ label="seedance-video-1",
+ timeout=1,
+)
 
-    assert chain[0]["response_body"] == '{"detail":"AccountOverdueError"}'
+ assert chain[0]["response_body"] == '{"detail":"AccountOverdueError"}'
 
 
 def test_request_json_records_transport_error_without_response() -> None:
-    class _Session:
-        def request(self, method, url, timeout, **kwargs):
-            raise requests.ConnectionError(
-                "('Connection aborted.', RemoteDisconnected())"
-            )
+ class _Session:
+ def request(self, method, url, timeout, **kwargs):
+ raise requests.ConnectionError(
+ "('Connection aborted.', RemoteDisconnected())"
+)
 
-    chain: list[dict[str, object]] = []
-    with pytest.raises(requests.ConnectionError):
-        request_json(
-            _Session(),
-            "POST",
-            "https://example.com/api/v1/ai/generate/text",
-            chain=chain,
-            label="deepseek-script",
-            timeout=1,
-        )
+ chain: list[dict[str, object]] = []
+ with pytest.raises(requests.ConnectionError):
+ request_json(
+ _Session(),
+ "POST",
+ "https://example.com/api/v1/ai/generate/text",
+ chain=chain,
+ label="deepseek-script",
+ timeout=1,
+)
 
-    assert chain == [
-        {
-            "label": "deepseek-script",
-            "method": "POST",
-            "url": "https://example.com/api/v1/ai/generate/text",
-            "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected())",
-        }
-    ]
+ assert chain == [
+ {
+ "label": "deepseek-script",
+ "method": "POST",
+ "url": "https://example.com/api/v1/ai/generate/text",
+ "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected())",
+ }
+ ]
 
 
 def test_generate_script_records_raw_content_on_parse_failure() -> None:
-    raw_content = '{"title":"坏剧本","scenes":[{"plot":"未闭合}'
-    response = requests.Response()
-    response.status_code = 200
-    response.url = "https://example.com/api/v1/ai/generate/text"
-    response._content = (
-        '{"success":true,"data":{"provider":"deepseek","model":"'
-        + TEXT_MODEL
-        + '","content":'
-        + json.dumps(raw_content)
-        + "}}"
-    ).encode("utf-8")
-    response.request = requests.Request("POST", response.url).prepare()
-    response.elapsed = timedelta(seconds=0.5)
+ raw_content = '{"title":"Huai Ju Ben","scenes":[{"plot":"Wei Bi He}'
+ response = requests.Response()
+ response.status_code = 200
+ response.url = "https://example.com/api/v1/ai/generate/text"
+ response._content = (
+ '{"success":true,"data":{"provider":"deepseek","model":"'
+ + TEXT_MODEL
+ + '","content":'
+ + json.dumps(raw_content)
+ + "}}"
+).encode("utf-8")
+ response.request = requests.Request("POST", response.url).prepare()
+ response.elapsed = timedelta(seconds=0.5)
 
-    class _Session:
-        def request(self, method, url, timeout, **kwargs):
-            return response
+ class _Session:
+ def request(self, method, url, timeout, **kwargs):
+ return response
 
-    payload = {"request_chain": [], "key_artifacts": {}}
-    args = SimpleNamespace(
-        api_url="https://example.com",
-        mode="smoke",
-        script_premise=None,
-        timeout_seconds=1,
-    )
+ payload = {"request_chain": [], "key_artifacts": {}}
+ args = SimpleNamespace(
+ api_url="https://example.com",
+ mode="smoke",
+ script_premise=None,
+ timeout_seconds=1,
+)
 
-    with pytest.raises(ValueError, match="script_json_parse_failed"):
-        generate_script(_Session(), args, payload)
+ with pytest.raises(ValueError, match="script_json_parse_failed"):
+ generate_script(_Session(), args, payload)
 
-    assert payload["request_chain"][0]["label"] == "deepseek-script"
-    assert payload["request_chain"][0]["status_code"] == 200
-    error = payload["key_artifacts"]["script_generation_error"]
-    assert error["provider"] == "deepseek"
-    assert error["model"] == TEXT_MODEL
-    assert error["raw_content"] == raw_content
-    assert error["error"].startswith("JSONDecodeError:")
+ assert payload["request_chain"][0]["label"] == "deepseek-script"
+ assert payload["request_chain"][0]["status_code"] == 200
+ error = payload["key_artifacts"]["script_generation_error"]
+ assert error["provider"] == "deepseek"
+ assert error["model"] == TEXT_MODEL
+ assert error["raw_content"] == raw_content
+ assert error["error"].startswith("JSONDecodeError:")
 
 
 def test_generate_script_disables_deepseek_streaming_and_thinking() -> None:
-    raw_content = provider_payload()["key_artifacts"]["script"]["raw_content"]
-    response = requests.Response()
-    response.status_code = 200
-    response.url = "https://example.com/api/v1/ai/generate/text"
-    response._content = (
-        '{"success":true,"data":{"provider":"deepseek","model":"'
-        + TEXT_MODEL
-        + '","content":'
-        + json.dumps(raw_content)
-        + "}}"
-    ).encode("utf-8")
-    response.request = requests.Request("POST", response.url).prepare()
-    response.elapsed = timedelta(seconds=0.5)
+ raw_content = provider_payload()["key_artifacts"]["script"]["raw_content"]
+ response = requests.Response()
+ response.status_code = 200
+ response.url = "https://example.com/api/v1/ai/generate/text"
+ response._content = (
+ '{"success":true,"data":{"provider":"deepseek","model":"'
+ + TEXT_MODEL
+ + '","content":'
+ + json.dumps(raw_content)
+ + "}}"
+).encode("utf-8")
+ response.request = requests.Request("POST", response.url).prepare()
+ response.elapsed = timedelta(seconds=0.5)
 
-    class _Session:
-        def __init__(self) -> None:
-            self.json_body = None
+ class _Session:
+ def __init__(self) -> None:
+ self.json_body = None
 
-        def request(self, method, url, timeout, **kwargs):
-            self.json_body = kwargs.get("json")
-            return response
+ def request(self, method, url, timeout, **kwargs):
+ self.json_body = kwargs.get("json")
+ return response
 
-    payload = {"request_chain": [], "key_artifacts": {}}
-    args = SimpleNamespace(
-        api_url="https://example.com",
-        mode="full-30s",
-        script_premise=None,
-        timeout_seconds=1,
-    )
-    session = _Session()
+ payload = {"request_chain": [], "key_artifacts": {}}
+ args = SimpleNamespace(
+ api_url="https://example.com",
+ mode="full-30s",
+ script_premise=None,
+ timeout_seconds=1,
+)
+ session = _Session()
 
-    script = generate_script(session, args, payload)
+ script = generate_script(session, args, payload)
 
-    assert script["title"] == "奖金清零"
-    assert session.json_body["stream"] is False
-    assert session.json_body["thinking"] is False
-    assert session.json_body["temperature"] == 0.2
-    assert session.json_body["json_schema"]["name"] == "provider_chain_script"
-    assert session.json_body["json_schema"]["schema"]["required"] == [
-        "title",
-        "logline",
-        "characters",
-        "scenes",
-    ]
-    scene_schema = session.json_body["json_schema"]["schema"]["properties"]["scenes"][
-        "items"
-    ]
-    assert "causal_seed" in scene_schema["required"]
+ assert script["title"] == "Jiang Jin Qing Ling"
+ assert session.json_body["stream"] is False
+ assert session.json_body["thinking"] is False
+ assert session.json_body["temperature"] == 0.2
+ assert session.json_body["json_schema"]["name"] == "provider_chain_script"
+ assert session.json_body["json_schema"]["schema"]["required"] == [
+ "title",
+ "logline",
+ "characters",
+ "scenes",
+ ]
+ scene_schema = session.json_body["json_schema"]["schema"]["properties"]["scenes"][
+ "items"
+ ]
+ assert "causal_seed" in scene_schema["required"]
 
 
 def test_generate_script_fails_before_media_when_structured_quality_fails() -> None:
-    script = json.loads(provider_payload()["key_artifacts"]["script"]["raw_content"])
-    final_beat = script["scenes"][-1]["beats"][-1]
-    final_beat["beat_type"] = "cliffhanger"
-    final_beat["visible_event"] = "进度条到100%，屏幕变红"
-    final_beat["action"] = ["小蓝手停在键盘上，LED眼睛变暗"]
-    final_beat["dialogue"] = [{"speaker": "小蓝", "line": "来不及了"}]
-    final_beat["cliffhanger_tag"] = "数据丢失"
-    raw_content = json.dumps(script, ensure_ascii=False)
-    response = requests.Response()
-    response.status_code = 200
-    response.url = "https://example.com/api/v1/ai/generate/text"
-    response._content = (
-        '{"success":true,"data":{"provider":"deepseek","model":"'
-        + TEXT_MODEL
-        + '","content":'
-        + json.dumps(raw_content)
-        + "}}"
-    ).encode("utf-8")
-    response.request = requests.Request("POST", response.url).prepare()
-    response.elapsed = timedelta(seconds=0.5)
+ script = json.loads(provider_payload()["key_artifacts"]["script"]["raw_content"])
+ final_beat = script["scenes"][-1]["beats"][-1]
+ final_beat["beat_type"] = "cliffhanger"
+ final_beat["visible_event"] = "Jin Du Tiao Dao100%, Ping Mu Bian Hong"
+ final_beat["action"] = ["Xiao Lan Shou Ting Zai Jian Pan Shang, LEDYan Jing Bian An"]
+ final_beat["dialogue"] = [{"speaker": "Xiaolan", "line": "Lai Bu Ji Le"}]
+ final_beat["cliffhanger_tag"] = "Shu Ju Diu Shi"
+ raw_content = json.dumps(script, ensure_ascii=False)
+ response = requests.Response()
+ response.status_code = 200
+ response.url = "https://example.com/api/v1/ai/generate/text"
+ response._content = (
+ '{"success":true,"data":{"provider":"deepseek","model":"'
+ + TEXT_MODEL
+ + '","content":'
+ + json.dumps(raw_content)
+ + "}}"
+).encode("utf-8")
+ response.request = requests.Request("POST", response.url).prepare()
+ response.elapsed = timedelta(seconds=0.5)
 
-    class _Session:
-        def request(self, method, url, timeout, **kwargs):
-            return response
+ class _Session:
+ def request(self, method, url, timeout, **kwargs):
+ return response
 
-    payload = {"request_chain": [], "key_artifacts": {}}
-    args = SimpleNamespace(
-        api_url="https://example.com",
-        mode="full-30s",
-        script_premise=None,
-        timeout_seconds=1,
-    )
+ payload = {"request_chain": [], "key_artifacts": {}}
+ args = SimpleNamespace(
+ api_url="https://example.com",
+ mode="full-30s",
+ script_premise=None,
+ timeout_seconds=1,
+)
 
-    with pytest.raises(ValueError, match="script_structured_quality_failed"):
-        generate_script(_Session(), args, payload)
+ with pytest.raises(ValueError, match="script_structured_quality_failed"):
+ generate_script(_Session(), args, payload)
 
-    score = payload["key_artifacts"]["script"]["structured_script_score"]
-    assert score["passed"] is False
-    assert "cliffhanger_unresolved_threat" in score["failed_checks"]
+ score = payload["key_artifacts"]["script"]["structured_script_score"]
+ assert score["passed"] is False
+ assert "cliffhanger_unresolved_threat" in score["failed_checks"]

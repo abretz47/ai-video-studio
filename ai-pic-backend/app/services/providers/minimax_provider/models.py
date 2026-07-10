@@ -18,7 +18,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="abab6.5s-chat",
             name="MiniMax Chat 6.5s",
-            description="快速响应的对话模型",
+            description="quick response Dui Hua model",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=8192,
             capabilities=["chat", "fast_response", "chinese_optimized"],
@@ -26,7 +26,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="abab6.5-chat",
             name="MiniMax Chat 6.5",
-            description="平衡性能和质量的对话模型",
+            description="Ping Heng Xing Neng and Zhi Liang Dui Hua model",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=16384,
             capabilities=["chat", "balanced", "multi_turn"],
@@ -34,7 +34,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="abab6.5g-chat",
             name="MiniMax Chat 6.5g",
-            description="高质量文本生成模型",
+            description="High qualitytext Sheng Cheng model",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=32768,
             capabilities=["chat", "high_quality", "long_context"],
@@ -43,7 +43,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="speech-2.6-hd",
             name="MiniMax Speech 2.6 HD",
-            description="高质量中文英文双语音色，支持情绪控制",
+            description="High qualityZhong Wen Ying Wen Shuang Yu voice timbre, supportEmotionKong Zhi",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav", "pcm", "flac"],
             capabilities=[
@@ -56,7 +56,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="speech-2.6-turbo",
             name="MiniMax Speech 2.6 Turbo",
-            description="高速情感语音合成，支持流式输出",
+            description="Gao Su Qing Gan voice He Cheng, support Liu Shi output",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav", "pcm", "flac"],
             capabilities=[
@@ -69,7 +69,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="speech-02-hd",
             name="MiniMax Speech 02 HD",
-            description="高清音质语音合成",
+            description="Gao Qing Yin Zhi voice He Cheng",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav", "pcm", "flac"],
             capabilities=["text_to_speech", "multiple_voices"],
@@ -77,7 +77,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="speech-02-turbo",
             name="MiniMax Speech 02 Turbo",
-            description="快速语音合成",
+            description="quick voice He Cheng",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav", "pcm", "flac"],
             capabilities=["text_to_speech", "multiple_voices"],
@@ -85,7 +85,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="speech-01-hd",
             name="MiniMax Speech 01 HD",
-            description="高清音质语音合成（经典版）",
+            description="Gao Qing Yin Zhi voice He Cheng(Jing Dian Ban)",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav", "pcm", "flac"],
             capabilities=["text_to_speech", "multiple_voices"],
@@ -93,7 +93,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="speech-01-turbo",
             name="MiniMax Speech 01 Turbo",
-            description="快速语音合成（经典版）",
+            description="quick voice He Cheng(Jing Dian Ban)",
             model_type=AIModelType.TEXT_TO_SPEECH,
             supported_formats=["mp3", "wav", "pcm", "flac"],
             capabilities=["text_to_speech", "multiple_voices"],
@@ -102,7 +102,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="MiniMax-Hailuo-2.3",
             name="MiniMax Hailuo 2.3",
-            description="海螺视频生成2.3版本，支持768P/1080P，6s/10s时长",
+            description="Hai Luo video Sheng Cheng2.3version, support768P/1080P, 6s/10swhen Zhang",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=[
@@ -130,7 +130,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="MiniMax-Hailuo-2.3-Fast",
             name="MiniMax Hailuo 2.3 Fast",
-            description="海螺视频生成2.3快速版，生成速度更快",
+            description="Hai Luo video Sheng Cheng2.3quick Ban, Sheng Cheng Su Du Geng Kuai",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=[
@@ -158,7 +158,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="MiniMax-Hailuo-02",
             name="MiniMax Hailuo 0.2",
-            description="海螺视频生成0.2版本，支持512P/768P/1080P多种分辨率",
+            description="Hai Luo video Sheng Cheng0.2version, support512P/768P/1080PDuo Zhong Fen Bian Lv",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=[
@@ -187,7 +187,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="I2V-01-Director",
             name="MiniMax I2V-01-Director",
-            description="专业级图生视频模型，支持精细控制",
+            description="Zhuan Ye Ji Tu Sheng video model, support Jing Xi Kong Zhi",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=[
@@ -211,7 +211,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="I2V-01-live",
             name="MiniMax I2V-01-Live",
-            description="实时图生视频模型，生成速度快",
+            description="Shi Shi Tu Sheng video model, Sheng Cheng Su Du Kuai",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "720p", "fast_generation"],
@@ -230,7 +230,7 @@ def get_available_models() -> List[ModelInfo]:
         ModelInfo(
             model_id="I2V-01",
             name="MiniMax I2V-01",
-            description="标准图生视频模型",
+            description="Biao Zhun Tu Sheng video model",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "720p"],

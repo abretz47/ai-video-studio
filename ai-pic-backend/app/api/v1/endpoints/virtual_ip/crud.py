@@ -26,19 +26,19 @@ def _get_owned_virtual_ip(
     ip_id: int | None,
     ip_business_id: str | None = None,
 ) -> VirtualIP:
-    """获取当前用户可访问的虚拟 IP（支持 business_id）。"""
+    """Get the virtual IPs accessible to the current user (supports business_id)."""
     query = _not_deleted(db.query(VirtualIP), VirtualIP)
     if ip_business_id:
         query = query.filter(VirtualIP.business_id == ip_business_id)
     elif ip_id is not None:
         query = query.filter(VirtualIP.id == ip_id)
     else:
-        raise HTTPException(status_code=400, detail="虚拟IP标识缺失")
+        raise HTTPException(status_code=400, detail="Missing virtual IP identifier")
     if not current_user.is_admin and not current_user.is_superuser:
         query = query.filter(VirtualIP.user_id == current_user.id)
     ip = query.first()
     if not ip:
-        raise HTTPException(status_code=404, detail="虚拟IP不存在")
+        raise HTTPException(status_code=404, detail="Virtual IP does not exist")
     return ip
 
 
@@ -75,9 +75,9 @@ def list_virtual_ips_no_slash(
     db: Session = Depends(get_db),
 ):
     """
-    兼容无尾斜杠的 /api/v1/virtual-ips 请求，避免 307 重定向。
+    Support /api/v1/virtual-ips requests without a trailing slash to avoid 307 redirects.
 
-    内部直接复用 list_virtual_ips 的分页与权限逻辑。
+    Internally reuse list_virtual_ips pagination and permission logic directly.
     """
     return list_virtual_ips(
         skip=skip,
@@ -101,7 +101,7 @@ def create_virtual_ip(
         .first()
     )
     if existing_ip:
-        raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+        raise HTTPException(status_code=400, detail="Virtual IP name already exists")
 
     db_ip = VirtualIP(user_id=current_user.id, **ip.dict())
     db.add(db_ip)
@@ -109,7 +109,7 @@ def create_virtual_ip(
         db.commit()
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+        raise HTTPException(status_code=400, detail="Virtual IP name already exists")
     except Exception:
         db.rollback()
         raise
@@ -140,7 +140,7 @@ def get_virtual_ip_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 获取虚拟 IP"""
+    """Get virtual IP by business_id"""
     ip = _get_owned_virtual_ip(db, current_user, None, ip_business_id)
     return {"success": True, "data": _detail_response(ip)}
 
@@ -162,7 +162,7 @@ def update_virtual_ip(
             .first()
         )
         if existing_ip:
-            raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+            raise HTTPException(status_code=400, detail="Virtual IP name already exists")
 
     for k, v in updates.items():
         setattr(ip, k, v)
@@ -171,7 +171,7 @@ def update_virtual_ip(
         db.commit()
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+        raise HTTPException(status_code=400, detail="Virtual IP name already exists")
     except Exception:
         db.rollback()
         raise
@@ -187,7 +187,7 @@ def update_virtual_ip_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 更新虚拟 IP"""
+    """Update virtual IP by business_id"""
     ip = _get_owned_virtual_ip(db, current_user, None, ip_business_id)
 
     updates = ip_update.dict(exclude_unset=True)
@@ -198,7 +198,7 @@ def update_virtual_ip_by_business_id(
             .first()
         )
         if existing_ip:
-            raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+            raise HTTPException(status_code=400, detail="Virtual IP name already exists")
 
     for k, v in updates.items():
         setattr(ip, k, v)
@@ -207,7 +207,7 @@ def update_virtual_ip_by_business_id(
         db.commit()
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+        raise HTTPException(status_code=400, detail="Virtual IP name already exists")
     except Exception:
         db.rollback()
         raise
@@ -225,7 +225,7 @@ def delete_virtual_ip(
     ip = _get_owned_virtual_ip(db, current_user, ip_id)
     ip.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
-    return {"success": True, "message": "虚拟IP已删除"}
+    return {"success": True, "message": "Virtual IP deleted"}
 
 
 @router.delete("/business/{ip_business_id}")
@@ -234,8 +234,8 @@ def delete_virtual_ip_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 删除虚拟 IP"""
+    """Delete virtual IP by business_id"""
     ip = _get_owned_virtual_ip(db, current_user, None, ip_business_id)
     ip.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
-    return {"success": True, "message": "虚拟IP已删除"}
+    return {"success": True, "message": "Virtual IP deleted"}

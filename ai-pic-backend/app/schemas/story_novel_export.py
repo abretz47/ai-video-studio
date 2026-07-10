@@ -13,14 +13,14 @@ class StoryNovelExportSummary(BaseModel):
     business_id: str
     task_id: Optional[int] = None
 
-    style: str = Field(..., description="输出风格，如 zhihu")
-    target_words: int = Field(..., description="目标字数")
-    chapter_count: Optional[int] = Field(None, description="章节数")
-    total_words: Optional[int] = Field(None, description="实际字数")
-    model: Optional[str] = Field(None, description="生成模型（原样）")
-    temperature: Optional[float] = Field(None, description="生成温度")
+    style: str = Field(..., description="output style, for example zhihu")
+    target_words: int = Field(..., description="target word count")
+    chapter_count: Optional[int] = Field(None, description="Zhang Jie Shu")
+    total_words: Optional[int] = Field(None, description="Shi Ji word count")
+    model: Optional[str] = Field(None, description="Sheng Cheng model(Yuan Yang)")
+    temperature: Optional[float] = Field(None, description="Sheng Cheng Wen Du")
 
-    file_relative_path: Optional[str] = Field(None, description="导出文件相对路径")
+    file_relative_path: Optional[str] = Field(None, description="Dao Chu file Xiang Dui Lu Jing")
     created_at: datetime
 
     class Config:

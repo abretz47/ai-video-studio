@@ -35,7 +35,7 @@ class StoryNovelExportService:
             query = query.filter(Story.user_id == user.id)
         story = query.first()
         if not story:
-            raise HTTPException(status_code=404, detail="故事不存在")
+            raise HTTPException(status_code=404, detail="Story not found")
         return story
 
     async def export_zhihu_novel(

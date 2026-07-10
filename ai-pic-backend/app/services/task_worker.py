@@ -1,7 +1,7 @@
 """
-Celery 任务入口
+Celery Ren Wu entry point
 
-目前主要用于调度 Story/Episode/Script 相关的异步生成任务。
+Mu Qian Zhu Yao Yong Yu Diao Du Story/Episode/Script related async Sheng Cheng Ren Wu.
 """
 
 from __future__ import annotations
@@ -46,9 +46,9 @@ def story_generate_task(
     task_id: int, request_dict: Dict[str, Any], user_id: int
 ) -> None:
     """
-    异步故事生成任务入口。
+ async story Sheng Cheng Ren Wu entry point.
 
-    为避免导入环造成副作用，这里的依赖在函数内部按需导入。
+ as avoid Dao Ru Huan Zao Cheng Fu Zuo Yong, here Yi Lai in function Nei Bu An need Dao Ru.
     """
     from app.api.v1.endpoints.stories import _process_story_generation_task
 
@@ -67,7 +67,7 @@ def story_generate_task(
 def story_novel_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步导出知乎体小说任务入口。"""
+    """async Dao Chu Zhi Hu Ti Xiao Shuo Ren Wu entry point."""
     from app.api.v1.endpoints.stories import process_story_novel_export_task
 
     process_story_novel_export_task(task_id, payload, user_id)
@@ -88,7 +88,7 @@ def story_novel_generate_task(
 def episode_generate_task(
     task_id: int, request_dict: Dict[str, Any], user_id: int
 ) -> None:
-    """异步剧集生成任务入口。"""
+    """async episode Sheng Cheng Ren Wu entry point."""
     from app.api.v1.endpoints.episodes import process_episode_generation_task
 
     process_episode_generation_task(task_id, request_dict, user_id)
@@ -106,7 +106,7 @@ def episode_generate_task(
 def script_generate_task(
     task_id: int, request_dict: Dict[str, Any], user_id: int
 ) -> None:
-    """异步剧本生成任务入口。"""
+    """async script Sheng Cheng Ren Wu entry point."""
     from app.services.script.generation_task_processor import (
         process_script_generation_task,
     )
@@ -126,7 +126,7 @@ def script_generate_task(
 def script_regenerate_task(
     task_id: int, request_dict: Dict[str, Any], user_id: int
 ) -> None:
-    """异步剧本重新生成任务入口。"""
+    """async script retry Sheng Cheng Ren Wu entry point."""
     from app.services.script.regeneration_task_processor import (
         process_script_regeneration_task,
     )
@@ -146,7 +146,7 @@ def script_regenerate_task(
 def script_dialogue_audio_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步生成剧本场景对白音轨任务入口。"""
+    """async Sheng Cheng script scene dialogue Yin Gui Ren Wu entry point."""
     from app.api.v1.endpoints.scripts import _process_script_dialogue_audio_task
 
     _process_script_dialogue_audio_task(task_id, payload, user_id)
@@ -163,7 +163,7 @@ def script_dialogue_audio_generate_task(
 def script_audio_timeline_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步生成 episode 对白音轨拼接与时间轴任务入口。"""
+    """async Sheng Cheng episode dialogue Yin Gui Pin Jie and timeline Ren Wu entry point."""
     from app.api.v1.endpoints.scripts import _process_script_audio_timeline_task
 
     _process_script_audio_timeline_task(task_id, payload, user_id)
@@ -180,7 +180,7 @@ def script_audio_timeline_generate_task(
 def script_audio_storyboard_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步从 episode 音频时间轴生成分镜帧占位任务入口。"""
+    """async Cong episode audio timeline Sheng Cheng Fen Jing Zhen Zhan Wei Ren Wu entry point."""
     from app.api.v1.endpoints.scripts import _process_script_audio_storyboard_task
 
     _process_script_audio_storyboard_task(task_id, payload, user_id)
@@ -197,7 +197,7 @@ def script_audio_storyboard_generate_task(
 def storyboard_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步分镜结构生成任务入口。"""
+    """async storyboard structure Sheng Cheng Ren Wu entry point."""
     from app.api.v1.endpoints.scripts import _process_storyboard_generation_task
 
     _process_storyboard_generation_task(task_id, payload, user_id)
@@ -214,7 +214,7 @@ def storyboard_generate_task(
 def timeline_pipeline_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """一键生成时间轴流水线任务入口（对白音轨 → 时间轴 → 分镜帧占位）。"""
+    """Yi Jian Sheng Cheng timeline Liu Shui Xian Ren Wu entry point(dialogue Yin Gui → timeline → storyboard Zhen Zhan Wei)."""
     from app.api.v1.endpoints.scripts import _process_timeline_pipeline_task
 
     _process_timeline_pipeline_task(task_id, payload, user_id)
@@ -231,7 +231,7 @@ def timeline_pipeline_generate_task(
     name="tasks.video_generation_poll", soft_time_limit=120, time_limit=180
 )
 def video_generation_poll_task(limit: int = 50) -> int:
-    """集中轮询视频生成任务状态。"""
+    """Ji Zhong Lun Xun video Sheng Cheng Ren Wu status."""
     from app.services.video.video_task_entrypoints import poll_pending_video_tasks
 
     return poll_pending_video_tasks(limit=limit)

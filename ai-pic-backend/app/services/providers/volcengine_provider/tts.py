@@ -24,49 +24,49 @@ logger = logging.getLogger(__name__)
 VOICE_TYPES = [
     {
         "voice_type": "BV001_streaming",
-        "name": "通用女声",
+        "name": "Tong Yong Nv Sheng",
         "gender": "female",
         "language": "zh",
     },
     {
         "voice_type": "BV002_streaming",
-        "name": "通用男声",
+        "name": "Tong Yong Nan Sheng",
         "gender": "male",
         "language": "zh",
     },
     {
         "voice_type": "BV003_streaming",
-        "name": "温暖女声",
+        "name": "Wen Nuan Nv Sheng",
         "gender": "female",
         "style": "warm",
     },
     {
         "voice_type": "BV004_streaming",
-        "name": "阳光男声",
+        "name": "Yang Guang Nan Sheng",
         "gender": "male",
         "style": "energetic",
     },
     {
         "voice_type": "BV005_streaming",
-        "name": "知性女声",
+        "name": "Zhi Xing Nv Sheng",
         "gender": "female",
         "style": "intellectual",
     },
     {
         "voice_type": "BV006_streaming",
-        "name": "成熟男声",
+        "name": "Cheng Shu Nan Sheng",
         "gender": "male",
         "style": "mature",
     },
     {
         "voice_type": "BV007_streaming",
-        "name": "甜美女声",
+        "name": "Tian Mei Nv Sheng",
         "gender": "female",
         "style": "sweet",
     },
     {
         "voice_type": "BV008_streaming",
-        "name": "磁性男声",
+        "name": "Ci Xing Nan Sheng",
         "gender": "male",
         "style": "magnetic",
     },
@@ -101,7 +101,7 @@ async def poll_tts_status(
                         "duration": audio_info.get("duration"),
                     }
                 elif audio_info.get("status") == "failed":
-                    err_msg = audio_info.get("message", "TTS任务执行失败")
+                    err_msg = audio_info.get("message", "TTSRen Wu execute failed")
                     raise RuntimeError(f"火山引擎TTS任务失败: {err_msg}")
                 else:
                     await asyncio.sleep(delay)
@@ -115,7 +115,7 @@ async def poll_tts_status(
         except Exception as e:
             last_error = str(e)
             logger.warning(
-                "轮询火山引擎TTS状态失败 (尝试 %d/%d): %s",
+                "Lun Xun Volcengine Yin QingTTSstatus failed (Chang Shi %d/%d): %s",
                 attempt + 1,
                 max_attempts,
                 e,
@@ -190,7 +190,7 @@ async def text_to_speech(
         if not task_id:
             return AIResponse(
                 success=False,
-                error="火山引擎TTS未返回task_id",
+                error="Volcengine Yin QingTTSnot returntask_id",
                 provider=provider_name,
                 model=model,
                 task_type=AITaskType.VOICE_GENERATION,

@@ -180,7 +180,7 @@ async def generate_image(
 
             return AIResponse(
                 success=False,
-                error="火山引擎文生图响应格式错误",
+                error="Volcengine Yin Qing Wen Sheng Tu response format error",
                 provider=provider_name,
                 model=ark_model,
                 task_type=AITaskType.SCENE_GENERATION,
@@ -197,7 +197,7 @@ async def generate_image(
 
     return AIResponse(
         success=False,
-        error=format_error(last_error) if last_error else "文生图失败",
+        error=format_error(last_error) if last_error else "Wen Sheng Tu failed",
         provider=provider_name,
         model=ark_model,
         task_type=AITaskType.SCENE_GENERATION,
@@ -342,7 +342,7 @@ async def image_to_image(
 
             return AIResponse(
                 success=False,
-                error="图生图响应格式错误",
+                error="Tu Sheng Tu response format error",
                 provider=provider_name,
                 model=model or ark_model,
                 task_type=AITaskType.SCENE_GENERATION,
@@ -359,7 +359,7 @@ async def image_to_image(
 
     return AIResponse(
         success=False,
-        error=format_error(last_error) if last_error else "图生图失败",
+        error=format_error(last_error) if last_error else "Tu Sheng Tu failed",
         provider=provider_name,
         model=model or ark_model,
         task_type=AITaskType.SCENE_GENERATION,

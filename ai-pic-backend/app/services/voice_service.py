@@ -38,75 +38,75 @@ def _to_int(value: Optional[Any]) -> Optional[int]:
 
 
 VOICE_TYPE_OPTIONS: List[Dict[str, str]] = [
-    {"value": "system", "label_zh": "系统音色", "label_en": "System voices"},
-    {"value": "voice_cloning", "label_zh": "快速复刻", "label_en": "Voice cloning"},
+    {"value": "system", "label_zh": "system voice timbre", "label_en": "System voices"},
+    {"value": "voice_cloning", "label_zh": "quick Fu Ke", "label_en": "Voice cloning"},
     {
         "value": "voice_generation",
-        "label_zh": "文生音色",
+        "label_zh": "Wen Sheng voice timbre",
         "label_en": "Voice generation",
     },
-    {"value": "all", "label_zh": "全部", "label_en": "All"},
+    {"value": "all", "label_zh": "Quan Bu", "label_en": "All"},
 ]
 
 TTS_MODEL_OPTIONS: List[Dict[str, str]] = [
     {
         "value": "speech-2.6-hd",
-        "label_zh": "Speech 2.6 高清",
+        "label_zh": "Speech 2.6 Gao Qing",
         "label_en": "Speech 2.6 HD",
     },
     {
         "value": "speech-2.6-turbo",
-        "label_zh": "Speech 2.6 极速",
+        "label_zh": "Speech 2.6 Ji Su",
         "label_en": "Speech 2.6 Turbo",
     },
-    {"value": "speech-02-hd", "label_zh": "Speech 02 高清", "label_en": "Speech 02 HD"},
+    {"value": "speech-02-hd", "label_zh": "Speech 02 Gao Qing", "label_en": "Speech 02 HD"},
     {
         "value": "speech-02-turbo",
-        "label_zh": "Speech 02 极速",
+        "label_zh": "Speech 02 Ji Su",
         "label_en": "Speech 02 Turbo",
     },
-    {"value": "speech-01-hd", "label_zh": "Speech 01 高清", "label_en": "Speech 01 HD"},
+    {"value": "speech-01-hd", "label_zh": "Speech 01 Gao Qing", "label_en": "Speech 01 HD"},
     {
         "value": "speech-01-turbo",
-        "label_zh": "Speech 01 极速",
+        "label_zh": "Speech 01 Ji Su",
         "label_en": "Speech 01 Turbo",
     },
 ]
 
 EMOTION_OPTIONS: List[Dict[str, str]] = [
-    {"value": "happy", "label_zh": "高兴", "label_en": "Happy"},
-    {"value": "sad", "label_zh": "悲伤", "label_en": "Sad"},
-    {"value": "angry", "label_zh": "愤怒", "label_en": "Angry"},
-    {"value": "fearful", "label_zh": "害怕", "label_en": "Fearful"},
-    {"value": "disgusted", "label_zh": "厌恶", "label_en": "Disgusted"},
-    {"value": "surprised", "label_zh": "惊讶", "label_en": "Surprised"},
-    {"value": "calm", "label_zh": "中性", "label_en": "Calm"},
-    {"value": "fluent", "label_zh": "生动", "label_en": "Fluent"},
-    {"value": "whisper", "label_zh": "低语", "label_en": "Whisper"},
+    {"value": "happy", "label_zh": "happy", "label_en": "Happy"},
+    {"value": "sad", "label_zh": "sad", "label_en": "Sad"},
+    {"value": "angry", "label_zh": "angry", "label_en": "Angry"},
+    {"value": "fearful", "label_zh": "afraid", "label_en": "Fearful"},
+    {"value": "disgusted", "label_zh": "Yan Wu", "label_en": "Disgusted"},
+    {"value": "surprised", "label_zh": "surprised", "label_en": "Surprised"},
+    {"value": "calm", "label_zh": "Zhong Xing", "label_en": "Calm"},
+    {"value": "fluent", "label_zh": "Sheng Dong", "label_en": "Fluent"},
+    {"value": "whisper", "label_zh": "Di Yu", "label_en": "Whisper"},
 ]
 
 LANGUAGE_BOOST_OPTIONS: List[Dict[str, str]] = [
-    {"value": "Chinese", "label_zh": "中文", "label_en": "Chinese"},
-    {"value": "Chinese,Yue", "label_zh": "粤语", "label_en": "Cantonese"},
-    {"value": "English", "label_zh": "英语", "label_en": "English"},
-    {"value": "Japanese", "label_zh": "日语", "label_en": "Japanese"},
-    {"value": "Korean", "label_zh": "韩语", "label_en": "Korean"},
-    {"value": "French", "label_zh": "法语", "label_en": "French"},
-    {"value": "Spanish", "label_zh": "西班牙语", "label_en": "Spanish"},
-    {"value": "German", "label_zh": "德语", "label_en": "German"},
-    {"value": "Italian", "label_zh": "意大利语", "label_en": "Italian"},
-    {"value": "Russian", "label_zh": "俄语", "label_en": "Russian"},
-    {"value": "Thai", "label_zh": "泰语", "label_en": "Thai"},
-    {"value": "Vietnamese", "label_zh": "越南语", "label_en": "Vietnamese"},
-    {"value": "Indonesian", "label_zh": "印尼语", "label_en": "Indonesian"},
-    {"value": "Turkish", "label_zh": "土耳其语", "label_en": "Turkish"},
-    {"value": "Arabic", "label_zh": "阿拉伯语", "label_en": "Arabic"},
-    {"value": "auto", "label_zh": "自动", "label_en": "Auto detect"},
+    {"value": "Chinese", "label_zh": "Zhong Wen", "label_en": "Chinese"},
+    {"value": "Chinese,Yue", "label_zh": "Yue Yu", "label_en": "Cantonese"},
+    {"value": "English", "label_zh": "Ying Yu", "label_en": "English"},
+    {"value": "Japanese", "label_zh": "Ri Yu", "label_en": "Japanese"},
+    {"value": "Korean", "label_zh": "Han Yu", "label_en": "Korean"},
+    {"value": "French", "label_zh": "Fa Yu", "label_en": "French"},
+    {"value": "Spanish", "label_zh": "Xi Ban Ya Yu", "label_en": "Spanish"},
+    {"value": "German", "label_zh": "De Yu", "label_en": "German"},
+    {"value": "Italian", "label_zh": "Yi Da Li Yu", "label_en": "Italian"},
+    {"value": "Russian", "label_zh": "E Yu", "label_en": "Russian"},
+    {"value": "Thai", "label_zh": "Tai Yu", "label_en": "Thai"},
+    {"value": "Vietnamese", "label_zh": "Yue Nan Yu", "label_en": "Vietnamese"},
+    {"value": "Indonesian", "label_zh": "Yin Ni Yu", "label_en": "Indonesian"},
+    {"value": "Turkish", "label_zh": "Tu Er Qi Yu", "label_en": "Turkish"},
+    {"value": "Arabic", "label_zh": "A La Bo Yu", "label_en": "Arabic"},
+    {"value": "auto", "label_zh": "automatic", "label_en": "Auto detect"},
 ]
 
 OUTPUT_FORMAT_OPTIONS = [
-    {"value": "url", "label_zh": "临时链接（24小时）", "label_en": "URL (24h)"},
-    {"value": "hex", "label_zh": "HEX 编码", "label_en": "Hex encoded"},
+    {"value": "url", "label_zh": "temporary Lian Jie(24Xiao Shi)", "label_en": "URL (24h)"},
+    {"value": "hex", "label_zh": "HEX Bian Ma", "label_en": "Hex encoded"},
 ]
 
 AUDIO_FORMAT_OPTIONS = [
@@ -133,8 +133,8 @@ BITRATE_OPTIONS = [
 ]
 
 CHANNEL_OPTIONS = [
-    {"value": 1, "label_zh": "单声道", "label_en": "Mono"},
-    {"value": 2, "label_zh": "双声道", "label_en": "Stereo"},
+    {"value": 1, "label_zh": "Dan Sheng Dao", "label_en": "Mono"},
+    {"value": 2, "label_zh": "Shuang Sheng Dao", "label_en": "Stereo"},
 ]
 
 MUSIC_MODEL_OPTIONS = [
@@ -168,7 +168,7 @@ class MinimaxVoiceProvider:
                 daemon=True,
             ).start()
         except Exception as exc:  # pragma: no cover - startup guard
-            self.logger.warning("预加载 MiniMax 音色列表失败: %s", exc)
+            self.logger.warning("Yu Jia Zai MiniMax voice timbre list failed: %s", exc)
 
     def _validate_voice_type(self, voice_type: str) -> str:
         allowed = {item["value"] for item in VOICE_TYPE_OPTIONS}
@@ -199,7 +199,7 @@ class MinimaxVoiceProvider:
             "/delete_voice",
             {"voice_type": self._validate_voice_type(voice_type), "voice_id": voice_id},
         )
-        # 删除后刷新缓存，防止脏数据
+        # delete after Shua Xin cache, Fang Zhi Zang data
         try:
             await self.list_voices("all", force_refresh=True)
         except Exception:
@@ -404,7 +404,7 @@ class VoiceService:
     def _get_provider(self, provider: Optional[str]) -> MinimaxVoiceProvider:
         name = provider or self.default_provider
         if not name or name not in self.providers:
-            raise ValueError("未配置可用的声音提供商")
+            raise ValueError("not configuration available Sheng Yin provider")
         return self.providers[name]
 
     async def synthesize(

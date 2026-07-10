@@ -429,8 +429,8 @@ class TimelineReactAgent(ReactAgentBase[TimingPlan]):
 
         # Build scene description
         slug_line = scene_context.get("slug_line") or ""
-        location = scene_context.get("location") or "未知"
-        time_of_day = scene_context.get("time_of_day") or "未知"
+        location = scene_context.get("location") or "unknown"
+        time_of_day = scene_context.get("time_of_day") or "unknown"
         summary = scene_context.get("summary") or ""
 
         scene_description = (
@@ -468,7 +468,7 @@ class TimelineReactAgent(ReactAgentBase[TimingPlan]):
 - 场景编号: {scene_context.get('scene_number', 1)}
 {scene_description}
 {summary_line}
-- 整体情绪: {scene_context.get('mood') or '未标注'}
+- 整体情绪: {scene_context.get('mood') or 'not Biao Zhu'}
 - 冲突程度: {scene_context.get('conflict_level', 'medium')}
 - 节奏类型: {scene_context.get('pacing', 'medium')}
 - 角色数量: {scene_context.get('character_count', 1)}

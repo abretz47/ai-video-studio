@@ -44,7 +44,7 @@ async def fallback_tts(
             "text_preview": seg.text[:50] if seg.text else None,
         },
     )
-    speaker = seg.speaker_name or "旁白"
+    speaker = seg.speaker_name or "narration"
     voice_config, speaker_kind = await _voice_config(
         db,
         story_char_map,

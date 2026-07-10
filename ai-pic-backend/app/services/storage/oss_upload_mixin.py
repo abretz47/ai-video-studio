@@ -18,7 +18,7 @@ class OSSUploadMixin:
         original_filename: str | None = None,
         prefix: str | None = None,
     ) -> str:
-        """生成OSS对象键名"""
+        """Sheng ChengOSSDui Xiang Jian Ming"""
         timestamp = datetime.now().strftime("%Y%m%d/%H%M%S")
         random_str = str(uuid.uuid4())[:8]
 
@@ -44,7 +44,7 @@ class OSSUploadMixin:
         return ""
 
     def _get_content_type(self, filename: str) -> str:
-        """获取文件MIME类型"""
+        """get fileMIMEtype"""
         content_type, _ = mimetypes.guess_type(filename)
         return content_type or "application/octet-stream"
 
@@ -56,10 +56,10 @@ class OSSUploadMixin:
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """
-        从URL下载文件并上传到OSS。
+ CongURLXia Zai file and on Chuan DaoOSS.
 
-        仍然使用 httpx 下载远端内容，但真正上传交给官方 SDK，
-        避免手写签名导致 SignatureDoesNotMatch。
+ Reng Ran Shi Yong httpx Xia Zai Yuan Duan content, Dan Zhen Zheng Shang Chuan Jiao Gei Guan Fang SDK, 
+ avoid Shou Xie Qian Ming Dao Zhi SignatureDoesNotMatch.
         """
         try:
             timeout = 180.0 if file_type == "video" else 60.0
@@ -94,9 +94,9 @@ class OSSUploadMixin:
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """
-        上传文件内容到OSS。
+ Shang Chuan file content toOSS.
 
-        使用 oss2.Bucket.put_object，由 SDK 负责签名，避免 403 SignatureDoesNotMatch。
+ Shi Yong oss2.Bucket.put_object, You SDK responsible for Qian Ming, avoid 403 SignatureDoesNotMatch.
         """
         try:
             object_key = self._generate_object_key(file_type, filename, prefix)
@@ -112,7 +112,7 @@ class OSSUploadMixin:
                         headers[f"x-oss-meta-{safe_key}"] = value_str
                     except UnicodeEncodeError:
                         self.logger.warning(
-                            "跳过包含非ASCII字符的metadata: %s=%s", key, value_str
+                            "Tiao Guo Bao Han FeiASCIIZi Fumetadata: %s=%s", key, value_str
                         )
 
             def _put():
@@ -123,7 +123,7 @@ class OSSUploadMixin:
             status = getattr(result, "status", 200)
             if status >= 300:
                 self.logger.warning(
-                    "OSS 上传失败 | status=%s bucket=%s endpoint=%s object_key=%s",
+                    "OSS Shang Chuan failed | status=%s bucket=%s endpoint=%s object_key=%s",
                     status,
                     self.bucket_name,
                     self._endpoint_host,
@@ -137,7 +137,7 @@ class OSSUploadMixin:
 
             file_url = f"{self.domain}/{object_key}"
             self.logger.info(
-                "CDN 上传成功 | object_key=%s url=%s bytes=%s prefix=%s",
+                "CDN Shang Chuan successful | object_key=%s url=%s bytes=%s prefix=%s",
                 object_key,
                 file_url,
                 len(file_content),
@@ -167,7 +167,7 @@ class OSSUploadMixin:
         prefix: str | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
-        """批量上传URL文件"""
+        """Pi Liang Shang ChuanURLfile"""
         tasks = [self.upload_from_url(url, file_type, prefix, metadata) for url in urls]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 

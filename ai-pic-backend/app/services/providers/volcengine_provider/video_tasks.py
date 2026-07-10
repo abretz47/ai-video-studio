@@ -114,7 +114,7 @@ async def _submit_request(
         task_id = extract_task_id(create_data)
         if not task_id:
             return _failure_response(
-                "火山引擎视频生成响应缺少任务ID",
+                "Volcengine Yin Qing video Sheng Cheng response missing Ren WuID",
                 provider_name,
                 model,
                 model_type,

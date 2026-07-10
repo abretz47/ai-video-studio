@@ -7,11 +7,11 @@ created_at: "2026-01-30"
 updated_at: "2026-05-13"
 
 variables:
-  action:
-    type: string
-    required: true
-    description: "动作/画面要点（不包含对白或可读文字）"
-  performance:
-    type: string
-    required: true
-    description: "动作表演和反应节奏"
+ action:
+ type: string
+ required: true
+ description: "action/Hua Mian Yao Dian(Bu Bao Han dialogue Huo Ke Du Wen Zi)"
+ performance:
+ type: string
+ required: true
+ description: "action Biao Yan He Fan Ying pacing"

@@ -60,7 +60,7 @@ async def generate_video_with_fallback(
 
     if not available_providers:
         return failure_responses.manager_failure_response(
-            error="没有可用的视频生成提供商",
+            error="missing available video Sheng Cheng provider",
             model=model,
             task_type=AITaskType.VIDEO_GENERATION,
             model_type=model_type,
@@ -123,7 +123,7 @@ async def generate_video_with_fallback(
             last_provider = provider_name
             if not enable_fallback:
                 return failure_responses.exception_failure_response(
-                    action="视频生成失败",
+                    action="video Sheng Cheng failed",
                     exc=exc,
                     provider=provider_name,
                     model=last_model_used or "unknown",
@@ -135,7 +135,7 @@ async def generate_video_with_fallback(
             available_providers.remove(provider_name)
 
     return failure_responses.terminal_failure_response(
-        default_error="所有视频生成提供商都失败了",
+        default_error="all video Sheng Cheng provider all failed",
         last_error=last_error,
         last_provider=last_provider,
         model=last_model_used or "unknown",

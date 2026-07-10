@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""测试用户审批模态框功能"""
+"""test user approval Mo Tai Kuang function"""
 
 import time
 
@@ -15,307 +15,307 @@ API_BASE_URL = "http://localhost:8000/api/v1"
 
 
 def setup_webdriver():
-    """设置Chrome WebDriver"""
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
+ """setChrome WebDriver"""
+ options = Options()
+ options.add_argument("--headless")
+ options.add_argument("--no-sandbox")
+ options.add_argument("--disable-dev-shm-usage")
+ options.add_argument("--disable-gpu")
+ options.add_argument("--window-size=1920,1080")
 
-    try:
-        driver = webdriver.Chrome(options=options)
-        return driver
-    except Exception as e:
-        print(f"❌ 无法启动Chrome WebDriver: {e}")
-        return None
+ try:
+ driver = webdriver.Chrome(options=options)
+ return driver
+ except Exception as e:
+ print(f"❌ Wu Fa Qi DongChrome WebDriver: {e}")
+ return None
 
 
 def create_pending_user():
-    """创建一个待审批的测试用户"""
-    test_user_data = {
-        "username": "pending_user_test",
-        "email": "pending_test@example.com",
-        "password": "testpass123",
-        "full_name": "Pending Test User",
-    }
+ """create Yi Ge pending approval De test user"""
+ test_user_data = {
+ "username": "pending_user_test",
+ "email": "pending_test@example.com",
+ "password": "testpass123",
+ "full_name": "Pending Test User",
+ }
 
-    try:
-        response = requests.post(f"{API_BASE_URL}/auth/register", json=test_user_data)
-        if response.status_code == 200:
-            print("✅ 成功创建待审批测试用户")
-            return response.json()
-        else:
-            print(f"⚠️  待审批测试用户可能已存在 (状态码: {response.status_code})")
-            return None
-    except Exception as e:
-        print(f"❌ 创建待审批测试用户失败: {e}")
-        return None
+ try:
+ response = requests.post(f"{API_BASE_URL}/auth/register", json=test_user_data)
+ if response.status_code == 200:
+ print("✅ success create pending approval test user")
+ return response.json()
+ else:
+ print(f"⚠️ pending approval test user possible Yi exists (Zhuang Tai Ma: {response.status_code})")
+ return None
+ except Exception as e:
+ print(f"❌ create pending approval test user failed: {e}")
+ return None
 
 
 def test_user_approval_modal():
-    """测试用户审批模态框"""
-    print("🔍 测试用户审批模态框功能")
+ """test user approval Mo Tai Kuang"""
+ print("🔍 test user approval Mo Tai Kuang function")
 
-    # 先创建一个待审批用户
-    create_pending_user()
+ # Xian create Yi Ge pending approval user
+ create_pending_user()
 
-    driver = setup_webdriver()
-    if not driver:
-        return False
+ driver = setup_webdriver()
+ if not driver:
+ return False
 
-    try:
-        # 1. 访问登录页面并登录
-        driver.get(f"{BASE_URL}/login")
-        time.sleep(2)
+ try:
+ # 1. access login page Bing login
+ driver.get(f"{BASE_URL}/login")
+ time.sleep(2)
 
-        username_input = driver.find_element(By.NAME, "username")
-        password_input = driver.find_element(By.NAME, "password")
-        login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+ username_input = driver.find_element(By.NAME, "username")
+ password_input = driver.find_element(By.NAME, "password")
+ login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
 
-        username_input.clear()
-        username_input.send_keys("admin")
-        password_input.clear()
-        password_input.send_keys("Ai7dio")
-        login_button.click()
+ username_input.clear()
+ username_input.send_keys("admin")
+ password_input.clear()
+ password_input.send_keys("Ai7dio")
+ login_button.click()
 
-        time.sleep(3)
+ time.sleep(3)
 
-        # 2. 导航到用户管理页面
-        driver.get(f"{BASE_URL}/admin/users")
-        time.sleep(3)
+ # 2. Dao Hang to user management page
+ driver.get(f"{BASE_URL}/admin/users")
+ time.sleep(3)
 
-        # 3. 查找"处理审批"按钮
-        approval_buttons = driver.find_elements(
-            By.XPATH, "//button[contains(text(), '处理审批')]"
-        )
-        if len(approval_buttons) == 0:
-            print("❌ 未找到处理审批按钮")
-            return False
+ # 3. Cha Zhao"Chu Li Shen Pi"button
+ approval_buttons = driver.find_elements(
+ By.XPATH, "//button[contains(text(), 'Chu Li Shen Pi')]"
+)
+ if len(approval_buttons) == 0:
+ print("❌ Wei Zhao Dao handle approval button")
+ return False
 
-        print(f"✅ 找到 {len(approval_buttons)} 个处理审批按钮")
+ print(f"✅ Zhao Dao {len(approval_buttons)} Ge handle approval button")
 
-        # 4. 点击第一个处理审批按钮
-        approval_buttons[0].click()
-        time.sleep(2)
+ # 4. Dian Ji Di Yi Ge handle approval button
+ approval_buttons[0].click()
+ time.sleep(2)
 
-        # 5. 检查审批模态框是否出现
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//h3[contains(text(), '用户审批')]")
-                )
-            )
-            print("✅ 用户审批模态框已显示")
-        except Exception:
-            print("❌ 用户审批模态框未显示")
-            return False
+ # 5. check approval Mo Tai Kuang Shi Fou Chu Xian
+ try:
+ WebDriverWait(driver, 10).until(
+ EC.presence_of_element_located(
+ (By.XPATH, "//h3[contains(text(), 'Yong Hu Shen Pi')]")
+)
+)
+ print("✅ user approval Mo Tai Kuang Yi display")
+ except Exception:
+ print("❌ user approval Mo Tai Kuang Wei display")
+ return False
 
-        success_indicators = []
+ success_indicators = []
 
-        # 6. 检查模态框内容
+ # 6. check Mo Tai Kuang content
 
-        # 检查用户信息显示
-        user_info_elements = driver.find_elements(By.CSS_SELECTOR, "label")
-        user_info_texts = [elem.text for elem in user_info_elements]
-        if any("用户名" in text for text in user_info_texts) and any(
-            "邮箱地址" in text for text in user_info_texts
-        ):
-            success_indicators.append("用户信息显示")
-            print("✅ 用户信息正确显示")
+ # Jian Cha Yong Hu information display
+ user_info_elements = driver.find_elements(By.CSS_SELECTOR, "label")
+ user_info_texts = [elem.text for elem in user_info_elements]
+ if any("Yong Hu Ming" in text for text in user_info_texts) and any(
+ "You Xiang Di Zhi" in text for text in user_info_texts
+):
+ success_indicators.append("user information display")
+ print("✅ user information correct display")
 
-        # 检查处理决定选项
-        approve_radio = driver.find_elements(By.ID, "approve")
-        reject_radio = driver.find_elements(By.ID, "reject")
-        if len(approve_radio) > 0 and len(reject_radio) > 0:
-            success_indicators.append("处理选项")
-            print("✅ 批准/拒绝选项正确显示")
+ # check handle Jue Ding Xuan Xiang
+ approve_radio = driver.find_elements(By.ID, "approve")
+ reject_radio = driver.find_elements(By.ID, "reject")
+ if len(approve_radio) > 0 and len(reject_radio) > 0:
+ success_indicators.append("Chu Li Xuan Xiang")
+ print("✅ Pi Zhun/Ju Jue Xuan Xiang correct display")
 
-        # 7. 测试选择批准
-        if len(approve_radio) > 0:
-            approve_radio[0].click()
-            time.sleep(1)
+ # 7. test Xuan Ze Pi Zhun
+ if len(approve_radio) > 0:
+ approve_radio[0].click()
+ time.sleep(1)
 
-            # 检查是否出现原因选择
-            reason_select = driver.find_elements(By.ID, "reason")
-            if len(reason_select) > 0:
-                success_indicators.append("原因选择")
-                print("✅ 批准原因选择框正确显示")
+ # check Shi Fou Chu Xian reason Xuan Ze
+ reason_select = driver.find_elements(By.ID, "reason")
+ if len(reason_select) > 0:
+ success_indicators.append("Yuan Yin Xuan Ze")
+ print("✅ Pi Zhun reason Xuan Ze Kuang correct display")
 
-                # 选择一个原因
-                reason_select[0].click()
-                time.sleep(0.5)
-                options = driver.find_elements(By.CSS_SELECTOR, "#reason option")
-                if len(options) > 1:
-                    options[1].click()  # 选择第一个非空选项
-                    time.sleep(0.5)
-                    success_indicators.append("原因选择功能")
-                    print("✅ 原因选择功能正常")
+ # Xuan Ze Yi Ge reason
+ reason_select[0].click()
+ time.sleep(0.5)
+ options = driver.find_elements(By.CSS_SELECTOR, "#reason option")
+ if len(options) > 1:
+ options[1].click() # Xuan Ze Di Yi Ge Fei Kong Xuan Xiang
+ time.sleep(0.5)
+ success_indicators.append("reason Xuan Ze function")
+ print("✅ reason Xuan Ze function normal")
 
-        # 8. 检查确认按钮是否启用
-        confirm_buttons = driver.find_elements(
-            By.XPATH, "//button[contains(text(), '确认批准')]"
-        )
-        if len(confirm_buttons) > 0:
-            if not confirm_buttons[0].get_attribute("disabled"):
-                success_indicators.append("确认按钮")
-                print("✅ 确认按钮状态正确")
-            else:
-                print("⚠️  确认按钮处于禁用状态")
+ # 8. check confirm button Shi Fou Qi Yong
+ confirm_buttons = driver.find_elements(
+ By.XPATH, "//button[contains(text(), 'Que Ren Pi Zhun')]"
+)
+ if len(confirm_buttons) > 0:
+ if not confirm_buttons[0].get_attribute("disabled"):
+ success_indicators.append("Que Ren An Niu")
+ print("✅ confirm button status correct")
+ else:
+ print("⚠️ confirm button Chu Yu Jin Yong status")
 
-        # 9. 测试取消功能
-        cancel_buttons = driver.find_elements(
-            By.XPATH, "//button[contains(text(), '取消')]"
-        )
-        if len(cancel_buttons) > 0:
-            cancel_buttons[0].click()
-            time.sleep(1)
+ # 9. test Qu Xiao function
+ cancel_buttons = driver.find_elements(
+ By.XPATH, "//button[contains(text(), 'Qu Xiao')]"
+)
+ if len(cancel_buttons) > 0:
+ cancel_buttons[0].click()
+ time.sleep(1)
 
-            # 检查模态框是否关闭
-            approval_modals = driver.find_elements(
-                By.XPATH, "//h3[contains(text(), '用户审批')]"
-            )
-            if len(approval_modals) == 0:
-                success_indicators.append("取消功能")
-                print("✅ 取消功能正常工作")
-            else:
-                print("❌ 取消功能异常")
+ # check Mo Tai Kuang Shi Fou close
+ approval_modals = driver.find_elements(
+ By.XPATH, "//h3[contains(text(), 'Yong Hu Shen Pi')]"
+)
+ if len(approval_modals) == 0:
+ success_indicators.append("Qu Xiao Gong Neng")
+ print("✅ Qu Xiao function normal work")
+ else:
+ print("❌ Qu Xiao function exception")
 
-        print(f"\n📊 测试结果: {len(success_indicators)}/6 项功能正常")
-        print(f"   ✅ 正常功能: {', '.join(success_indicators)}")
+ print(f"\n📊 Ce Shi Jie Guo: {len(success_indicators)}/6 Xiang function normal")
+ print(f" ✅ Zheng Chang Gong Neng: {', '.join(success_indicators)}")
 
-        return len(success_indicators) >= 4  # 至少4项功能正常才算成功
+ return len(success_indicators) >= 4 # Zhi Shao4Xiang function normal Cai Suan success
 
-    except Exception as e:
-        print(f"❌ 测试过程中发生错误: {e}")
-        return False
-    finally:
-        driver.quit()
+ except Exception as e:
+ print(f"❌ An error occurred during testing: {e}")
+ return False
+ finally:
+ driver.quit()
 
 
 def test_backend_approval_api():
-    """测试后端审批API"""
-    print("\n🔍 测试后端审批API")
+ """test Hou Duan approvalAPI"""
+ print("\n🔍 test Hou Duan approvalAPI")
 
-    try:
-        # 1. 登录获取token
-        login_data = {"username": "admin", "password": "Ai7dio"}
+ try:
+ # 1. Deng Lu Huo Qutoken
+ login_data = {"username": "admin", "password": "Ai7dio"}
 
-        login_response = requests.post(
-            f"{API_BASE_URL}/auth/login",
-            data=login_data,
-            headers={"Content-Type": "application/x-www-form-urlencoded"},
-        )
+ login_response = requests.post(
+ f"{API_BASE_URL}/auth/login",
+ data=login_data,
+ headers={"Content-Type": "application/x-www-form-urlencoded"},
+)
 
-        if login_response.status_code != 200:
-            print(f"❌ 登录失败: {login_response.status_code}")
-            return False
+ if login_response.status_code!= 200:
+ print(f"❌ login failed: {login_response.status_code}")
+ return False
 
-        token_data = login_response.json()
-        token = token_data.get("access_token")
+ token_data = login_response.json()
+ token = token_data.get("access_token")
 
-        if not token:
-            print("❌ 未获取到访问令牌")
-            return False
+ if not token:
+ print("❌ not yet get to access Ling Pai")
+ return False
 
-        print("✅ 成功获取访问令牌")
+ print("✅ success get access Ling Pai")
 
-        # 2. 获取待审批用户
-        headers = {"Authorization": f"Bearer {token}"}
-        users_response = requests.get(
-            f"{API_BASE_URL}/admin/users?status_filter=pending", headers=headers
-        )
+ # 2. get pending approval user
+ headers = {"Authorization": f"Bearer {token}"}
+ users_response = requests.get(
+ f"{API_BASE_URL}/admin/users?status_filter=pending", headers=headers
+)
 
-        if users_response.status_code != 200:
-            print(f"❌ 获取待审批用户失败: {users_response.status_code}")
-            return False
+ if users_response.status_code!= 200:
+ print(f"❌ get pending approval user failed: {users_response.status_code}")
+ return False
 
-        users_data = users_response.json()
-        pending_users = [
-            user for user in users_data.get("users", []) if not user.get("is_approved")
-        ]
+ users_data = users_response.json()
+ pending_users = [
+ user for user in users_data.get("users", []) if not user.get("is_approved")
+ ]
 
-        if len(pending_users) == 0:
-            print("⚠️  当前没有待审批用户")
-            return True
+ if len(pending_users) == 0:
+ print("⚠️ Dang Qian Mei You pending approval user")
+ return True
 
-        user_id = pending_users[0]["id"]
-        print(f"✅ 找到待审批用户ID: {user_id}")
+ user_id = pending_users[0]["id"]
+ print(f"✅ Zhao Dao pending approval userID: {user_id}")
 
-        # 检查API端点是否存在（使用HEAD请求或者OPTIONS）
-        # 这里我们使用一个无效的请求来检查端点结构
-        test_response = requests.put(
-            f"{API_BASE_URL}/admin/users/{user_id}/approval",
-            headers=headers,
-            json={"approved": True, "reason": "API结构测试"},
-        )
+ # checkAPIendpoint Shi Fou exists(useHEADQing Qiu Huo ZheOPTIONS)
+ # Zhe Li Wo Men use Yi Ge Wu Xiao De Qing Qiu Lai check endpoint structure
+ test_response = requests.put(
+ f"{API_BASE_URL}/admin/users/{user_id}/approval",
+ headers=headers,
+ json={"approved": True, "reason": "APIJie Gou Ce Shi"},
+)
 
-        # 检查响应结构（即使失败也能看到API是否存在）
-        if test_response.status_code in [200, 400, 422]:  # 这些都表明API端点存在
-            print("✅ 审批API端点存在且结构正确")
-            return True
-        else:
-            print(f"❌ 审批API端点异常: {test_response.status_code}")
-            return False
+ # check response structure(Ji Shi failed Ye Neng Kan DaoAPIShi Fou Cun Zai)
+ if test_response.status_code in [200, 400, 422]: # Zhe Xie Dou Biao MingAPIDuan Dian Cun Zai
+ print("✅ approvalAPIendpoint exists Qie structure correct")
+ return True
+ else:
+ print(f"❌ approvalAPIDuan Dian Yi Chang: {test_response.status_code}")
+ return False
 
-    except Exception as e:
-        print(f"❌ API测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ APItest failed: {e}")
+ return False
 
 
 def main():
-    """主测试函数"""
-    print("🚀 开始用户审批模态框测试")
-    print("=" * 60)
+ """main test function"""
+ print("🚀 start user approval Mo Tai Kuang test")
+ print("=" * 60)
 
-    # 测试后端API
-    api_success = test_backend_approval_api()
+ # Ce Shi Hou DuanAPI
+ api_success = test_backend_approval_api()
 
-    # 测试前端UI
-    ui_success = test_user_approval_modal()
+ # Ce Shi Qian DuanUI
+ ui_success = test_user_approval_modal()
 
-    # 汇总结果
-    print("\n" + "=" * 60)
-    print("📊 测试结果汇总")
-    print("=" * 60)
+ # summary result
+ print("\n" + "=" * 60)
+ print("📊 test result summary")
+ print("=" * 60)
 
-    if api_success:
-        print("✅ 后端API测试: 通过")
-    else:
-        print("❌ 后端API测试: 失败")
+ if api_success:
+ print("✅ Hou DuanAPItest: pass")
+ else:
+ print("❌ Hou DuanAPItest: failed")
 
-    if ui_success:
-        print("✅ 前端UI测试: 通过")
-    else:
-        print("❌ 前端UI测试: 失败")
+ if ui_success:
+ print("✅ frontendUItest: pass")
+ else:
+ print("❌ frontendUItest: failed")
 
-    overall_success = api_success and ui_success
+ overall_success = api_success and ui_success
 
-    if overall_success:
-        print("\n🎉 用户审批模态框功能测试全部通过！")
-        print("\n📋 实现的功能:")
-        print("   ✅ 用户信息详细显示")
-        print("   ✅ 批准/拒绝选项")
-        print("   ✅ 预设原因选择")
-        print("   ✅ 自定义原因输入")
-        print("   ✅ 表单验证机制")
-        print("   ✅ 后端API集成")
-    else:
-        print("\n⚠️ 部分功能测试失败，建议检查:")
-        if not api_success:
-            print("   - 后端API接口")
-            print("   - 审批业务逻辑")
-        if not ui_success:
-            print("   - 前端组件渲染")
-            print("   - 模态框交互逻辑")
+ if overall_success:
+ print("\n🎉 user approval Mo Tai Kuang Gong Neng Ce Shi Quan Bu pass!")
+ print("\n📋 Shi Xian De function:")
+ print(" ✅ user information Xiang Xi display")
+ print(" ✅ Pi Zhun/Ju Jue Xuan Xiang")
+ print(" ✅ Yu She reason Xuan Ze")
+ print(" ✅ Zi Ding Yi reason Shu Ru")
+ print(" ✅ Biao Dan validate Ji Zhi")
+ print(" ✅ Hou DuanAPIintegration")
+ else:
+ print("\n⚠️ Bu Fen Gong Neng Ce Shi failed, Jian Yi Jian Cha:")
+ if not api_success:
+ print(" - Hou DuanAPIJie Kou")
+ print(" - approval Ye Wu logic")
+ if not ui_success:
+ print(" - frontend Zu Jian Xuan Ran")
+ print(" - Mo Tai Kuang Jiao Hu logic")
 
-    return overall_success
+ return overall_success
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\n❌ 测试被用户中断")
-    except Exception as e:
-        print(f"\n❌ 测试过程中发生错误: {e}")
+ try:
+ main()
+ except KeyboardInterrupt:
+ print("\n❌ test Bei user Zhong Duan")
+ except Exception as e:
+ print(f"\n❌ An error occurred during testing: {e}")

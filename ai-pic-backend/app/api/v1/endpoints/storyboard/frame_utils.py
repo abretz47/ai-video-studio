@@ -195,9 +195,9 @@ def _merge_frames(
 
 
 def _enforce_storyboard_variety(frames: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    shot_cycle = ["远景", "中景", "近景", "特写"]
-    movement_cycle = ["固定", "推", "拉", "摇", "移", "跟", "变焦"]
-    composition_cycle = ["三分法", "对称", "前后景", "对角线", "中心对称"]
+    shot_cycle = ["Wide shot", "Medium shot", "Close shot", "Close-up"]
+    movement_cycle = ["Static", "Push", "Pull", "Pan", "Move", "Follow", "Zoom"]
+    composition_cycle = ["Rule of thirds", "Symmetry", "Foreground/background layering", "Diagonal composition", "Central symmetry"]
     seen: Dict[tuple, int] = {}
     for frame in frames:
         desc = (frame.get("description") or "").strip()
@@ -213,9 +213,9 @@ def _enforce_storyboard_variety(frames: List[Dict[str, Any]]) -> List[Dict[str, 
             frame["composition"] = composition_cycle[
                 (count + (scene_no or 0)) % len(composition_cycle)
             ]
-            base_desc = desc or f"场景{scene_no or ''}"
+            base_desc = desc or f"Scene {scene_no or ''}"
             frame["description"] = (
-                f"{base_desc}（变体{count + 1}，强调{frame['camera_movement']}）"
+                f"{base_desc} (variant {count + 1}, emphasizing {frame['camera_movement']})"
             )
             old_prompt = frame.get("ai_prompt")
             if isinstance(old_prompt, str) and old_prompt.strip():

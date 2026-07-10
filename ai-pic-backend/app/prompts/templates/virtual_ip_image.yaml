@@ -1,5 +1,5 @@
 name: virtual_ip_image
-description: "虚拟 IP 图像生成提示词（直接用于图像模型）"
+description: "virtual IP image generate prompt text(Zhi Jie Yong Yu image model)"
 category: image
 version: "1.2"
 author: "AI Video Studio"
@@ -7,47 +7,47 @@ created_at: "2026-01-09"
 updated_at: "2026-01-12"
 
 variables:
-  character_name:
-    type: string
-    required: true
-    description: "角色名称"
-    min_length: 1
+ character_name:
+ type: string
+ required: true
+ description: "character name"
+ min_length: 1
 
-  character_description:
-    type: string
-    required: false
-    description: "角色外观与设定描述（可包含风格、服装、气质等）"
+ character_description:
+ type: string
+ required: false
+ description: "character Wai Guan Yu She Ding description(Ke Bao Han style, Fu Zhuang, Qi Zhi Deng)"
 
-  background_story:
-    type: string
-    required: false
-    description: "背景故事（可选）"
+ background_story:
+ type: string
+ required: false
+ description: "Bei Jing Gu Shi(optional)"
 
-  style:
-    type: string
-    required: false
-    description: "风格（realistic/anime/cartoon/portrait/…）"
-    default: "realistic"
+ style:
+ type: string
+ required: false
+ description: "style(realistic/anime/cartoon/portrait/...)"
+ default: "realistic"
 
-  category:
-    type: string
-    required: false
-    description: "图像类别（portrait/full_body/action/emotion/…）"
-    default: "portrait"
+ category:
+ type: string
+ required: false
+ description: "Tu Xiang Lei Bie(portrait/full_body/action/emotion/...)"
+ default: "portrait"
 
-  style_prompt:
-    type: string
-    required: false
-    description: "由 style_spec 派生的补充风格提示词（可选）"
+ style_prompt:
+ type: string
+ required: false
+ description: "You style_spec Pai Sheng De Bu Chong style prompt text(optional)"
 
-  additional_prompts:
-    type: list
-    required: false
-    description: "附加提示词列表（逗号分隔或数组输入后标准化）"
+ additional_prompts:
+ type: list
+ required: false
+ description: "Fu Jia prompt text list(Dou Hao Fen Ge Huo Shu Zu Shu Ru Hou Biao Zhun Hua)"
 
 usage_examples:
-  - character_name: "小雅"
-    character_description: "22岁女性，银色短发，精致五官，气质清冷，黑色高领毛衣"
-    style: "realistic"
-    category: "portrait"
-    additional_prompts: ["studio lighting", "depth of field"]
+ - character_name: "Mia"
+ character_description: "22 years oldfemale, Yin Se Duan Fa, Jing Zhi Wu Guan, Qi Zhi Qing Leng, Hei Se Gao Ling Mao Yi"
+ style: "realistic"
+ category: "portrait"
+ additional_prompts: ["studio lighting", "depth of field"]

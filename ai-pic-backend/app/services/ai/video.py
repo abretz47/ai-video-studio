@@ -23,14 +23,14 @@ class VideoGenerationMixin:
         prefer_provider: str = None,
         **kwargs,
     ) -> Optional[Dict[str, Any]]:
-        """生成视频"""
+        """Sheng Cheng video"""
         if not self.ai_manager:
             return {
                 "success": False,
-                "error": "AI管理器未初始化，无法生成视频（请检查 Celery worker 的环境变量/配置是否与 API 服务一致）",
+                "error": "AImanager not Chu Shi Hua, unable to Sheng Cheng video(Qing check Celery worker Huan Jing Bian Liang/configuration Shi Fou and API service Yi Zhi)",
             }
         try:
-            # 默认请求返回尾帧，便于串联/展示，除非调用方显式关闭
+            # default request return Wei Zhen, Bian Yu Chuan Lian/Zhan Shi, Chu Fei call Fang Xian Shi Guan Bi
             if "return_last_frame" not in kwargs:
                 kwargs["return_last_frame"] = True
 
@@ -51,7 +51,7 @@ class VideoGenerationMixin:
                 original_thumbnail_url = response.data.get("thumbnail_url")
                 original_last_frame_url = response.data.get("last_frame_url")
 
-                # 自动上传视频到OSS
+                # automatic Shang Chuan video toOSS
                 video_oss_result = None
                 thumbnail_oss_result = None
                 last_frame_oss_result = None
@@ -77,7 +77,7 @@ class VideoGenerationMixin:
                             },
                         )
                     except Exception as exc:
-                        logger.warning("视频OSS上传失败: %s", exc)
+                        logger.warning("videoOSSShang Chuan failed: %s", exc)
 
                 if original_thumbnail_url and oss_service:
                     try:
@@ -93,7 +93,7 @@ class VideoGenerationMixin:
                             },
                         )
                     except Exception as exc:
-                        logger.warning("缩略图OSS上传失败: %s", exc)
+                        logger.warning("Suo Lve TuOSSShang Chuan failed: %s", exc)
 
                 if original_last_frame_url and oss_service:
                     try:
@@ -109,7 +109,7 @@ class VideoGenerationMixin:
                             },
                         )
                     except Exception as exc:
-                        logger.warning("尾帧OSS上传失败: %s", exc)
+                        logger.warning("Wei ZhenOSSShang Chuan failed: %s", exc)
 
                 return {
                     "success": True,
@@ -146,11 +146,11 @@ class VideoGenerationMixin:
                 }
             return {
                 "success": False,
-                "error": response.error or "视频生成失败",
+                "error": response.error or "video Sheng Cheng failed",
                 "provider_used": response.provider,
                 "model_used": response.model,
                 "metadata": response.metadata,
             }
         except Exception as exc:
-            logger.warning("视频生成失败: %s", exc)
+            logger.warning("video Sheng Cheng failed: %s", exc)
             return {"success": False, "error": str(exc)}

@@ -1,9 +1,9 @@
 """Repair AI-generated prose blocks for dialogue audio.
 
 The script generator sometimes produces long narration paragraphs under the
-speaker "旁白" that embed multiple dialogue lines via quotes. If we feed that
+speaker "narration" that embed multiple dialogue lines via quotes. If we feed that
 directly into TTS, the entire paragraph is spoken with the narrator voice,
-which sounds like "旁白描述" instead of character dialogue.
+which sounds like "narration description" instead of character dialogue.
 
 This module extracts quoted utterances and infers speakers from nearby name
 mentions (using the Story character registry alias map).
@@ -31,17 +31,17 @@ _QUOTED_SPAN_RE = re.compile(
 
 # Hints that a quoted span is UI text / label rather than spoken dialogue.
 _NON_SPOKEN_HINTS: tuple[str, ...] = (
-    "写着",
-    "写上",
-    "显示",
-    "提示",
-    "弹出",
-    "出现",
-    "字幕",
-    "标注",
-    "界面",
-    "屏幕",
-    "窗口",
+    "Xie Zhe",
+    "Xie on",
+    "Xian Shi",
+    "prompt",
+    "Dan Chu",
+    "Chu Xian",
+    "Zi Mu",
+    "Biao Zhu",
+    "Jie Mian",
+    "screen",
+    "Chuang Kou",
 )
 
 _SPEECH_PUNCT = set("。！？!?…")
@@ -123,7 +123,7 @@ def split_prose_dialogue_block(
     text: str,
     *,
     alias_to_canonical: dict[str, str],
-    default_speaker: str = "旁白",
+    default_speaker: str = "narration",
 ) -> list[dict[str, Any]]:
     """Split a prose paragraph into dialogue lines.
 

@@ -88,17 +88,17 @@ def build_repair_prompt(
     return (
         base_prompt
         + "\n\n"
-        + "你上一次的输出不符合 JSON Schema，请修复并重新输出。\n"
-        + "要求：\n"
-        + "- 只输出 JSON（不要代码块，不要解释）\n"
-        + "- 严格符合 JSON Schema，字段类型必须正确\n"
-        + "- 缺失字段必须补齐；不要返回 null 以逃避字段\n"
-        + "- 不要添加 schema 之外的字段\n"
+        + "you on Yi Ci output not Fu He JSON Schema, Qing Xiu Fu and retry output.\n"
+        + "requirement: \n"
+        + "- only output JSON(Bu Yao Dai Ma Kuai, Bu Yao Jie Shi)\n"
+        + "- strict Fu He JSON Schema, character Duan type Bi Xu Zheng Que\n"
+        + "- Que Shi character Duan Bi Xu Bu Qi; Bu Yao return null Yi Tao Bi character Duan\n"
+        + "- Bu Yao Tian Jia schema Zhi Wai character Duan\n"
         + f"- schema_name: {schema_name}\n\n"
-        + "上一次输出：\n"
+        + "on Yi Ci output: \n"
         + prior
         + "\n\n"
-        + "校验错误（Pydantic errors）：\n"
+        + "Jiao Yan error(Pydantic errors): \n"
         + errors_text
     )
 

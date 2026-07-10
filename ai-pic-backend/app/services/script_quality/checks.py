@@ -39,14 +39,14 @@ def check_scene_headers(
             ScriptLintIssue(
                 severity="info",
                 rule_id="scene_headers",
-                message="未检测到明确的场次/场景标记（建议使用 [第1场] / 场景1 / INT./EXT.）。",
-                suggestion="补充场次/场景头部，便于分镜/制作拆解。",
+                message="not Jian Ce to clear Chang Ci/scene Biao Ji(suggestion Shi Yong [Di1Chang]/scene1/INT./EXT.).",
+                suggestion="Bu Chong Chang Ci/scene Tou Bu, Bian Yu storyboard/Zhi Zuo Chai Jie.",
             )
         )
     return (
         ScriptLintRuleResult(
             rule_id="scene_headers",
-            title="场次/场景标记",
+            title="Chang Ci/scene Biao Ji",
             weight=0.25,
             score=1.0 if has_scene_headers else 0.5,
             passed=has_scene_headers,
@@ -78,14 +78,14 @@ def check_tempo_tags(
             ScriptLintIssue(
                 severity="warn",
                 rule_id="pacing_markers",
-                message="未检测到【快/慢】节奏标注或商用正文动作标记。",
-                suggestion="使用【快/慢】或 `▲动作/镜头/音效` 标记关键节奏点。",
+                message="not Jian Ce to[Kuai/Man]Jie Zou Biao Zhu or Shang Yong body text action Biao Ji.",
+                suggestion="Shi Yong[Kuai/Man]or `▲action/shot/sound effect` Biao Ji key Jie Zou Dian.",
             )
         )
     return (
         ScriptLintRuleResult(
             rule_id="pacing_markers",
-            title="节奏区/商用动作标记",
+            title="Jie Zou Qu/Shang Yong action Biao Ji",
             weight=1.0,
             score=1.0 if (has_tempo or has_commercial_pacing) else 0.0,
             passed=has_tempo or has_commercial_pacing,
@@ -114,14 +114,14 @@ def check_emotion_goal(
             ScriptLintIssue(
                 severity="warn",
                 rule_id="emotion_goal",
-                message="未检测到【情绪目的】标注或角色状态括注。",
-                suggestion="用【情绪目的】或 `角色(状态)：对白` 标清表演状态。",
+                message="not Jian Ce to[EmotionMu Di]Biao Zhu or character status Kuo Zhu.",
+                suggestion="Yong[EmotionMu Di]or `character(status): dialogue` Biao Qing Biao Yan status.",
             )
         )
     return (
         ScriptLintRuleResult(
             rule_id="emotion_goal",
-            title="情绪目的/角色状态",
+            title="EmotionMu Di/character status",
             weight=0.5,
             score=1.0 if (has_emotion_goal or has_dialogue_state) else 0.0,
             passed=has_emotion_goal or has_dialogue_state,
@@ -148,14 +148,14 @@ def check_sfx_lines(
             ScriptLintIssue(
                 severity="info",
                 rule_id="sfx_lines",
-                message="未检测到明确的【音效/氛围音】或商用动作/镜头行。",
-                suggestion="关键节拍前置音效或 `▲动作/镜头` 行，便于制作拆解。",
+                message="not Jian Ce to clear[sound effect/atmosphere Yin]or Shang Yong action/shot Xing.",
+                suggestion="key Jie Pai Qian Zhi sound effect or `▲action/shot` Xing, Bian Yu Zhi Zuo Chai Jie.",
             )
         )
     return (
         ScriptLintRuleResult(
             rule_id="sfx_lines",
-            title="音效/动作/镜头行",
+            title="sound effect/action/shot Xing",
             weight=0.25,
             score=1.0 if has_sfx else 0.5,
             passed=has_sfx,
@@ -176,14 +176,14 @@ def check_hook_3s(
             ScriptLintIssue(
                 severity="error",
                 rule_id="hook_3s",
-                message="前五行未检测到强钩子（冲突/惊呼/命令/巨响）。",
-                suggestion="用“质问/耳光/摔杯/警报”等强事件开场，禁止寒暄。",
+                message="before Wu Xing not Jian Ce to Qiang Gou Zi(conflict/Jing Hu/Ming Ling/Ju Xiang).",
+                suggestion="Yong"Zhi Wen/Er Guang/Shuai Bei/alarm"Deng Qiang Shi Jian Kai Chang, Jin Zhi Han Xuan.",
             )
         )
     return (
         ScriptLintRuleResult(
             rule_id="hook_3s",
-            title="黄金3秒钩子（前五行）",
+            title="Huang Jin3seconds Gou Zi(before Wu Xing)",
             weight=1.5,
             score=1.0 if has_hook else 0.0,
             passed=has_hook,
@@ -210,7 +210,7 @@ def check_dialogue_length(
                     message=f"台词过长（>{options.max_dialogue_chars} 字）：{length} 字",
                     line=ln_no,
                     excerpt=ln[:120],
-                    suggestion="拆成短句/打断/抢白，或改为动作表达。",
+                    suggestion="Chai Cheng short sentence/Da Duan/Qiang Bai, or change to action Biao Da.",
                 )
             )
 

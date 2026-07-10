@@ -63,8 +63,8 @@ class VirtualIPBase(BaseModel):
     @field_validator("tags", "style_reference_images", mode="before")
     @classmethod
     def _none_to_empty_list(cls, value):
-        # 自动创建的 IP（如临时角色默认形象）DB 中 tags 为 NULL；
-        # 序列化为 [] 避免前端 .length 崩溃。
+        # automatic create IP(for example temporary character default Xing Xiang)DB in tags as NULL; 
+        # Xu Lie Hua as [] avoid Qian Duan.length Beng Kui.
         return [] if value is None else value
 
 
@@ -104,18 +104,18 @@ class VirtualIPListResponse(BaseModel):
 
 
 class VirtualIPAICreateRequest(BaseModel):
-    """AI增强创建虚拟IP的请求"""
+    """AIZeng Qiang create Xu NiIPrequest"""
 
     name: str
-    basic_info: Optional[str] = None  # 用户提供的基本信息
-    style_preference: Optional[str] = None  # 风格偏好
+    basic_info: Optional[str] = None  # user Ti Gong Ji Ben Xin Xi
+    style_preference: Optional[str] = None  # style Pian Hao
     tags: Optional[List[str]] = []
     is_active: bool = True
     is_public: bool = False
 
 
 class VirtualIPAIGenerationResponse(BaseModel):
-    """AI生成内容的响应"""
+    """AISheng Cheng content response"""
 
     description: str
     background_story: str
@@ -125,7 +125,7 @@ class VirtualIPAIGenerationResponse(BaseModel):
 
 
 class AIGenerationDetails(BaseModel):
-    """AI生成详情"""
+    """AISheng Cheng Xiang Qing"""
 
     model: str
     temperature: float
@@ -136,7 +136,7 @@ class AIGenerationDetails(BaseModel):
 
 
 class VirtualIPAIGenerationDetailedResponse(BaseModel):
-    """AI生成内容的详细响应"""
+    """AISheng Cheng content detailed response"""
 
     description: str
     background_story: str
@@ -147,7 +147,7 @@ class VirtualIPAIGenerationDetailedResponse(BaseModel):
 
 
 class VirtualIPAIGenerationRequest(BaseModel):
-    """AI生成内容的请求"""
+    """AISheng Cheng content request"""
 
     name: str
     basic_info: Optional[str] = None

@@ -1,5 +1,5 @@
 name: story_outline_repair
-description: "修复故事大纲输出为符合 StoryOutlineModel 的纯 JSON"
+description: "repair story Da Gang output Wei Fu He StoryOutlineModel De Chun JSON"
 category: general
 version: "1.0"
 author: "AI Video Studio"
@@ -7,45 +7,45 @@ created_at: "2025-12-10"
 updated_at: "2025-12-10"
 
 variables:
-  schema:
-    type: any
-    required: true
-    description: "StoryOutlineModel 的 JSON Schema"
-  missing_fields:
-    type: list
-    required: false
-    description: "校验失败时缺失或异常的字段路径列表"
-  production_mode:
-    type: boolean
-    required: false
-    description: "是否为 production 生成链路"
-  quality_gate_issues:
-    type: list
-    required: false
-    description: "生产质量门禁失败的检查 ID"
-  quality_gate_issue_details:
-    type: list
-    required: false
-    description: "生产质量门禁失败详情"
-  story_quality_warnings:
-    type: list
-    required: false
-    description: "故事节奏、钩子、合规等质量警告"
-  character_warnings:
-    type: list
-    required: false
-    description: "角色一致性警告"
-  original_prompt:
-    type: string
-    required: false
-    description: "初次生成使用的提示词"
-  original_output:
-    type: string
-    required: true
-    description: "需要修复的原始模型输出"
+ schema:
+ type: any
+ required: true
+ description: "StoryOutlineModel De JSON Schema"
+ missing_fields:
+ type: list
+ required: false
+ description: "Jiao Yan failed Shi Que Shi Huo exception De character Duan path list"
+ production_mode:
+ type: boolean
+ required: false
+ description: "Shi Fou Wei production Sheng Cheng Lian Lu"
+ quality_gate_issues:
+ type: list
+ required: false
+ description: "Sheng Chan Zhi Liang Men Jin failed De check ID"
+ quality_gate_issue_details:
+ type: list
+ required: false
+ description: "Sheng Chan Zhi Liang Men Jin failed details"
+ story_quality_warnings:
+ type: list
+ required: false
+ description: "Gu Shi Jie Zou, hook, He Gui etc. Zhi Liang Jing Gao"
+ character_warnings:
+ type: list
+ required: false
+ description: "character Yi Zhi Xing Jing Gao"
+ original_prompt:
+ type: string
+ required: false
+ description: "Chu Ci generate use De prompt text"
+ original_output:
+ type: string
+ required: true
+ description: "Xu Yao repair De Yuan Shi model output"
 
 usage_examples:
-  - schema: "{...StoryOutlineModel schema...}"
-    missing_fields: ["premise", "synopsis"]
-    original_prompt: "生成故事大纲"
-    original_output: '{"premise": "..."}'
+ - schema: "{...StoryOutlineModel schema...}"
+ missing_fields: ["premise", "synopsis"]
+ original_prompt: "generate story Da Gang"
+ original_output: '{"premise": "..."}'

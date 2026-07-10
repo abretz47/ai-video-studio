@@ -153,9 +153,9 @@ class DeterministicValidator(Generic[T]):
             return FailureMode.JSON_PARSE
         if any(kw in error_text for kw in ["schema", "type", "required", "field"]):
             return FailureMode.SCHEMA_VIOLATION
-        if any(kw in error_text for kw in ["character", "角色", "人物"]):
+        if any(kw in error_text for kw in ["character", "character", "character"]):
             return FailureMode.CHARACTER_INCONSISTENCY
-        if any(kw in error_text for kw in ["timeline", "时间", "顺序"]):
+        if any(kw in error_text for kw in ["timeline", "time", "Shun Xu"]):
             return FailureMode.TIMELINE_ERROR
         if any(kw in error_text for kw in ["api", "rate", "limit", "timeout"]):
             return FailureMode.API_ERROR

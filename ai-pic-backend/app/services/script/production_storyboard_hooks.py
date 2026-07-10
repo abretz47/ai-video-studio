@@ -28,7 +28,7 @@ def annotate_storyboard_frames_with_hooks(
         ad_snippets[0] if ad_snippets else _schedule_ad_snippet(hook_schedule, 0),
     )
 
-    payoff_frame = _find_frame(non_pause, ("爽", "反击", "揭露", "证据", "逆转"))
+    payoff_frame = _find_frame(non_pause, ("Shuang", "Fan Ji", "expose", "evidence", "Ni Zhuan"))
     if payoff_frame:
         changed += _set_frame_hook(
             payoff_frame,

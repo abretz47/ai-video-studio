@@ -1,5 +1,5 @@
 name: episode_from_outline
-description: "基于已生成的 Step Outline，为单集输出完整 Episode Plan（logline 必填，beats 可选）"
+description: "based on Yi generate De Step Outline, Wei Dan Ji output complete Episode Plan(logline Bi Tian, beats optional)"
 category: episode
 version: "1.0"
 author: "AI Video Studio"
@@ -7,153 +7,153 @@ created_at: "2025-12-13"
 updated_at: "2025-12-13"
 
 variables:
-  story:
-    type: dict
-    required: true
-    description: "故事信息对象"
-  outline:
-    type: dict
-    required: true
-    description: "单集 Step Outline（含 logline，beats 可选）"
-  previous_episodes:
-    type: list
-    required: false
-    description: "已生成的前序集列表（episode_number/title/logline）"
-  episode_duration:
-    type: number
-    required: false
-    description: "目标时长（分钟）"
-  plot_complexity:
-    type: string
-    required: false
-    description: "情节复杂度 simple/medium/complex"
-  pacing:
-    type: string
-    required: false
-    description: "节奏 slow/medium/fast"
-  additional_requirements:
-    type: string
-    required: false
-    description: "额外要求"
-  style_preferences:
-    type: list
-    required: false
-    description: "风格偏好"
+ story:
+ type: dict
+ required: true
+ description: "story information object"
+ outline:
+ type: dict
+ required: true
+ description: "Dan Ji Step Outline(Han logline, beats optional)"
+ previous_episodes:
+ type: list
+ required: false
+ description: "Yi generate De Qian Xu Ji list(episode_number/title/logline)"
+ episode_duration:
+ type: number
+ required: false
+ description: "target duration(minutes)"
+ plot_complexity:
+ type: string
+ required: false
+ description: "plot Fu Za Du simple/medium/complex"
+ pacing:
+ type: string
+ required: false
+ description: "pacing slow/medium/fast"
+ additional_requirements:
+ type: string
+ required: false
+ description: "E Wai Yao Qiu"
+ style_preferences:
+ type: list
+ required: false
+ description: "style preference"
 
 output_format: "JSON"
 expected_fields:
-  - episodes
-    - episode_number
-    - title
-    - summary
-    - plot_points
-    - character_arcs
-    - conflicts
-    - scene_count
-    - scenes
+ - episodes
+ - episode_number
+ - title
+ - summary
+ - plot_points
+ - character_arcs
+ - conflicts
+ - scene_count
+ - scenes
 
 prompt: |
-  你是该剧的分集主编，请基于提供的 Step Outline 生成这一集的完整 Episode Plan。若没有 beats，请基于 logline 和主故事冲突自行铺陈。
+ you Shi Gai Ju De Fen Ji Zhu Bian, please based on provide De Step Outline generate Zhe Yi Ji De complete Episode Plan.Ruo Mei You beats, Qing Ji Yu logline He Zhu story conflict Zi Xing Pu Chen.
 
-  ## 故事信息
-  标题：{{ story.title }}
-  类型：{{ story.genre }}
-  {% if story.theme %}主题：{{ story.theme }}{% endif %}
-  {% if story.synopsis %}概要：{{ story.synopsis }}{% endif %}
-  {% if story.main_conflict %}总冲突：{{ story.main_conflict }}{% endif %}
-  {% if story.resolution %}总收束/解法：{{ story.resolution }}{% endif %}
+ ## Gu Shi Xin Xi
+ title: {{ story.title }}
+ type: {{ story.genre }}
+ {% if story.theme %}Zhu Ti: {{ story.theme }}{% endif %}
+ {% if story.synopsis %}summary: {{ story.synopsis }}{% endif %}
+ {% if story.main_conflict %}Zong Chong Tu: {{ story.main_conflict }}{% endif %}
+ {% if story.resolution %}Zong Shou Shu/Xie Fa: {{ story.resolution }}{% endif %}
 
-  ## 当前集的 Step Outline
-  目标集数：{{ outline.episode_number }}
-  集标题：{{ outline.title or '待定' }}
-  Logline：{{ outline.logline or '无' }}
-  Beats（如无可留空；若存在请保持顺序和节奏）：
-  {% if outline.beats %}
-  {% for beat in outline.beats %}
-  - #{{ beat.sequence_number }} {{ beat.act_label or '' }} {{ beat.beat_title }}: {{ beat.beat_summary }}
-    角色：{{ beat.characters_involved or [] }}；地点提示：{{ beat.location_hint or '待定' }}；预计时长：{{ beat.duration_estimate_minutes or '未知' }} 分钟
-  {% endfor %}
-  {% else %}
-  - （本次未提供 beats，请基于 logline 合理拆分场景）
-  {% endif %}
+ ## Dang Qian Ji De Step Outline
+ Mu Biao Ji Shu: {{ outline.episode_number }}
+ Ji Biao Ti: {{ outline.title or 'Dai Ding' }}
+ Logline: {{ outline.logline or 'none' }}
+ Beats(Ru Wu Ke Liu Kong; Ruo exists please keep Shun Xu He pacing): 
+ {% if outline.beats %}
+ {% for beat in outline.beats %}
+ - #{{ beat.sequence_number }} {{ beat.act_label or '' }} {{ beat.beat_title }}: {{ beat.beat_summary }}
+ character: {{ beat.characters_involved or [] }}; Di Dian Ti Shi: {{ beat.location_hint or 'Dai Ding' }}; Yu Ji Shi Chang: {{ beat.duration_estimate_minutes or 'Wei Zhi' }} minutes
+ {% endfor %}
+ {% else %}
+ - (Ben Ci not yet provide beats, Qing Ji Yu logline He Li Chai Fen scene)
+ {% endif %}
 
-  ## 角色参考
-  {% if story.main_characters -%}
-  主要角色：
-  {% for c in story.main_characters -%}
-  - {{ c.name }}: {{ c.description or c.role }}
-  {% endfor %}
-  {% endif -%}
-  {% if story.character_relationships %}角色关系：{{ story.character_relationships }}{% endif %}
-  {% if story.main_conflict %}主冲突：{{ story.main_conflict }}{% endif %}
-  {% if focus_characters %}重点角色：{{ focus_characters | map(attribute='name') | list | join(', ') }}{% endif %}
+ ## Jue Se Can Kao
+ {% if story.main_characters -%}
+ Zhu Yao Jue Se: 
+ {% for c in story.main_characters -%}
+ - {{ c.name }}: {{ c.description or c.role }}
+ {% endfor %}
+ {% endif -%}
+ {% if story.character_relationships %}Jue Se Guan Xi: {{ story.character_relationships }}{% endif %}
+ {% if story.main_conflict %}Zhu Chong Tu: {{ story.main_conflict }}{% endif %}
+ {% if focus_characters %}Zhong Dian Jue Se: {{ focus_characters | map(attribute='name') | list | join(', ') }}{% endif %}
 
-  ## 已生成的前序集（保持连贯）
-  {% if previous_episodes and previous_episodes|length > 0 -%}
-  {% for prev in previous_episodes %}
-  - 第{{ prev.episode_number }}集：{{ prev.title or '' }} — {{ prev.logline or '无概述' }}
-  {% endfor %}
-  {% else %}
-  - （无前序集）
-  {% endif %}
+ ## Yi generate De Qian Xu Ji(Bao Chi Lian Guan)
+ {% if previous_episodes and previous_episodes|length > 0 -%}
+ {% for prev in previous_episodes %}
+ - Di{{ prev.episode_number }}Ji: {{ prev.title or '' }} - {{ prev.logline or 'Wu Gai Shu' }}
+ {% endfor %}
+ {% else %}
+ - (Wu Qian Xu Ji)
+ {% endif %}
 
-  ## 生成要求
-  - episode_number 必须等于 {{ outline.episode_number }}。
-  - 输出 episodes 数组，仅包含这一集。
-  - summary 150-300 字，覆盖 logline/主冲突；若有 beats 需兼顾。
-  - plot_points/timing 覆盖故事结构；若有 beats 优先对齐；无 beats 时自行拆分。
-  - conflicts 至少 1 条，明确冲突类型与强度；scene_count 与场景对应。
-  - scenes 需包含 scene_number/slug_line/location/time_of_day/summary；若有 beats 尽量顺序对应；无 beats 时按合理节奏拆分。
-  - 保持 {{ pacing }} 节奏与 {{ plot_complexity }} 复杂度。
-  {% if episode_duration %}- **关键时长要求**：单集目标时长 {{ episode_duration }} 分钟（{{ episode_duration * 60 }} 秒）
-  - 每个场景必须标注 estimated_duration_seconds（预估时长，单位秒）
-  - 所有场景的 estimated_duration_seconds 之和应接近目标时长（允许±15%误差）
-  - 时长分配建议：开场15-20%、中段60-70%、高潮和结尾15-25%
+ ## Sheng Cheng Yao Qiu
+ - episode_number Bi Xu Deng Yu {{ outline.episode_number }}.
+ - output episodes Shu Zu, Jin Bao Han Zhe Yi Ji.
+ - summary 150-300 character, Fu Gai logline/Zhu Chong Tu; Ruo You beats Xu Jian Gu.
+ - plot_points/timing Fu Gai story structure; Ruo You beats You Xian Dui Qi; none beats Shi Zi Xing Chai Fen.
+ - conflicts Zhi Shao 1 Tiao, Ming Que conflict type Yu Qiang Du; scene_count Yu scene Dui Ying.
+ - scenes Xu Bao Han scene_number/slug_line/location/time_of_day/summary; Ruo You beats Jin Liang Shun Xu Dui Ying; none beats Shi An He Li pacing Chai Fen.
+ - keep {{ pacing }} Jie Zou Yu {{ plot_complexity }} Fu Za Du.
+ {% if episode_duration %}- **key Shi length Yao Qiu**: Dan Ji target Shi length {{ episode_duration }} minutes({{ episode_duration * 60 }} seconds)
+ - Mei Ge scene Bi Xu Biao Zhu estimated_duration_seconds(Yu Gu Shi Chang, Dan Wei Miao)
+ - Suo You scene De estimated_duration_seconds Zhi He Ying Jie Jin target Shi length(Yun Xu±15%Wu Cha)
+ - Shi length Fen Pei Jian Yi: opening15-20%, Zhong Duan60-70%, climax He Jie Wei15-25%
 
-  **【重要】对白内容要求**：
-  此剧本需要配音，请根据场景类型合理安排对白：
+ **【Zhong Yao】dialogue content Yao Qiu**: 
+ Ci script Xu Yao Pei Yin, please Gen Ju scene type He Li An Pai dialogue: 
 
-  **场景类型**：
-  1. **对话场景**（角色交流、情感表达）：需要丰富对白，summary中包含 角色名：'对白内容' 格式
-  2. **动作场景**（追逐、打斗、操作）：可以有简短对白或无对白
-  3. **氛围场景**（环境展示、情绪渲染）：通常无需对白，纯描述即可
-  4. **过渡场景**（场景切换、时间流逝）：一般不需要对白
+ **Chang Jing Lei Xing**: 
+ 1. **Dui Hua Chang Jing**(Jue Se Jiao Liu, Qing Gan Biao Da): Xu Yao Feng Fu dialogue, summaryZhong Bao Han Jue Se Ming: 'dialogue content' format
+ 2. **Dong Zuo Chang Jing**(Zhui Zhu, Da Dou, operation): Ke Yi You Jian Duan dialogue Huo none dialogue
+ 3. **Fen Wei Chang Jing**(Huan Jing Zhan Shi, Qing Xu Xuan Ran): Tong Chang Wu Xu dialogue, Chun description Ji Ke
+ 4. **Guo Du Chang Jing**(Chang Jing Qie Huan, Shi Jian Liu Shi): Yi Ban Bu Xu Yao dialogue
 
-  **总体对白量**：
-  - 每分钟对白约需要 100-150 个汉字（语速正常）
-  - {{ episode_duration }} 分钟剧本总对白量约 {{ (episode_duration * 120)|int }}-{{ (episode_duration * 150)|int }} 个汉字
-  - 对白量可在场景间灵活分配，对话场景多一些，氛围场景可以没有
-  - 对白格式：角色名：'对白内容' 或 角色名："对白内容"
+ **Zong Ti dialogue Liang**: 
+ - Mei Fen Zhong dialogue Yue Xu Yao 100-150 Ge Han Zi(Yu Su Zheng Chang)
+ - {{ episode_duration }} minutes script total dialogue Liang Yue {{ (episode_duration * 120)|int }}-{{ (episode_duration * 150)|int }} Ge Han Zi
+ - dialogue Liang Ke Zai scene Jian Ling Huo Fen Pei, conversation scene Duo Yi Xie, Fen Wei scene Ke Yi Mei You
+ - Dui Bai Ge Shi: Jue Se Ming: 'dialogue content' Huo Jue Se Ming: "dialogue content"
 
-  **场景示例**：
-  - 对话场景："老拐递给阿盖儿烤串：'尝尝这个。' 阿盖儿咬了一口：'好香！'"
-  - 氛围场景："深夜的城市灯火阑珊，车流稀疏，一辆银色轿车疾驰而过。"（无需对白）{% endif %}
-  {% if style_preferences %}- 风格偏好：{{ style_preferences | join(', ') }}{% endif %}
-  {% if additional_requirements %}- 额外要求：{{ additional_requirements }}{% endif %}
+ **Chang Jing Shi Li**: 
+ - Dui Hua Chang Jing: "Old Guai Di Gei A Gai Er Kao Chuan: 'Chang Chang Zhe Ge.' A Gai Er Yao Le Yi Kou: 'Hao Xiang!'"
+ - Fen Wei Chang Jing: "Shen Ye De city Deng Huo Lan Shan, Che Liu Xi Shu, Yi Liang Yin Se Jiao Che Ji Chi Er Guo."(Wu Xu Dui Bai){% endif %}
+ {% if style_preferences %}- style preference: {{ style_preferences | join(', ') }}{% endif %}
+ {% if additional_requirements %}- E Wai Yao Qiu: {{ additional_requirements }}{% endif %}
 
-  ## 输出格式
-  仅返回 JSON，符合 EpisodePlanModel，但 episodes 只能有 1 条：
-  {
-    "episodes": [
-      {
-        "episode_number": {{ outline.episode_number }},
-        "title": "第{{ outline.episode_number }}集标题",
-        "summary": "覆盖 logline 的概要",
-        "plot_points": [{"description": "...", "timing": "开场"}],
-        "character_arcs": {"主角": "本集发展"},
-        "conflicts": [{"description": "...", "intensity": "medium"}],
-        "scene_count": 6,
-        "total_estimated_duration_seconds": {{ (episode_duration or 3) * 60 }},
-        "scenes": [
-          {
-            "scene_number": 1,
-            "slug_line": "INT. 地点 - TIME",
-            "location": "主要地点",
-            "time_of_day": "day",
-            "summary": "角色A紧握方向盘，神色凝重。角色A：'撑住，我们快到了。' 角色B虚弱地靠着车窗：'外面……好亮……' 角色A看了一眼导航，猛踩油门：'代码解决不了的问题……这次，用最笨的办法。'（注意：summary必须包含丰富对白）",
-            "estimated_duration_seconds": 36
-          }
-        ]
-      }
-    ]
-  }
+ ## Shu Chu Ge Shi
+ Jin Fan Hui JSON, Fu He EpisodePlanModel, Dan episodes Zhi Neng You 1 Tiao: 
+ {
+ "episodes": [
+ {
+ "episode_number": {{ outline.episode_number }},
+ "title": "Di{{ outline.episode_number }}Ji Biao Ti",
+ "summary": "Fu Gai logline De Gai Yao",
+ "plot_points": [{"description": "...", "timing": "opening"}],
+ "character_arcs": {"Protagonist": "Ben Ji Fa Zhan"},
+ "conflicts": [{"description": "...", "intensity": "medium"}],
+ "scene_count": 6,
+ "total_estimated_duration_seconds": {{ (episode_duration or 3) * 60 }},
+ "scenes": [
+ {
+ "scene_number": 1,
+ "slug_line": "INT. location - TIME",
+ "location": "Zhu Yao Di Dian",
+ "time_of_day": "day",
+ "summary": "characterAJin Wo Fang Xiang Pan, Shen Se Ning Zhong.characterA: 'Cheng Zhu, Wo Men Kuai Dao Le.' characterBXu Ruo Di Kao Zhe Che Chuang: 'Wai Mian......Hao Liang......' characterAKan Le Yi Yan Dao Hang, Meng Cai You Men: 'Dai Ma Jie Jue Bu Liao De issue......Zhe Ci, Yong Zui Ben De Ban Fa.'(Zhu Yi: summaryBi Xu Bao Han Feng Fu dialogue)",
+ "estimated_duration_seconds": 36
+ }
+ ]
+ }
+ ]
+ }

@@ -61,7 +61,7 @@ def upgrade() -> None:
         "users",
         "is_active",
         existing_type=mysql.TINYINT(display_width=1),
-        comment="账户是否激活（默认未激活）",
+        comment="Whether the account is active (inactive by default)",
         existing_nullable=True,
         existing_server_default=sa.text("'0'"),
     )
@@ -69,14 +69,14 @@ def upgrade() -> None:
         "users",
         "is_superuser",
         existing_type=mysql.TINYINT(display_width=1),
-        comment="是否为超级用户",
+        comment="Whether the user is a superuser",
         existing_nullable=True,
     )
     op.alter_column(
         "users",
         "created_at",
         existing_type=mysql.DATETIME(),
-        comment="创建时间",
+        comment="Created time",
         existing_nullable=True,
         existing_server_default=sa.text("(now())"),
     )
@@ -84,7 +84,7 @@ def upgrade() -> None:
         "users",
         "updated_at",
         existing_type=mysql.DATETIME(),
-        comment="更新时间",
+        comment="Updated time",
         existing_nullable=True,
     )
     op.add_column("virtual_ips", sa.Column("biography", sa.Text(), nullable=True))
@@ -100,7 +100,7 @@ def downgrade() -> None:
         "updated_at",
         existing_type=mysql.DATETIME(),
         comment=None,
-        existing_comment="更新时间",
+        existing_comment="Updated time",
         existing_nullable=True,
     )
     op.alter_column(
@@ -108,7 +108,7 @@ def downgrade() -> None:
         "created_at",
         existing_type=mysql.DATETIME(),
         comment=None,
-        existing_comment="创建时间",
+        existing_comment="Created time",
         existing_nullable=True,
         existing_server_default=sa.text("(now())"),
     )
@@ -117,7 +117,7 @@ def downgrade() -> None:
         "is_superuser",
         existing_type=mysql.TINYINT(display_width=1),
         comment=None,
-        existing_comment="是否为超级用户",
+        existing_comment="Whether the user is a superuser",
         existing_nullable=True,
     )
     op.alter_column(
@@ -125,7 +125,7 @@ def downgrade() -> None:
         "is_active",
         existing_type=mysql.TINYINT(display_width=1),
         comment=None,
-        existing_comment="账户是否激活（默认未激活）",
+        existing_comment="Whether the account is active (inactive by default)",
         existing_nullable=True,
         existing_server_default=sa.text("'0'"),
     )

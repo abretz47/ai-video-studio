@@ -44,7 +44,7 @@ def process_script_regeneration_task(
             user_id=user_id,
         )
         if not script:
-            raise RuntimeError("剧本不存在")
+            raise RuntimeError("Script not found")
 
         episode, story = _get_script_context(script)
         episode_data, story_data, marketing_overrides = _build_context_payloads(
@@ -84,7 +84,7 @@ def process_script_regeneration_task(
         )
         db.commit()
         logger.info(
-            "剧本重新生成: 创建新版本并软删除旧版本",
+            "script retry Sheng Cheng: create Xin version and Ruan delete Jiu Ban Ben",
             extra={
                 "old_script_id": script.id,
                 "new_script_id": new_script.id,
@@ -95,7 +95,7 @@ def process_script_regeneration_task(
         try:
             sync_script_scenes_to_story_structure(db, new_script)
         except Exception:
-            logger.warning("同步规范化场景失败（regenerate-async）", exc_info=True)
+            logger.warning("sync Gui Fan Hua scene failed(regenerate-async)", exc_info=True)
         update_task_status(
             db,
             task_id,
@@ -201,8 +201,8 @@ def _persist_regenerated_script(
 def _get_script_context(script: Script) -> tuple[Episode, Story]:
     episode = script.episode
     if not episode or getattr(episode, "is_deleted", False):
-        raise RuntimeError("剧集不存在")
+        raise RuntimeError("Episode not found")
     story = episode.story
     if not story or getattr(story, "is_deleted", False):
-        raise RuntimeError("故事不存在")
+        raise RuntimeError("Story not found")
     return episode, story

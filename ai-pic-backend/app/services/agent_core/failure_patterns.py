@@ -71,8 +71,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expecting.*\}", r"unterminated.*object", r"unexpected end of json"],
         description="JSON object not properly closed",
         repair_hints=[
-            "请确保所有 { 都有对应的 }",
-            "检查JSON结构的完整性",
+            "Qing Que Bao all { 都有对应的 }",
+            "checkJSONstructure Wan Zheng Xing",
         ],
         example_errors=["Expecting '}' delimiter"],
     ),
@@ -82,8 +82,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expecting.*\]", r"unterminated.*array"],
         description="JSON array not properly closed",
         repair_hints=[
-            "请确保所有 [ 都有对应的 ]",
-            "检查数组是否完整",
+            "Qing Que Bao all [all has Dui Ying]",
+            "check Shu Zu Shi Fou complete",
         ],
     ),
     FailurePattern(
@@ -92,8 +92,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"trailing comma", r"unexpected.*,.*\}", r",\s*[\}\]]"],
         description="Invalid trailing comma in JSON",
         repair_hints=[
-            "删除最后一个元素后的逗号",
-            "JSON不允许尾随逗号",
+            "delete Zui Hou a Yuan Su after Dou Hao",
+            "JSONnot Yun Xu Wei Sui Dou Hao",
         ],
     ),
     FailurePattern(
@@ -102,8 +102,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"invalid.*escape", r"bad.*escape", r"\\[^\"\\\/bfnrtu]"],
         description="Invalid escape sequence in string",
         repair_hints=[
-            "使用有效的转义序列",
-            "对特殊字符使用 \\\\ 双反斜杠",
+            "Shi Yong You Xiao Zhuan Yi Xu Lie",
+            "Dui Te Shu Zi Fu Shi Yong \\\\ Shuang Fan Xie Gang",
         ],
     ),
     # Schema Violations
@@ -113,8 +113,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"required.*field", r"missing.*required", r"field.*required"],
         description="Required field missing from output",
         repair_hints=[
-            "确保输出包含所有必需字段",
-            "参考schema定义的必需字段",
+            "Que Bao output Bao Han all Bi Xu character Duan",
+            "referenceschemaDing Yi Bi Xu character Duan",
         ],
     ),
     FailurePattern(
@@ -123,19 +123,19 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expected.*type", r"invalid.*type", r"type.*mismatch"],
         description="Field has wrong data type",
         repair_hints=[
-            "检查字段的数据类型",
-            "数组字段需要用[]包围",
+            "check Zi Duan Shu Ju Lei Xing",
+            "Shu Zu character Duan need Yong[]Bao Wei",
         ],
     ),
     # Content Length Issues
     FailurePattern(
         name="dialogue_too_long",
         category=PatternCategory.CONTENT_LENGTH,
-        patterns=[r"dialogue.*too.*long", r"台词.*超过", r"对白.*过长"],
+        patterns=[r"dialogue.*too.*long", r"line.*Chao Guo", r"dialogue.*Guo Chang"],
         description="Dialogue line exceeds maximum length",
         repair_hints=[
-            "将长台词拆分为多句",
-            "每句对白控制在15字以内",
+            "Jiang Zhang line Chai Fen Wei multiple Ju",
+            "Mei Ju dialogue Kong Zhi in15character Yi Nei",
         ],
     ),
     FailurePattern(
@@ -144,51 +144,51 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"output.*truncated", r"max.*tokens", r"token.*limit"],
         description="Output was truncated due to length",
         repair_hints=[
-            "减少输出内容量",
-            "分批生成较长内容",
+            "Jian Shao output content Liang",
+            "Fen Pi Sheng Cheng Jiao Zhang content",
         ],
     ),
     # Character Consistency
     FailurePattern(
         name="unknown_character",
         category=PatternCategory.CHARACTER_INCONSISTENCY,
-        patterns=[r"unknown.*character", r"未知.*角色", r"角色.*不存在"],
+        patterns=[r"unknown.*character", r"unknown.*character", r"character.*not Cun Zai"],
         description="Referenced character not in character list",
         repair_hints=[
-            "只使用预定义的角色",
-            "检查角色名称拼写",
+            "only Shi Yong Yu Ding Yi character",
+            "check character name Pin Xie",
         ],
     ),
     FailurePattern(
         name="character_attribute_conflict",
         category=PatternCategory.CHARACTER_INCONSISTENCY,
-        patterns=[r"attribute.*conflict", r"属性.*矛盾", r"性格.*不一致"],
+        patterns=[r"attribute.*conflict", r"Shu Xing.*Conflict", r"Xing Ge.*not Yi Zhi"],
         description="Character attributes contradict profile",
         repair_hints=[
-            "确保角色行为符合设定",
-            "检查角色性格描述",
+            "Que Bao Jue Se Xing Wei Fu He setting",
+            "check character Xing Ge description",
         ],
     ),
     # Timeline Errors
     FailurePattern(
         name="timeline_inconsistency",
         category=PatternCategory.TIMELINE_ERROR,
-        patterns=[r"timeline.*inconsist", r"时间线.*错误", r"时序.*矛盾"],
+        patterns=[r"timeline.*inconsist", r"time Xian.*error", r"Shi Xu.*Conflict"],
         description="Events out of chronological order",
         repair_hints=[
-            "检查事件时间顺序",
-            "确保因果关系正确",
+            "check Shi Jian time Shun Xu",
+            "Que Bao Yin Guo Guan Xi Zheng Que",
         ],
     ),
     # Format Errors
     FailurePattern(
         name="wrong_format",
         category=PatternCategory.FORMAT_ERROR,
-        patterns=[r"format.*incorrect", r"格式.*错误", r"output.*format"],
+        patterns=[r"format.*incorrect", r"format.*error", r"output.*format"],
         description="Output doesn't match expected format",
         repair_hints=[
-            "严格按照示例格式输出",
-            "检查JSON结构是否正确",
+            "strict An Zhao Shi Li format output",
+            "checkJSONstructure Shi Fou Zheng Que",
         ],
     ),
     # API Errors
@@ -198,8 +198,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"rate.*limit", r"too.*many.*requests", r"quota.*exceeded"],
         description="API rate limit exceeded",
         repair_hints=[
-            "等待后重试",
-            "减少请求频率",
+            "waiting after retry",
+            "Jian Shao request Pin Lv",
         ],
     ),
     FailurePattern(
@@ -208,8 +208,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"context.*length", r"max.*context", r"input.*too.*long"],
         description="Input context too long for model",
         repair_hints=[
-            "压缩输入内容",
-            "移除非必要的上下文",
+            "Ya Suo input content",
+            "Yi Chu Fei Bi Yao context",
         ],
     ),
 ]

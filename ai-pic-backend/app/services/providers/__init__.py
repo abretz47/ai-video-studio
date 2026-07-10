@@ -1,13 +1,13 @@
 """
-AI服务提供商模块
+AIservice provider module
 
-支持多种第三方AI服务提供商：
-- OpenAI (文本、图像)
-- 可灵 (视频生成)
-- 即梦 (图像生成)
-- MiniMax (文本、语音)
-- DeepSeek (文本)
-- 火山引擎 (文本、图像、视频)
+support Duo Zhong Di San FangAIservice provider: 
+- OpenAI (text, image)
+- Kling (video Sheng Cheng)
+- Ji Meng (image Sheng Cheng)
+- MiniMax (text, voice)
+- DeepSeek (text)
+- Volcengine Yin Qing (text, image, video)
 """
 
 from .base import (

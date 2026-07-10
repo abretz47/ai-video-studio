@@ -1,7 +1,7 @@
 """
-提示词模板定义
+Prompt template definitions
 
-定义了各种AI任务的提示词模板常量和枚举
+Ding Yi Le Ge ZhongAIRen Wu De prompt text template Chang Liang He Mei Ju
 """
 
 from enum import Enum
@@ -9,226 +9,226 @@ from typing import Dict, List
 
 
 class PromptCategory(Enum):
-    """提示词类别枚举"""
+ """Prompt category enum"""
 
-    CHARACTER = "character"  # 角色相关
-    STORY = "story"  # 故事相关
-    EPISODE = "episode"  # 剧集相关
-    SCRIPT = "script"  # 剧本相关
-    IMAGE = "image"  # 图像相关
-    GENERAL = "general"  # 通用
+ CHARACTER = "character" # Jue Se Xiang Guan
+ STORY = "story" # Gu Shi Xiang Guan
+ EPISODE = "episode" # Ju Ji Xiang Guan
+ SCRIPT = "script" # Ju Ben Xiang Guan
+ IMAGE = "image" # Tu Xiang Xiang Guan
+ GENERAL = "general" # Tong Yong
 
 
 class PromptTemplate(Enum):
-    """提示词模板枚举"""
+ """Prompt template enum"""
 
-    # 角色相关
-    VIRTUAL_IP_CREATION = "virtual_ip_creation"
-    VIRTUAL_IP_STYLE_PROMPT = "virtual_ip_style_prompt"
-    CHARACTER_PROFILE = "character_profile"
+ # Jue Se Xiang Guan
+ VIRTUAL_IP_CREATION = "virtual_ip_creation"
+ VIRTUAL_IP_STYLE_PROMPT = "virtual_ip_style_prompt"
+ CHARACTER_PROFILE = "character_profile"
 
-    # 故事相关
-    STORY_OUTLINE = "story_outline"
-    STORY_SUMMARY = "story_summary"
+ # Gu Shi Xiang Guan
+ STORY_OUTLINE = "story_outline"
+ STORY_SUMMARY = "story_summary"
 
-    # 剧集相关
-    EPISODE_GENERATION = "episode_generation"
-    EPISODE_OUTLINE = "episode_outline"
-    EPISODE_STEP_OUTLINE = "episode_step_outline"
-    EPISODE_STEP_OUTLINE_REPAIR = "episode_step_outline_repair"
-    EPISODE_FROM_OUTLINE = "episode_from_outline"
-    EPISODE_ENRICH = "episode_enrich"  # 剧集丰富（当时长不足时）
-    EPISODE_DURATION_REJECT = "episode_duration_reject"  # 时长不符合要求时驳回重生成
-    EPISODE_LIST = "episode_list"  # 剧集列表生成
+ # Ju Ji Xiang Guan
+ EPISODE_GENERATION = "episode_generation"
+ EPISODE_OUTLINE = "episode_outline"
+ EPISODE_STEP_OUTLINE = "episode_step_outline"
+ EPISODE_STEP_OUTLINE_REPAIR = "episode_step_outline_repair"
+ EPISODE_FROM_OUTLINE = "episode_from_outline"
+ EPISODE_ENRICH = "episode_enrich" # Ju Ji Feng Fu(Dang Shi length Bu Zu Shi)
+ EPISODE_DURATION_REJECT = "episode_duration_reject" # duration Bu Fu He Yao Qiu Shi Bo Hui Zhong generate
+ EPISODE_LIST = "episode_list" # episode list generate
 
-    # 剧本相关
-    SCRIPT_GENERATION = "script_generation"
-    SCENE_WRITING = "scene_writing"
-    DIALOGUE_WRITING = "dialogue_writing"
-    SCRIPT_SCENES = "script_scenes"
-    SCRIPT_DIALOGUES = "script_dialogues"
-    SCRIPT_BEATS = "script_beats"
-    SCRIPT_REVIEW = "script_review"  # 剧本审核（对白/舞台指示分类校正）
-    SCENE_DESCRIPTION = "scene_description"  # 场景描述
-    SCRIPT_WORD_COUNT_CONSTRAINT = "script_word_count_constraint"  # 剧本字数约束
-    DIALOGUE_DURATION_ADJUST = "dialogue_duration_adjust"  # 对白时长调整建议
-    SCRIPT_SCORE = "script_score"  # 剧本评分
-    TRAFFIC_SHEET_GENERATION = "traffic_sheet_generation"  # 投流表生成
+ # Ju Ben Xiang Guan
+ SCRIPT_GENERATION = "script_generation"
+ SCENE_WRITING = "scene_writing"
+ DIALOGUE_WRITING = "dialogue_writing"
+ SCRIPT_SCENES = "script_scenes"
+ SCRIPT_DIALOGUES = "script_dialogues"
+ SCRIPT_BEATS = "script_beats"
+ SCRIPT_REVIEW = "script_review" # Ju Ben Shen He(dialogue/Wu Tai Zhi Shi Fen Lei Jiao Zheng)
+ SCENE_DESCRIPTION = "scene_description" # Chang Jing Miao Shu
+ SCRIPT_WORD_COUNT_CONSTRAINT = "script_word_count_constraint" # script word count Yue Shu
+ DIALOGUE_DURATION_ADJUST = "dialogue_duration_adjust" # dialogue Shi length Tiao Zheng Jian Yi
+ SCRIPT_SCORE = "script_score" # Ju Ben Ping Fen
+ TRAFFIC_SHEET_GENERATION = "traffic_sheet_generation" # Tou Liu Biao generate
 
-    # 分镜相关
-    STORYBOARD_GENERATION = "storyboard_generation"  # 分镜生成
-    STORYBOARD_SHOT = "storyboard_shot"  # 单个分镜画面
-    STORYBOARD_PLAN = "storyboard_plan"  # 分镜规划
-    STORYBOARD_SCENE = "storyboard_scene"  # 分镜规划场景展开
-    STORYBOARD_KEYFRAME = "storyboard_keyframe"  # 分镜关键帧提示
-    STORYBOARD_IMAGE_PROMPT = "storyboard_image_prompt"  # 分镜图像提示组装
-    STORYBOARD_IMAGE_FALLBACK = "storyboard_image_fallback"  # 分镜图像缺省提示
-    STORYBOARD_DYNAMIC_IMAGE_PROMPT = (
-        "storyboard_dynamic_image_prompt"  # 分镜图动态提示词批量生成
-    )
-    STORYBOARD_GRID_SHEET = "storyboard_grid_sheet"  # 宫格故事板图像提示
-    STORYBOARD_GRID_VIDEO = "storyboard_grid_video"  # 宫格面板生视频提示
-    STORYBOARD_SCENE_GRID_PROMPT = (
-        "storyboard_scene_grid_prompt"  # 场景宫格分镜图 LLM 提示词生成
-    )
-    STORYBOARD_SCENE_GRID_VIDEO_PROMPT = (
-        "storyboard_scene_grid_video_prompt"  # 宫格图转连续成片提示词生成
-    )
-    STORYBOARD_AUDIO_VISUAL_DIALOGUE_SPOKEN = "storyboard_audio_visual_dialogue_spoken"
-    STORYBOARD_AUDIO_VISUAL_DIALOGUE_VOICEOVER = (
-        "storyboard_audio_visual_dialogue_voiceover"
-    )
-    STORYBOARD_AUDIO_VISUAL_DIALOGUE_READ_TEXT = (
-        "storyboard_audio_visual_dialogue_read_text"
-    )
-    STORYBOARD_AUDIO_VISUAL_ACTION = "storyboard_audio_visual_action"
-    STORYBOARD_AUDIO_VISUAL_PAUSE = "storyboard_audio_visual_pause"
-    STORYBOARD_AUDIO_VISUAL_CONTEXT = "storyboard_audio_visual_context"
+ # Fen Jing Xiang Guan
+ STORYBOARD_GENERATION = "storyboard_generation" # Fen Jing Sheng Cheng
+ STORYBOARD_SHOT = "storyboard_shot" # Dan Ge storyboard frame
+ STORYBOARD_PLAN = "storyboard_plan" # Fen Jing Gui Hua
+ STORYBOARD_SCENE = "storyboard_scene" # storyboard planning scene Zhan Kai
+ STORYBOARD_KEYFRAME = "storyboard_keyframe" # storyboard Guan Jian Zhen prompt
+ STORYBOARD_IMAGE_PROMPT = "storyboard_image_prompt" # storyboard image prompt Zu Zhuang
+ STORYBOARD_IMAGE_FALLBACK = "storyboard_image_fallback" # storyboard image Que Sheng prompt
+ STORYBOARD_DYNAMIC_IMAGE_PROMPT = (
+ "storyboard_dynamic_image_prompt" # storyboard image Dong Tai prompt text Pi Liang generate
+)
+ STORYBOARD_GRID_SHEET = "storyboard_grid_sheet" # Gong Ge story Ban image prompt
+ STORYBOARD_GRID_VIDEO = "storyboard_grid_video" # Gong Ge Mian Ban Sheng video prompt
+ STORYBOARD_SCENE_GRID_PROMPT = (
+ "storyboard_scene_grid_prompt" # scene Gong Ge storyboard image LLM prompt text generate
+)
+ STORYBOARD_SCENE_GRID_VIDEO_PROMPT = (
+ "storyboard_scene_grid_video_prompt" # Gong Ge Tu Zhuan Lian Xu Cheng Pian prompt text generate
+)
+ STORYBOARD_AUDIO_VISUAL_DIALOGUE_SPOKEN = "storyboard_audio_visual_dialogue_spoken"
+ STORYBOARD_AUDIO_VISUAL_DIALOGUE_VOICEOVER = (
+ "storyboard_audio_visual_dialogue_voiceover"
+)
+ STORYBOARD_AUDIO_VISUAL_DIALOGUE_READ_TEXT = (
+ "storyboard_audio_visual_dialogue_read_text"
+)
+ STORYBOARD_AUDIO_VISUAL_ACTION = "storyboard_audio_visual_action"
+ STORYBOARD_AUDIO_VISUAL_PAUSE = "storyboard_audio_visual_pause"
+ STORYBOARD_AUDIO_VISUAL_CONTEXT = "storyboard_audio_visual_context"
 
-    # 图像相关
-    IMAGE_GENERATION = "image_generation"
-    PORTRAIT_GENERATION = "portrait_generation"
-    SCENE_IMAGE = "scene_image"
-    ENVIRONMENT_IMAGE = "environment_image"  # 环境图像
-    ENVIRONMENT_IMAGE_VARIANT = "environment_image_variant"  # 环境图像图生图变体
-    VIRTUAL_IP_IMAGE = "virtual_ip_image"  # 虚拟IP文生图
-    VIRTUAL_IP_IMAGE_VARIANT = "virtual_ip_image_variant"  # 虚拟IP图生图
+ # Tu Xiang Xiang Guan
+ IMAGE_GENERATION = "image_generation"
+ PORTRAIT_GENERATION = "portrait_generation"
+ SCENE_IMAGE = "scene_image"
+ ENVIRONMENT_IMAGE = "environment_image" # Huan Jing Tu Xiang
+ ENVIRONMENT_IMAGE_VARIANT = "environment_image_variant" # environment image Tu Sheng image Bian Ti
+ VIRTUAL_IP_IMAGE = "virtual_ip_image" # virtualIPWen Sheng Tu
+ VIRTUAL_IP_IMAGE_VARIANT = "virtual_ip_image_variant" # virtualIPTu Sheng Tu
 
-    # 时间轴相关
-    TIMELINE_GAP_REASONING = "timeline_gap_reasoning"  # 对白间隔推理
-    TIMELINE_GAP_REPAIR = "timeline_gap_repair"  # 对白间隔修复
+ # Shi Jian Zhou related
+ TIMELINE_GAP_REASONING = "timeline_gap_reasoning" # dialogue Jian Ge Tui Li
+ TIMELINE_GAP_REPAIR = "timeline_gap_repair" # dialogue Jian Ge repair
 
-    # 系统提示词 (System Prompts)
-    SYSTEM_PROMPT_STORY = "system_prompt_story"  # 故事创作系统提示
-    SYSTEM_PROMPT_SCRIPT = "system_prompt_script"  # 剧本创作系统提示
-    SYSTEM_PROMPT_JSON_STRICT = "system_prompt_json_strict"  # 严格JSON系统提示
-    STORY_OUTLINE_REPAIR = "story_outline_repair"
-    EPISODE_PLAN_REPAIR = "episode_plan_repair"
+ # system prompt text (System Prompts)
+ SYSTEM_PROMPT_STORY = "system_prompt_story" # story Chuang Zuo system prompt
+ SYSTEM_PROMPT_SCRIPT = "system_prompt_script" # Ju Ben Chuang Zuo system prompt
+ SYSTEM_PROMPT_JSON_STRICT = "system_prompt_json_strict" # Yan GeJSONXi Tong Ti Shi
+ STORY_OUTLINE_REPAIR = "story_outline_repair"
+ EPISODE_PLAN_REPAIR = "episode_plan_repair"
 
 
 class ImageStyle(Enum):
-    """图像风格枚举"""
+ """Image style enum"""
 
-    REALISTIC = "realistic"
-    ANIME = "anime"
-    CARTOON = "cartoon"
-    PORTRAIT = "portrait"
-    ARTISTIC = "artistic"
-    SKETCH = "sketch"
-    RENDER_3D = "3d"
+ REALISTIC = "realistic"
+ ANIME = "anime"
+ CARTOON = "cartoon"
+ PORTRAIT = "portrait"
+ ARTISTIC = "artistic"
+ SKETCH = "sketch"
+ RENDER_3D = "3d"
 
 
 class ImageCategory(Enum):
-    """图像类别枚举"""
+ """Image category enum"""
 
-    PORTRAIT = "portrait"
-    FULL_BODY = "full_body"
-    ACTION = "action"
-    EMOTION = "emotion"
-    SCENE = "scene"
-    CONCEPT = "concept"
+ PORTRAIT = "portrait"
+ FULL_BODY = "full_body"
+ ACTION = "action"
+ EMOTION = "emotion"
+ SCENE = "scene"
+ CONCEPT = "concept"
 
 
 class ScriptFormat(Enum):
-    """剧本格式枚举"""
+ """Script format enum"""
 
-    SCREENPLAY = "screenplay"  # 电影剧本
-    TELEPLAY = "teleplay"  # 电视剧本
-    STAGE = "stage"  # 舞台剧本
-    AUDIO = "audio"  # 音频剧本
-    ANIMATION = "animation"  # 动画剧本
+ SCREENPLAY = "screenplay" # Dian Ying Ju Ben
+ TELEPLAY = "teleplay" # Dian Shi Ju Ben
+ STAGE = "stage" # Wu Tai Ju Ben
+ AUDIO = "audio" # Yin Pin Ju Ben
+ ANIMATION = "animation" # Dong Hua Ju Ben
 
 
 class DialogueStyle(Enum):
-    """对话风格枚举"""
+ """Dialogue style enum"""
 
-    NATURAL = "natural"  # 自然对话
-    FORMAL = "formal"  # 正式对话
-    CASUAL = "casual"  # 随意对话
-    DRAMATIC = "dramatic"  # 戏剧对话
-    COMEDIC = "comedic"  # 喜剧对话
+ NATURAL = "natural" # Zi Ran Dui Hua
+ FORMAL = "formal" # Zheng Shi Dui Hua
+ CASUAL = "casual" # Sui Yi Dui Hua
+ DRAMATIC = "dramatic" # Xi Ju Dui Hua
+ COMEDIC = "comedic" # Xi Ju Dui Hua
 
 
 class PlotComplexity(Enum):
-    """情节复杂度枚举"""
+ """Plot complexity enum"""
 
-    SIMPLE = "simple"  # 简单
-    MEDIUM = "medium"  # 中等
-    COMPLEX = "complex"  # 复杂
+ SIMPLE = "simple" # Jian Dan
+ MEDIUM = "medium" # Zhong Deng
+ COMPLEX = "complex" # Fu Za
 
 
 class Pacing(Enum):
-    """节奏枚举"""
+ """Jie Zou Mei Ju"""
 
-    SLOW = "slow"  # 慢节奏
-    MEDIUM = "medium"  # 中等节奏
-    FAST = "fast"  # 快节奏
+ SLOW = "slow" # Man Jie Zou
+ MEDIUM = "medium" # Zhong Deng Jie Zou
+ FAST = "fast" # Kuai Jie Zou
 
 
-# 模板分类映射
+# Template category mapping
 TEMPLATE_CATEGORIES: Dict[PromptTemplate, PromptCategory] = {
-    PromptTemplate.VIRTUAL_IP_CREATION: PromptCategory.CHARACTER,
-    PromptTemplate.VIRTUAL_IP_STYLE_PROMPT: PromptCategory.CHARACTER,
-    PromptTemplate.CHARACTER_PROFILE: PromptCategory.CHARACTER,
-    PromptTemplate.STORY_OUTLINE: PromptCategory.STORY,
-    PromptTemplate.STORY_SUMMARY: PromptCategory.STORY,
-    PromptTemplate.EPISODE_GENERATION: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_OUTLINE: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_STEP_OUTLINE: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_STEP_OUTLINE_REPAIR: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_FROM_OUTLINE: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_ENRICH: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_DURATION_REJECT: PromptCategory.EPISODE,
-    PromptTemplate.EPISODE_LIST: PromptCategory.EPISODE,
-    PromptTemplate.SCRIPT_GENERATION: PromptCategory.SCRIPT,
-    PromptTemplate.SCENE_WRITING: PromptCategory.SCRIPT,
-    PromptTemplate.DIALOGUE_WRITING: PromptCategory.SCRIPT,
-    PromptTemplate.SCRIPT_SCENES: PromptCategory.SCRIPT,
-    PromptTemplate.SCRIPT_DIALOGUES: PromptCategory.SCRIPT,
-    PromptTemplate.SCRIPT_BEATS: PromptCategory.SCRIPT,
-    PromptTemplate.SCRIPT_REVIEW: PromptCategory.SCRIPT,
-    PromptTemplate.SCENE_DESCRIPTION: PromptCategory.SCRIPT,
-    PromptTemplate.SCRIPT_WORD_COUNT_CONSTRAINT: PromptCategory.SCRIPT,
-    PromptTemplate.DIALOGUE_DURATION_ADJUST: PromptCategory.SCRIPT,
-    PromptTemplate.SCRIPT_SCORE: PromptCategory.SCRIPT,
-    PromptTemplate.TRAFFIC_SHEET_GENERATION: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_GENERATION: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_SHOT: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_PLAN: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_SCENE: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_KEYFRAME: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_IMAGE_PROMPT: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_IMAGE_FALLBACK: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_DYNAMIC_IMAGE_PROMPT: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_GRID_SHEET: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_GRID_VIDEO: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_SCENE_GRID_PROMPT: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_SCENE_GRID_VIDEO_PROMPT: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_AUDIO_VISUAL_DIALOGUE_SPOKEN: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_AUDIO_VISUAL_DIALOGUE_VOICEOVER: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_AUDIO_VISUAL_DIALOGUE_READ_TEXT: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_AUDIO_VISUAL_ACTION: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_AUDIO_VISUAL_PAUSE: PromptCategory.SCRIPT,
-    PromptTemplate.STORYBOARD_AUDIO_VISUAL_CONTEXT: PromptCategory.SCRIPT,
-    PromptTemplate.IMAGE_GENERATION: PromptCategory.IMAGE,
-    PromptTemplate.PORTRAIT_GENERATION: PromptCategory.IMAGE,
-    PromptTemplate.SCENE_IMAGE: PromptCategory.IMAGE,
-    PromptTemplate.ENVIRONMENT_IMAGE: PromptCategory.IMAGE,
-    PromptTemplate.ENVIRONMENT_IMAGE_VARIANT: PromptCategory.IMAGE,
-    PromptTemplate.VIRTUAL_IP_IMAGE: PromptCategory.IMAGE,
-    PromptTemplate.VIRTUAL_IP_IMAGE_VARIANT: PromptCategory.IMAGE,
-    PromptTemplate.SYSTEM_PROMPT_STORY: PromptCategory.GENERAL,
-    PromptTemplate.SYSTEM_PROMPT_SCRIPT: PromptCategory.GENERAL,
-    PromptTemplate.SYSTEM_PROMPT_JSON_STRICT: PromptCategory.GENERAL,
-    PromptTemplate.STORY_OUTLINE_REPAIR: PromptCategory.GENERAL,
-    PromptTemplate.EPISODE_PLAN_REPAIR: PromptCategory.GENERAL,
-    PromptTemplate.EPISODE_STEP_OUTLINE_REPAIR: PromptCategory.GENERAL,
-    # 时间轴相关
-    PromptTemplate.TIMELINE_GAP_REASONING: PromptCategory.SCRIPT,
-    PromptTemplate.TIMELINE_GAP_REPAIR: PromptCategory.SCRIPT,
+ PromptTemplate.VIRTUAL_IP_CREATION: PromptCategory.CHARACTER,
+ PromptTemplate.VIRTUAL_IP_STYLE_PROMPT: PromptCategory.CHARACTER,
+ PromptTemplate.CHARACTER_PROFILE: PromptCategory.CHARACTER,
+ PromptTemplate.STORY_OUTLINE: PromptCategory.STORY,
+ PromptTemplate.STORY_SUMMARY: PromptCategory.STORY,
+ PromptTemplate.EPISODE_GENERATION: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_OUTLINE: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_STEP_OUTLINE: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_STEP_OUTLINE_REPAIR: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_FROM_OUTLINE: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_ENRICH: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_DURATION_REJECT: PromptCategory.EPISODE,
+ PromptTemplate.EPISODE_LIST: PromptCategory.EPISODE,
+ PromptTemplate.SCRIPT_GENERATION: PromptCategory.SCRIPT,
+ PromptTemplate.SCENE_WRITING: PromptCategory.SCRIPT,
+ PromptTemplate.DIALOGUE_WRITING: PromptCategory.SCRIPT,
+ PromptTemplate.SCRIPT_SCENES: PromptCategory.SCRIPT,
+ PromptTemplate.SCRIPT_DIALOGUES: PromptCategory.SCRIPT,
+ PromptTemplate.SCRIPT_BEATS: PromptCategory.SCRIPT,
+ PromptTemplate.SCRIPT_REVIEW: PromptCategory.SCRIPT,
+ PromptTemplate.SCENE_DESCRIPTION: PromptCategory.SCRIPT,
+ PromptTemplate.SCRIPT_WORD_COUNT_CONSTRAINT: PromptCategory.SCRIPT,
+ PromptTemplate.DIALOGUE_DURATION_ADJUST: PromptCategory.SCRIPT,
+ PromptTemplate.SCRIPT_SCORE: PromptCategory.SCRIPT,
+ PromptTemplate.TRAFFIC_SHEET_GENERATION: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_GENERATION: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_SHOT: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_PLAN: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_SCENE: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_KEYFRAME: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_IMAGE_PROMPT: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_IMAGE_FALLBACK: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_DYNAMIC_IMAGE_PROMPT: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_GRID_SHEET: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_GRID_VIDEO: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_SCENE_GRID_PROMPT: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_SCENE_GRID_VIDEO_PROMPT: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_AUDIO_VISUAL_DIALOGUE_SPOKEN: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_AUDIO_VISUAL_DIALOGUE_VOICEOVER: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_AUDIO_VISUAL_DIALOGUE_READ_TEXT: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_AUDIO_VISUAL_ACTION: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_AUDIO_VISUAL_PAUSE: PromptCategory.SCRIPT,
+ PromptTemplate.STORYBOARD_AUDIO_VISUAL_CONTEXT: PromptCategory.SCRIPT,
+ PromptTemplate.IMAGE_GENERATION: PromptCategory.IMAGE,
+ PromptTemplate.PORTRAIT_GENERATION: PromptCategory.IMAGE,
+ PromptTemplate.SCENE_IMAGE: PromptCategory.IMAGE,
+ PromptTemplate.ENVIRONMENT_IMAGE: PromptCategory.IMAGE,
+ PromptTemplate.ENVIRONMENT_IMAGE_VARIANT: PromptCategory.IMAGE,
+ PromptTemplate.VIRTUAL_IP_IMAGE: PromptCategory.IMAGE,
+ PromptTemplate.VIRTUAL_IP_IMAGE_VARIANT: PromptCategory.IMAGE,
+ PromptTemplate.SYSTEM_PROMPT_STORY: PromptCategory.GENERAL,
+ PromptTemplate.SYSTEM_PROMPT_SCRIPT: PromptCategory.GENERAL,
+ PromptTemplate.SYSTEM_PROMPT_JSON_STRICT: PromptCategory.GENERAL,
+ PromptTemplate.STORY_OUTLINE_REPAIR: PromptCategory.GENERAL,
+ PromptTemplate.EPISODE_PLAN_REPAIR: PromptCategory.GENERAL,
+ PromptTemplate.EPISODE_STEP_OUTLINE_REPAIR: PromptCategory.GENERAL,
+ # Shi Jian Zhou related
+ PromptTemplate.TIMELINE_GAP_REASONING: PromptCategory.SCRIPT,
+ PromptTemplate.TIMELINE_GAP_REPAIR: PromptCategory.SCRIPT,
 }
 
-from app.prompts import template_defaults as _template_defaults  # noqa: E402
+from app.prompts import template_defaults as _template_defaults # noqa: E402
 
 DEFAULT_GENERATION_PARAMS = _template_defaults.DEFAULT_GENERATION_PARAMS
 NEGATIVE_PROMPTS = _template_defaults.NEGATIVE_PROMPTS
@@ -237,12 +237,12 @@ TEMPLATE_EXAMPLES = _template_defaults.TEMPLATE_EXAMPLES
 
 
 def get_template_by_category(category: PromptCategory) -> List[PromptTemplate]:
-    """根据类别获取模板列表"""
-    return [
-        template for template, cat in TEMPLATE_CATEGORIES.items() if cat == category
-    ]
+ """Get template list by category"""
+ return [
+ template for template, cat in TEMPLATE_CATEGORIES.items() if cat == category
+ ]
 
 
 def get_category_by_template(template: PromptTemplate) -> PromptCategory:
-    """根据模板获取类别"""
-    return TEMPLATE_CATEGORIES.get(template, PromptCategory.GENERAL)
+ """Get category by template"""
+ return TEMPLATE_CATEGORIES.get(template, PromptCategory.GENERAL)

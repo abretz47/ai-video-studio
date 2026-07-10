@@ -1,4 +1,4 @@
-"""Keling (可灵) service provider.
+"""Keling (Kling) service provider.
 
 JWT authentication (HS256) + image/video generation endpoints.
 """
@@ -90,7 +90,7 @@ class KelingProvider(BaseProvider):
         """Keling does not support text generation"""
         return AIResponse(
             success=False,
-            error="可灵不支持纯文本生成功能",
+            error="Kling not support Chun text Sheng Cheng feature",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.STORY_GENERATION,

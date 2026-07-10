@@ -17,7 +17,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id=default_model,
             name="Gemini 3 Pro (preview)",
-            description="Google Gemini 3 Pro 文本与推理模型",
+            description="Google Gemini 3 Pro text and Tui Li Mo Xing",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=65535,
             capabilities=["text_generation", "analysis", "reasoning"],
@@ -25,7 +25,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id="gemini-1.5-pro-latest",
             name="Gemini 1.5 Pro (stable)",
-            description="Gemini 1.5 Pro 通用推理模型（稳定版兜底）",
+            description="Gemini 1.5 Pro Tong Yong Tui Li Mo Xing(Wen Ding Ban fallback)",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=1048576,
             capabilities=["text_generation", "analysis", "reasoning"],
@@ -33,7 +33,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id="gemini-1.5-flash-latest",
             name="Gemini 1.5 Flash (fast)",
-            description="Gemini 1.5 Flash 高速通用模型（稳定版兜底）",
+            description="Gemini 1.5 Flash Gao Su Tong Yong model(Wen Ding Ban fallback)",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=2097152,
             capabilities=["text_generation", "analysis"],
@@ -41,7 +41,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id="gemini-1.0-pro",
             name="Gemini 1.0 Pro",
-            description="Gemini 1.0 Pro 文本模型（兼容旧配置）",
+            description="Gemini 1.0 Pro text model(Jian Rong Jiu configuration)",
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=30720,
             capabilities=["text_generation", "analysis"],
@@ -49,7 +49,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id="gemini-2.0-flash-exp",
             name="Gemini 2.0 Flash (image exp)",
-            description="Gemini Flash 试验性图片生成模型，支持文生图与图生图能力",
+            description="Gemini Flash Shi Yan Xing image Sheng Cheng model, support Wen Sheng Tu and Tu Sheng Tu Neng Li",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpeg"],
             capabilities=["text_to_image", "image_to_image"],
@@ -65,7 +65,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id="gemini-2.5-flash-image",
             name="Gemini 2.5 Flash Image",
-            description="Gemini 2.5 Flash 快速图片生成模型，支持文/图生图",
+            description="Gemini 2.5 Flash quick image Sheng Cheng model, support Wen/Tu Sheng Tu",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpeg"],
             capabilities=["text_to_image", "image_to_image"],
@@ -81,7 +81,7 @@ def get_available_models(default_model: str) -> List[ModelInfo]:
         ModelInfo(
             model_id="gemini-3-pro-image-preview",
             name="Gemini 3 Pro Image Preview",
-            description="Gemini 3 Pro 专业级图片生成模型（预览版），支持文/图生图",
+            description="Gemini 3 Pro Zhuan Ye Ji image Sheng Cheng model(Yu Lan Ban), support Wen/Tu Sheng Tu",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpeg"],
             capabilities=["text_to_image", "image_to_image"],

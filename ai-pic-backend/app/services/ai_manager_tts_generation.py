@@ -39,7 +39,7 @@ async def text_to_speech_with_fallback(
 
     if not available_providers:
         return failure_responses.manager_failure_response(
-            error="没有可用的语音合成提供商",
+            error="missing available voice He Cheng provider",
             model=model,
             task_type=AITaskType.VOICE_GENERATION,
             model_type=AIModelType.TEXT_TO_SPEECH,
@@ -87,7 +87,7 @@ async def text_to_speech_with_fallback(
             last_provider = provider_name
             if not enable_fallback:
                 return failure_responses.exception_failure_response(
-                    action="语音合成失败",
+                    action="voice He Cheng failed",
                     exc=exc,
                     provider=provider_name,
                     model=model or "unknown",
@@ -99,7 +99,7 @@ async def text_to_speech_with_fallback(
             available_providers.remove(provider_name)
 
     return failure_responses.terminal_failure_response(
-        default_error="所有语音合成提供商都失败了",
+        default_error="all voice He Cheng provider all failed",
         last_error=last_error,
         last_provider=last_provider,
         model=model or "unknown",

@@ -84,7 +84,7 @@ def persist_canvas_skill_run(
         }
     )
     task = Task(
-        title="生产画布整体创建",
+        title="production Hua Bu Zheng Ti create",
         description="Production canvas skill run",
         task_type=TaskType.TEXT_GENERATION,
         status=TaskStatus.COMPLETED,

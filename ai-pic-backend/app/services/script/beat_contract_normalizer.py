@@ -136,8 +136,8 @@ def _legacy_payload_to_contract(payload: dict[str, Any]) -> StructuredScriptCont
                 ),
                 "conflict": {
                     "question": scene.get("conflict_question") or str(summary),
-                    "stakes": scene.get("stakes") or "本场必须推进剧情信息。",
-                    "opposition": scene.get("opposition") or "阻碍尚未结构化。",
+                    "stakes": scene.get("stakes") or "Ben Chang Bi Xu advance plot Xin Xi.",
+                    "opposition": scene.get("opposition") or "Zu Ai Shang Wei Jie Gou Hua.",
                     "turn": scene.get("turn"),
                 },
                 "beats": [
@@ -161,7 +161,7 @@ def _legacy_payload_to_contract(payload: dict[str, Any]) -> StructuredScriptCont
                             {
                                 "character": item.get("character")
                                 or item.get("speaker")
-                                or "旁白",
+                                or "narration",
                                 "content": _line_content(item, fallback=str(summary)),
                                 "emotion": item.get("emotion"),
                                 "action": item.get("action"),

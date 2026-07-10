@@ -16,7 +16,7 @@ class ImageStorageMixin:
     async def _download_image(
         self, image_data: Any, ip_name: str, category: str
     ) -> str:
-        """处理图像数据（URL或base64）并保存到本地，失败抛异常并保留原因。"""
+        """process image data(URLorbase64)and save to local, failed Pao exception and Bao Liu Yuan Yin."""
         import base64
         import uuid
         from urllib.parse import unquote
@@ -24,11 +24,11 @@ class ImageStorageMixin:
         import aiofiles
         from app.utils.url_utils import normalize_presigned_url
 
-        # 生成唯一文件名
-        file_extension = ".png"  # OpenAI DALL-E默认返回PNG
+        # Sheng Cheng Wei Yi Wen Jian Ming
+        file_extension = ".png"  # OpenAI DALL-Edefault returnPNG
         unique_filename = f"{uuid.uuid4().hex}{file_extension}"
 
-        # 确保目录存在
+        # Que Bao Mu Lu Cun Zai
         upload_dir = settings.UPLOAD_DIR
         os.makedirs(upload_dir, exist_ok=True)
 
@@ -48,27 +48,27 @@ class ImageStorageMixin:
                 )
             image_data = resolved
 
-        # 判断是base64数据还是URL
+        # determine Shibase64data Hai ShiURL
         if image_data.startswith("data:image"):
-            # 处理base64数据
-            self.logger.info("处理base64图像数据")
-            base64_data = image_data.split(",")[1]  # 移除data:image/png;base64,前缀
+            # processbase64data
+            self.logger.info("processbase64image data")
+            base64_data = image_data.split(",")[1]  # Yi Chudata:image/png;base64,Qian Zhui
             image_bytes = base64.b64decode(base64_data)
 
-            # 直接保存base64数据
+            # directly savebase64data
             async with aiofiles.open(local_file_path, "wb") as f:
                 await f.write(image_bytes)
-            self.logger.info("base64 图像已保存到: %s", local_file_path)
+            self.logger.info("base64 image save to: %s", local_file_path)
             return local_file_path
 
-        # 处理URL，增加重试并输出具体错误
+        # processURL, increase retry and output specific error
         normalized_url = unquote(image_data) if "%25" in image_data else image_data
         normalized_url = normalize_presigned_url(normalized_url)
         last_error: Exception | None = None
         for attempt in range(3):
             try:
                 self.logger.info(
-                    "下载图像URL (attempt %s): %s...",
+                    "Xia Zai imageURL (attempt %s): %s...",
                     attempt + 1,
                     normalized_url[:100],
                 )
@@ -79,12 +79,12 @@ class ImageStorageMixin:
                 async with aiofiles.open(local_file_path, "wb") as f:
                     await f.write(response.content)
 
-                self.logger.info("图像已保存到: %s", local_file_path)
+                self.logger.info("image save to: %s", local_file_path)
                 return local_file_path
             except Exception as exc:  # pragma: no cover - network failures
                 last_error = exc
                 self.logger.warning(
-                    "图像下载失败 attempt=%s url=%s err=%s",
+                    "image Xia Zai failed attempt=%s url=%s err=%s",
                     attempt + 1,
                     normalized_url,
                     exc,
@@ -101,10 +101,10 @@ class ImageStorageMixin:
         prefix: str,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        """将本地已下载的图片上传至 OSS，失败则抛出异常。"""
+        """local Xia Zai image Shang Chuan Zhi OSS, failed then Pao Chu exception."""
         service = oss_service
         if not service:
-            raise RuntimeError("OSS 服务未配置，无法上传图像")
+            raise RuntimeError("OSS service not configuration, unable to Shang Chuan image")
 
         try:
             with open(local_file_path, "rb") as f:
@@ -146,9 +146,9 @@ class ImageStorageMixin:
         require_upload: bool = False,
     ) -> Dict[str, Any]:
         """
-        将已存在的本地图像文件持久化（计算相对路径、可选上传 OSS）。
+ Cun Zai local Tu Xiang Wen Jian Chi Jiu Hua(Ji Suan Xiang Dui Lu Jing, can Xuan Shang Chuan OSS).
 
-        供不同来源的图像复用：包括 AI 生成后下载到本地的文件，以及用户直接上传落盘的文件。
+ Gong Bu Tong Lai Yuan image Fu Yong: Bao Kuo AI Sheng Cheng after Xia Zai to local file, Yi Ji user directly Shang Chuan Luo Pan file.
         """
         file_size = os.path.getsize(local_file_path)
         filename = os.path.basename(local_file_path)
@@ -163,14 +163,14 @@ class ImageStorageMixin:
                     prefix=prefix,
                     metadata=metadata or {},
                 )
-                # 当 require_upload 为 True 时，任何非成功结果都视为失败并抛出异常；
-                # 否则记录告警并回退到本地路径。
+                # Dang require_upload as True when, any Fei successful Jie Guo all Shi Wei failed and Pao Chu exception; 
+                # Fou Ze Ji Lu Gao Jing and fallback to local path.
                 success = bool(oss_result.get("success"))
                 file_url = oss_result.get("file_url")
                 if success and file_url:
                     oss_url = file_url
                     self.logger.info(
-                        "CDN 上传成功 | filename=%s object_key=%s url=%s prefix=%s",
+                        "CDN Shang Chuan successful | filename=%s object_key=%s url=%s prefix=%s",
                         filename,
                         oss_result.get("object_key"),
                         file_url,
@@ -180,19 +180,19 @@ class ImageStorageMixin:
                     raise RuntimeError(f"OSS 上传失败: {oss_result}")
                 else:
                     self.logger.warning(
-                        "OSS 上传未返回可用URL，使用本地路径 | filename=%s result=%s",
+                        "OSS Shang Chuan not return availableURL, Shi Yong local path | filename=%s result=%s",
                         filename,
                         oss_result,
                     )
             except Exception as exc:
                 if require_upload:
                     raise
-                self.logger.warning("OSS 上传异常，使用本地路径: %s", exc)
+                self.logger.warning("OSS Shang Chuan exception, Shi Yong local path: %s", exc)
         elif require_upload:
-            raise RuntimeError("OSS 未配置，无法上传图像")
+            raise RuntimeError("OSS not configuration, unable to Shang Chuan image")
         else:
             self.logger.info(
-                "OSS/CDN 未配置，使用本地路径 | filename=%s path=%s",
+                "OSS/CDN not configuration, Shi Yong local path | filename=%s path=%s",
                 filename,
                 relative_path,
             )
@@ -216,7 +216,7 @@ class ImageStorageMixin:
         metadata: Optional[Dict[str, Any]] = None,
         require_upload: bool = False,
     ) -> Dict[str, Any]:
-        """下载/保存生成图像，并在配置 OSS 时上传，返回路径与元数据。"""
+        """Xia Zai/save Sheng Cheng image, and in configuration OSS when Shang Chuan, return path and Yuan data."""
         local_file_path = await self._download_image(image_data, ip_name, category)
 
         return await self._persist_local_image(
@@ -236,9 +236,9 @@ class ImageStorageMixin:
         require_upload: bool = False,
     ) -> Dict[str, Any]:
         """
-        持久化用户上传的图像文件：先写入本地 uploads，再根据配置上传到 OSS。
+ Chi Jiu Hua user Shang Chuan Tu Xiang Wen Jian: first write local uploads, then Gen Ju configuration on Chuan Dao OSS.
 
-        返回结构与 _persist_generated_image 保持一致，便于上层统一处理。
+ return structure and _persist_generated_image Bao Chi Yi Zhi, Bian Yu Shang Ceng unified process.
         """
         import uuid
         from pathlib import Path

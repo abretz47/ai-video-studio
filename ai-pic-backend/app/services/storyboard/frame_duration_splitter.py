@@ -357,9 +357,9 @@ def _infer_beat_type(frame: dict[str, Any]) -> str:
         return str(beat_type).lower()
 
     description = frame.get("description", "")
-    if "停顿" in description or "pause" in description.lower():
+    if "Ting Dun" in description or "pause" in description.lower():
         return "pause"
-    if "动作" in description or "action" in description.lower():
+    if "action" in description or "action" in description.lower():
         return "action"
 
     return "dialogue"
@@ -405,7 +405,7 @@ def _create_split_frame(
     # Add continuation marker to description for middle/end segments
     if split_index > 0:
         desc = frame.get("description", "")
-        if desc and not desc.startswith("（续）"):
+        if desc and not desc.startswith("(Xu)"):
             frame["description"] = f"（续）{desc}"
 
     return frame

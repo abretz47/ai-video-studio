@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-SHOT_CYCLE = ["远景", "中景", "近景", "特写"]
-MOVEMENT_CYCLE = ["固定", "推", "拉", "摇", "移", "跟", "变焦"]
-COMPOSITION_CYCLE = ["三分法", "对称", "前后景", "对角线", "中心对称"]
+SHOT_CYCLE = ["wide shot", "medium shot", "Jin Jing", "close-up"]
+MOVEMENT_CYCLE = ["Gu Ding", "Tui", "La", "Yao", "Yi", "Gen", "Bian Jiao"]
+COMPOSITION_CYCLE = ["San Fen Fa", "Dui Chen", "Qian Hou Jing", "Dui Jiao Xian", "Zhong Xin Dui Chen"]
 
 
 def cycle_value(cycle: List[str], position: int) -> str:
@@ -33,7 +33,7 @@ def sanitize_outline(
         outline["composition"] = composition
         changed = True
     if not outline.get("intent"):
-        outline["intent"] = f"强调{movement}镜头表现" if movement else "突出叙事节奏"
+        outline["intent"] = f"强调{movement}镜头表现" if movement else "Tu Chu Xu Shi Jie Zou"
         changed = True
     return outline, changed
 

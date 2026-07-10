@@ -12,39 +12,39 @@ from app.services.script.beat_contract_auto_repair_common import (
 def needs_workplace_anchors(scenes: list[Any]) -> bool:
     text = compact(str(scenes))
     return has_any(
-        text, ("合同", "客户", "并购", "尽调", "张总", "陈默", "小陈")
-    ) and has_any(text, ("篡改", "时间戳", "日志", "原始文件", "投影"))
+        text, ("contract", "customer", "Bing Gou", "Jin Diao", "Zhang Zong", "Chen Mo", "Xiao Chen")
+    ) and has_any(text, ("Cuan Gai", "time Chuo", "log", "Original file", "Tou Ying"))
 
 
 def apply_workplace_anchors(
     scene: dict[str, Any], beats: list[dict[str, Any]], index: int, count: int
 ) -> None:
     protagonist = preferred_character(beats) or "AP"
-    if "AP" in protagonist or "回归" in protagonist:
+    if "AP" in protagonist or "Hui Gui" in protagonist:
         protagonist = "AP"
     if index == 0:
         data = [
-            ("hook", "张总手机倒计时从60秒跳到59秒，投影并购数据被红框标出，与AP手里的原始文件差额300万。", ("张总", "60秒，合同作废！"), (protagonist, "数字不会撒谎。")),
-            ("reveal", "AP把原始文件、云端日志时间戳并排投到屏幕，差额被红框圈出。", (protagonist, "看时间戳。"), ("小陈", "备份还在。")),
-            ("conflict", "小陈锁定云端日志，陈默手指悬在删除确认键，张总倒计时跳到45秒。", ("小陈", "日志已锁。"), ("陈默", "先关投影！")),
+            ("hook", "Zhang Zong phone countdown Cong60seconds Tiao to59seconds, Tou Ying Bing Gou data Hong Kuang Biao Chu, andAPShou LiOriginal fileCha E300Wan.", ("Zhang Zong", "60seconds, contract Zuo Fei!"), (protagonist, "Shu Zi Bu Hui Sa Huang.")),
+            ("reveal", "APOriginal file, cloud log time Chuo Bing Pai Tou to screen, Cha E Hong Kuang Quan Chu.", (protagonist, "Kan time Chuo."), ("Xiao Chen", "backup Hai in.")),
+            ("conflict", "Xiao Chen lock cloud log, Chen Mo Shou Zhi Xuan Zai delete Que Ren Jian, Zhang Zong countdown Tiao to45seconds.", ("Xiao Chen", "log Yi Suo."), ("Chen Mo", "Xian Guan Tou Ying!")),
         ]
     elif index == 1:
         data = [
-            ("conflict", "陈默突然抢AP手机，通知栏露出改完给你20万，删除确认框停在红色按钮上。", ("陈默", "手机给我。"), (protagonist, "删除键别碰。")),
-            ("reveal", "小陈把锁住的日志投屏，陈默昨晚23:41的账号记录被红框套住。", ("小陈", "账号是陈默。"), (protagonist, "录音也在。")),
-            ("payoff", "陈默手机通知栏跳出“改完给你20万”，张总停止撤单电话。", ("张总", "15秒。"), ("陈默", "我被逼的。")),
+            ("conflict", "Chen Mo Tu Ran QiangAPphone, Tong Zhi Lan Lu Chu Gai Wan Gei you20Wan, delete Que Ren Kuang Ting in Hong Se An Niu on.", ("Chen Mo", "phone Gei I."), (protagonist, "delete Jian Bie Peng.")),
+            ("reveal", "Xiao Chen Suo Zhu log Tou Ping, Chen Mo Zuo Wan23:41Zhang Hao Ji Lu Hong Kuang Tao Zhu.", ("Xiao Chen", "Zhang Hao Shi Chen Mo."), (protagonist, "recording Ye in.")),
+            ("payoff", "Chen Mo phone Tong Zhi Lan Tiao Chu"Gai Wan Gei you20Wan", Zhang Zong Ting Zhi Che Dan Dian Hua.", ("Zhang Zong", "15seconds."), ("Chen Mo", "I Bi.")),
         ]
     elif index == count - 1:
         data = [
-            ("setup", "会议室刚安静，投影上的原始文件编号突然闪红。", (protagonist, "别关投影。"), ("小陈", "文件在变。")),
-            ("conflict", "匿名账号开始远程删除原始文件，进度条从1%跳到7%。", ("小陈", "还有远程权限。"), (protagonist, "先保原件。")),
-            ("cliffhanger", "AP手机弹出匿名短信：原始文件将在30秒后删除，下一个停职的是你。", (protagonist, "这只是第一层。"), (protagonist, "盯住倒计时。")),
+            ("setup", "Hui Yi Shi Gang An Jing, Tou Ying onOriginal fileID Tu Ran Shan Hong.", (protagonist, "Bie Guan Tou Ying."), ("Xiao Chen", "file in Bian.")),
+            ("conflict", "Ni Ming Zhang Hao Kai Shi Yuan Cheng deleteOriginal file, Jin Du Tiao Cong1%Tiao to7%.", ("Xiao Chen", "Hai You Yuan Cheng permission."), (protagonist, "Xian Bao Yuan Jian.")),
+            ("cliffhanger", "APphone Dan Chu Ni Ming text message: Original filein30 secondsafter delete, below a Ting Zhi Shi you.", (protagonist, "Zhe Zhi Shi Di Yi Ceng."), (protagonist, "Ding Zhu countdown.")),
         ]
     else:
         data = [
-            ("reveal", "陈默手机弹出20万到账短信和女儿住院费威胁。", ("陈默", "他们逼我。"), (protagonist, "谁给的钱？")),
-            ("conflict", "小陈把陈默账号、收款短信和删除时间排成三列。", ("小陈", "三列都对上。"), (protagonist, "时间线完整。")),
-            ("reveal", "AP把录音波形暂停在陈默低声改数据的句子上。", (protagonist, "录音对上了。"), ("陈默", "我只是转发。")),
+            ("reveal", "Chen Mo phone Dan Chu20Wan Dao Zhang text message and Nv Er Zhu Yuan Fei threat.", ("Chen Mo", "Ta Men Bi I."), (protagonist, "Shui Gei Qian?")),
+            ("conflict", "Xiao Chen Chen Mo Zhang Hao, Shou Kuan text message and delete time Pai Cheng San Lie.", ("Xiao Chen", "San Lie all Dui on."), (protagonist, "time Xian complete.")),
+            ("reveal", "APrecording Bo Xing Zan Ting in Chen Mo Di Sheng Gai data Ju Zi on.", (protagonist, "recording Dui on."), ("Chen Mo", "I Zhi Shi Zhuan Fa.")),
         ]
     for beat, item in zip(beats[:3], data):
         _set_beat(beat, *item, protagonist=protagonist)
@@ -74,6 +74,6 @@ def _set_beat(
         {"character": second_line[0], "content": second_line[1]},
     ]
     if beat_type == "payoff":
-        beat["payoff_tag"] = "客户签字继续项目"
+        beat["payoff_tag"] = "Client signs to continue the project"
     if beat_type == "cliffhanger":
-        beat["cliffhanger_tag"] = "匿名短信威胁删除原始文件"
+        beat["cliffhanger_tag"] = "Ni Ming text message threat deleteOriginal file"

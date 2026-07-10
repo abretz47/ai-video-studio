@@ -76,11 +76,11 @@ def dict_character_check(
 ) -> Dict[str, Any]:
     characters = extract_story_characters(story)
     known = {str(c.get("name")).strip() for c in characters if c.get("name")}
-    generic = {"旁白", "路人", "店员", "服务员", "医生", "护士", "警察"}
+    generic = {"narration", "Lu Ren", "clerk", "Fu Wu Yuan", "Yi Sheng", "Hu Shi", "Jing Cha"}
     unknown: set[str] = set()
     if known:
         for dialogue in dialogues:
-            speaker = str(dialogue.get("character") or "旁白").strip()
+            speaker = str(dialogue.get("character") or "narration").strip()
             if speaker and speaker not in known and not _is_generic(speaker, generic):
                 unknown.add(speaker)
     return make_quality_check(

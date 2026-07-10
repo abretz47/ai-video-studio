@@ -58,7 +58,7 @@ async def auto_create_episode_characters(
         [
             {
                 "episode_character_id": 123,
-                "character_name": "快递员",
+ "character_name": "Kuai Di Yuan",
                 "virtual_ip_id": 999,
                 "needs_customization": True,
                 "generated_info": {...}
@@ -269,7 +269,7 @@ def _get_or_create_default_virtual_ip(
         db.query(VirtualIP)
         .filter(
             VirtualIP.user_id == user_id,
-            VirtualIP.name == "临时角色默认形象",
+            VirtualIP.name == "temporary character default Xing Xiang",
             VirtualIP.is_deleted.is_(False),
         )
         .first()
@@ -285,11 +285,11 @@ def _get_or_create_default_virtual_ip(
     try:
         new_vip = VirtualIP(
             user_id=user_id,
-            name="临时角色默认形象",
-            description="用于Episode临时角色的默认形象，可后续替换为专用形象",
-            background_story="临时角色默认背景",
-            biography="通用临时角色",
-            style_prompt="普通人物形象",
+            name="temporary character default Xing Xiang",
+            description="Yong YuEpisodetemporary character default Xing Xiang, can subsequent Ti Huan as Zhuan Yong Xing Xiang",
+            background_story="temporary character default background",
+            biography="Tong Yong temporary character",
+            style_prompt="Pu Tong Ren Wu Xing Xiang",
             voice_config={
                 "provider": "minimax",
                 "voice_id": "male-qn-qingse",  # Default voice

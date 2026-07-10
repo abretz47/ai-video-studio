@@ -69,7 +69,7 @@ async def generate_virtual_ip_image_variant(
     base_image = get_virtual_ip_image(db, virtual_ip, image_id, None)
 
     if not ai_service.ai_manager:
-        raise HTTPException(status_code=503, detail="AI管理器未初始化，无法执行图生图")
+        raise HTTPException(status_code=503, detail="AI manager is not initialized; cannot perform image-to-image generation")
 
     try:
         payload = await read_request_payload(request)
@@ -163,8 +163,8 @@ async def generate_virtual_ip_image_variant_async(
 
     # Create task
     task = Task(
-        title=f"虚拟IP图生图 - 图像{image_id}",
-        description="异步生成虚拟IP图像变体",
+        title=f"Virtual IP image-to-image - image {image_id}",
+        description="Generate virtual IP image variants asynchronously",
         task_type=TaskType.VIRTUAL_IP_IMAGE_VARIANT_GENERATION,
         prompt=f"VirtualIP img2img for image {image_id}",
         parameters=json.dumps(payload, ensure_ascii=False),

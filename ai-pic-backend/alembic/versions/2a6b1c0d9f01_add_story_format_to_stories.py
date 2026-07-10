@@ -26,7 +26,7 @@ def upgrade() -> None:
             sa.String(length=32),
             nullable=False,
             server_default="short_drama",
-            comment="故事形态：short_drama/tv_series/film",
+            comment="Story format: short_drama/tv_series/film",
         ),
     )
     op.alter_column("stories", "story_format", server_default=None)

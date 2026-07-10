@@ -12,7 +12,7 @@ from pydantic import ValidationError
 def normalize_story_outline_strict(result: Any) -> Dict[str, Any]:
     """Strictly validate AI output; do not persist heuristic text fallbacks."""
     if not isinstance(result, dict):
-        raise HTTPException(status_code=500, detail="AI故事生成失败：返回格式错误")
+        raise HTTPException(status_code=500, detail="AIstory Sheng Cheng failed: return format error")
 
     normalized = result.get("normalized")
     if isinstance(normalized, dict) and normalized:
@@ -42,4 +42,4 @@ def normalize_story_outline_strict(result: Any) -> Dict[str, Any]:
             detail=f"AI故事生成失败：输出不符合 schema（validation_errors={errors}）",
         )
 
-    raise HTTPException(status_code=500, detail="AI故事生成失败：未返回可解析的 JSON")
+    raise HTTPException(status_code=500, detail="AIstory Sheng Cheng failed: not return can parse JSON")

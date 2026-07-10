@@ -12,10 +12,10 @@ class UserRole(str, Enum):
 
 
 class UserStatus(str, Enum):
-    PENDING = "pending"  # 待审批
-    APPROVED = "approved"  # 已审批
-    REJECTED = "rejected"  # 已拒绝
-    SUSPENDED = "suspended"  # 已暂停
+    PENDING = "pending"  # pending Shen Pi
+    APPROVED = "approved"  # Shen Pi
+    REJECTED = "rejected"  # Ju Jue
+    SUSPENDED = "suspended"  # Zan Ting
 
 
 class UserBase(BaseModel):
@@ -40,7 +40,7 @@ class UserUpdate(BaseModel):
 
 
 class UserAdminUpdate(BaseModel):
-    """管理员更新用户信息"""
+    """administrator update user Xin Xi"""
 
     is_active: Optional[bool] = None
     is_admin: Optional[bool] = None
@@ -83,7 +83,7 @@ class UserSummary(BaseModel):
 
 
 class UserAdminResponse(UserResponse):
-    """管理员查看用户详细信息"""
+    """administrator Cha Kan user Xiang Xi Xin Xi"""
 
     approved_at: Optional[datetime] = None
     approved_by_user_id: Optional[int] = None
@@ -92,7 +92,7 @@ class UserAdminResponse(UserResponse):
 
 
 class UserListResponse(BaseModel):
-    """用户列表响应"""
+    """user list response"""
 
     users: List[UserAdminResponse]
     total: int
@@ -102,18 +102,18 @@ class UserListResponse(BaseModel):
 
 
 class UserStatsResponse(BaseModel):
-    """用户统计信息"""
+    """user Tong Ji Xin Xi"""
 
     total_users: int
     active_users: int
     pending_approval: int
     suspended_users: int
     admin_users: int
-    recent_registrations: int  # 最近7天注册
+    recent_registrations: int  # Zui Jin7Tian Zhu Ce
 
 
 class UserApprovalRequest(BaseModel):
-    """用户审批请求"""
+    """user Shen Pi request"""
 
     action: str  # "approve" or "reject"
     reason: Optional[str] = None
@@ -129,7 +129,7 @@ class TokenData(BaseModel):
 
 
 class UserAuditLogResponse(BaseModel):
-    """用户审计日志响应"""
+    """user Shen Ji log response"""
 
     id: int
     user_id: int

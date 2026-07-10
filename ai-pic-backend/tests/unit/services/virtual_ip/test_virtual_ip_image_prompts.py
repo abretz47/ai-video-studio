@@ -1,30 +1,30 @@
 import pytest
 from app.services.virtual_ip.virtual_ip_image_prompts import (
-    render_virtual_ip_image_variant_prompt,
+ render_virtual_ip_image_variant_prompt,
 )
 
 
 @pytest.mark.unit
 def test_render_virtual_ip_image_variant_prompt_renders_template():
-    rendered = render_virtual_ip_image_variant_prompt(
-        character_name="小雅",
-        character_description="22岁女性，银色短发，黑色高领毛衣",
-        variant_prompt="背面照，全身照，保持同一人物特征",
-        style="realistic",
-        category="portrait",
-        style_prompt="studio lighting",
-    )
+ rendered = render_virtual_ip_image_variant_prompt(
+ character_name="Mia",
+ character_description="22 years oldfemale, Yin Se Duan Fa, Hei Se Gao Ling Mao Yi",
+ variant_prompt="back-view shot, Quan Shen Zhao, keep Tong Yi Ren Wu Te Zheng",
+ style="realistic",
+ category="portrait",
+ style_prompt="studio lighting",
+)
 
-    assert "Virtual IP Variant:" in rendered
-    assert "小雅" in rendered
-    assert "背面照" in rendered
+ assert "Virtual IP Variant:" in rendered
+ assert "Mia" in rendered
+ assert "back-view shot" in rendered
 
 
 @pytest.mark.unit
 def test_render_virtual_ip_image_variant_prompt_falls_back_when_template_missing():
-    fallback = render_virtual_ip_image_variant_prompt(
-        character_name="小雅",
-        variant_prompt="背面照",
-        template_name="__missing_template__",
-    )
-    assert fallback == "背面照"
+ fallback = render_virtual_ip_image_variant_prompt(
+ character_name="Mia",
+ variant_prompt="back-view shot",
+ template_name="__missing_template__",
+)
+ assert fallback == "back-view shot"

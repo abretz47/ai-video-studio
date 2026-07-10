@@ -38,7 +38,7 @@ def upgrade() -> None:
     """Upgrade schema and backfill storyboard metadata."""
     op.add_column(
         "scripts",
-        sa.Column("storyboard_plan", sa.JSON(), nullable=True, comment="最新分镜规划"),
+        sa.Column("storyboard_plan", sa.JSON(), nullable=True, comment="Latest storyboard plan"),
     )
     op.add_column(
         "scripts",
@@ -47,7 +47,7 @@ def upgrade() -> None:
             sa.Integer(),
             nullable=True,
             server_default="1",
-            comment="分镜版本号",
+            comment="Storyboard version number",
         ),
     )
     op.add_column(
@@ -56,7 +56,7 @@ def upgrade() -> None:
             "storyboard_updated_at",
             sa.DateTime(),
             nullable=True,
-            comment="分镜最近更新时间",
+            comment="Most recent storyboard update time",
         ),
     )
 

@@ -194,7 +194,7 @@ class OpenAIProvider(BaseProvider):
     async def understand_image(
         self,
         image_url: str,
-        question: str = "请描述这张图片",
+        question: str = "Qing description Zhe Zhang image",
         model: str = "gpt-4o",
         max_tokens: Optional[int] = None,
         **kwargs,

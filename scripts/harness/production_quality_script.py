@@ -38,20 +38,20 @@ SCRIPT_SCORE_DIMENSION_PASS = 3.5
 
 def provider_chain_script_text(payload: dict[str, Any]) -> str:
     script = extract_script_payload(payload)
-    title = str(script.get("title") or "未命名短剧")
+    title = str(script.get("title") or "Untitled Short Drama")
     logline = str(script.get("logline") or "")
     characters = script.get("characters") if isinstance(script.get("characters"), list) else []
     lines = [
         f"# {title}",
-        f"▲3秒钩子：{logline or '主角开场遇到必须立刻解决的异常。'}",
-        "【节奏】快",
-        "【情绪目标】紧张/反转/推进",
-        "【SFX】警报声",
+        f"▲3-second hook: {logline or 'Protagonist opens with an anomaly that must be resolved immediately.'}",
+        "[Pacing] Fast",
+        "[Emotional Goal] Tension/Reversal/Momentum",
+        "[SFX] Alert sound",
     ]
     if characters:
         anchor = str(characters[0].get("consistency_anchor") or "")
         appearance = str(characters[0].get("appearance_prompt") or "")
-        lines.append(f"▲角色锚点：{appearance} {anchor}".strip())
+        lines.append(f"▲Character anchor: {appearance} {anchor}".strip())
         for character in characters:
             lines.append(_character_label_line(character))
     scenes = script.get("scenes") if isinstance(script.get("scenes"), list) else []
@@ -59,7 +59,7 @@ def provider_chain_script_text(payload: dict[str, Any]) -> str:
         lines.extend(_scene_to_lint_lines(index, scene))
     if scenes:
         final_cliffhanger = _final_cliffhanger_text(scenes[-1])
-        lines.append(f"【悬念】{final_cliffhanger or '最后一秒出现新的反转。'}")
+        lines.append(f"[Cliffhanger] {final_cliffhanger or 'A new reversal appears in the final second.'}")
     return "\n".join(lines) + "\n"
 
 
@@ -164,9 +164,9 @@ def normalize_script_score(score: dict[str, Any] | None) -> dict[str, Any]:
 
 
 def _scene_to_lint_lines(index: int, scene: dict[str, Any]) -> list[str]:
-    plot = str(scene.get("plot") or "角色发现异常并立即行动。")
+    plot = str(scene.get("plot") or "Character discovers anomaly and acts immediately.")
     video_prompt = str(scene.get("video_prompt") or scene.get("image_prompt") or "")
-    lines = [f"[第{index}场]", _scene_conflict_line(scene), f"▲动作：{plot}", f"【镜头】特写/推镜/{video_prompt}"]
+    lines = [f"[Scene {index}]", _scene_conflict_line(scene), f"▲Action: {plot}", f"[Camera] Close-up/Push/{video_prompt}"]
     beats = scene_beats(scene)
     if beats:
         for beat in beats:
@@ -174,7 +174,7 @@ def _scene_to_lint_lines(index: int, scene: dict[str, Any]) -> list[str]:
             if visible:
                 lines.append(f"▲beat{beat.get('order_index')}: {visible}")
             for action in beat_action_lines(beat):
-                lines.append(f"▲动作：{action}")
+                lines.append(f"▲Action: {action}")
             for line in beat_dialogue_lines(beat):
                 speaker = line.get("speaker") or line.get("character")
                 text = line.get("line") or line.get("content")
@@ -184,28 +184,28 @@ def _scene_to_lint_lines(index: int, scene: dict[str, Any]) -> list[str]:
         for line in scene.get("dialogue") or []:
             if isinstance(line, dict) and line.get("speaker") and line.get("line"):
                 lines.append(f"{line['speaker']}: {line['line']}")
-    lines.append("【SFX】电子提示音")
+    lines.append("[SFX] Electronic notification sound")
     return lines
 
 
 def _scene_conflict_line(scene: dict[str, Any]) -> str:
     return (
-        "【冲突】"
-        f"问题：{scene.get('question') or '待确认'}；"
-        f"代价：{scene.get('stakes') or '待确认'}；"
-        f"阻力：{scene.get('opposition') or '待确认'}；"
-        f"转折：{scene.get('turn') or '待确认'}；"
-        f"因果种子：{scene.get('causal_seed') or '待确认'}"
+        "[Conflict] "
+        f"Question: {scene.get('question') or 'TBD'}; "
+        f"Stakes: {scene.get('stakes') or 'TBD'}; "
+        f"Opposition: {scene.get('opposition') or 'TBD'}; "
+        f"Turn: {scene.get('turn') or 'TBD'}; "
+        f"Causal seed: {scene.get('causal_seed') or 'TBD'}"
     )
 
 
 def _character_label_line(character: dict[str, Any]) -> str:
     return (
-        "▲角色标签："
-        f"{character.get('name') or '未命名'}｜"
-        f"{character.get('role') or '角色'}｜"
-        f"{character.get('appearance_prompt') or '外观待定'}｜"
-        f"{character.get('consistency_anchor') or '锚点待定'}"
+        "▲Character tag: "
+        f"{character.get('name') or 'Unnamed'} | "
+        f"{character.get('role') or 'Character'} | "
+        f"{character.get('appearance_prompt') or 'Appearance TBD'} | "
+        f"{character.get('consistency_anchor') or 'Anchor TBD'}"
     )
 
 

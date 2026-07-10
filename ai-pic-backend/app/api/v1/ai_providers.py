@@ -1,7 +1,7 @@
 """
-AI服务提供商管理接口
+AI service provider management API
 
-提供多种AI服务提供商的统一接口，包括文本生成、图像生成、视频生成和语音合成等功能
+Provides a unified interface for multiple AI service providers, including text generation, image generation, video generation, and speech synthesis.
 """
 
 from typing import Any, Dict, List, Optional
@@ -18,87 +18,87 @@ router = APIRouter()
 
 
 class TextGenerationRequest(BaseModel):
-    """文本生成请求"""
+    """Text generation request"""
 
-    prompt: str = Field(..., description="生成提示词")
-    model: Optional[str] = Field(None, description="指定模型")
-    prefer_provider: Optional[str] = Field(None, description="首选提供商")
-    system_prompt: Optional[str] = Field(None, description="系统提示词")
+    prompt: str = Field(..., description="Generation prompt")
+    model: Optional[str] = Field(None, description="Specific model")
+    prefer_provider: Optional[str] = Field(None, description="Preferred provider")
+    system_prompt: Optional[str] = Field(None, description="System prompt")
     max_tokens: Optional[int] = Field(
-        None, description="最大token数（为空则不限制，由模型决定）"
+        None, description="Maximum token count (unlimited when empty; determined by the model)"
     )
-    temperature: float = Field(0.7, description="创造性参数")
+    temperature: float = Field(0.7, description="Creativity parameter")
 
 
 class ImageGenerationRequest(BaseModel):
-    """图像生成请求"""
+    """Image generation request"""
 
-    prompt: str = Field(..., description="图像描述")
-    model: Optional[str] = Field(None, description="指定模型")
-    prefer_provider: Optional[str] = Field(None, description="首选提供商")
-    width: int = Field(1024, description="图像宽度")
-    height: int = Field(1024, description="图像高度")
-    style: str = Field("realistic", description="图像风格")
+    prompt: str = Field(..., description="Image description")
+    model: Optional[str] = Field(None, description="Specific model")
+    prefer_provider: Optional[str] = Field(None, description="Preferred provider")
+    width: int = Field(1024, description="Image width")
+    height: int = Field(1024, description="Image height")
+    style: str = Field("realistic", description="Image style")
     style_preset_id: Optional[str] = Field(
-        None, description="风格预设ID（后端为唯一真源）"
+        None, description="Style preset ID (backend is the single source of truth)"
     )
     style_spec: Optional[StyleSpec] = Field(
-        default=None, description="风格 schema（允许只传部分字段）"
+        default=None, description="Style schema (partial fields allowed)"
     )
-    count: int = Field(1, description="生成图像数量")
+    count: int = Field(1, description="Number of images to generate")
 
 
 class ImageToImageRequest(BaseModel):
-    """图生图请求"""
+    """Image-to-image request"""
 
-    image_url: str = Field(..., description="原始图像URL")
-    prompt: Optional[str] = Field(None, description="可选的引导提示词")
+    image_url: str = Field(..., description="Source image URL")
+    prompt: Optional[str] = Field(None, description="Optional guidance prompt")
     model: Optional[str] = Field(
-        None, description="指定模型（如不指定则由服务自动选择）"
+        None, description="Specific model (if omitted, the service selects automatically)"
     )
-    prefer_provider: Optional[str] = Field(None, description="首选提供商")
+    prefer_provider: Optional[str] = Field(None, description="Preferred provider")
     style: Optional[str] = Field(
-        None, description="兼容旧风格字段（realistic/anime/cartoon/portrait）"
+        None, description="Backward-compatible legacy style field (realistic/anime/cartoon/portrait)"
     )
     style_preset_id: Optional[str] = Field(
-        None, description="风格预设ID（后端为唯一真源）"
+        None, description="Style preset ID (backend is the single source of truth)"
     )
     style_spec: Optional[StyleSpec] = Field(
-        default=None, description="风格 schema（允许只传部分字段）"
+        default=None, description="Style schema (partial fields allowed)"
     )
-    count: int = Field(1, description="生成图像数量")
+    count: int = Field(1, description="Number of images to generate")
 
 
 class VideoGenerationRequest(BaseModel):
-    """视频生成请求"""
+    """Video generation request"""
 
-    prompt: Optional[str] = Field(None, description="视频描述")
-    image_url: Optional[str] = Field(None, description="参考图像URL")
-    model: Optional[str] = Field(None, description="指定模型")
-    prefer_provider: Optional[str] = Field(None, description="首选提供商")
-    duration: int = Field(5, description="视频时长(秒)")
-    fps: int = Field(24, description="帧率")
-    resolution: str = Field("1280x720", description="分辨率")
-    style: str = Field("realistic", description="视频风格")
+    prompt: Optional[str] = Field(None, description="Video description")
+    image_url: Optional[str] = Field(None, description="Reference image URL")
+    model: Optional[str] = Field(None, description="Specific model")
+    prefer_provider: Optional[str] = Field(None, description="Preferred provider")
+    duration: int = Field(5, description="Video duration (seconds)")
+    fps: int = Field(24, description="Frame rate")
+    resolution: str = Field("1280x720", description="Resolution")
+    style: str = Field("realistic", description="Video style")
 
 
 class SpeechGenerationRequest(BaseModel):
-    """语音生成请求"""
+    """Speech generation request"""
 
-    text: str = Field(..., description="要转换的文本")
-    model: Optional[str] = Field(None, description="指定模型")
-    prefer_provider: Optional[str] = Field(None, description="首选提供商")
-    voice_type: Optional[str] = Field(None, description="语音类型")
-    speed: float = Field(1.0, description="语速")
+    text: str = Field(..., description="Text to convert")
+    model: Optional[str] = Field(None, description="Specific model")
+    prefer_provider: Optional[str] = Field(None, description="Preferred provider")
+    voice_type: Optional[str] = Field(None, description="Voice type")
+    speed: float = Field(1.0, description="Speech rate")
 
 
 class ProviderConfigRequest(BaseModel):
-    """提供商配置请求"""
+    """Provider configuration request"""
 
-    enabled: Optional[bool] = Field(None, description="是否启用")
-    weight: Optional[float] = Field(None, description="权重")
-    priority: Optional[str] = Field(None, description="优先级(high/medium/low)")
-    max_requests_per_minute: Optional[int] = Field(None, description="每分钟最大请求数")
+    enabled: Optional[bool] = Field(None, description="Enabled")
+    weight: Optional[float] = Field(None, description="Weight")
+    priority: Optional[str] = Field(None, description="Priority (high/medium/low)")
+    max_requests_per_minute: Optional[int] = Field(None, description="Max requests per minute")
 
 
 @router.post("/generate/text")
@@ -106,7 +106,7 @@ async def generate_text(
     request: TextGenerationRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成文本"""
+    """Generate text"""
     try:
         kwargs = {
             "prompt": request.prompt,
@@ -136,7 +136,7 @@ async def generate_text(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"文本生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Text generation failed: {str(e)}")
 
 
 @router.post("/generate/image")
@@ -144,7 +144,7 @@ async def generate_image(
     request: ImageGenerationRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成图像"""
+    """Generate image"""
     try:
         response = await ai_service.ai_manager.generate_image(
             prompt=request.prompt,
@@ -175,14 +175,14 @@ async def generate_image(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"图像生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Image generation failed: {str(e)}")
 
 
 @router.post("/generate/image-to-image")
 async def generate_image_to_image(
     request: ImageToImageRequest, current_user: User = Depends(get_current_active_user)
 ):
-    """图生图生成接口（统一路由到支持 IMAGE_TO_IMAGE 的提供商）"""
+    """Image-to-image generation endpoint (uniformly routed to providers that support IMAGE_TO_IMAGE)"""
     try:
         response = await ai_service.ai_manager.image_to_image(
             image_url=request.image_url,
@@ -210,7 +210,7 @@ async def generate_image_to_image(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"图生图生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Image-to-image generation failed: {str(e)}")
 
 
 @router.post("/generate/video")
@@ -218,10 +218,10 @@ async def generate_video(
     request: VideoGenerationRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成视频"""
+    """Generate video"""
     try:
         if not request.prompt and not request.image_url:
-            raise HTTPException(status_code=400, detail="必须提供prompt或image_url")
+            raise HTTPException(status_code=400, detail="Either prompt or image_url must be provided")
 
         response = await ai_service.ai_manager.generate_video(
             prompt=request.prompt,
@@ -252,7 +252,7 @@ async def generate_video(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"视频生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Video generation failed: {str(e)}")
 
 
 @router.post("/generate/speech")
@@ -260,7 +260,7 @@ async def generate_speech(
     request: SpeechGenerationRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成语音"""
+    """Generate speech"""
     try:
         response = await ai_service.ai_manager.text_to_speech(
             text=request.text,
@@ -288,17 +288,17 @@ async def generate_speech(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"语音生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Speech generation failed: {str(e)}")
 
 
 @router.get("/providers/status")
 async def get_providers_status(current_user: User = Depends(get_current_active_user)):
-    """获取所有提供商状态"""
+    """Get status for all providers"""
     try:
         status = ai_service.get_ai_providers_status()
         return {"success": True, "data": status}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取状态失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get status: {str(e)}")
 
 
 @router.put("/providers/{provider_name}/config")
@@ -307,13 +307,13 @@ async def update_provider_config(
     request: ProviderConfigRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """更新提供商配置"""
+    """Update provider configuration"""
     try:
-        # 验证提供商是否存在
+        # Verify that the provider exists
         status = ai_service.get_ai_providers_status()
         if provider_name not in status:
             raise HTTPException(
-                status_code=404, detail=f"提供商 {provider_name} 不存在"
+                status_code=404, detail=f"Provider {provider_name} does not exist"
             )
 
         ai_service.update_provider_config(
@@ -326,24 +326,24 @@ async def update_provider_config(
 
         return {
             "success": True,
-            "data": {"message": f"提供商 {provider_name} 配置已更新"},
+            "data": {"message": f"Provider {provider_name} configuration updated"},
         }
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"更新配置失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to update configuration: {str(e)}")
 
 
 @router.get("/providers/{provider_name}/models")
 async def get_provider_models(
     provider_name: str, current_user: User = Depends(get_current_active_user)
 ):
-    """获取指定提供商的可用模型"""
+    """Get available models for the specified provider"""
     try:
         status = ai_service.get_ai_providers_status()
         if provider_name not in status:
             raise HTTPException(
-                status_code=404, detail=f"提供商 {provider_name} 不存在"
+                status_code=404, detail=f"Provider {provider_name} does not exist"
             )
 
         provider_status = status[provider_name]
@@ -360,7 +360,7 @@ async def get_provider_models(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取模型列表失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get model list: {str(e)}")
 
 
 @router.get("/models/available")
@@ -369,11 +369,11 @@ async def get_available_models(
     source: str = "auto",
     current_user: User = Depends(get_current_active_user),
 ):
-    """聚合返回所有提供商的可用模型列表
+    """Return the aggregated available model list from all providers
 
     Query:
-    - model_type: 过滤模型类型，例如 'text' / 'image' / 'video'
-    - source: 'static' | 'remote' | 'auto'（默认 auto: 优先官方接口，失败回退静态）
+    - model_type: Filter model type, for example 'text' / 'image' / 'video'
+    - source: 'static' | 'remote' | 'auto' (default auto: prefer official APIs, fall back to static on failure)
     """
     try:
         if source not in {"static", "remote", "auto"}:
@@ -386,19 +386,19 @@ async def get_available_models(
         if not enabled_providers:
             raise HTTPException(
                 status_code=503,
-                detail="暂无可用的AI提供商，请检查 OPENAI_API_KEY / VOLCENGINE_API_KEY 等配置是否已注入容器",
+                detail="No AI providers are currently available. Check whether OPENAI_API_KEY / VOLCENGINE_API_KEY and related settings have been injected into the container.",
             )
 
-        # 通过统一的 AIService/AIServiceManager 列出模型
+        # List models through the unified AIService/AIServiceManager
         models = await ai_service.list_models(
             model_type_alias=model_type, source=source
         )
         if not models:
             raise HTTPException(
                 status_code=503,
-                detail=f"当前无可用模型（model_type={model_type or 'all'}）。请确认对应提供商密钥已配置，且服务初始化无错误。",
+                detail=f"No models are currently available (model_type={model_type or 'all'}). Confirm that the corresponding provider keys are configured and that service initialization completed without errors.",
             )
-        # 添加前端期望的 model_id 字段（provider:model）
+        # Add the frontend-expected model_id field (provider:model)
         enriched = [
             {
                 "model_id": f"{m['provider']}:{m['id']}",
@@ -413,21 +413,21 @@ async def get_available_models(
         ]
         return {"success": True, "data": {"models": enriched, "count": len(enriched)}}
     except HTTPException:
-        # 直接透传业务异常，避免被统一 500 包裹
+        # Pass through business exceptions directly to avoid wrapping them in a generic 500
         raise
     except Exception as e:  # noqa: BLE001
-        raise HTTPException(status_code=500, detail=f"获取聚合模型列表失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get aggregated model list: {str(e)}")
 
 
 @router.post("/providers/test/{provider_name}")
 async def test_provider(
     provider_name: str, current_user: User = Depends(get_current_active_user)
 ):
-    """测试指定提供商的连接"""
+    """Test the connection for the specified provider"""
     try:
-        # 测试文本生成
+        # Test text generation
         response = await ai_service.ai_manager.generate_text(
-            prompt="请说'Hello World'",
+            prompt="Please say 'Hello World'",
             prefer_provider=provider_name,
         )
 
@@ -459,34 +459,34 @@ async def test_provider(
         }
 
 
-# OSS存储管理相关接口
+# OSS storage management endpoints
 
 
 class UploadUrlRequest(BaseModel):
-    """URL上传请求"""
+    """URL upload request"""
 
-    url: str = Field(..., description="要上传的文件URL")
-    file_type: str = Field("image", description="文件类型(image/video/audio)")
-    prefix: Optional[str] = Field(None, description="存储前缀")
-    metadata: Optional[Dict[str, Any]] = Field(None, description="文件元数据")
+    url: str = Field(..., description="File URL to upload")
+    file_type: str = Field("image", description="File type (image/video/audio)")
+    prefix: Optional[str] = Field(None, description="Storage prefix")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="File metadata")
 
 
 class BatchUploadRequest(BaseModel):
-    """批量上传请求"""
+    """Batch upload request"""
 
-    urls: List[str] = Field(..., description="要上传的文件URL列表")
-    file_type: str = Field("image", description="文件类型")
-    prefix: Optional[str] = Field(None, description="存储前缀")
-    metadata: Optional[Dict[str, Any]] = Field(None, description="文件元数据")
+    urls: List[str] = Field(..., description="List of file URLs to upload")
+    file_type: str = Field("image", description="File type")
+    prefix: Optional[str] = Field(None, description="Storage prefix")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="File metadata")
 
 
 @router.post("/storage/upload-url")
 async def upload_from_url(
     request: UploadUrlRequest, current_user: User = Depends(get_current_active_user)
 ):
-    """从URL上传文件到OSS"""
+    """Upload a file from a URL to OSS"""
     if not oss_service:
-        raise HTTPException(status_code=503, detail="OSS服务未配置")
+        raise HTTPException(status_code=503, detail="OSS service is not configured")
 
     try:
         result = await oss_service.upload_from_url(
@@ -502,16 +502,16 @@ async def upload_from_url(
             raise HTTPException(status_code=400, detail=result["error"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"上传失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
 
 @router.post("/storage/batch-upload")
 async def batch_upload_from_urls(
     request: BatchUploadRequest, current_user: User = Depends(get_current_active_user)
 ):
-    """批量从URL上传文件到OSS"""
+    """Batch upload files from URLs to OSS"""
     if not oss_service:
-        raise HTTPException(status_code=503, detail="OSS服务未配置")
+        raise HTTPException(status_code=503, detail="OSS service is not configured")
 
     try:
         results = await oss_service.upload_multiple_urls(
@@ -535,7 +535,7 @@ async def batch_upload_from_urls(
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"批量上传失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Batch upload failed: {str(e)}")
 
 
 @router.get("/storage/list")
@@ -545,9 +545,9 @@ async def list_storage_objects(
     marker: str = "",
     current_user: User = Depends(get_current_active_user),
 ):
-    """列出OSS存储对象"""
+    """List OSS storage objects"""
     if not oss_service:
-        raise HTTPException(status_code=503, detail="OSS服务未配置")
+        raise HTTPException(status_code=503, detail="OSS service is not configured")
 
     try:
         result = oss_service.list_objects(
@@ -560,16 +560,16 @@ async def list_storage_objects(
             raise HTTPException(status_code=400, detail=result["error"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"列出对象失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to list objects: {str(e)}")
 
 
 @router.get("/storage/info/{object_key:path}")
 async def get_object_info(
     object_key: str, current_user: User = Depends(get_current_active_user)
 ):
-    """获取OSS对象信息"""
+    """Get OSS object information"""
     if not oss_service:
-        raise HTTPException(status_code=503, detail="OSS服务未配置")
+        raise HTTPException(status_code=503, detail="OSS service is not configured")
 
     try:
         result = oss_service.get_object_info(object_key)
@@ -580,16 +580,16 @@ async def get_object_info(
             raise HTTPException(status_code=404, detail=result["error"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取对象信息失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get object information: {str(e)}")
 
 
 @router.delete("/storage/{object_key:path}")
 async def delete_storage_object(
     object_key: str, current_user: User = Depends(get_current_active_user)
 ):
-    """删除OSS存储对象"""
+    """Delete OSS storage object"""
     if not oss_service:
-        raise HTTPException(status_code=503, detail="OSS服务未配置")
+        raise HTTPException(status_code=503, detail="OSS service is not configured")
 
     try:
         result = oss_service.delete_object(object_key)
@@ -600,7 +600,7 @@ async def delete_storage_object(
             raise HTTPException(status_code=400, detail=result["error"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"删除对象失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to delete object: {str(e)}")
 
 
 @router.get("/storage/signed-url/{object_key:path}")
@@ -610,9 +610,9 @@ async def get_signed_url(
     method: str = "GET",
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成OSS对象签名URL"""
+    """Generate a signed URL for an OSS object"""
     if not oss_service:
-        raise HTTPException(status_code=503, detail="OSS服务未配置")
+        raise HTTPException(status_code=503, detail="OSS service is not configured")
 
     try:
         signed_url = oss_service.get_signed_url(
@@ -630,20 +630,20 @@ async def get_signed_url(
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"生成签名URL失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate signed URL: {str(e)}")
 
 
 @router.get("/storage/status")
 async def get_storage_status(current_user: User = Depends(get_current_active_user)):
-    """获取OSS存储服务状态"""
+    """Get OSS storage service status"""
     if not oss_service:
         return {
             "success": False,
-            "data": {"status": "disabled", "message": "OSS服务未配置"},
+            "data": {"status": "disabled", "message": "OSS service is not configured"},
         }
 
     try:
-        # 测试OSS连接
+        # Test OSS connection
         test_result = oss_service.list_objects(prefix="", max_keys=1)
 
         return {
@@ -654,9 +654,9 @@ async def get_storage_status(current_user: User = Depends(get_current_active_use
                 "endpoint": oss_service.endpoint,
                 "domain": oss_service.domain,
                 "message": (
-                    "OSS服务正常"
+                    "OSS service is operating normally"
                     if test_result["success"]
-                    else test_result.get("error", "连接失败")
+                    else test_result.get("error", "Connection failed")
                 ),
             },
         }
@@ -664,5 +664,5 @@ async def get_storage_status(current_user: User = Depends(get_current_active_use
     except Exception as e:
         return {
             "success": False,
-            "data": {"status": "error", "message": f"OSS服务状态检查失败: {str(e)}"},
+            "data": {"status": "error", "message": f"OSS service status check failed: {str(e)}"},
         }

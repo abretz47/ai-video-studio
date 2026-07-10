@@ -138,30 +138,30 @@ class EpisodeQualityValidator:
 
     # Keywords indicating high tension/stakes (Chinese)
     TENSION_KEYWORDS = [
-        "危机", "危险", "生死", "紧急", "关键", "决战", "对决", "高潮",
-        "爆发", "冲突", "对抗", "威胁", "绝望", "挣扎", "逼迫", "陷阱",
-        "背叛", "真相", "揭露", "秘密", "震惊", "转折", "突变", "升级",
+        "crisis", "Wei Xian", "Sheng Si", "Jin Ji", "key", "Jue Zhan", "Dui Jue", "climax",
+        "eruption", "conflict", "Dui Kang", "threat", "Jue Wang", "Zheng Zha", "Bi Po", "Xian Jing",
+        "Bei Pan", "truth", "expose", "secret", "shocked", "Zhuan Zhe", "Tu Bian", "escalate",
     ]
 
     # Keywords indicating setup/foreshadowing
     SETUP_KEYWORDS = [
-        "暗示", "伏笔", "预示", "铺垫", "埋下", "隐藏", "暗藏",
-        "提及", "线索", "征兆", "预兆", "暗线", "悬念", "谜团",
+        "An Shi", "Fu Bi", "Yu Shi", "Foreshadowing", "Mai below", "Yin Cang", "An Cang",
+        "Ti Ji", "clue", "Zheng Zhao", "Yu Zhao", "An Xian", "suspense", "Mi Tuan",
     ]
 
     # Keywords indicating payoff/resolution
     PAYOFF_KEYWORDS = [
-        "揭示", "揭露", "真相大白", "水落石出", "回收", "呼应",
-        "原来", "竟然", "恍然", "解开", "破解", "终于", "答案",
+        "reveal", "expose", "Zhen Xiang Da Bai", "Shui Luo Shi Chu", "Hui Shou", "Hu Ying",
+        "Yuan Lai", "Jing Ran", "Huang Ran", "Jie Kai", "Po Jie", "Zhong Yu", "Da An",
     ]
 
     # Subplot indicators
     SUBPLOT_KEYWORDS = {
-        "main": ["主线", "主角", "核心", "中心", "关键"],
-        "romance": ["爱情", "感情", "恋爱", "暧昧", "表白", "约会"],
-        "conflict": ["矛盾", "对立", "敌对", "争执", "冲突"],
-        "mystery": ["谜团", "悬疑", "调查", "真相", "秘密"],
-        "growth": ["成长", "蜕变", "领悟", "学习", "进步"],
+        "main": ["Zhu Xian", "Zhu Jue", "core", "Zhong Xin", "key"],
+        "romance": ["Ai Qing", "Gan Qing", "Lian Ai", "Ai Mei", "Biao Bai", "Yue Hui"],
+        "conflict": ["Conflict", "Dui Li", "Di Dui", "Zheng Zhi", "conflict"],
+        "mystery": ["Mi Tuan", "Xuan Yi", "Diao Cha", "truth", "secret"],
+        "growth": ["Cheng Zhang", "Tui Bian", "Ling Wu", "Xue Xi", "Jin Bu"],
     }
 
     def __init__(self) -> None:
@@ -308,7 +308,7 @@ class EpisodeQualityValidator:
                         character_name=name,
                         suggestions=[
                             f"为 '{name}' 设计明确的成长弧线",
-                            "在关键剧情点设置目标或状态变化",
+                            "in key plot Dian She Zhi target or status change",
                         ],
                     )
                 )
@@ -363,11 +363,11 @@ class EpisodeQualityValidator:
                 EpisodeQualityIssue(
                     issue_type=EpisodeQualityIssueType.SUBPLOT_IMBALANCE,
                     severity=EpisodeQualitySeverity.WARNING,
-                    message="主线剧情比重过低，支线可能喧宾夺主",
+                    message="Zhu Xian plot Bi Zhong Guo Di, Zhi Xian Ke Neng Xuan Bin Duo Zhu",
                     details={"main_ratio": main_ratio},
                     suggestions=[
-                        "增加主线相关情节",
-                        "确保每集都推进主线剧情",
+                        "increase Zhu Xian related Qing Jie",
+                        "Que Bao Mei Ji all advance Zhu Xian plot",
                     ],
                 )
             )
@@ -376,11 +376,11 @@ class EpisodeQualityValidator:
                 EpisodeQualityIssue(
                     issue_type=EpisodeQualityIssueType.SUBPLOT_IMBALANCE,
                     severity=EpisodeQualitySeverity.INFO,
-                    message="几乎没有支线剧情，故事可能显得单调",
+                    message="Ji Hu missing Zhi Xian plot, story Ke Neng Xian De Dan Diao",
                     details={"main_ratio": main_ratio},
                     suggestions=[
-                        "考虑添加角色关系支线",
-                        "增加辅助角色的个人故事线",
+                        "consider Tian Jia character relationship Zhi Xian",
+                        "increase Fu Zhu character Ge Ren story Xian",
                     ],
                 )
             )
@@ -452,8 +452,8 @@ class EpisodeQualityValidator:
                         episode_number=i + 1,
                         details={"scores": window},
                         suggestions=[
-                            "在中间集设置意外转折",
-                            "逐步升级对抗强度",
+                            "in Zhong Jian Ji She Zhi unexpected Zhuan Zhe",
+                            "Zhu Bu escalate Dui Kang Qiang Du",
                         ],
                     )
                 )
@@ -474,8 +474,8 @@ class EpisodeQualityValidator:
                             "current_score": tension_scores[i],
                         },
                         suggestions=[
-                            "确保转折点有足够铺垫",
-                            "在低潮期埋设新悬念",
+                            "Que Bao Zhuan Zhe Dian has Zu GouForeshadowing",
+                            "in Di Chao Qi Mai She Xin suspense",
                         ],
                     )
                 )
@@ -493,14 +493,14 @@ class EpisodeQualityValidator:
                     EpisodeQualityIssue(
                         issue_type=EpisodeQualityIssueType.TENSION_DROP,
                         severity=EpisodeQualitySeverity.WARNING,
-                        message="整体张力呈下降趋势，后半段缺乏高潮",
+                        message="Zheng Ti Zhang Li Cheng Xia Jiang Qu Shi, Hou Ban Duan Que Fa climax",
                         details={
                             "first_half_avg": round(first_half_avg, 2),
                             "second_half_avg": round(second_half_avg, 2),
                         },
                         suggestions=[
-                            "在后半段设置更强的对抗",
-                            "预留最大危机到倒数几集",
+                            "in Hou Ban Duan She Zhi Geng Qiang Dui Kang",
+                            "Yu Liu maximum crisis to Dao Shu Ji Ji",
                         ],
                     )
                 )
@@ -599,8 +599,8 @@ class EpisodeQualityValidator:
                         "unresolved": [item.setup_description for item in unresolved[:5]]
                     },
                     suggestions=[
-                        "在后续集中安排回收",
-                        "删除不必要的悬念铺垫",
+                        "in subsequent Ji Zhong An Pai Hui Shou",
+                        "delete Bu Bi Yao suspenseForeshadowing",
                     ],
                 )
             )
@@ -617,7 +617,7 @@ class EpisodeQualityValidator:
                             message=f"伏笔 '{item.setup_description[:20]}...' 回收过快",
                             episode_number=item.setup_episode,
                             details={"gap": gap},
-                            suggestions=["考虑延迟揭示以增加悬念"],
+                            suggestions=["consider Yan Chi reveal Yi increase suspense"],
                         )
                     )
 

@@ -1,5 +1,5 @@
 name: episode_step_outline
-description: "基于故事先生成每集的 Step Outline（每集一句话 logline）"
+description: "based on story Xian Sheng Cheng Mei Ji De Step Outline(Mei Ji Yi Ju Hua logline)"
 category: episode
 version: "1.0"
 author: "AI Video Studio"
@@ -7,91 +7,91 @@ created_at: "2025-12-13"
 updated_at: "2025-12-13"
 
 variables:
-  story:
-    type: dict
-    required: true
-    description: "故事信息对象"
-  episode_count:
-    type: number
-    required: true
-    description: "目标集数"
-    min: 1
-    max: 50
-  episode_duration:
-    type: number
-    required: false
-    description: "单集目标时长（分钟）"
-  plot_complexity:
-    type: string
-    required: false
-    description: "情节复杂度 simple/medium/complex"
-  pacing:
-    type: string
-    required: false
-    description: "节奏 slow/medium/fast"
-  focus_characters:
-    type: list
-    required: false
-    description: "重点角色列表"
-  additional_requirements:
-    type: string
-    required: false
-    description: "额外生成要求"
-  style_preferences:
-    type: list
-    required: false
-    description: "风格偏好"
+ story:
+ type: dict
+ required: true
+ description: "story information object"
+ episode_count:
+ type: number
+ required: true
+ description: "Mu Biao Ji Shu"
+ min: 1
+ max: 50
+ episode_duration:
+ type: number
+ required: false
+ description: "Dan Ji target Shi length(minutes)"
+ plot_complexity:
+ type: string
+ required: false
+ description: "plot Fu Za Du simple/medium/complex"
+ pacing:
+ type: string
+ required: false
+ description: "pacing slow/medium/fast"
+ focus_characters:
+ type: list
+ required: false
+ description: "Zhong Dian character list"
+ additional_requirements:
+ type: string
+ required: false
+ description: "additional generate Yao Qiu"
+ style_preferences:
+ type: list
+ required: false
+ description: "style preference"
 
 output_format: "JSON"
 expected_fields:
-  - episodes
-    - episode_number
-    - title
-    - logline
-    - beats (可选，可为空)
+ - episodes
+ - episode_number
+ - title
+ - logline
+ - beats (optional, Ke Wei Kong)
 
 prompt: |
-  你是一名剧集主编，先帮我把故事拆成「Step Outline」，**每集只需要一句话 logline**（包含起承转合和钩子，需贴合主线）。后续细节留到剧集生成阶段。
+ you Shi Yi Ming episode Zhu Bian, Xian Bang Wo Ba story Chai Cheng「Step Outline」, **Mei Ji only Xu Yao Yi Ju Hua logline**(Bao Han Qi Cheng Zhuan He He hook, Xu Tie He Zhu Xian).Hou Xu Xi Jie Liu to episode generate Jie Duan.
 
-  ## 故事信息
-  标题：{{ story.title }}
-  类型：{{ story.genre }}
-  {% if story.theme %}主题：{{ story.theme }}{% endif %}
-  {% if story.synopsis %}概要：{{ story.synopsis }}{% endif %}
-  {% if story.main_conflict %}主要冲突：{{ story.main_conflict }}{% endif %}
-  {% if story.resolution %}结局/解法：{{ story.resolution }}{% endif %}
-  {% if story.world_building %}世界观：{{ story.world_building | trim | truncate(300, True, '…') }}{% endif %}
+ ## Gu Shi Xin Xi
+ title: {{ story.title }}
+ type: {{ story.genre }}
+ {% if story.theme %}Zhu Ti: {{ story.theme }}{% endif %}
+ {% if story.synopsis %}summary: {{ story.synopsis }}{% endif %}
+ {% if story.main_conflict %}Zhu Yao Chong Tu: {{ story.main_conflict }}{% endif %}
+ {% if story.resolution %}Jie Ju/Xie Fa: {{ story.resolution }}{% endif %}
+ {% if story.world_building %}Shi Jie Guan: {{ story.world_building | trim | truncate(300, True, '...') }}{% endif %}
 
-  ## 角色
-  {% if story.main_characters -%}
-  {% for char in story.main_characters %}
-  - {{ char.name }}: {{ char.description or char.role }}
-  {% endfor %}
-  {% endif -%}
-  {% if focus_characters -%}
-  重点角色：{{ focus_characters | map(attribute='name') | list | join(', ') }}
-  {% endif -%}
+ ## character
+ {% if story.main_characters -%}
+ {% for char in story.main_characters %}
+ - {{ char.name }}: {{ char.description or char.role }}
+ {% endfor %}
+ {% endif -%}
+ {% if focus_characters -%}
+ Zhong Dian Jue Se: {{ focus_characters | map(attribute='name') | list | join(', ') }}
+ {% endif -%}
 
-  ## 生成要求
-  - 总集数：{{ episode_count }} 集{% if episode_duration %}，每集约 {{ episode_duration }} 分钟{% endif %}
-  - 情节复杂度：{{ plot_complexity }}；节奏：{{ pacing }}
-  - 每集只需要 1 句 logline，明确该集主要冲突/转折/钩子，与主线一致；可给标题。
-  - beats/详细节点此阶段可以省略（如果提供也可，但非必填）。
-  {% if additional_requirements -%}
-  - 额外要求：{{ additional_requirements }}
-  {% endif -%}
-  {% if style_preferences -%}
-  - 风格偏好：{{ style_preferences | join(', ') }}
-  {% endif -%}
+ ## Sheng Cheng Yao Qiu
+ - Zong Ji Shu: {{ episode_count }} Ji{% if episode_duration %}, Mei Ji Yue {{ episode_duration }} minutes{% endif %}
+ - plot Fu Za Du: {{ plot_complexity }}; pacing: {{ pacing }}
+ - Mei Ji only Xu Yao 1 Ju logline, Ming Que Gai Ji Zhu Yao conflict/Zhuan Zhe/hook, Yu Zhu Xian Yi Zhi; Ke Gei Biao Ti.
+ - beats/Xiang Xi Jie Dian Ci Jie Duan Ke Yi Sheng Lve(Ru Guo provide Ye Ke, Dan Fei Bi Tian).
+ {% if additional_requirements -%}
+ - E Wai Yao Qiu: {{ additional_requirements }}
+ {% endif -%}
+ {% if style_preferences -%}
+ - style preference: {{ style_preferences | join(', ') }}
+ {% endif -%}
 
-  ## 输出格式
-  仅返回 JSON，无需代码块，符合 EpisodeStepOutlineModel（beats 可省略或留空）：
-  {
-    "episodes": [
-      {
-        "episode_number": 1,
-        "title": "第1集标题",
-        "logline": "一句话钩子，包含起承转合"
-      }
-    ]
-  }
+ ## Shu Chu Ge Shi
+ Jin Fan Hui JSON, Wu Xu Dai Ma Kuai, Fu He EpisodeStepOutlineModel(beats Ke Sheng Lve Huo Liu Kong): 
+ {
+ "episodes": [
+ {
+ "episode_number": 1,
+ "title": "Di1Ji Biao Ti",
+ "logline": "Yi Ju Hua hook, Bao Han Qi Cheng Zhuan He"
+ }
+ ]
+ }

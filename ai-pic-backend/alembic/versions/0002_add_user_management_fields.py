@@ -26,11 +26,11 @@ def upgrade() -> None:
         # SQLite doesn't support ALTER TABLE ADD CONSTRAINT; use batch mode.
         with op.batch_alter_table("users") as batch_op:
             batch_op.add_column(
-                sa.Column("is_admin", sa.Boolean(), default=False, comment="是否为管理员")
+                sa.Column("is_admin", sa.Boolean(), default=False, comment="Whether user is an administrator")
             )
             batch_op.add_column(
                 sa.Column(
-                    "is_approved", sa.Boolean(), default=False, comment="是否已审批通过"
+                    "is_approved", sa.Boolean(), default=False, comment="Whether approval has been granted"
                 )
             )
             batch_op.add_column(
@@ -38,22 +38,22 @@ def upgrade() -> None:
                     "approved_at",
                     sa.DateTime(timezone=True),
                     nullable=True,
-                    comment="审批时间",
+                    comment="Approval time",
                 )
             )
             batch_op.add_column(
                 sa.Column(
-                    "approved_by_user_id", sa.Integer(), nullable=True, comment="审批人ID"
+                    "approved_by_user_id", sa.Integer(), nullable=True, comment="Approver user ID"
                 )
             )
             batch_op.add_column(
                 sa.Column(
-                    "email_verified", sa.Boolean(), default=False, comment="邮箱是否已验证"
+                    "email_verified", sa.Boolean(), default=False, comment="Whether the email has been verified"
                 )
             )
             batch_op.add_column(
                 sa.Column(
-                    "activation_token", sa.String(255), nullable=True, comment="激活令牌"
+                    "activation_token", sa.String(255), nullable=True, comment="Activation token"
                 )
             )
             batch_op.add_column(
@@ -61,7 +61,7 @@ def upgrade() -> None:
                     "activation_token_expires",
                     sa.DateTime(timezone=True),
                     nullable=True,
-                    comment="激活令牌过期时间",
+                    comment="Activation token expiration time",
                 )
             )
             batch_op.add_column(
@@ -69,12 +69,12 @@ def upgrade() -> None:
                     "last_login_at",
                     sa.DateTime(timezone=True),
                     nullable=True,
-                    comment="最后登录时间",
+                    comment="Last login time",
                 )
             )
             batch_op.add_column(
                 sa.Column(
-                    "failed_login_attempts", sa.Integer(), default=0, comment="失败登录次数"
+                    "failed_login_attempts", sa.Integer(), default=0, comment="Failed login attempts"
                 )
             )
             batch_op.add_column(
@@ -82,15 +82,18 @@ def upgrade() -> None:
                     "account_locked_until",
                     sa.DateTime(timezone=True),
                     nullable=True,
-                    comment="账户锁定到期时间",
+                    comment="Account lock expiration time",
                 )
             )
             batch_op.add_column(
-                sa.Column("language", sa.String(10), default="zh-CN", comment="用户语言偏好")
+                sa.Column("language", sa.String(10), default="zh-CN", comment="User language preference")
             )
             batch_op.add_column(
                 sa.Column(
-                    "timezone", sa.String(50), default="Asia/Shanghai", comment="用户时区"
+                    "timezone",
+                    sa.String(50),
+                    default="Asia/Shanghai",
+                    comment="User time zone",
                 )
             )
 
@@ -111,12 +114,12 @@ def upgrade() -> None:
         # Add new fields to users table
         op.add_column(
             "users",
-            sa.Column("is_admin", sa.Boolean(), default=False, comment="是否为管理员"),
+            sa.Column("is_admin", sa.Boolean(), default=False, comment="Whether user is an administrator"),
         )
         op.add_column(
             "users",
             sa.Column(
-                "is_approved", sa.Boolean(), default=False, comment="是否已审批通过"
+                "is_approved", sa.Boolean(), default=False, comment="Whether approval has been granted"
             ),
         )
         op.add_column(
@@ -125,25 +128,25 @@ def upgrade() -> None:
                 "approved_at",
                 sa.DateTime(timezone=True),
                 nullable=True,
-                comment="审批时间",
+                comment="Approval time",
             ),
         )
         op.add_column(
             "users",
             sa.Column(
-                "approved_by_user_id", sa.Integer(), nullable=True, comment="审批人ID"
+                "approved_by_user_id", sa.Integer(), nullable=True, comment="Approver user ID"
             ),
         )
         op.add_column(
             "users",
             sa.Column(
-                "email_verified", sa.Boolean(), default=False, comment="邮箱是否已验证"
+                "email_verified", sa.Boolean(), default=False, comment="Whether the email has been verified"
             ),
         )
         op.add_column(
             "users",
             sa.Column(
-                "activation_token", sa.String(255), nullable=True, comment="激活令牌"
+                "activation_token", sa.String(255), nullable=True, comment="Activation token"
             ),
         )
         op.add_column(
@@ -152,7 +155,7 @@ def upgrade() -> None:
                 "activation_token_expires",
                 sa.DateTime(timezone=True),
                 nullable=True,
-                comment="激活令牌过期时间",
+                comment="Activation token expiration time",
             ),
         )
         op.add_column(
@@ -161,13 +164,13 @@ def upgrade() -> None:
                 "last_login_at",
                 sa.DateTime(timezone=True),
                 nullable=True,
-                comment="最后登录时间",
+                comment="Last login time",
             ),
         )
         op.add_column(
             "users",
             sa.Column(
-                "failed_login_attempts", sa.Integer(), default=0, comment="失败登录次数"
+                "failed_login_attempts", sa.Integer(), default=0, comment="Failed login attempts"
             ),
         )
         op.add_column(
@@ -176,17 +179,17 @@ def upgrade() -> None:
                 "account_locked_until",
                 sa.DateTime(timezone=True),
                 nullable=True,
-                comment="账户锁定到期时间",
+                comment="Account lock expiration time",
             ),
         )
         op.add_column(
             "users",
-            sa.Column("language", sa.String(10), default="zh-CN", comment="用户语言偏好"),
+            sa.Column("language", sa.String(10), default="zh-CN", comment="User language preference"),
         )
         op.add_column(
             "users",
             sa.Column(
-                "timezone", sa.String(50), default="Asia/Shanghai", comment="用户时区"
+                "timezone", sa.String(50), default="Asia/Shanghai", comment="User time zone"
             ),
         )
 
@@ -221,18 +224,18 @@ def upgrade() -> None:
     op.create_table(
         "user_audit_logs",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("user_id", sa.Integer(), nullable=False, comment="被操作用户ID"),
-        sa.Column("admin_user_id", sa.Integer(), nullable=True, comment="操作管理员ID"),
-        sa.Column("action", sa.String(50), nullable=False, comment="操作类型"),
-        sa.Column("old_values", sa.Text(), nullable=True, comment="操作前的值(JSON)"),
-        sa.Column("new_values", sa.Text(), nullable=True, comment="操作后的值(JSON)"),
-        sa.Column("ip_address", sa.String(45), nullable=True, comment="IP地址"),
-        sa.Column("user_agent", sa.String(500), nullable=True, comment="用户代理"),
+        sa.Column("user_id", sa.Integer(), nullable=False, comment="Affected user ID"),
+        sa.Column("admin_user_id", sa.Integer(), nullable=True, comment="Acting admin user ID"),
+        sa.Column("action", sa.String(50), nullable=False, comment="Action type"),
+        sa.Column("old_values", sa.Text(), nullable=True, comment="Values before the action (JSON)"),
+        sa.Column("new_values", sa.Text(), nullable=True, comment="Values after the action (JSON)"),
+        sa.Column("ip_address", sa.String(45), nullable=True, comment="IP address"),
+        sa.Column("user_agent", sa.String(500), nullable=True, comment="User agent"),
         sa.Column(
             "created_at",
             sa.DateTime(timezone=True),
             server_default=sa.text("(CURRENT_TIMESTAMP)"),
-            comment="操作时间",
+            comment="Action time",
         ),
         sa.ForeignKeyConstraint(
             ["admin_user_id"],

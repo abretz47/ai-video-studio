@@ -36,31 +36,31 @@ router = APIRouter()
 class EnvironmentImageVariantParams:
     def __init__(
         self,
-        base_image: str | None = Query(None, description="基准图 URL 或相对路径"),
-        prompt: str | None = Query(None, description="变体提示词"),
-        model: str | None = Query(None, description="模型，形如 provider:model_id"),
+        base_image: str | None = Query(None, description="Base image URL or relative path"),
+        prompt: str | None = Query(None, description="Variant prompt"),
+        model: str | None = Query(None, description="Model, in the form provider:model_id"),
         generation_profile: str | None = Query(
             None,
-            description="生成参数档位（后端按 provider+model 解析默认 steps/cfg/negative_prompt）",
+            description="Generation parameter tier (backend resolves default steps/cfg/negative_prompt by provider+model)",
         ),
-        count: int = Query(1, ge=1, le=4, description="生成数量"),
-        size: str | None = Query(None, description="分辨率/尺寸"),
-        aspect_ratio: str | None = Query(None, description="画幅比例，如 16:9、1:1"),
-        seed: int | None = Query(None, description="随机种子（可选）"),
-        steps: int | None = Query(None, description="采样步数（可选）"),
-        cfg_scale: float | None = Query(None, description="CFG scale（可选）"),
-        negative_prompt: str | None = Query(None, description="反向提示词（可选）"),
+        count: int = Query(1, ge=1, le=4, description="Generation count"),
+        size: str | None = Query(None, description="Resolution/size"),
+        aspect_ratio: str | None = Query(None, description="Aspect ratio, such as 16:9 or 1:1"),
+        seed: int | None = Query(None, description="Random seed (optional)"),
+        steps: int | None = Query(None, description="Sampling steps (optional)"),
+        cfg_scale: float | None = Query(None, description="CFG scale (optional)"),
+        negative_prompt: str | None = Query(None, description="Negative prompt (optional)"),
         strength: float | None = Query(
-            None, ge=0.0, le=1.0, description="图生图强度（可选）"
+            None, ge=0.0, le=1.0, description="Image-to-image strength (optional)"
         ),
         image_reference: str | None = Query(
-            None, description="参考维度（可选），如 subject/face"
+            None, description="Reference dimension (optional), such as subject/face"
         ),
         image_fidelity: float | None = Query(
-            None, ge=0.0, le=1.0, description="图像参考强度（可选）"
+            None, ge=0.0, le=1.0, description="Image reference strength (optional)"
         ),
         human_fidelity: float | None = Query(
-            None, ge=0.0, le=1.0, description="人物参考强度（可选）"
+            None, ge=0.0, le=1.0, description="Character reference strength (optional)"
         ),
     ) -> None:
         self.base_image = base_image
@@ -90,7 +90,7 @@ async def generate_environment_image_variants(
 ):
     env = get_owned_environment_or_404(db, env_id, current_user)
     if not ai_service.ai_manager:
-        raise HTTPException(status_code=503, detail="AI管理器未初始化，无法生成变体")
+        raise HTTPException(status_code=503, detail="AI manager is not initialized; cannot generate variants")
 
     payload = await read_json_payload(request)
 
@@ -116,7 +116,7 @@ async def generate_environment_image_variants(
             human_fidelity=params.human_fidelity,
         )
         if not req.base_image:
-            raise HTTPException(status_code=400, detail="缺少基准图像")
+            raise HTTPException(status_code=400, detail="Missing base image")
         saved = await generate_environment_image_variants_service(
             db=db,
             env=env,
@@ -141,7 +141,7 @@ async def generate_environment_image_variants_async(
     """Async environment image-to-image: create Task and delegate to Celery."""
     env = get_owned_environment_or_404(db, env_id, current_user)
     if not ai_service.ai_manager:
-        raise HTTPException(status_code=503, detail="AI管理器未初始化，无法生成变体")
+        raise HTTPException(status_code=503, detail="AI manager is not initialized; cannot generate variants")
 
     body = await read_json_payload(request)
 
@@ -166,13 +166,13 @@ async def generate_environment_image_variants_async(
         human_fidelity=params.human_fidelity,
     )
     if not req.base_image:
-        raise HTTPException(status_code=400, detail="缺少基准图像")
+        raise HTTPException(status_code=400, detail="Missing base image")
 
     payload = build_environment_variant_task_payload(env_id=env.id, request=req)
 
     task = Task(
-        title=f"环境图生图 - 环境{env_id}",
-        description="异步生成环境图像变体",
+        title=f"Environment image-to-image - environment {env_id}",
+        description="Generate environment image variants asynchronously",
         task_type=TaskType.ENVIRONMENT_IMAGE_VARIANT_GENERATION,
         prompt=compose_environment_variant_prompt(env, req.prompt),
         parameters=json.dumps(payload, ensure_ascii=False),

@@ -8,9 +8,9 @@ class StoryCharacterBase(BaseModel):
     virtual_ip_id: int
     character_name: Optional[str] = None
     role_type: Optional[str] = Field(
-        None, description="角色类型：protagonist, antagonist, supporting"
+        None, description="character type: protagonist, antagonist, supporting"
     )
-    importance: int = Field(1, ge=1, le=5, description="重要度：1-5")
+    importance: int = Field(1, ge=1, le=5, description="Zhong Yao Du: 1-5")
     personality: Optional[str] = None
     background: Optional[str] = None
     motivation: Optional[str] = None

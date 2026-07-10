@@ -165,7 +165,7 @@ def _report_run_summary(
             skill="report.summarize",
             label=skill.label if skill else "Report Skill",
             status="review",
-            title="已汇总画布执行证据",
+            title="Hui Zong Hua Bu execute evidence",
             detail=(
                 f"画布 run {run.run_id} 已汇总 {len(nodes)} 个节点、"
                 f"{edge_count} 条连线和 {len(task_ids)} 个任务证据。"
@@ -201,8 +201,8 @@ def execute_report_summary(
     if task is None:
         return blocked_result(
             request,
-            title="Report Skill 等待任务证据",
-            detail="需要先绑定可访问的 task_id，之后才会汇总现有任务证据。",
+            title="Report Skill waiting Ren Wu evidence",
+            detail="need first Bang Ding can access task_id, Zhi Hou Cai will Hui Zong existing Ren Wu evidence.",
             required_inputs=["task_id"],
         )
 
@@ -219,10 +219,10 @@ def execute_report_summary(
             skill="report.summarize",
             label=skill.label if skill else "Report Skill",
             status="review",
-            title="已汇总现有任务证据",
+            title="Hui Zong existing Ren Wu evidence",
             detail=(
                 f"任务 #{task.id}《{task.title}》当前状态 {task.status.value}；"
-                "可继续在任务页检查参数、失败信息和产物路径。"
+                "can continue in Ren Wu Ye check parameters, failed Xin Xi and Chan Wu path."
             ),
             outputs={
                 "task_id": task.id,

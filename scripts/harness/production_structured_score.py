@@ -35,19 +35,19 @@ def structured_script_score(payload: dict[str, Any]) -> dict[str, Any]:
     values = {
         "hook_3s": _score_text(
             " ".join([str(script.get("logline") or ""), _first_plot(scenes)]),
-            ["发现", "警报", "失控", "最后", "反转", "不能", "倒计时"],
+            ["discover", "alert", "out of control", "final", "reversal", "cannot", "countdown"],
             base=3.0,
         ),
         "conflict_clarity": _score_text(
             " ".join(str(scene.get("plot") or "") for scene in scenes),
-            ["冲突", "阻止", "抢", "危机", "质疑", "失败", "必须", "倒计时"],
+            ["conflict", "stop", "grab", "crisis", "question", "fail", "must", "countdown"],
             base=3.0,
         ),
         "dialogue_audibility": _dialogue_score(dialogue_lines),
         "filmability": _filmability_score(scenes),
         "ending_twist": _score_text(
             str(scenes[-1].get("plot") if scenes else ""),
-            ["反转", "真相", "却", "原来", "最后", "悬念", "门开了"],
+            ["reversal", "truth", "yet", "turns out", "final", "suspense", "door opens"],
             base=3.0,
         ),
     }

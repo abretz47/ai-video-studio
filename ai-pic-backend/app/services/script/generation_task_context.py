@@ -26,10 +26,10 @@ def build_generation_task_context(
         user_id=user_id,
     )
     if not episode:
-        raise RuntimeError("剧集不存在")
+        raise RuntimeError("Episode not found")
     story = episode.story
     if not story:
-        raise RuntimeError("故事不存在")
+        raise RuntimeError("Story not found")
 
     previous_episode_summaries = collect_previous_episode_summaries(
         db, story.id, episode.episode_number

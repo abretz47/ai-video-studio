@@ -86,11 +86,11 @@ async def run_timeline_main_chain(
         )
 
     if progress_callback:
-        progress_callback("生成时间轴…")
+        progress_callback("Sheng Cheng timeline…")
     audio_timeline_payload = None
     if not overwrite_timeline and episode_has_audio_timeline(episode, script.id):
         if progress_callback:
-            progress_callback("过渡时间轴已存在，导入 Timeline Spec…")
+            progress_callback("Guo Du timeline Cun Zai, Dao Ru Timeline Spec…")
     else:
         audio_timeline_payload = await generate_episode_audio_timeline(
             db,
@@ -110,7 +110,7 @@ async def run_timeline_main_chain(
     )
     if progress_callback:
         progress_callback(f"Timeline Spec v1 {import_result.action}")
-        progress_callback("生成 Timeline 镜头计划…")
+        progress_callback("Sheng Cheng Timeline shot Ji Hua…")
 
     timeline = await generate_timeline_shot_plan_from_current_version(
         db,
@@ -177,7 +177,7 @@ async def _run_legacy_scene_dialogue_audio(
     progress_callback: ProgressCallback | None,
 ) -> None:
     if progress_callback:
-        progress_callback("生成对白音轨…")
+        progress_callback("Sheng Cheng dialogue Yin Gui…")
 
     episode_duration_minutes = getattr(episode, "duration_minutes", None)
     fallback_target_seconds = None

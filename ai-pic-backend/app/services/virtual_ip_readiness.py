@@ -43,13 +43,13 @@ def compute_virtual_ip_readiness(ip: VirtualIP) -> dict[str, Any]:
     warnings: list[str] = []
     if not has_default_avatar:
         warnings.append(
-            "未设置默认头像：角色匹配会取不到形象锚点，请在图片管理中"
-            "上传/生成图片并标记默认头像。"
+            "not She Zhi default Tou Xiang: character Pi Pei Hui Qu Bu Dao Xing Xiang Mao Dian, Qing in image Guan Li in"
+            "Shang Chuan/Sheng Cheng image and Biao Ji default Tou Xiang."
         )
     if not voice_config_valid:
         warnings.append(
-            "语音绑定不完整：缺少 provider 或 voice_id，配音生成会失败，"
-            "请在声音设置中完成绑定。"
+            "voice Bang Ding not complete: missing provider or voice_id, Pei Yin Sheng Cheng will failed, "
+            "Qing in Sheng Yin She Zhi in complete Bang Ding."
         )
     return {
         "has_default_avatar": has_default_avatar,

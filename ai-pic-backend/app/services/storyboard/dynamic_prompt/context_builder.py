@@ -61,7 +61,7 @@ def find_scene(script: Any, scene_number: Optional[int]) -> Dict[str, Any]:
 def build_scene_info(script: Any, scene_number: Optional[int]) -> Dict[str, Any]:
     scene = find_scene(script, scene_number)
     return {
-        "scene_number": scene_number if scene_number is not None else "未知",
+        "scene_number": scene_number if scene_number is not None else "unknown",
         "location": _trim(scene.get("location") or scene.get("place"), 50),
         "time": _trim(scene.get("time") or scene.get("period"), 40),
         "description": _trim(scene.get("description"), 160),

@@ -78,7 +78,7 @@ async def _generate_sheet(
     scene_number = int(payload["scene_number"])
     script = get_script_by_id(db, script_id)
     if not script:
-        raise RuntimeError("剧本不存在")
+        raise RuntimeError("Script not found")
     frames = [
         frame
         for frame in load_storyboard_frames(db, script_id)
@@ -133,7 +133,7 @@ async def _generate_sheet(
     )
     urls = result.get("urls") if isinstance(result, dict) else None
     if not urls:
-        raise RuntimeError("宫格分镜图生成失败：未返回图片")
+        raise RuntimeError("Gong Ge storyboard Tu Sheng Cheng failed: not return image")
 
     stored = await ai_service._persist_generated_image(
         image_data=str(urls[0]),

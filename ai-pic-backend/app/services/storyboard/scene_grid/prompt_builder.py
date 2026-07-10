@@ -197,7 +197,7 @@ def _fallback_sheet_prompt(
         title = description[:6] or f"镜头{index}"
         cells.append({"panel_index": index, "title": title, "caption": title})
         lines.append(
-            f"{index:02d}｜{title}：{frame.get('shot_type') or '中景'}，{description}。"
+            f"{index:02d}｜{title}：{frame.get('shot_type') or 'medium shot'}，{description}。"
             f"说明栏文字写：“{title}”。"
         )
     characters = scene_context.get("characters") or []
@@ -205,16 +205,16 @@ def _fallback_sheet_prompt(
     sheet_prompt = "\n".join(
         [
             f"生成一张横向 {aspect_ratio} 的高完成度中文{layout.panel_count}宫格动作分镜图。",
-            "【整体定位】电影级写实分镜板，由真实电影剧照组成，不是素描草图、卡通或插画，适合作为 AI 视频生成参考图。",
+            "[Zheng Ti Ding Wei]film Ji Xie Shi Fen Jing Ban, You Zhen Shi film Ju Zhao Zu Cheng, Bu Shi Su Miao Cao Tu, Ka Tong or Cha Hua, Shi He Zuo Wei AI video Sheng Cheng reference Tu.",
             f"【整体版式】{layout.rows} 行 × {layout.columns} 列共 {layout.panel_count} 格；"
-            "每格左上角有黑底白字粗体编号；每格下方有白色说明栏写中文镜头名称。",
-            f"【场景设定】固定在同一空间：{scene.get('location') or '同一场景'}，"
+            "Mei Ge Zuo Shang Jiao has Hei Di Bai Zi Cu Ti ID; Mei Ge Xia Fang has Bai Se note Lan Xie Zhong Wen shot name.",
+            f"【场景设定】固定在同一空间：{scene.get('location') or 'Tong Yi scene'}，"
             f"{scene.get('time') or ''}；{scene.get('description') or ''}；场景不得切换。",
-            f"【主角设定】{char_lines or '人物外貌全图保持一致'}。",
-            "【镜头内容】",
+            f"【主角设定】{char_lines or 'character Wai Mao Quan Tu Bao Chi Yi Zhi'}。",
+            "[shot content]",
             *lines,
-            "【画面要求】每格只一个镜头瞬间；除编号与说明栏外画面内不得出现其他文字、字幕、水印、logo；"
-            "景别机位逐格变化，相邻格保持动作连续感。",
+            "[frame requirement]Mei Ge only a shot Shun Jian; Chu ID and note Lan Wai frame interior Bu De Chu Xian Qi Ta Wen Zi, Zi Mu, Shui Yin, logo; "
+            "Jing Bie Ji Wei Zhu Ge change, Xiang Lin Ge keep action Lian Xu Gan.",
         ]
     )
     return {"sheet_prompt": sheet_prompt, "cells": cells, "prompt_source": "fallback"}
@@ -235,13 +235,13 @@ def _fallback_video_prompt(
     ]
     video_prompt = "\n".join(
         [
-            "使用输入的分镜图作为动作分镜参考。严格参考其中的镜头顺序、动作逻辑、人物调度与节奏推进，"
-            "但最终输出必须是完整连续的电影画面，不得出现分镜格子、编号、说明栏、文字、边框或纸张背景。",
+            "Shi Yong input storyboard Tu Zuo Wei action storyboard reference.strict reference Qi Zhong shot Shun Xu, action Luo Ji, character Diao Du and Jie Zou advance, "
+            "Dan Zui Zhong output Bi Xu Shi complete Lian Xu film frame, Bu De Chu Xian storyboard Ge Zi, ID, note Lan, Wen Zi, Bian Kuang or Zhi Zhang background.",
             f"【整体风格】电影级写实质感，总时长约 {round(total_duration, 1)} 秒，画幅 {aspect_ratio}。",
-            f"【主角设定】{char_lines or '全片人物面部、服装、体型保持一致'}。",
-            "【镜头与内容设计】",
+            f"【主角设定】{char_lines or 'Quan Pian character Mian Bu, Fu Zhuang, Ti Xing Bao Chi Yi Zhi'}。",
+            "[shot and content She Ji]",
             *shot_lines,
-            "【画面要求】镜头有明显景别与机位变化，动作连贯自然，不得出现任何文字与水印。",
+            "[frame requirement]shot has Ming Xian Jing Bie and Ji Wei change, action Lian Guan Zi Ran, Bu De Chu Xian any Wen Zi and Shui Yin.",
         ]
     )
     return {"video_prompt": video_prompt, "prompt_source": "fallback"}

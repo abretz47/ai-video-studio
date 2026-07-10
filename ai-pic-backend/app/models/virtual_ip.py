@@ -34,26 +34,26 @@ class VirtualIP(SoftDeleteBusinessMixin, Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     name = Column(String(64), nullable=False, index=True)
     description = Column(Text, nullable=True)
-    tags = Column(JSON, nullable=True)  # 存储标签列表
+    tags = Column(JSON, nullable=True)  # Cun ChuTag list
     background_story = Column(Text, nullable=True)
-    biography = Column(Text, nullable=True)  # 人物小传
+    biography = Column(Text, nullable=True)  # character Xiao Zhuan
 
-    # 风格设定
-    style_prompt = Column(Text, nullable=True)  # 风格描述，用于AI生成
-    style_reference_images = Column(JSON, nullable=True)  # 风格参考图片URL列表
-    voice_config = Column(JSON, nullable=True)  # 语音绑定（provider/model/voice_id等）
+    # style setting
+    style_prompt = Column(Text, nullable=True)  # style description, Yong YuAISheng Cheng
+    style_reference_images = Column(JSON, nullable=True)  # style reference imageURLlist
+    voice_config = Column(JSON, nullable=True)  # voice Bang Ding(provider/model/voice_idDeng)
 
-    # 默认头像
+    # default Tou Xiang
     default_avatar_url = Column(String(256), nullable=True)
 
-    # 状态
+    # status
     is_active = Column(Boolean, default=True)
-    is_public = Column(Boolean, default=False)  # 是否公开
+    is_public = Column(Boolean, default=False)  # Shi Fou Gong Kai
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # 关系
+    # relationship
     images = relationship(
         "VirtualIPImage", back_populates="virtual_ip", cascade="all, delete-orphan"
     )
@@ -69,35 +69,35 @@ class VirtualIPImage(SoftDeleteBusinessMixin, Base):
     virtual_ip_id = Column(Integer, ForeignKey("virtual_ips.id"), nullable=False)
     virtual_ip_business_id = Column(String(32), index=True, nullable=True)
 
-    # 图像信息
+    # image Xin Xi
     filename = Column(String(128), nullable=False)
     original_filename = Column(String(128), nullable=False)
     file_path = Column(String(256), nullable=False)
-    oss_url = Column(String(512), nullable=True)  # OSS存储URL
+    oss_url = Column(String(512), nullable=True)  # OSSCun ChuURL
     file_size = Column(Integer, nullable=False)
     mime_type = Column(String(64), nullable=False)
 
-    # 分类和标签
+    # Fen Lei and tag
     category = Column(
         String(32), nullable=False
-    )  # avatar, expression, costume, scene, prop等
+    )  # avatar, expression, costume, scene, propDeng
     subcategory = Column(
         String(64), nullable=True
-    )  # 子分类，如表情：happy, sad, angry等
-    tags = Column(JSON, nullable=True)  # 图像标签
+    )  # Zi Fen Lei, for example Biao Qing: happy, sad, angryDeng
+    tags = Column(JSON, nullable=True)  # image tag
 
-    # 生成信息
-    prompt = Column(Text, nullable=True)  # 生成时的prompt
-    ai_model = Column(String(64), nullable=True)  # 使用的AI模型
-    generation_params = Column(JSON, nullable=True)  # 生成参数
+    # Sheng Cheng Xin Xi
+    prompt = Column(Text, nullable=True)  # Sheng Cheng whenprompt
+    ai_model = Column(String(64), nullable=True)  # AI model used
+    generation_params = Column(JSON, nullable=True)  # Generation parameters
 
-    # 状态
-    is_default = Column(Boolean, default=False)  # 是否为默认图像
-    is_public = Column(Boolean, default=True)  # 是否公开
+    # status
+    is_default = Column(Boolean, default=False)  # Shi Fou as default image
+    is_public = Column(Boolean, default=True)  # Shi Fou Gong Kai
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    # 关系
+    # relationship
     virtual_ip = relationship("VirtualIP", back_populates="images")
 
 

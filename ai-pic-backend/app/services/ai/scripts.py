@@ -35,7 +35,7 @@ class ScriptGenerationMixin:
         scene_budgets: Optional[List[SceneBudget]] = None,
         generation_mode: str = "standard",
     ) -> Optional[Dict[str, Any]]:
-        """基于剧集信息生成详细剧本"""
+        """Ji Yu episode Xin Xi Sheng Cheng detailed script"""
         continuity_ledger = (
             story.get("continuity_ledger") if isinstance(story, dict) else None
         )
@@ -84,7 +84,7 @@ class ScriptGenerationMixin:
                             prefer_provider=prefer_provider,
                             temperature=temperature,
                         )
-                        # 组装 content 文本
+                        # assemble content text
                         assembled = self._build_script_text(
                             lg["content"].get("scenes") or [],
                             lg["content"].get("dialogues") or [],
@@ -105,7 +105,7 @@ class ScriptGenerationMixin:
             except Exception as exc:
                 self.logger.warning(f"LangGraph script agent failed: {exc}")
 
-        # 2) AI 管理器直接生成
+        # 2) AI manager directly Sheng Cheng
         direct = await self._call_ai_manager_script(
             episode=episode,
             story=story,
@@ -124,7 +124,7 @@ class ScriptGenerationMixin:
             generation_mode=generation_mode,
         )
         if direct:
-            # 尝试解析填充 content 以便前端展示
+            # Chang Shi parse Tian Chong content Yi Bian Qian Duan Zhan Shi
             parsed = direct.get("normalized") if isinstance(direct, dict) else None
             if not parsed:
                 raw_content = (
@@ -167,7 +167,7 @@ class ScriptGenerationMixin:
                 direct["normalized"] = parsed
             return direct
 
-        # 3) Mock 回退
+        # 3) Mock fallback
         if generation_mode == "production":
             self.logger.warning("Production script generation skipped mock fallback")
             return None

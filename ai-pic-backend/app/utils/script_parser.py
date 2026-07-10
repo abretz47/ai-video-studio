@@ -4,8 +4,8 @@ from typing import Any, Dict, List
 
 def extract_script_structure(content: str) -> Dict[str, Any]:
     """
-    从纯文本剧本中尽力抽取结构化信息（场景、对话、舞台指示）。
-    这是启发式提取，不依赖AI，适合作为JSON失败时的兜底。
+ Cong Chun text script in Jin Li Chou Qu Jie Gou Hua Xin Xi(scene, Dui Hua, Wu Tai Zhi Shi).
+ Zhe Shi Qi Fa Shi extract, not Yi LaiAI, Shi He Zuo WeiJSONfailed when fallback.
     """
     scenes: List[Dict[str, Any]] = []
     dialogues: List[Dict[str, Any]] = []
@@ -13,24 +13,24 @@ def extract_script_structure(content: str) -> Dict[str, Any]:
 
     lines = [ln.strip() for ln in content.splitlines()]
 
-    # 场景识别规则
+    # scene Shi Bie Gui Ze
     scene_patterns = [
         re.compile(
-            r"^(场景|Scene)\s*([0-9０-９一二三四五六七八九十]+)[：:、. ]?(.*)$", re.I
+            r"^(scene|Scene)\s*([0-9０-９Yi Er San Si Wu Liu Qi Ba Jiu Shi]+)[::,.]?(.*)$", re.I
         ),
         re.compile(r"^(INT\.|EXT\.|INT/EXT\.)\s*(.+)$", re.I),
-        re.compile(r"^(内景|外景)[：: .、，]?\s*(.+)$"),
+        re.compile(r"^(Nei Jing|Wai Jing)[::.,,]?\s*(.+)$"),
     ]
 
-    # 对话识别：例如 “小雅：……”，或 “LI MING: …”
+    # Dui Hua Shi Bie: for example "Xiaoya: ……", or "LI MING: …"
     dialogue_pattern = re.compile(
         r"^([\u4e00-\u9fa5A-Z][\u4e00-\u9fa5A-Z\s]{0,20})[：:]\s*(.+)$"
     )
 
-    # 舞台指示：括号/方括号/以“动作：/旁白：/音效：/音乐：”开头
+    # Wu Tai Zhi Shi: Kuo Hao/Fang Kuo Hao/Yi"action:/narration:/sound effect:/Yin Yue: "Kai Tou
     stage_patterns = [
         re.compile(r"^[（(\[](.+)[)）\]]$"),
-        re.compile(r"^(动作|旁白|音效|音乐|环境|镜头|效果)[：:]\s*(.+)$"),
+        re.compile(r"^(action|narration|sound effect|Yin Yue|environment|shot|Xiao Guo)[::]\s*(.+)$"),
     ]
 
     current_scene_idx = 0
@@ -39,7 +39,7 @@ def extract_script_structure(content: str) -> Dict[str, Any]:
         if not ln:
             continue
 
-        # 1) 场景
+        # 1) scene
         matched_scene = None
         for pat in scene_patterns:
             m = pat.match(ln)
@@ -48,28 +48,28 @@ def extract_script_structure(content: str) -> Dict[str, Any]:
                 break
         if matched_scene:
             current_scene_idx += 1
-            # 提取location/time尽力而为
+            # extractlocation/timeJin Li Er Wei
             location = ""
             time_hint = ""
             if len(matched_scene.groups()) >= 1:
                 tail = matched_scene.group(len(matched_scene.groups())) or ""
-                # 提取常见时间标记
+                # extract Chang Jian time Biao Ji
                 if any(
                     t in tail
                     for t in [
-                        "日",
-                        "白天",
-                        "早上",
-                        "上午",
-                        "中午",
-                        "下午",
-                        "夜",
-                        "晚上",
-                        "傍晚",
-                        "黄昏",
+                        "day",
+                        "Daytime",
+                        "Zao Shang",
+                        "morning",
+                        "Zhong Wu",
+                        "afternoon",
+                        "night",
+                        "evening",
+                        "dusk",
+                        "twilight",
                     ]
                 ):
-                    time_hint = "夜" if ("夜" in tail or "晚上" in tail) else "日"
+                    time_hint = "night" if ("night" in tail or "evening" in tail) else "day"
                 location = tail.strip()
 
             scenes.append(
@@ -85,7 +85,7 @@ def extract_script_structure(content: str) -> Dict[str, Any]:
             )
             continue
 
-        # 2) 对话
+        # 2) Dui Hua
         dm = dialogue_pattern.match(ln)
         if dm:
             character = dm.group(1).strip()
@@ -102,7 +102,7 @@ def extract_script_structure(content: str) -> Dict[str, Any]:
             )
             continue
 
-        # 3) 舞台指示
+        # 3) Wu Tai Zhi Shi
         matched_stage = None
         stage_text = None
         for sp in stage_patterns:

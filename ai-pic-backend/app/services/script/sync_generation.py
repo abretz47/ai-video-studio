@@ -48,11 +48,11 @@ async def generate_script_sync(
         current_user=current_user,
     )
     if not episode:
-        raise HTTPException(status_code=404, detail="剧集不存在")
+        raise HTTPException(status_code=404, detail="Episode not found")
 
     story = episode.story
     if not story:
-        raise HTTPException(status_code=404, detail="故事不存在")
+        raise HTTPException(status_code=404, detail="Story not found")
 
     previous_episode_summaries = collect_previous_episode_summaries(
         db, story.id, episode.episode_number
@@ -86,7 +86,7 @@ async def generate_script_sync(
         temperature=request.temperature or 0.7,
     )
     if not result:
-        raise HTTPException(status_code=500, detail="AI剧本生成失败")
+        raise HTTPException(status_code=500, detail="AI script generation failed")
 
     agent_run = build_agent_run(result)
     ai_content = normalize_script_content(
@@ -216,5 +216,5 @@ def _persist_generated_script(
         sync_script_scenes_to_story_structure(db, db_script)
     except Exception:
         logger = get_logger()
-        logger.warning("同步规范化场景失败（generate）", exc_info=True)
+        logger.warning("sync Gui Fan Hua scene failed(generate)", exc_info=True)
     return db_script

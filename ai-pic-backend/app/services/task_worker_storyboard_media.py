@@ -16,7 +16,7 @@ from app.core.celery_app import celery_app
 def storyboard_image_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步分镜图像生成任务入口。"""
+    """async storyboard image Sheng Cheng Ren Wu entry point."""
     from app.api.v1.endpoints.scripts import _process_storyboard_image_task
 
     script_id = int(payload.get("script_id"))
@@ -86,7 +86,7 @@ def storyboard_image_generate_task(
 def storyboard_video_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步分镜视频生成任务入口。"""
+    """async storyboard video Sheng Cheng Ren Wu entry point."""
     from app.api.v1.endpoints.scripts import _process_storyboard_video_task
 
     script_id = int(payload.get("script_id"))

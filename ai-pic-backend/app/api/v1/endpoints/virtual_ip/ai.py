@@ -20,7 +20,7 @@ async def generate_ai_content(
     request: VirtualIPAIGenerationRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成AI内容（描述、背景故事、人物小传、风格提示词）"""
+    """Generate AI content (description, backstory, character bio, style prompt)"""
     try:
         ai_content = await virtual_ip_ai_service.generate_complete_ip(
             name=request.name,
@@ -41,7 +41,7 @@ async def generate_ai_content(
             tags=ai_content.get("tags", []),
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AIGeneration failed: {str(e)}")
 
 
 @router.post(
@@ -52,7 +52,7 @@ async def generate_ai_content_detailed(
     request: VirtualIPAIGenerationRequest,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成AI内容（包含详细生成信息）"""
+    """Generate AI content (including detailed generation info)"""
     try:
         result = await virtual_ip_ai_service.generate_complete_ip_with_details(
             name=request.name,
@@ -68,7 +68,7 @@ async def generate_ai_content_detailed(
             image_category=request.image_category,
         )
         generation_details["prompts_used"].append(
-            "风格提示词生成: 基于角色信息生成AI绘画提示词..."
+            "Style prompt generation: generating AI art prompts based on character information..."
         )
         return VirtualIPAIGenerationDetailedResponse(
             description=ai_content["description"],
@@ -79,7 +79,7 @@ async def generate_ai_content_detailed(
             generation_details=generation_details,
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"AIGeneration failed: {str(e)}")
 
 
 @router.post("/create-with-ai")
@@ -88,11 +88,11 @@ async def create_virtual_ip_with_ai(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """使用AI增强功能创建虚拟IP"""
+    """Create a virtual IP with AI enhancements"""
     try:
         existing_ip = db.query(VirtualIP).filter(VirtualIP.name == request.name).first()
         if existing_ip:
-            raise HTTPException(status_code=400, detail="虚拟IP名称已存在")
+            raise HTTPException(status_code=400, detail="Virtual IP name already exists")
 
         ai_content = await virtual_ip_ai_service.generate_complete_ip(
             name=request.name,
@@ -127,4 +127,4 @@ async def create_virtual_ip_with_ai(
         raise
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"创建失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Creation failed: {str(e)}")

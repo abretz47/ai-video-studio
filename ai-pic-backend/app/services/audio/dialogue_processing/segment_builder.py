@@ -82,7 +82,7 @@ def _build_segments_with_timing(
     mid_inserted = False
 
     for idx, dlg in enumerate(dialogues):
-        speaker = str(dlg.get("character") or "旁白")
+        speaker = str(dlg.get("character") or "narration")
         content = str(dlg.get("content") or "").strip()
         emotion = (
             str(dlg.get("emotion") or "").strip()

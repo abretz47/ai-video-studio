@@ -1,7 +1,7 @@
 """
-AI服务管理器
+AIservice manager
 
-统一管理所有AI服务提供商，提供负载均衡、故障转移等功能
+unified Guan Li allAIservice provider, Ti Gong Fu Zai Jun Heng, Gu Zhang Zhuan Yi Deng feature
 """
 
 from dataclasses import dataclass, field
@@ -42,7 +42,7 @@ from .providers.volcengine_provider import VolcengineProvider
 
 
 class ProviderPriority(Enum):
-    """提供商优先级"""
+    """provider You Xian Ji"""
 
     HIGH = 1
     MEDIUM = 2
@@ -51,10 +51,10 @@ class ProviderPriority(Enum):
 
 @dataclass
 class ProviderWeight:
-    """提供商权重配置"""
+    """provider Quan Zhong configuration"""
 
     provider_name: str
-    weight: float = 1.0  # 权重，越高越容易被选中
+    weight: float = 1.0  # Quan Zhong, Yue Gao Yue Rong Yi Xuan Zhong
     priority: ProviderPriority = ProviderPriority.MEDIUM
     enabled: bool = True
     max_requests_per_minute: int = 60
@@ -64,7 +64,7 @@ class ProviderWeight:
 
 @dataclass
 class AIServiceConfig:
-    """AI服务配置"""
+    """AIservice configuration"""
 
     providers: Dict[str, ProviderConfig] = field(default_factory=dict)
     provider_weights: Dict[str, ProviderWeight] = field(default_factory=dict)
@@ -72,11 +72,11 @@ class AIServiceConfig:
     enable_load_balancing: bool = True
     default_timeout: float = 30.0
     max_retries: int = 3
-    model_list_cache_ttl: float = 600.0  # 模型列表缓存时间（秒），0 关闭缓存
+    model_list_cache_ttl: float = 600.0  # model list cache time(seconds), 0 Guan Bi cache
 
 
 class AIServiceManager:
-    """AI服务管理器"""
+    """AIservice manager"""
 
     def __init__(self, config: AIServiceConfig):
         self.config = config
@@ -168,13 +168,13 @@ class AIServiceManager:
         )
 
     def _initialize_providers(self):
-        """初始化所有提供商"""
+        """Chu Shi Hua all provider"""
         for provider_name, provider_config in self.config.providers.items():
             if provider_name in self.provider_classes:
                 provider_class = self.provider_classes[provider_name]
                 self.providers[provider_name] = provider_class(provider_config)
 
-                # 初始化权重配置
+                # Chu Shi Hua Quan Zhong configuration
                 if provider_name not in self.config.provider_weights:
                     self.config.provider_weights[provider_name] = ProviderWeight(
                         provider_name=provider_name
@@ -183,7 +183,7 @@ class AIServiceManager:
     def get_available_providers(
         self, model_type: AIModelType = None, task_type: AITaskType = None
     ) -> List[str]:
-        """获取可用的提供商列表"""
+        """get available provider list"""
         available = []
 
         for name, provider in self.providers.items():
@@ -191,18 +191,18 @@ class AIServiceManager:
             if not weight or not weight.enabled:
                 continue
 
-            # 检查是否支持指定的模型类型
+            # check Shi Fou support Zhi Ding model type
             if model_type and model_type not in provider.supported_model_types:
                 continue
 
-            # 检查请求频率限制
+            # check request Pin Lv Xian Zhi
             if self._check_rate_limit(name):
                 available.append(name)
 
         return available
 
     def _check_rate_limit(self, provider_name: str) -> bool:
-        """检查提供商的请求频率限制"""
+        """check provider request Pin Lv Xian Zhi"""
         return provider_selection.check_rate_limit(
             self.config.provider_weights, provider_name
         )
@@ -210,7 +210,7 @@ class AIServiceManager:
     def _select_provider(
         self, available_providers: List[str], prefer_provider: str = None
     ) -> Optional[str]:
-        """选择最佳提供商"""
+        """Xuan Ze Zui Jia provider"""
         return provider_selection.select_provider(
             available_providers,
             self.config.provider_weights,
@@ -220,7 +220,7 @@ class AIServiceManager:
         )
 
     def _select_by_priority(self, providers: List[str]) -> str:
-        """按优先级选择提供商"""
+        """An You Xian Ji Xuan Ze provider"""
         return provider_selection.select_by_priority(
             providers,
             self.config.provider_weights,
@@ -228,13 +228,13 @@ class AIServiceManager:
         )
 
     def _select_by_weight(self, providers: List[str]) -> str:
-        """按权重选择提供商"""
+        """An Quan Zhong Xuan Ze provider"""
         return provider_selection.select_by_weight(
             providers, self.config.provider_weights
         )
 
     def _update_request_count(self, provider_name: str):
-        """更新请求计数"""
+        """update request Ji Shu"""
         provider_selection.update_request_count(
             self.config.provider_weights, provider_name
         )
@@ -244,7 +244,7 @@ class AIServiceManager:
         provider: BaseProvider,
         model_type: Optional[AIModelType],
     ):
-        """统一的模型拉取入口，优先使用远端列表，失败时回退静态配置。"""
+        """unified model La Qu entry point, priority Shi Yong Yuan Duan list, failed when fallback Jing Tai configuration."""
         fallback_models = provider.available_models or []
         models = []
         try:
@@ -261,11 +261,11 @@ class AIServiceManager:
         source: str = "auto",
     ) -> List[Dict[str, Any]]:
         """
-        聚合所有提供商的模型列表。
+ Ju He all provider model list.
 
-        - source='static'：仅使用各 Provider.available_models
-        - source='remote'：尽量调用官方模型列表 API（fetch_remote_models），失败时回退静态
-        - source='auto'：按 remote 优先，静态兜底
+ - source='static': only Shi Yong Ge Provider.available_models
+ - source='remote': Jin Liang call Guan Fang model list API(fetch_remote_models), failed when fallback Jing Tai
+ - source='auto': An remote priority, Jing Tai fallback
         """
         if not hasattr(self, "_models_cache"):
             self._models_cache = {}
@@ -291,7 +291,7 @@ class AIServiceManager:
         stream: bool = True,
         **kwargs,
     ) -> AIResponse:
-        """统一文本生成接口"""
+        """unified text Sheng Cheng API"""
         return await text_generation.generate_text_with_fallback(
             prompt=prompt,
             model=model,
@@ -327,7 +327,7 @@ class AIServiceManager:
         style_spec: Any | None = None,
         **kwargs,
     ) -> AIResponse:
-        """统一图像生成接口"""
+        """unified image Sheng Cheng API"""
         return await image_generation.generate_image_with_fallback(
             prompt=prompt,
             model=model,
@@ -363,7 +363,7 @@ class AIServiceManager:
         style_spec: Any | None = None,
         **kwargs,
     ) -> AIResponse:
-        """统一图生图接口"""
+        """unified Tu Sheng Tu API"""
         return await image_to_image_generation.image_to_image_with_fallback(
             image_url=image_url,
             model=model,
@@ -400,7 +400,7 @@ class AIServiceManager:
         resolution: str = "1280x720",
         **kwargs,
     ) -> AIResponse:
-        """统一视频生成接口"""
+        """unified video Sheng Cheng API"""
         return await video_generation.generate_video_with_fallback(
             prompt=prompt,
             image_url=image_url,
@@ -433,7 +433,7 @@ class AIServiceManager:
         speed: float = 1.0,
         **kwargs,
     ) -> AIResponse:
-        """统一语音合成接口"""
+        """unified voice He Cheng API"""
         return await tts_generation.text_to_speech_with_fallback(
             text=text,
             model=model,
@@ -453,7 +453,7 @@ class AIServiceManager:
         )
 
     def get_provider_status(self) -> Dict[str, Any]:
-        """获取所有提供商的状态"""
+        """get all provider status"""
         return provider_status.build_provider_status(
             self.providers,
             self.config.provider_weights,
@@ -467,7 +467,7 @@ class AIServiceManager:
         priority: ProviderPriority = None,
         max_requests_per_minute: int = None,
     ):
-        """更新提供商配置"""
+        """update provider configuration"""
         provider_status.update_provider_config(
             self.config.provider_weights,
             provider_name=provider_name,

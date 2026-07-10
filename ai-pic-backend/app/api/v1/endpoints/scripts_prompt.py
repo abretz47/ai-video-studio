@@ -35,11 +35,11 @@ async def preview_script_prompt(
         current_user=current_user,
     )
     if not episode:
-        raise HTTPException(status_code=404, detail="剧集不存在")
+        raise HTTPException(status_code=404, detail="Episode does not exist")
 
     story = episode.story
     if not story:
-        raise HTTPException(status_code=404, detail="故事不存在")
+        raise HTTPException(status_code=404, detail="Story does not exist")
 
     previous_episode_summaries = collect_previous_episode_summaries(
         db, story.id, episode.episode_number

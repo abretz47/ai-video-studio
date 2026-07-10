@@ -31,8 +31,8 @@ def execute_storyboard_images(
     if script is None:
         return blocked_result(
             request,
-            title="Image Candidates 等待剧本上下文",
-            detail="需要先绑定 script_id，之后才会提交现有 STORYBOARD_IMAGE_GENERATION 任务。",
+            title="Image Candidates waiting script context",
+            detail="need first Bang Ding script_id, Zhi Hou Cai will submit existing STORYBOARD_IMAGE_GENERATION Ren Wu.",
             required_inputs=["script_id"],
         )
 
@@ -52,9 +52,9 @@ def execute_storyboard_images(
     if queue_result.child_task_id is None:
         return blocked_result(
             request,
-            title="Image Candidates 等待可生成分镜",
+            title="Image Candidates waiting Ke Sheng Cheng Fen Jing",
             detail=(
-                "现有分镜图片队列已检查剧本，但没有可提交的参考图分镜。"
+                "existing storyboard image Dui Lie check script, Dan missing can submit reference Tu Fen Jing."
                 f" reason={queue_result.reason or 'no_eligible_frames'}"
             ),
             required_inputs=["storyboard_frames", "reference_images"],
@@ -75,8 +75,8 @@ def execute_storyboard_images(
             skill="image.candidates",
             label=skill.label if skill else "Image Candidates",
             status="running",
-            title="已提交现有分镜图片候选任务",
-            detail="后台已通过现有 STORYBOARD_IMAGE_GENERATION worker 执行。",
+            title="submit existing storyboard image Hou Xuan Ren Wu",
+            detail="background through existing STORYBOARD_IMAGE_GENERATION worker execute.",
             outputs={
                 "script_id": script.id,
                 "episode_id": script.episode_id,
@@ -105,8 +105,8 @@ def execute_storyboard_video_candidates(
     if script is None:
         return blocked_result(
             request,
-            title="Video Candidates 等待剧本上下文",
-            detail="需要先绑定 script_id，之后才会提交现有 VIDEO_GENERATION 任务。",
+            title="Video Candidates waiting script context",
+            detail="need first Bang Ding script_id, Zhi Hou Cai will submit existing VIDEO_GENERATION Ren Wu.",
             required_inputs=["script_id"],
         )
 
@@ -129,8 +129,8 @@ def execute_storyboard_video_candidates(
         if str(exc) == "no_storyboard_frames":
             return blocked_result(
                 request,
-                title="Video Candidates 等待分镜帧",
-                detail="需要先生成 storyboard.frames，之后才会提交现有视频候选任务。",
+                title="Video Candidates waiting storyboard Zhen",
+                detail="need Xian Sheng Cheng storyboard.frames, Zhi Hou Cai will submit existing video Hou Xuan Ren Wu.",
                 required_inputs=["storyboard_frames"],
             )
         raise
@@ -143,8 +143,8 @@ def execute_storyboard_video_candidates(
             skill="video.candidates",
             label=skill.label if skill else "Video Candidates",
             status="running",
-            title="已提交现有分镜视频候选任务",
-            detail="后台已通过现有 VIDEO_GENERATION storyboard worker 执行。",
+            title="submit existing storyboard video Hou Xuan Ren Wu",
+            detail="background through existing VIDEO_GENERATION storyboard worker execute.",
             outputs={
                 "script_id": script.id,
                 "episode_id": script.episode_id,

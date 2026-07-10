@@ -30,9 +30,9 @@ class EpisodeGenerationMixin:
         callbacks: EpisodeGenerationCallbacks | None = None,
         generation_mode: str = "standard",
     ) -> Optional[Dict[str, Any]]:
-        """基于故事概要生成剧集"""
+        """Ji Yu story outline Sheng Cheng episode"""
         production_mode = generation_mode == "production"
-        # 优先尝试 LangGraph agent
+        # priority Chang Shi LangGraph agent
         if self.episode_agent:
             try:
                 lg_result = await self.episode_agent.generate(
@@ -69,7 +69,7 @@ class EpisodeGenerationMixin:
                 raise
             except Exception as exc:
                 self.logger.warning(f"LangGraph episode agent failed: {exc}")
-        # 首先尝试使用AI服务管理器
+        # Shou Xian Chang Shi Shi YongAIservice manager
         if self.ai_manager:
             try:
                 direct_result = await self._call_ai_manager_episode(
@@ -101,7 +101,7 @@ class EpisodeGenerationMixin:
                 raise
             except Exception as exc:
                 print(f"AI服务管理器剧集生成失败: {exc}")
-        # 如果AI服务管理器失败，尝试传统方法
+        # Ru GuoAIservice manager failed, Chang Shi Chuan Tong Fang Fa
         if production_mode:
             self.logger.warning(
                 "Production episode generation failed; skip legacy fallback",
@@ -163,7 +163,7 @@ class EpisodeGenerationMixin:
                 raise
             except Exception as exc:
                 print(f"传统剧集生成方法失败: {exc}")
-        # 最终回退到模拟服务
+        # Zui Zhong fallback to mock service
         if production_mode or prefer_provider or model:
             self.logger.warning(
                 "Episode generation failed for explicit provider/model; skip mock fallback",
@@ -206,7 +206,7 @@ class EpisodeGenerationMixin:
         temperature: float,
         generation_mode: str = "standard",
     ) -> Optional[Dict[str, Any]]:
-        """直接通过 AI 管理器生成剧集（带 JSON schema 校验）。"""
+        """directly through AI manager Sheng Cheng episode(Dai JSON schema Jiao Yan)."""
         if not self.ai_manager:
             return None
         return await call_ai_manager_episode(
@@ -236,7 +236,7 @@ class EpisodeGenerationMixin:
         additional_requirements: Optional[str] = None,
         style_preferences: Optional[List[str]] = None,
     ) -> str:
-        """构建剧集生成提示词"""
+        """build episodeGeneration prompt"""
         return build_episode_generation_prompt(
             story=story,
             episode_count=episode_count,

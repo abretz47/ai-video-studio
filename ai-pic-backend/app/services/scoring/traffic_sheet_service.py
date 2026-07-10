@@ -1,7 +1,7 @@
 """
-投流表生成服务
+Tou Liu Biao Sheng Cheng service
 
-从剧本中提炼 15/30/60 秒投流素材，生成 Traffic Sheet。
+Cong script in Ti Lian 15/30/60 seconds Tou Liu Su Cai, Sheng Cheng Traffic Sheet.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ logger = get_logger()
 
 
 class TrafficSheetService:
-    """投流表生成服务"""
+    """Tou Liu Biao Sheng Cheng service"""
 
     def __init__(self, ai_service: "AIService") -> None:
         self.ai_service = ai_service
@@ -44,26 +44,26 @@ class TrafficSheetService:
         prefer_model: Optional[str] = None,
     ) -> TrafficSheet:
         """
-        从剧本生成投流表。
+ Cong script Sheng Cheng Tou Liu Biao.
 
         Args:
-            script_content: 剧本正文内容
-            episode_number: 剧集编号
-            story: 故事上下文（标题、类型、市场、微类型）
-            episode_id: 剧集 ID
-            episode_title: 剧集标题
-            episode_summary: 剧集概要
-            script_id: 剧本 ID
-            scenes: 场景列表
-            dialogues: 对白列表
-            hook_plan: 爽点/钩子规划
-            prefer_provider: 优先使用的 AI 提供商
-            prefer_model: 优先使用的模型
+ script_content: script body text content
+ episode_number: episode ID
+ story: story context(title, type, market, Wei type)
+ episode_id: episode ID
+ episode_title: episode title
+ episode_summary: episode outline
+ script_id: script ID
+ scenes: scene list
+ dialogues: dialogue list
+ hook_plan: Shuang Dian/Gou Zi Gui Hua
+ prefer_provider: priority Shi Yong AI provider
+ prefer_model: priority Shi Yong model
 
         Returns:
-            TrafficSheet: 投流表
+ TrafficSheet: Tou Liu Biao
         """
-        # 构建 prompt 变量
+        # build prompt Bian Liang
         variables = {
             "script_content": script_content,
             "episode_number": episode_number,
@@ -78,7 +78,7 @@ class TrafficSheetService:
             "current_time": datetime.utcnow().isoformat(),
         }
 
-        # 渲染 prompt
+        # Xuan Ran prompt
         prompt = prompt_manager.render_prompt(
             PromptTemplate.TRAFFIC_SHEET_GENERATION.value,
             variables,
@@ -93,7 +93,7 @@ class TrafficSheetService:
             },
         )
 
-        # 调用 AI 服务
+        # call AI service
         ai_manager = getattr(self.ai_service, "ai_manager", None)
         if not ai_manager:
             logger.warning("AI manager unavailable, returning empty traffic sheet")
@@ -123,7 +123,7 @@ class TrafficSheetService:
         if not isinstance(response_text, str):
             response_text = ""
 
-        # 解析响应
+        # parse response
         result = self._parse_traffic_sheet_response(
             response_text,
             episode_id=episode_id,
@@ -151,7 +151,7 @@ class TrafficSheetService:
         script_id: Optional[int] = None,
         story: Optional[Dict[str, Any]] = None,
     ) -> TrafficSheet:
-        """解析 AI 响应为投流表"""
+        """parse AI response as Tou Liu Biao"""
         return parse_traffic_sheet_response(
             response,
             episode_id=episode_id,
@@ -168,17 +168,17 @@ async def generate_traffic_sheet_from_db(
     prefer_model: Optional[str] = None,
 ) -> TrafficSheet:
     """
-    从数据库加载剧本并生成投流表（便捷函数）。
+ Cong database Jia Zai script and Sheng Cheng Tou Liu Biao(Bian Jie function).
 
     Args:
-        ai_service: AI 服务实例
-        script_id: 剧本 ID
-        db_session: 数据库会话
-        prefer_provider: 优先使用的 AI 提供商
-        prefer_model: 优先使用的模型
+ ai_service: AI service instance
+ script_id: script ID
+ db_session: database Hui Hua
+ prefer_provider: priority Shi Yong AI provider
+ prefer_model: priority Shi Yong model
 
     Returns:
-        TrafficSheet: 投流表
+ TrafficSheet: Tou Liu Biao
     """
     from app.models.script import Script
     from app.utils.marketing_meta import merge_marketing_meta
@@ -187,11 +187,11 @@ async def generate_traffic_sheet_from_db(
     if not script:
         raise ValueError(f"Script {script_id} not found")
 
-    # 加载关联的剧集和故事
+    # Jia Zai Guan Lian episode and story
     episode = getattr(script, "episode", None)
     story = getattr(episode, "story", None) if episode else None
 
-    # 构建上下文
+    # build context
     story_ctx = None
     if story:
         marketing_meta = merge_marketing_meta(
@@ -226,7 +226,7 @@ async def generate_traffic_sheet_from_db(
     )
     hook_plan = marketing_meta.get("hook_plan")
 
-    # 生成投流表
+    # Sheng Cheng Tou Liu Biao
     service = TrafficSheetService(ai_service)
     return await service.generate_traffic_sheet(
         script_content=script.content or "",

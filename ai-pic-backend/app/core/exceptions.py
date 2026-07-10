@@ -9,10 +9,10 @@ Usage:
     from app.core.exceptions import NotFoundError
 
     if not user:
-        raise NotFoundError("用户", user_id)
+ raise NotFoundError("user", user_id)
 
 The middleware will automatically convert this to:
-    HTTPException(status_code=404, detail="用户不存在: {user_id}")
+ HTTPException(status_code=404, detail="User not found: {user_id}")
 """
 
 from typing import Any, Dict, Optional
@@ -65,8 +65,8 @@ class NotFoundError(DomainError):
     Resource not found error (404).
 
     Usage:
-        raise NotFoundError("用户", user_id)
-        raise NotFoundError("虚拟IP", virtual_ip_id)
+ raise NotFoundError("user", user_id)
+ raise NotFoundError("Xu NiIP", virtual_ip_id)
         raise NotFoundError.user(user_id)
     """
 
@@ -96,43 +96,43 @@ class NotFoundError(DomainError):
     # Convenience factory methods for common resources
     @classmethod
     def user(cls, user_id: Any) -> "NotFoundError":
-        return cls("用户", user_id)
+        return cls("user", user_id)
 
     @classmethod
     def virtual_ip(cls, virtual_ip_id: Any) -> "NotFoundError":
-        return cls("虚拟IP", virtual_ip_id)
+        return cls("Xu NiIP", virtual_ip_id)
 
     @classmethod
     def script(cls, script_id: Any) -> "NotFoundError":
-        return cls("脚本", script_id)
+        return cls("Jiao Ben", script_id)
 
     @classmethod
     def episode(cls, episode_id: Any) -> "NotFoundError":
-        return cls("剧集", episode_id)
+        return cls("episode", episode_id)
 
     @classmethod
     def story(cls, story_id: Any) -> "NotFoundError":
-        return cls("故事", story_id)
+        return cls("story", story_id)
 
     @classmethod
     def scene(cls, scene_id: Any) -> "NotFoundError":
-        return cls("场景", scene_id)
+        return cls("scene", scene_id)
 
     @classmethod
     def shot(cls, shot_id: Any) -> "NotFoundError":
-        return cls("镜头", shot_id)
+        return cls("shot", shot_id)
 
     @classmethod
     def beat(cls, beat_id: Any) -> "NotFoundError":
-        return cls("节拍", beat_id)
+        return cls("Jie Pai", beat_id)
 
     @classmethod
     def environment(cls, env_id: Any) -> "NotFoundError":
-        return cls("环境", env_id)
+        return cls("environment", env_id)
 
     @classmethod
     def image(cls, image_id: Any) -> "NotFoundError":
-        return cls("图像", image_id)
+        return cls("image", image_id)
 
 
 class ValidationError(DomainError):
@@ -140,8 +140,8 @@ class ValidationError(DomainError):
     Input validation error (400).
 
     Usage:
-        raise ValidationError("虚拟IP名称已存在")
-        raise ValidationError("必须提供prompt或image_url", field="prompt")
+ raise ValidationError("Xu NiIPname Cun Zai")
+ raise ValidationError("Bi Xu Ti Gongpromptorimage_url", field="prompt")
     """
 
     status_code = 400
@@ -165,7 +165,7 @@ class MissingFieldError(ValidationError):
 
     Usage:
         raise MissingFieldError("user_id")
-        raise MissingFieldError("prompt", "必须提供提示词")
+ raise MissingFieldError("prompt", "Bi Xu Ti Gong prompt Ci")
     """
 
     error_code = "MISSING_FIELD"
@@ -186,7 +186,7 @@ class InvalidFormatError(ValidationError):
     Invalid format error (400).
 
     Usage:
-        raise InvalidFormatError("scene_numbers", "必须是数组格式")
+ raise InvalidFormatError("scene_numbers", "Bi Xu Shi Shu Zu format")
     """
 
     error_code = "INVALID_FORMAT"
@@ -207,7 +207,7 @@ class DuplicateError(ValidationError):
     Duplicate resource error (400).
 
     Usage:
-        raise DuplicateError("虚拟IP名称", name)
+ raise DuplicateError("Xu NiIPname", name)
     """
 
     error_code = "DUPLICATE"
@@ -231,7 +231,7 @@ class UnauthorizedError(DomainError):
     Authentication required error (401).
 
     Usage:
-        raise UnauthorizedError("令牌已过期")
+ raise UnauthorizedError("Ling Pai Yi Guo Qi")
     """
 
     status_code = 401
@@ -243,7 +243,7 @@ class ForbiddenError(DomainError):
     Permission denied error (403).
 
     Usage:
-        raise ForbiddenError("没有权限访问此资源")
+ raise ForbiddenError("missing permission access Ci Zi Yuan")
     """
 
     status_code = 403
@@ -255,7 +255,7 @@ class ConflictError(DomainError):
     Resource conflict error (409).
 
     Usage:
-        raise ConflictError("资源正在被其他操作使用")
+ raise ConflictError("Zi Yuan Zheng Zai Qi Ta Cao Zuo Shi Yong")
     """
 
     status_code = 409
@@ -283,8 +283,8 @@ class GenerationFailedError(ServiceError):
     AI generation failed error (500).
 
     Usage:
-        raise GenerationFailedError("图像生成", "API返回错误")
-        raise GenerationFailedError.image("模型超时")
+ raise GenerationFailedError("image Sheng Cheng", "APIreturn error")
+ raise GenerationFailedError.image("model Chao Shi")
     """
 
     error_code = "GENERATION_FAILED"
@@ -308,23 +308,23 @@ class GenerationFailedError(ServiceError):
 
     @classmethod
     def image(cls, reason: Optional[str] = None) -> "GenerationFailedError":
-        return cls("图像", reason)
+        return cls("image", reason)
 
     @classmethod
     def video(cls, reason: Optional[str] = None) -> "GenerationFailedError":
-        return cls("视频", reason)
+        return cls("video", reason)
 
     @classmethod
     def script(cls, reason: Optional[str] = None) -> "GenerationFailedError":
-        return cls("脚本", reason)
+        return cls("Jiao Ben", reason)
 
     @classmethod
     def story(cls, reason: Optional[str] = None) -> "GenerationFailedError":
-        return cls("故事", reason)
+        return cls("story", reason)
 
     @classmethod
     def audio(cls, reason: Optional[str] = None) -> "GenerationFailedError":
-        return cls("音频", reason)
+        return cls("audio", reason)
 
 
 class ConfigurationError(ServiceError):
@@ -332,7 +332,7 @@ class ConfigurationError(ServiceError):
     Service configuration error (500).
 
     Usage:
-        raise ConfigurationError("OSS服务未配置")
+ raise ConfigurationError("OSS servicenot configuration")
     """
 
     error_code = "CONFIGURATION_ERROR"
@@ -343,7 +343,7 @@ class ExternalServiceError(DomainError):
     External service unavailable error (503).
 
     Usage:
-        raise ExternalServiceError("OpenAI", "API超时")
+ raise ExternalServiceError("OpenAI", "APIChao Shi")
     """
 
     status_code = 503

@@ -74,8 +74,8 @@ def execute_virtual_ip_image_generation(
     if request.virtual_ip_id is None:
         return blocked_result(
             request,
-            title="Virtual IP Image 等待 IP 上下文",
-            detail="需要先绑定 virtual_ip_id，之后才会提交现有虚拟 IP 图生成任务。",
+            title="Virtual IP Image waiting IP context",
+            detail="need first Bang Ding virtual_ip_id, Zhi Hou Cai will submit existing Xu Ni IP Tu Sheng Cheng Ren Wu.",
             required_inputs=["virtual_ip_id"],
         )
 
@@ -125,8 +125,8 @@ def execute_virtual_ip_image_generation(
     return _running_response(
         request=request,
         skill_id="virtual_ip.image",
-        title="已提交现有虚拟 IP 图生成任务",
-        detail="后台已通过现有 VIRTUAL_IP_IMAGE_GENERATION worker 执行。",
+        title="submit existing Xu Ni IP Tu Sheng Cheng Ren Wu",
+        detail="background through existing VIRTUAL_IP_IMAGE_GENERATION worker execute.",
         task=task,
         outputs={
             "virtual_ip_id": virtual_ip.id,
@@ -145,8 +145,8 @@ def execute_environment_image_generation(
     if request.environment_id is None:
         return blocked_result(
             request,
-            title="Environment Image 等待环境上下文",
-            detail="需要先绑定 environment_id，之后才会提交现有环境图生成任务。",
+            title="Environment Image waiting environment context",
+            detail="need first Bang Ding environment_id, Zhi Hou Cai will submit existing environment Tu Sheng Cheng Ren Wu.",
             required_inputs=["environment_id"],
         )
 
@@ -182,8 +182,8 @@ def execute_environment_image_generation(
     return _running_response(
         request=request,
         skill_id="environment.image",
-        title="已提交现有环境图生成任务",
-        detail="后台已通过现有 ENVIRONMENT_IMAGE_GENERATION worker 执行。",
+        title="submit existing environment Tu Sheng Cheng Ren Wu",
+        detail="background through existing ENVIRONMENT_IMAGE_GENERATION worker execute.",
         task=task,
         outputs={
             "environment_id": environment.id,

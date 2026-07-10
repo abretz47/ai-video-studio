@@ -127,7 +127,7 @@ class Scene(SoftDeleteBusinessMixin, Base):
     summary = Column(Text)
     page_length_eighths = Column(Integer)
     estimated_duration_seconds = Column(
-        Integer, nullable=True, comment="预估场景时长（秒），由LLM生成或手动设置"
+        Integer, nullable=True, comment="Yu Gu scene when Zhang(seconds), YouLLMSheng Cheng or Shou Dong She Zhi"
     )
     primary_characters = Column(JSON)
     conflict_notes = Column(Text)
@@ -192,7 +192,7 @@ class Shot(SoftDeleteBusinessMixin, Base):
     camera_movement = Column(String(50))
     framing = Column(Text)
     focus_subject = Column(String(255))
-    character_ids = Column(JSON, comment="参与角色（虚拟IP）ID列表")
+    character_ids = Column(JSON, comment="Can Yu character(Xu NiIP)IDlist")
     duration_seconds = Column(Numeric(6, 2))
     storyboard_frame_asset_id = Column(
         Integer, ForeignKey("images.id", ondelete="SET NULL"), nullable=True

@@ -1,7 +1,7 @@
 """
-迁移中间件
+migration Zhong Jian Jian
 
-在应用启动时检查数据库迁移状态，并在需要时提醒管理员
+in Ying Yong Qi Dong when check database migration status, and in need when Ti Xing administrator
 """
 
 import logging
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class MigrationCheckMiddleware(BaseHTTPMiddleware):
-    """迁移检查中间件"""
+    """migration check Zhong Jian Jian"""
 
     def __init__(
         self, app, check_on_startup: bool = True, require_up_to_date: bool = False
@@ -29,38 +29,38 @@ class MigrationCheckMiddleware(BaseHTTPMiddleware):
         self._migration_status = None
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """处理请求"""
+        """process request"""
 
-        # 在首次请求时检查迁移状态
+        # in Shou Ci request whenCheck migration status
         if not self._migration_status_checked and self.check_on_startup:
             await self._check_migration_status()
 
-        # 如果要求数据库必须是最新的，且不是最新的，则阻止访问
+        # Ru Guo requirement database Bi Xu Shi Zui Xin, Qie Bu Shi Zui Xin, then Zu Zhi access
         if (
             self.require_up_to_date
             and self._migration_status
             and not self._migration_status.get("is_up_to_date", True)
         ):
 
-            # 允许访问迁移相关的API端点
+            # Yun Xu access migration relatedAPIDuan Dian
             if request.url.path.startswith(f"{settings.API_V1_STR}/migrations"):
                 return await call_next(request)
 
-            # 允许访问健康检查端点
+            # Yun Xu access Jian Kang Jian Cha Duan Dian
             if request.url.path in ["/health", "/", f"{settings.API_V1_STR}/health"]:
                 return await call_next(request)
 
-            # 返回数据库需要升级的错误
+            # return database need escalate error
             return JSONResponse(
                 status_code=503,
                 content={
-                    "detail": "数据库需要升级",
+                    "detail": "database need escalate",
                     "migration_status": self._migration_status,
                     "migration_endpoint": f"{settings.API_V1_STR}/migrations/status",
                 },
             )
 
-        # 在响应头中添加迁移状态信息
+        # in response Tou in Tian Jia migration status Xin Xi
         response = await call_next(request)
 
         if self._migration_status:
@@ -77,18 +77,18 @@ class MigrationCheckMiddleware(BaseHTTPMiddleware):
         return response
 
     async def _check_migration_status(self):
-        """检查迁移状态"""
+        """Check migration status"""
         try:
             self._migration_status = migration_manager.check_migration_status()
             self._migration_status_checked = True
 
             if not self._migration_status.get("database_exists"):
-                logger.warning("数据库不存在或无法连接")
+                logger.warning("database not Cun Zai or unable to connection")
             elif not self._migration_status.get("is_up_to_date"):
                 pending_count = self._migration_status.get("pending_count", 0)
                 logger.warning(f"数据库需要升级，有 {pending_count} 个待应用的迁移")
             else:
-                logger.info("数据库迁移状态正常")
+                logger.info("database migration status Zheng Chang")
 
         except Exception as e:
             logger.error(f"检查迁移状态失败: {e}")
@@ -101,28 +101,28 @@ class MigrationCheckMiddleware(BaseHTTPMiddleware):
 
 
 class DatabaseHealthMiddleware(BaseHTTPMiddleware):
-    """数据库健康检查中间件"""
+    """database Jian Kang Jian Cha Zhong Jian Jian"""
 
-    def __init__(self, app, health_check_interval: int = 300):  # 5分钟检查一次
+    def __init__(self, app, health_check_interval: int = 300):  # 5minutes check Yi Ci
         super().__init__(app)
         self.health_check_interval = health_check_interval
         self._last_health_check = 0
         self._database_healthy = True
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """处理请求"""
+        """process request"""
         import time
 
         current_time = time.time()
 
-        # 定期检查数据库健康状态
+        # Ding Qi Jian Cha database Jian Kang status
         if current_time - self._last_health_check > self.health_check_interval:
             await self._check_database_health()
             self._last_health_check = current_time
 
-        # 如果数据库不健康，返回503错误
+        # Ru Guo database not Jian Kang, return503error
         if not self._database_healthy:
-            # 允许访问健康检查端点
+            # Yun Xu access Jian Kang Jian Cha Duan Dian
             if request.url.path in [
                 "/health",
                 "/",
@@ -133,7 +133,7 @@ class DatabaseHealthMiddleware(BaseHTTPMiddleware):
             return JSONResponse(
                 status_code=503,
                 content={
-                    "detail": "数据库连接不可用",
+                    "detail": "database connection not allowed Yong",
                     "health_check_endpoint": f"{settings.API_V1_STR}/migrations/health",
                 },
             )
@@ -146,13 +146,13 @@ class DatabaseHealthMiddleware(BaseHTTPMiddleware):
         return response
 
     async def _check_database_health(self):
-        """检查数据库健康状态"""
+        """check database Jian Kang status"""
         try:
             status = migration_manager.check_migration_status()
             self._database_healthy = status.get("database_exists", False)
 
             if not self._database_healthy:
-                logger.warning("数据库健康检查失败")
+                logger.warning("database Jian Kang Jian Cha failed")
 
         except Exception as e:
             logger.error(f"数据库健康检查异常: {e}")

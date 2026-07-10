@@ -29,7 +29,7 @@ def _get_backend_base() -> str:
 
 
 class ImageGenerationMixin:
-    # 保持原有的图像生成功能
+    # keep Yuan You image Sheng Cheng feature
     async def generate_virtual_ip_image(
         self,
         ip_name: str,
@@ -51,7 +51,7 @@ class ImageGenerationMixin:
         negative_prompt: str | None = None,
         reference_images: list[str] | None = None,
     ) -> Optional[Dict[str, Any]]:
-        """为虚拟IP生成图像"""
+        """as Xu NiIPSheng Cheng image"""
 
         raw_model = model or DEFAULT_OPENAI_IMAGE_MODEL
         pure_model, provider_hint = parse_model_and_provider(raw_model)
@@ -97,7 +97,7 @@ class ImageGenerationMixin:
             style_prompt = ""
             openai_style = "natural" if style == "realistic" else "vivid"
 
-        # 使用统一 PromptManager 模板生成运行时提示词（直接用于图像模型）
+        # Shi Yong unified PromptManager template Sheng Cheng run when prompt Ci(directly Yong Yu image model)
         try:
             variables = {
                 "character_name": ip_name,
@@ -105,7 +105,7 @@ class ImageGenerationMixin:
                 "background_story": background_story,
                 "style": derived_style,
                 "category": category,
-                # style_spec 的 prompt suffix 统一由 AIServiceManager 注入（避免重复叠加）
+                # style_spec prompt suffix unified You AIServiceManager Zhu Ru(avoid Chong Fu Die Jia)
                 "style_prompt": None,
                 "additional_prompts": additional_prompts or [],
             }
@@ -161,14 +161,14 @@ class ImageGenerationMixin:
 
             self.logger.info(f"生成图像提示词: {final_prompt[:200]}...")
             self.logger.info(
-                "使用模型: %s (provider_hint=%s), 风格: %s, 类别: %s",
+                "Shi Yong model: %s (provider_hint=%s), style: %s, Lei Bie: %s",
                 pure_model,
                 provider_hint,
                 derived_style,
                 category,
             )
 
-            # 根据模型选择不同的AI服务
+            # Gen Ju model Xuan Ze Bu TongAIservice
             provider_used = "openai"
             generation_method = "openai_image"
             image_url = None
@@ -178,7 +178,7 @@ class ImageGenerationMixin:
             provider_key = (normalized.provider or provider_hint or "openai").lower()
 
             if provider_key == "openai" and is_openai_image_model(model_id):
-                # 使用 OpenAI 图像直连 API，并支持按官方 size 选项控制分辨率
+                # Shi Yong OpenAI image Zhi Lian API, and support An Guan Fang size Xuan Xiang Kong Zhi Fen Bian Lv
                 image_url = await self._generate_with_openai_dalle(
                     final_prompt,
                     openai_style,
@@ -202,7 +202,7 @@ class ImageGenerationMixin:
                     self.logger.error(f"AI管理器图像生成失败: {response.error}")
                     image_url = None
             else:
-                # 默认使用 OpenAI 图像模型（保持向后兼容）
+                # default Shi Yong OpenAI image model(keep Xiang after Jian Rong)
                 image_url = await self._generate_with_openai_dalle(
                     final_prompt,
                     openai_style,

@@ -30,7 +30,7 @@ def queue_storyboard_generation_task(
     *,
     params: dict[str, Any] | None = None,
     title: str | None = None,
-    description: str = "异步分镜结构生成",
+    description: str = "async storyboard structure Sheng Cheng",
     prompt: str | None = None,
     target_business_id: str | None = None,
 ) -> Task:
@@ -42,7 +42,7 @@ def queue_storyboard_generation_task(
     episode = script.episode if script.episode else None
     story = episode.story if episode else None
     task = Task(
-        title=title or friendly_task_title("生成分镜", script, episode, story),
+        title=title or friendly_task_title("Sheng Cheng Fen Jing", script, episode, story),
         description=description,
         task_type=TaskType.STORYBOARD_GENERATION,
         prompt=prompt or f"Storyboard generation for script {script.id}",

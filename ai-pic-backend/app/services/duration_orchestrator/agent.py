@@ -1,16 +1,16 @@
 """
 Duration Orchestrator Agent
 
-基于 LangGraph 的端到端时长闭环验证系统。
+Ji Yu LangGraph Duan to Duan duration Bi Huan validation system.
 
-核心流程：
-1. allocate_budget: 分配场景时长预算
-2. generate_dialogue: 生成符合字数约束的对白
-3. tts_trial: 估算/测量实际时长
-4. validate_duration: 验证时长是否达标
-5. commit_scene / prepare_retry: 提交或准备重试
-6. assemble_episode: 组装最终剧集
-7. final_validation: 验证总时长 ±10%
+core Liu Cheng: 
+1. allocate_budget: Fen Pei scene when Zhang Yu Suan
+2. generate_dialogue: Sheng Cheng Fu He word count Yue Shu dialogue
+3. tts_trial: Gu Suan/Ce Liang Shi Ji when Zhang
+4. validate_duration: validation when Zhang Shi Fou Da Biao
+5. commit_scene/prepare_retry: submit or Zhun Bei retry
+6. assemble_episode: assemble Zui Zhong episode
+7. final_validation: validation total duration ±10%
 """
 
 from typing import Any, Callable, Dict, List, Optional
@@ -46,12 +46,12 @@ ProgressCallback = Callable[[str, Dict[str, Any]], None]
 
 class DurationOrchestratorAgent:
     """
-    Duration Orchestrator Agent - 端到端时长闭环验证。
+ Duration Orchestrator Agent - Duan Dao Duan duration Bi Huan validation.
 
-    通过场景级闭环验证确保剧集时长符合目标：
-    - 每个场景生成后立即验证时长
-    - 不达标则重新生成（最多3次）
-    - 达标后锁定并调整后续场景预算
+ through scene Ji Bi Huan validation Que Bao episode when Zhang Fu He target: 
+ - Mei Ge scene Sheng Cheng after Li Ji validation when Zhang
+ - not Da Biao then retry Sheng Cheng(Zui multiple3Ci)
+ - Da Biao after lock and adjust subsequent scene Yu Suan
     """
 
     def __init__(
@@ -62,13 +62,13 @@ class DurationOrchestratorAgent:
         progress_callback: Optional[ProgressCallback] = None,
     ):
         """
-        初始化 Duration Orchestrator。
+ Chu Shi Hua Duration Orchestrator.
 
         Args:
-            script_agent: ScriptLangGraphAgent 实例，用于生成对白
-            tts_service: TTS 服务实例，用于实际时长测量
-            use_actual_tts: 是否使用实际 TTS（False 则使用字数估算）
-            progress_callback: 可选的进度回调函数，签名为 (event: str, data: dict) -> None
+ script_agent: ScriptLangGraphAgent instance, Yong Yu Sheng Cheng dialogue
+ tts_service: TTS service instance, Yong Yu Shi Ji when Zhang Ce Liang
+ use_actual_tts: Shi Fou Shi Yong Shi Ji TTS(False then Shi Yong word count Gu Suan)
+ progress_callback: Ke Xuan Jin Du Hui Diao function, Qian Ming as (event: str, data: dict) -> None
         """
         self.script_agent = script_agent
         self.tts_service = tts_service
@@ -94,9 +94,9 @@ class DurationOrchestratorAgent:
 
     def _build_graph(self) -> "StateGraph":
         """
-        构建 LangGraph StateGraph。
+ build LangGraph StateGraph.
 
-        节点流程:
+ node Liu Cheng:
             allocate_budget
                 ↓
             generate_dialogue ←─────────────┐
@@ -120,7 +120,7 @@ class DurationOrchestratorAgent:
         """
         graph = StateGraph(dict)
 
-        # 添加所有节点
+        # Tian Jia all node
         graph.add_node("allocate_budget", allocate_budget_node)
         graph.add_node("generate_dialogue", generate_dialogue_node)
         graph.add_node("tts_trial", tts_trial_node)
@@ -130,10 +130,10 @@ class DurationOrchestratorAgent:
         graph.add_node("assemble_episode", assemble_episode_node)
         graph.add_node("final_validation", final_validation_node)
 
-        # 设置入口点
+        # She Zhi entry point Dian
         graph.set_entry_point("allocate_budget")
 
-        # allocate_budget → generate_dialogue 或 assemble_episode (空场景跳过)
+        # allocate_budget → generate_dialogue or assemble_episode (Kong scene Tiao Guo)
         graph.add_conditional_edges(
             "allocate_budget",
             should_proceed_to_generation,
@@ -144,7 +144,7 @@ class DurationOrchestratorAgent:
             },
         )
 
-        # generate_dialogue → tts_trial 或 retry
+        # generate_dialogue → tts_trial or retry
         graph.add_conditional_edges(
             "generate_dialogue",
             should_proceed_to_tts,
@@ -158,7 +158,7 @@ class DurationOrchestratorAgent:
         # tts_trial → validate_duration
         graph.add_edge("tts_trial", "validate_duration")
 
-        # validate_duration → commit_scene 或 prepare_retry
+        # validate_duration → commit_scene or prepare_retry
         graph.add_conditional_edges(
             "validate_duration",
             should_commit_or_retry,
@@ -169,10 +169,10 @@ class DurationOrchestratorAgent:
             },
         )
 
-        # prepare_retry → generate_dialogue (重新生成)
+        # prepare_retry → generate_dialogue (retry Sheng Cheng)
         graph.add_edge("prepare_retry", "generate_dialogue")
 
-        # commit_scene → continue (下一个场景) 或 assemble_episode (完成)
+        # commit_scene → continue (below a scene) or assemble_episode (complete)
         graph.add_conditional_edges(
             "commit_scene",
             should_continue_or_assemble,
@@ -205,22 +205,22 @@ class DurationOrchestratorAgent:
         progress_callback: Optional[ProgressCallback] = None,
     ) -> Dict[str, Any]:
         """
-        执行端到端时长闭环验证。
+ execute Duan Dao Duan duration Bi Huan validation.
 
         Args:
-            episode_id: 剧集 ID
-            script_id: 剧本 ID
-            story_id: 故事 ID
-            total_duration_minutes: 目标总时长（分钟）
-            scenes: 场景列表（来自 Episode Agent）
-            episode: Episode 数据
-            story: Story 数据
-            generation_config: 对白生成配置
-            voice_config: TTS 语音配置
-            progress_callback: 可选的进度回调函数（覆盖实例级回调）
+ episode_id: episode ID
+ script_id: script ID
+ story_id: story ID
+ total_duration_minutes: target total duration(minutes)
+ scenes: scene list(Lai Zi Episode Agent)
+ episode: Episode data
+ story: Story data
+ generation_config: dialogue Sheng Cheng configuration
+ voice_config: TTS voice configuration
+ progress_callback: Ke Xuan Jin Du Hui Diao function(Fu Gai instance Ji Hui Diao)
 
         Returns:
-            包含所有场景对白、时长信息和推理日志的结果字典
+ Bao Han all scene dialogue, when Zhang Xin Xi and Tui Li log Jie Guo Zi Dian
         """
         # Use method-level callback if provided, otherwise fall back to instance
         callback = progress_callback or self.progress_callback
@@ -234,24 +234,24 @@ class DurationOrchestratorAgent:
                 "error": "langgraph_not_available",
             }
 
-        # 构建初始状态
+        # build Chu Shi Zhuang Tai
         initial_state = {
-            # 基础信息
+            # basic Xin Xi
             "episode_id": episode_id,
             "script_id": script_id,
             "story_id": story_id,
             "total_duration_minutes": total_duration_minutes,
             "scenes_from_episode": scenes,
-            # 上下文数据
+            # context data
             "episode": episode,
             "story": story,
             "generation_config": generation_config or {},
             "voice_config": voice_config or {},
-            # 服务实例
+            # service instance
             "script_agent": self.script_agent,
             "tts_service": self.tts_service,
             "use_actual_tts": self.use_actual_tts,
-            # 状态追踪
+            # status Zhui Zong
             "scene_budgets": [],
             "current_scene_index": 0,
             "generated_dialogues": {},
@@ -262,7 +262,7 @@ class DurationOrchestratorAgent:
         }
 
         self.logger.info(
-            "DurationOrchestratorAgent: 开始编排",
+            "DurationOrchestratorAgent: Kai Shi Bian Pai",
             extra={
                 "episode_id": episode_id,
                 "total_duration_minutes": total_duration_minutes,
@@ -282,31 +282,31 @@ class DurationOrchestratorAgent:
             },
         )
 
-        # 构建并执行图
+        # build and execute Tu
         graph = self._build_graph()
         app = graph.compile()
 
         try:
             result = await app.ainvoke(initial_state)
         except Exception as exc:
-            self.logger.exception("DurationOrchestratorAgent: 执行失败")
+            self.logger.exception("DurationOrchestratorAgent: execute failed")
             return {
                 "success": False,
                 "error": str(exc),
                 "reasoning": initial_state.get("reasoning", []),
             }
 
-        # 提取结果
+        # extract Jie Guo
         scene_budgets = result.get("scene_budgets", [])
         committed_scenes = result.get("committed_scenes", {})
         errors = result.get("errors", [])
 
-        # 从 assemble_episode 和 final_validation 节点获取结果
+        # Cong assemble_episode and final_validation node get Jie Guo
         assembled_episode = result.get("assembled_episode", {})
         final_validation = result.get("final_validation_result", {})
         statistics = result.get("statistics", {})
 
-        # 如果没有统计信息（可能图未完整执行），手动计算
+        # Ru Guo missing Tong Ji Xin Xi(Ke Neng Tu Wei complete execute), Shou Dong Ji Suan
         if not statistics:
             total_actual_duration = sum(
                 b.actual_duration_seconds or 0 for b in scene_budgets
@@ -329,13 +329,13 @@ class DurationOrchestratorAgent:
                 "avg_retries_per_scene": round(avg_retries, 2),
             }
 
-        # 确定最终成功状态（基于 final_validation 结果）
+        # Que Ding Zui Zhong successful status(Ji Yu final_validation Jie Guo)
         success = result.get("success", len(errors) == 0)
         if final_validation:
             success = final_validation.get("passed", success) and len(errors) == 0
 
         self.logger.info(
-            "DurationOrchestratorAgent: 编排完成",
+            "DurationOrchestratorAgent: Bian Pai complete",
             extra={
                 "episode_id": episode_id,
                 "scene_count": statistics.get("scene_count", len(scene_budgets)),
@@ -376,17 +376,17 @@ class DurationOrchestratorAgent:
             "success": success,
             "episode_id": episode_id,
             "script_id": script_id,
-            # 场景结果
+            # scene Jie Guo
             "scene_budgets": [b.to_dict() for b in scene_budgets],
             "committed_scenes": committed_scenes,
             "generated_dialogues": result.get("generated_dialogues", {}),
-            # 组装结果
+            # assemble Jie Guo
             "assembled_episode": assembled_episode,
-            # 最终验证结果
+            # Zui Zhong validation Jie Guo
             "final_validation": final_validation,
-            # 统计信息
+            # Tong Ji Xin Xi
             "statistics": statistics,
-            # 日志
+            # log
             "reasoning": result.get("reasoning", []),
             "errors": errors,
         }
@@ -409,27 +409,27 @@ async def orchestrate_episode_duration(
     progress_callback: Optional[ProgressCallback] = None,
 ) -> Dict[str, Any]:
     """
-    便捷函数：执行剧集时长编排。
+ Bian Jie function: execute episode when Zhang Bian Pai.
 
-    这是 DurationOrchestratorAgent.orchestrate() 的简化封装。
+ Zhe Shi DurationOrchestratorAgent.orchestrate() Jian Hua Feng Zhuang.
 
     Args:
-        episode_id: 剧集 ID
-        script_id: 剧本 ID
-        story_id: 故事 ID
-        total_duration_minutes: 目标总时长（分钟）
-        scenes: 场景列表（来自 Episode Agent）
-        episode: Episode 数据
-        story: Story 数据
-        script_agent: ScriptLangGraphAgent 实例
-        tts_service: TTS 服务实例
-        use_actual_tts: 是否使用实际 TTS
-        generation_config: 对白生成配置
-        voice_config: TTS 语音配置
-        progress_callback: 进度回调函数 (event: str, data: dict) -> None
+ episode_id: episode ID
+ script_id: script ID
+ story_id: story ID
+ total_duration_minutes: target total duration(minutes)
+ scenes: scene list(Lai Zi Episode Agent)
+ episode: Episode data
+ story: Story data
+ script_agent: ScriptLangGraphAgent instance
+ tts_service: TTS service instance
+ use_actual_tts: Shi Fou Shi Yong Shi Ji TTS
+ generation_config: dialogue Sheng Cheng configuration
+ voice_config: TTS voice configuration
+ progress_callback: Jin Du Hui Diao function (event: str, data: dict) -> None
 
     Returns:
-        包含所有场景对白、时长信息和推理日志的结果字典
+ Bao Han all scene dialogue, when Zhang Xin Xi and Tui Li log Jie Guo Zi Dian
     """
     agent = DurationOrchestratorAgent(
         script_agent=script_agent,

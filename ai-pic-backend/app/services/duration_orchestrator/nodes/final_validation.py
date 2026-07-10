@@ -1,7 +1,7 @@
 """
-最终验证节点
+Zui Zhong validation node
 
-验证剧集总时长是否在目标范围内（±10%）。
+validation episode total duration Shi Fou in target range interior(±10%).
 """
 
 import logging
@@ -14,24 +14,24 @@ from app.services.duration_orchestrator.constants import (
 
 logger = logging.getLogger(__name__)
 
-# 容差百分比 (10%)
+# Rong Cha Bai Fen Bi (10%)
 TOLERANCE_PERCENT = (1 - DURATION_TOLERANCE_EPISODE_LOW) * 100
 
 
 def final_validation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    最终验证节点。
+ Zui Zhong validation node.
 
-    验证剧集总时长是否在目标容差范围内（默认 ±10%）。
+ validation episode total duration Shi Fou in target Rong Cha range interior(default ±10%).
 
-    输入状态:
-        - statistics: 统计信息（包含 total_actual_duration_seconds）
-        - total_duration_minutes: 目标总时长（分钟）
+ input status:
+ - statistics: Tong Ji Xin Xi(Bao Han total_actual_duration_seconds)
+ - total_duration_minutes: target total duration(minutes)
 
-    输出状态更新:
-        - final_validation_result: 验证结果
-        - success: 是否验证通过
-        - reasoning: 添加验证日志
+ output status update:
+ - final_validation_result: validation Jie Guo
+ - success: Shi Fou validation through
+ - reasoning: Tian Jia validation log
     """
     statistics = state.get("statistics", {})
     total_duration_minutes = state.get("total_duration_minutes", 0)
@@ -40,26 +40,26 @@ def final_validation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     reasoning = state.get("reasoning", [])
     errors = state.get("errors", [])
 
-    # 获取实际和目标时长
+    # get Shi Ji and target when Zhang
     total_actual = statistics.get("total_actual_duration_seconds", 0)
     total_target = total_duration_minutes * 60
 
-    # 计算时长比例
+    # Ji Suan when Zhang ratio
     ratio = total_actual / total_target if total_target > 0 else 0
 
-    # 计算容差范围 (使用常量定义的 LOW/HIGH)
+    # Ji Suan Rong Cha range (Shi Yong Chang Liang Ding Yi LOW/HIGH)
     min_ratio = DURATION_TOLERANCE_EPISODE_LOW
     max_ratio = DURATION_TOLERANCE_EPISODE_HIGH
 
-    # 判断是否在容差内
+    # determine Shi Fou in Rong Cha interior
     is_within_tolerance = min_ratio <= ratio <= max_ratio
 
-    # 计算偏差
+    # Ji Suan Pian Cha
     deviation_seconds = total_actual - total_target
     deviation_percent = (ratio - 1) * 100
 
     logger.info(
-        "final_validation_node: 最终验证",
+        "final_validation_node: Zui Zhong validation",
         extra={
             "episode_id": episode_id,
             "total_actual": total_actual,
@@ -73,7 +73,7 @@ def final_validation_node(state: Dict[str, Any]) -> Dict[str, Any]:
         },
     )
 
-    # 构建验证结果
+    # build validation Jie Guo
     validation_result = {
         "passed": is_within_tolerance,
         "total_actual_duration_seconds": round(total_actual, 2),
@@ -88,14 +88,14 @@ def final_validation_node(state: Dict[str, Any]) -> Dict[str, Any]:
         },
     }
 
-    # 生成验证日志
+    # Sheng Cheng validation log
     if is_within_tolerance:
         reasoning.append(
             f"最终验证通过: 总时长 {total_actual:.1f}s / {total_target}s "
             f"({ratio:.1%}), 在 ±{TOLERANCE_PERCENT:.0f}% 容差内"
         )
     else:
-        direction = "过长" if ratio > 1 else "过短"
+        direction = "Guo Chang" if ratio > 1 else "Guo Duan"
         reasoning.append(
             f"最终验证失败: 总时长 {total_actual:.1f}s / {total_target}s "
             f"({ratio:.1%}), {direction} {abs(deviation_percent):.1f}%, "
@@ -117,11 +117,11 @@ def final_validation_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def should_pass_or_fail(state: Dict[str, Any]) -> str:
     """
-    路由函数：判断最终验证是否通过。
+ Lu You function: determine Zui Zhong validation Shi Fou through.
 
     Returns:
-        "pass" - 验证通过
-        "fail" - 验证失败
+ "pass" - validation through
+ "fail" - validation failed
     """
     validation_result = state.get("final_validation_result", {})
     return "pass" if validation_result.get("passed", False) else "fail"

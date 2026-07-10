@@ -40,7 +40,7 @@ def process_virtual_ip_image_variant_task(
                 .first()
             )
             if not virtual_ip:
-                raise RuntimeError("虚拟IP不存在")
+                raise RuntimeError("Virtual IP does not exist")
 
             base_image = (
                 db.query(VirtualIPImage)
@@ -51,10 +51,10 @@ def process_virtual_ip_image_variant_task(
                 .first()
             )
             if not base_image:
-                raise RuntimeError("基础图像不存在")
+                raise RuntimeError("Base image does not exist")
 
             if not ai_service.ai_manager:
-                raise RuntimeError("AI管理器未初始化，无法执行图生图")
+                raise RuntimeError("AI manager is not initialized; cannot perform image-to-image generation")
 
             backend_base = (
                 getattr(settings, "INTERNAL_BACKEND_URL", None)

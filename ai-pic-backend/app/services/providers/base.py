@@ -1,7 +1,7 @@
 """
-AI服务提供商基类
+AIservice provider Ji Lei
 
-定义了所有AI服务提供商的统一接口和规范
+Ding Yi allAIservice provider unified API and Gui Fan
 """
 
 import asyncio
@@ -14,34 +14,34 @@ from pydantic import BaseModel, Field
 
 
 class AIModelType(Enum):
-    """AI模型类型枚举"""
+    """AImodel type Mei Ju"""
 
-    TEXT_GENERATION = "text_generation"  # 文本生成
-    TEXT_TO_IMAGE = "text_to_image"  # 文生图
-    IMAGE_TO_IMAGE = "image_to_image"  # 图生图
-    IMAGE_TO_VIDEO = "image_to_video"  # 图生视频
-    TEXT_TO_VIDEO = "text_to_video"  # 文生视频
-    TEXT_TO_SPEECH = "text_to_speech"  # 文本转语音
-    SPEECH_TO_TEXT = "speech_to_text"  # 语音转文本
-    IMAGE_UNDERSTANDING = "image_understanding"  # 图像理解
-    VIDEO_UNDERSTANDING = "video_understanding"  # 视频理解
+    TEXT_GENERATION = "text_generation"  # text Sheng Cheng
+    TEXT_TO_IMAGE = "text_to_image"  # Wen Sheng Tu
+    IMAGE_TO_IMAGE = "image_to_image"  # Tu Sheng Tu
+    IMAGE_TO_VIDEO = "image_to_video"  # Tu Sheng video
+    TEXT_TO_VIDEO = "text_to_video"  # Wen Sheng video
+    TEXT_TO_SPEECH = "text_to_speech"  # text Zhuan voice
+    SPEECH_TO_TEXT = "speech_to_text"  # voice Zhuan text
+    IMAGE_UNDERSTANDING = "image_understanding"  # image Li Jie
+    VIDEO_UNDERSTANDING = "video_understanding"  # video Li Jie
 
 
 class AITaskType(Enum):
-    """AI任务类型枚举"""
+    """AIRen Wu type Mei Ju"""
 
-    STORY_GENERATION = "story_generation"  # 故事生成
-    CHARACTER_CREATION = "character_creation"  # 角色创建
-    EPISODE_PLANNING = "episode_planning"  # 剧集规划
-    SCRIPT_WRITING = "script_writing"  # 剧本写作
-    PORTRAIT_GENERATION = "portrait_generation"  # 肖像生成
-    SCENE_GENERATION = "scene_generation"  # 场景生成
-    VIDEO_GENERATION = "video_generation"  # 视频生成
-    VOICE_GENERATION = "voice_generation"  # 语音生成
+    STORY_GENERATION = "story_generation"  # story Sheng Cheng
+    CHARACTER_CREATION = "character_creation"  # character create
+    EPISODE_PLANNING = "episode_planning"  # episode Gui Hua
+    SCRIPT_WRITING = "script_writing"  # script Xie Zuo
+    PORTRAIT_GENERATION = "portrait_generation"  # Xiao Xiang Sheng Cheng
+    SCENE_GENERATION = "scene_generation"  # scene Sheng Cheng
+    VIDEO_GENERATION = "video_generation"  # video Sheng Cheng
+    VOICE_GENERATION = "voice_generation"  # voice Sheng Cheng
 
 
 class AIRequest(BaseModel):
-    """AI请求基类"""
+    """AIrequest Ji Lei"""
 
     task_type: AITaskType
     model_type: AIModelType
@@ -53,7 +53,7 @@ class AIRequest(BaseModel):
 
 
 class AIResponse(BaseModel):
-    """AI响应基类"""
+    """AIresponse Ji Lei"""
 
     success: bool
     data: Optional[Any] = None
@@ -70,7 +70,7 @@ class AIResponse(BaseModel):
 
 
 class ModelInfo(BaseModel):
-    """模型信息"""
+    """model Xin Xi"""
 
     model_id: str
     name: str
@@ -86,7 +86,7 @@ class ModelInfo(BaseModel):
 
 
 class ProviderConfig(BaseModel):
-    """服务提供商配置"""
+    """service provider configuration"""
 
     name: str
     api_key: Optional[str] = None
@@ -111,7 +111,7 @@ class ProviderConfig(BaseModel):
 
 
 class BaseProvider(ABC):
-    """AI服务提供商基类"""
+    """AIservice provider Ji Lei"""
 
     def __init__(self, config: ProviderConfig):
         self.config = config
@@ -122,33 +122,33 @@ class BaseProvider(ABC):
     @property
     @abstractmethod
     def supported_model_types(self) -> List[AIModelType]:
-        """支持的模型类型列表"""
+        """support model type list"""
         pass
 
     @property
     @abstractmethod
     def available_models(self) -> List[ModelInfo]:
-        """可用的模型列表"""
+        """available model list"""
         pass
 
     @abstractmethod
     async def _initialize_client(self):
-        """初始化API客户端"""
+        """Chu Shi HuaAPIclient"""
         pass
 
     async def get_client(self):
         """
-        获取API客户端，若已关闭或绑定在不同事件循环上则重新初始化。
+ getAPIclient, if Guan Bi or Bang Ding in Bu Tong Shi Jian Xun Huan on then retry Chu Shi Hua.
 
-        Celery worker 中会通过 anyio.run 启动新的事件循环，
-        若复用绑定在旧 loop 上的 AsyncClient 会导致 `Event loop is closed`。
-        因此这里按当前 loop id 做一次隔离。
+ Celery worker in will through anyio.run Qi Dong Xin Shi Jian Xun Huan, 
+ if Fu Yong Bang Ding in Jiu loop on AsyncClient will Dao Zhi `Event loop is closed`.
+ Yin Ci here An current loop id Zuo Yi Ci Ge Li.
         """
         try:
             loop = asyncio.get_running_loop()
             loop_id = id(loop)
         except RuntimeError:
-            # 没有运行中的事件循环（不太可能出现在异步上下文），退回简单检查
+            # missing run in Shi Jian Xun Huan(Bu Tai Ke Neng Chu Xian in async context), Tui Hui Jian Dan check
             loop_id = None
 
         client = self._client
@@ -166,23 +166,23 @@ class BaseProvider(ABC):
     async def generate_text(
         self, prompt: str, model: str = None, **kwargs
     ) -> AIResponse:
-        """生成文本"""
+        """Sheng Cheng text"""
         pass
 
     @abstractmethod
     async def generate_image(
         self, prompt: str, model: str = None, **kwargs
     ) -> AIResponse:
-        """文生图"""
+        """Wen Sheng Tu"""
         pass
 
     async def image_to_image(
         self, image_url: str, prompt: str = None, model: str = None, **kwargs
     ) -> AIResponse:
-        """图生图（可选实现）"""
+        """Tu Sheng Tu(can Xuan Shi Xian)"""
         return AIResponse(
             success=False,
-            error="图生图功能未实现",
+            error="Tu Sheng Tu feature not Shi Xian",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.SCENE_GENERATION,
@@ -192,10 +192,10 @@ class BaseProvider(ABC):
     async def generate_video(
         self, prompt: str = None, image_url: str = None, model: str = None, **kwargs
     ) -> AIResponse:
-        """视频生成（可选实现）"""
+        """video Sheng Cheng(can Xuan Shi Xian)"""
         return AIResponse(
             success=False,
-            error="视频生成功能未实现",
+            error="video Sheng Cheng feature not Shi Xian",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.VIDEO_GENERATION,
@@ -207,10 +207,10 @@ class BaseProvider(ABC):
     async def text_to_speech(
         self, text: str, model: str = None, **kwargs
     ) -> AIResponse:
-        """文本转语音（可选实现）"""
+        """text Zhuan voice(can Xuan Shi Xian)"""
         return AIResponse(
             success=False,
-            error="文本转语音功能未实现",
+            error="text Zhuan voice feature not Shi Xian",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.VOICE_GENERATION,
@@ -220,10 +220,10 @@ class BaseProvider(ABC):
     async def understand_image(
         self, image_url: str, question: str = None, model: str = None, **kwargs
     ) -> AIResponse:
-        """图像理解（可选实现）"""
+        """image Li Jie(can Xuan Shi Xian)"""
         return AIResponse(
             success=False,
-            error="图像理解功能未实现",
+            error="image Li Jie feature not Shi Xian",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.CHARACTER_CREATION,
@@ -231,7 +231,7 @@ class BaseProvider(ABC):
         )
 
     def get_model_info(self, model_id: str) -> Optional[ModelInfo]:
-        """获取模型信息"""
+        """get model Xin Xi"""
         for model in self.available_models:
             if model.model_id == model_id:
                 return model
@@ -242,10 +242,10 @@ class BaseProvider(ABC):
         model_type: Optional[AIModelType] = None,
     ) -> List[ModelInfo]:
         """
-        默认的远端模型拉取实现：优先调用 provider base_url 下的 /models 接口，
-        再与本地 whitelist 交集，最终失败则回退静态列表。
+ default Yuan Duan model La Qu Shi Xian: priority call provider base_url below/models API, 
+ then and local whitelist Jiao Ji, Zui Zhong failed then fallback Jing Tai list.
         """
-        # 预备缓存作为兜底
+        # Yu Bei cache Zuo Wei fallback
         fallback_models = self.available_models
         if model_type:
             fallback_models = [m for m in fallback_models if m.model_type == model_type]
@@ -269,7 +269,7 @@ class BaseProvider(ABC):
             if not server_ids:
                 return fallback_models
 
-            # 仅返回在远端存在且在本地白名单中的模型
+            # only return in Yuan Duan Cun Zai Qie in local Bai Ming Dan in model
             filtered = [
                 m
                 for m in self.available_models
@@ -281,11 +281,11 @@ class BaseProvider(ABC):
             return fallback_models
 
     def supports_model_type(self, model_type: AIModelType) -> bool:
-        """检查是否支持指定的模型类型"""
+        """check Shi Fou support Zhi Ding model type"""
         return model_type in self.supported_model_types
 
     async def health_check(self) -> bool:
-        """健康检查"""
+        """Jian Kang Jian Cha"""
         try:
             client = await self.get_client()
             return client is not None
@@ -293,11 +293,11 @@ class BaseProvider(ABC):
             return False
 
     def estimate_cost(self, request: AIRequest) -> float:
-        """估算请求成本（可选实现）"""
+        """Gu Suan request Cheng Ben(can Xuan Shi Xian)"""
         return 0.0
 
     def format_error(self, error: Exception) -> str:
-        """格式化错误信息"""
+        """Ge Shi Hua Cuo Wu Xin Xi"""
         detail = str(error)
         try:
             import httpx

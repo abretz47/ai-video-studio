@@ -28,7 +28,7 @@ async def generate_video(db, task_id: int, payload: Dict[str, Any]) -> None:
     scene_number = int(payload["scene_number"])
     script = get_script_by_id(db, script_id)
     if not script:
-        raise RuntimeError("剧本不存在")
+        raise RuntimeError("Script not found")
     grid = load_scene_grids(db, script_id).get(str(scene_number))
     if not isinstance(grid, dict) or not grid.get("image_url"):
         raise RuntimeError(f"场景 {scene_number} 尚未生成宫格分镜图")
@@ -73,7 +73,7 @@ async def generate_video(db, task_id: int, payload: Dict[str, Any]) -> None:
     # return success=False explicitly.
     video_url = result.get("video_url") or result.get("oss_url")
     if result.get("success") is False or not video_url:
-        raise RuntimeError(result.get("error") or "宫格成片生成失败")
+        raise RuntimeError(result.get("error") or "Gong Ge Cheng Pian Sheng Cheng failed")
 
     save_scene_grid(
         db,

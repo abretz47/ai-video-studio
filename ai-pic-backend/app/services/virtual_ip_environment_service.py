@@ -97,7 +97,7 @@ def update_virtual_ip_environment_link(
         environment_id=environment.id,
     )
     if not link:
-        raise NotFoundError("IP环境关联", environment_id)
+        raise NotFoundError("IPenvironment Guan Lian", environment_id)
 
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(link, field, value)

@@ -22,7 +22,7 @@ async def create_story(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """创建故事"""
+    """Create story"""
     story_data = story.dict(exclude={"characters"})
     db_story = Story(user_id=current_user.id, **story_data)
     db.add(db_story)
@@ -38,7 +38,7 @@ async def create_story(
             )
             if not virtual_ip:
                 raise HTTPException(
-                    status_code=404, detail=f"虚拟IP {char_data.virtual_ip_id} 不存在"
+                    status_code=404, detail=f"Virtual IP {char_data.virtual_ip_id} does not exist"
                 )
 
             db_char = StoryCharacter(story_id=db_story.id, **char_data.dict())
@@ -59,7 +59,7 @@ async def get_stories(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """获取故事列表"""
+    """Get story list"""
     query = not_deleted(db.query(Story), Story)
 
     if not current_user.is_admin and not current_user.is_superuser:
@@ -85,9 +85,9 @@ async def get_stories_no_slash(
     db: Session = Depends(get_db),
 ):
     """
-    兼容无尾斜杠的 /api/v1/stories 请求，避免 307 重定向。
+    Support /api/v1/stories requests without a trailing slash to avoid 307 redirects.
 
-    内部直接复用 get_stories 的过滤与分页逻辑。
+    Internally reuse get_stories filtering and pagination logic directly.
     """
     return await get_stories(
         skip=skip,
@@ -105,7 +105,7 @@ async def get_story(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """获取故事详情（支持业务ID）"""
+    """Get story details (supports business IDs)"""
     story = get_story_by_identifier(db, story_id, None, current_user)
     return StoryResponse.from_orm(story)
 
@@ -116,7 +116,7 @@ async def get_story_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 获取故事详情"""
+    """Get story details by business_id"""
     story = get_story_by_identifier(db, None, story_business_id, current_user)
     return StoryResponse.from_orm(story)
 
@@ -128,7 +128,7 @@ async def update_story(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """更新故事"""
+    """Update story"""
     story = get_story_by_identifier(db, story_id, None, current_user)
 
     for field, value in story_update.dict(exclude_unset=True).items():
@@ -147,7 +147,7 @@ async def update_story_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 更新故事"""
+    """Update story by business_id"""
     story = get_story_by_identifier(db, None, story_business_id, current_user)
 
     for field, value in story_update.dict(exclude_unset=True).items():
@@ -165,7 +165,7 @@ async def delete_story(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """删除故事"""
+    """Delete story"""
     story = get_story_by_identifier(db, story_id, None, current_user)
     story.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
@@ -179,7 +179,7 @@ async def delete_story_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 删除故事"""
+    """Delete story by business_id"""
     story = get_story_by_identifier(db, None, story_business_id, current_user)
     story.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()

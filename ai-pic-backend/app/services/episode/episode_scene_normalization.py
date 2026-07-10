@@ -29,7 +29,7 @@ def _scene_from_plot_point(plot_point: object, scene_number: int) -> dict[str, A
     return {
         "scene_number": scene_number,
         "slug_line": f"SCENE {scene_number} - {timing or 'beat'}",
-        "summary": desc or "本场景推进剧情。",
+        "summary": desc or "Ben scene advance plot.",
         "time_of_day": "unspecified",
         "location": "unspecified",
     }
@@ -74,7 +74,7 @@ def _coerce_scene(raw: object, fallback_number: int) -> dict[str, Any] | None:
         **raw,
         "scene_number": scene_number,
         "slug_line": slug_line or f"SCENE {scene_number} - beat",
-        "summary": summary or "本场景推进剧情。",
+        "summary": summary or "Ben scene advance plot.",
         "time_of_day": time_of_day or "unspecified",
         "location": location or "unspecified",
     }
@@ -84,7 +84,7 @@ def _summary_scene(ep_data: dict[str, Any]) -> dict[str, Any]:
     return {
         "scene_number": 1,
         "slug_line": "SCENE 1 - beat",
-        "summary": _as_nonempty_str(ep_data.get("summary")) or "本集开篇场景。",
+        "summary": _as_nonempty_str(ep_data.get("summary")) or "Ben Ji Kai Pian scene.",
         "time_of_day": "unspecified",
         "location": "unspecified",
     }
@@ -143,7 +143,7 @@ def ensure_scenes(ep_data: dict[str, Any]) -> tuple[list[dict[str, Any]], int | 
     for idx, scene in enumerate(scenes, start=1):
         scene["scene_number"] = idx
         scene.setdefault("slug_line", f"SCENE {idx} - beat")
-        scene.setdefault("summary", "本场景推进剧情。")
+        scene.setdefault("summary", "Ben scene advance plot.")
         scene.setdefault("time_of_day", "unspecified")
         scene.setdefault("location", "unspecified")
 

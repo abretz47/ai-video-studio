@@ -31,7 +31,7 @@ def allocate_regeneration_scene_budgets(
             scenes=scenes,
         )
         logger.info(
-            "剧本重新生成: 分配场景预算",
+            "script retry Sheng Cheng: Fen Pei scene Yu Suan",
             extra={
                 "script_id": script_id,
                 "duration_minutes": duration_minutes,
@@ -40,7 +40,7 @@ def allocate_regeneration_scene_budgets(
         )
         return scene_budgets
     except Exception as exc:
-        logger.warning("分配场景预算失败: %s", exc)
+        logger.warning("Fen Pei scene Yu Suan failed: %s", exc)
         return None
 
 
@@ -57,7 +57,7 @@ def update_task_status(
     if not task:
         return
     if task.status == TaskStatus.CANCELLED:
-        # 用户已取消：worker 完成后不得把状态覆盖回 COMPLETED/FAILED
+        # user Qu Xiao: worker complete after Bu De status Fu Gai Hui COMPLETED/FAILED
         return
     task.status = status
     if result_file_path is not None:

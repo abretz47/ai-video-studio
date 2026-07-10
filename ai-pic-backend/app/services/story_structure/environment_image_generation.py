@@ -75,10 +75,10 @@ async def generate_environment_images(
     call = build_ai_manager_call(normalized)
     response = await ai_service.ai_manager.generate_image(**call)
     if not response.success:
-        raise RuntimeError(response.error or "环境文生图生成失败")
+        raise RuntimeError(response.error or "environment Wen Sheng Tu Sheng Cheng failed")
     images = response.data.get("images", []) if isinstance(response.data, dict) else []
     if not images:
-        raise RuntimeError("环境文生图接口未返回任何图像")
+        raise RuntimeError("environment Wen Sheng Tu API not return any image")
 
     saved_urls = await persist_environment_images(
         db=db,
@@ -133,7 +133,7 @@ async def generate_environment_image_variants(
 ) -> list[str]:
     base_image_input = clean_str(request.base_image)
     if not base_image_input:
-        raise RuntimeError("缺少基准图像")
+        raise RuntimeError("missing Ji Zhun image")
 
     prompt_hint = request.prompt or DEFAULT_ENV_VARIANT_EXTRA_PROMPT
     final_prompt = compose_environment_variant_prompt(env, prompt_hint)
@@ -172,14 +172,14 @@ async def generate_environment_image_variants(
 
     call = build_ai_manager_call(normalized)
     if not call.get("image_url"):
-        raise RuntimeError("基准图 URL 缺失，无法执行环境图生图")
+        raise RuntimeError("Ji Zhun Tu URL Que Shi, unable to execute environment Tu Sheng Tu")
 
     response = await ai_service.ai_manager.image_to_image(**call)
     if not response.success:
-        raise RuntimeError(response.error or "环境图生图生成失败")
+        raise RuntimeError(response.error or "environment Tu Sheng Tu Sheng Cheng failed")
     images = response.data.get("images", []) if isinstance(response.data, dict) else []
     if not images:
-        raise RuntimeError("环境图生图接口未返回任何图像")
+        raise RuntimeError("environment Tu Sheng Tu API not return any image")
 
     saved_urls = await persist_environment_images(
         db=db,

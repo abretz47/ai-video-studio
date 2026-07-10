@@ -170,7 +170,7 @@ class BaseRepository(Generic[ModelType]):
 
         Example:
             if repo.exists(email="test@example.com"):
-                raise DuplicateError("邮箱", email)
+ raise DuplicateError("You Xiang", email)
         """
         return self.count(**filters) > 0
 

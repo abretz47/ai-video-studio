@@ -43,7 +43,7 @@ class ScriptManagerMixin:
         temperature: float = 0.7,
         generation_mode: str = "standard",
     ) -> Optional[Dict[str, Any]]:
-        """AI 管理器直接生成剧本的兜底实现（结构化 JSON）。"""
+        """AI manager directly Sheng Cheng script fallback Shi Xian(Jie Gou Hua JSON)."""
         if not self.ai_manager:
             return None
 
@@ -63,8 +63,8 @@ class ScriptManagerMixin:
             raw_output: Any,
         ) -> tuple[dict | None, Any]:
             repair_prompt = (
-                "上一次输出无法解析为 JSON 或不符合要求，请修复。\n"
-                "要求：只返回严格 JSON（不要代码块/不要解释/不要额外文本）。\n"
+                "on Yi Ci output unable to parse as JSON or not Fu He Yao Qiu, Qing Xiu Fu.\n"
+                "requirement: only return strict JSON(Bu Yao Dai Ma Kuai/Bu Yao Jie Shi/Bu Yao extra text).\n"
                 f"输出结构示例（字段必须齐全）：\n{format_hint}\n\n"
                 f"raw_output:\n{raw_output}"
             )
@@ -151,7 +151,7 @@ class ScriptManagerMixin:
                 prefer_provider=prefer_provider,
                 max_tokens=_SCENE_PLAN_MAX_TOKENS,
                 json_schema=_SCENE_PLAN_SCHEMA_PAYLOAD,
-                system_prompt="你是专业的剧本场景规划师，请严格按 JSON 返回。",
+                system_prompt="you Shi professional script scene Gui Hua Shi, Qing strict An JSON return.",
                 stream=False,
             )
             if scene_plan_resp.success:

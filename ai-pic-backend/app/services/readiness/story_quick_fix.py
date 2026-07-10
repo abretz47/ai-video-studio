@@ -215,7 +215,7 @@ class StoryQuickFixService:
                 check_name="setting_present",
                 field="setting_time",
                 old_value=story.setting_time,
-                new_value="当代",
+                new_value="Dang Dai",
             )
 
         setting = await self._generate_text(

@@ -20,7 +20,7 @@ def _extract_json_like_substring(text: str) -> str:
 
     # Prefer the first balanced JSON object/array in the text, rather than
     # slicing to the *last* closing brace which can be polluted by extra
-    # reminders like `只输出严格JSON：{"frames":[...]}` appended by models.
+    # reminders like `only output strictJSON: {"frames":[...]}` appended by models.
     start = None
     for idx, ch in enumerate(stripped):
         if ch in "{[":
@@ -109,8 +109,8 @@ def _try_parse_literal_dict(text: str) -> Dict[str, Any] | None:
 
 def extract_json_block(payload: str | None) -> Dict[str, Any] | None:
     """
-    尝试从包含 Markdown 代码块或额外文字的字符串中提取 JSON 对象。
-    优先处理 ```json ... ``` 包裹的内容，再回退到首尾花括号截取。
+ Chang Shi Cong Bao Han Markdown Dai Ma Kuai or extra Wen Zi Zi Fu Chuan in extract JSON Dui Xiang.
+ priority process ```json... ``` Bao Guo content, then fallback to Shou Wei Hua Kuo Hao Jie Qu.
     """
     if not payload:
         return None

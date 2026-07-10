@@ -84,9 +84,9 @@ def _episode_target_duration_ms(episode: Any) -> int | None:
 
 def _tail_padding_action(index: int) -> str:
     actions = (
-        "AP手机倒计时继续跳动，投影原始文件删除进度条缓慢推进。",
-        "小陈连续敲键盘维持日志锁定，蓝色锁图标被红光压住。",
-        "张总把签字纪要压在桌上，会议室只剩键盘声和倒计时。",
-        "AP盯着屏幕不眨眼，备份硬盘指示灯一下一下闪烁。",
+        "APphone countdown continue Tiao Dong, Tou YingOriginal filedelete Jin Du Tiao Huan Man advance.",
+        "Xiao Chen Lian Xu Qiao Jian Pan Wei Chi log lock, Lan Se Suo Tu Biao Hong Guang Ya Zhu.",
+        "Zhang Zong Qian Zi Ji Yao Ya Zai Zhuo Shang, Hui Yi Shi only Sheng Jian Pan Sheng and countdown.",
+        "APDing Zhe screen not Zha Yan, backup Ying Pan Zhi Shi Deng Yi Xia Yi Xia Shan Shuo.",
     )
     return actions[(index - 1) % len(actions)]

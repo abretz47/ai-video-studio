@@ -101,7 +101,7 @@ class MinimaxProvider(BaseProvider):
         """MiniMax does not support image generation."""
         return AIResponse(
             success=False,
-            error="MiniMax暂不支持图像生成功能",
+            error="MiniMaxZan not support image Sheng Cheng feature",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.PORTRAIT_GENERATION,

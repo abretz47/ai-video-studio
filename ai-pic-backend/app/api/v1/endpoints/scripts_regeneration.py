@@ -21,15 +21,15 @@ router = APIRouter()
 
 
 class ScriptRegenerateRequest(BaseModel):
-    """剧本重新生成请求参数"""
+    """Script regeneration request parameters"""
 
-    model: Optional[str] = Field(None, description="模型ID，格式为 provider:model_id")
+    model: Optional[str] = Field(None, description="Model ID, in provider:model_id format")
 
 
 def build_script_regenerate_request(
     script: Script, episode: Episode, override_model: Optional[str] = None
 ) -> Dict[str, Any]:
-    """构建剧本重新生成的请求参数字典。"""
+    """Build the request-parameter dictionary for script regeneration."""
     original_params = script.generation_params or {}
     duration_minutes = getattr(episode, "duration_minutes", None)
     return {
@@ -44,7 +44,7 @@ def build_script_regenerate_request(
         "twist_density": original_params.get("twist_density"),
         "cliffhanger_plan": original_params.get("cliffhanger_plan"),
         "ad_snippets": original_params.get("ad_snippets"),
-        "additional_requirements": f"重新生成第{episode.episode_number}集的剧本内容",
+        "additional_requirements": f"Regenerate the script content for episode {episode.episode_number}",
         "style_preferences": original_params.get("style_preferences"),
         "model": override_model or original_params.get("model"),
         "temperature": original_params.get("temperature", 0.7),
@@ -59,7 +59,7 @@ async def regenerate_script_async(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """异步重新生成剧本内容"""
+    """Regenerate script content asynchronously"""
     script = get_script_by_identifier(db, script_id, None, current_user)
     return _enqueue_script_regeneration(script, request, current_user, db)
 
@@ -71,7 +71,7 @@ async def regenerate_script_by_business_id_async(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 异步重新生成剧本内容"""
+    """Regenerate script content asynchronously by business_id"""
     script = get_script_by_identifier(db, None, script_business_id, current_user)
     return _enqueue_script_regeneration(script, request, current_user, db)
 
@@ -84,18 +84,18 @@ def _enqueue_script_regeneration(
 ) -> Dict[str, Any]:
     episode = script.episode
     if not episode or getattr(episode, "is_deleted", False):
-        raise HTTPException(status_code=404, detail="剧集不存在")
+        raise HTTPException(status_code=404, detail="Episode does not exist")
 
     story = episode.story
     if not story or getattr(story, "is_deleted", False):
-        raise HTTPException(status_code=404, detail="故事不存在")
+        raise HTTPException(status_code=404, detail="Story does not exist")
 
     override_model = request.model if request else None
     request_dict = build_script_regenerate_request(script, episode, override_model)
 
     task = Task(
-        title=friendly_task_title("剧本重新生成", script, episode, story),
-        description=f"重新生成剧本 {script.id}（第{episode.episode_number}集）",
+        title=friendly_task_title("Script regeneration", script, episode, story),
+        description=f"Regenerate script {script.id} (episode {episode.episode_number})",
         task_type=TaskType.SCRIPT_GENERATION,
         prompt=f"Script regeneration for script {script.id}",
         parameters=json.dumps(request_dict, ensure_ascii=False),
@@ -111,6 +111,6 @@ def _enqueue_script_regeneration(
         "data": {
             "task_id": task.id,
             "status": task.status,
-            "message": "剧本重新生成任务已提交",
+            "message": "Script regeneration task submitted",
         },
     }

@@ -614,23 +614,23 @@ class ScriptLangGraphAgent:
         error_lower = error_text.lower()
 
         # Duration constraints (most common in script agent REACT loop)
-        if "时长" in error_lower or "duration" in error_lower:
+        if "when Zhang" in error_lower or "duration" in error_lower:
             return FailureMode.CONTENT_CONSTRAINT
 
         # Dialogue quality issues
-        if "对白" in error_lower or "dialogue" in error_lower:
+        if "dialogue" in error_lower or "dialogue" in error_lower:
             return FailureMode.CONTENT_CONSTRAINT
 
         # Repetition/reuse issues (logic errors)
         if (
-            "重复" in error_lower
+            "Chong Fu" in error_lower
             or "reused" in error_lower
             or "repeated" in error_lower
         ):
             return FailureMode.LOGIC_ERROR
 
         # Character consistency
-        if "角色" in error_lower or "character" in error_lower:
+        if "character" in error_lower or "character" in error_lower:
             return FailureMode.CHARACTER_INCONSISTENCY
 
         return FailureMode.UNKNOWN
@@ -735,7 +735,7 @@ class ScriptLangGraphAgent:
                         },
                     },
                 },
-                system_prompt="你是专业的剧本场景规划师，请严格按 JSON 返回。",
+                system_prompt="you Shi professional script scene Gui Hua Shi, Qing strict An JSON return.",
             )
             if not resp.success:
                 return {
@@ -905,7 +905,7 @@ class ScriptLangGraphAgent:
                         },
                     },
                 },
-                system_prompt="你是专业的剧本对白与舞台指示写手，请严格按 JSON 返回。",
+                system_prompt="you Shi professional script dialogue and Wu Tai Zhi Shi Xie Shou, Qing strict An JSON return.",
             )
             if not resp.success:
                 return {

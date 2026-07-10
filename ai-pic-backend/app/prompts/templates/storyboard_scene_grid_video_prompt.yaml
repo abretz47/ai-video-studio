@@ -1,5 +1,5 @@
 name: storyboard_scene_grid_video_prompt
-description: "宫格分镜图到 Seedance 连续成片的视频提示词 LLM 生成模板"
+description: "Gong Ge storyboard Tu Dao Seedance Lian Xu Cheng Pian De video prompt text LLM Sheng Cheng Mu Ban"
 category: storyboard
 version: "1.0"
 author: "AI Video Studio"
@@ -7,43 +7,43 @@ created_at: "2026-06-11"
 updated_at: "2026-06-11"
 
 variables:
-  story_tone:
-    type: string
-    required: false
-    description: "故事基调摘要"
-  style:
-    type: string
-    required: false
-    description: "风格要求"
-  scene:
-    type: dict
-    required: true
-    description: "场景信息（scene_number/location/time/description）"
-  characters:
-    type: list
-    required: false
-    description: "出场角色设定列表（dict: name/appearance）"
-  cells:
-    type: list
-    required: true
-    description: "宫格镜头元数据（dict: panel_index/title/caption/duration）"
-  total_duration:
-    type: number
-    required: true
-    description: "目标总时长（秒）"
-  aspect_ratio:
-    type: string
-    required: true
-    description: "画幅比例"
+ story_tone:
+ type: string
+ required: false
+ description: "story Ji Diao Zhai Yao"
+ style:
+ type: string
+ required: false
+ description: "Feng Ge Yao Qiu"
+ scene:
+ type: dict
+ required: true
+ description: "Chang Jing Xin Xi(scene_number/location/time/description)"
+ characters:
+ type: list
+ required: false
+ description: "Chu Chang character She Ding list(dict: name/appearance)"
+ cells:
+ type: list
+ required: true
+ description: "Gong Ge camera Yuan data(dict: panel_index/title/caption/duration)"
+ total_duration:
+ type: number
+ required: true
+ description: "target Zong Shi Chang(seconds)"
+ aspect_ratio:
+ type: string
+ required: true
+ description: "Hua Fu Bi Li"
 
 usage_examples:
-  - story_tone: "《醉拳》武侠短剧"
-    scene:
-      scene_number: 1
-    cells:
-      - panel_index: 1
-        title: "醉步入场"
-        caption: "醉步入场"
-        duration: 1.0
-    total_duration: 12
-    aspect_ratio: "16:9"
+ - story_tone: ""Zui Quan"Wu Xia Duan Ju"
+ scene:
+ scene_number: 1
+ cells:
+ - panel_index: 1
+ title: "Zui Bu Ru Chang"
+ caption: "Zui Bu Ru Chang"
+ duration: 1.0
+ total_duration: 12
+ aspect_ratio: "16:9"

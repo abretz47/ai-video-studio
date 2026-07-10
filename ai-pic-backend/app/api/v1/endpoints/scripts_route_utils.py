@@ -21,7 +21,7 @@ def get_script_by_identifier(
     script_business_id: Optional[str],
     current_user: User,
 ) -> Script:
-    """按主键或 business_id 获取剧本，校验归属与软删状态。"""
+    """Get a script by primary key or business_id, validating ownership and soft-delete status."""
     if not script_business_id and not script_id:
         raise HTTPException(status_code=400, detail="script identifier missing")
     script = ScriptsRouteRepository(db).get_script_by_identifier(
@@ -30,5 +30,5 @@ def get_script_by_identifier(
         current_user=current_user,
     )
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
     return script

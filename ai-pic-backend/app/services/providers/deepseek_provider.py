@@ -112,7 +112,7 @@ class DeepSeekProvider(BaseProvider):
         """DeepSeek does not support image generation in this provider."""
         return AIResponse(
             success=False,
-            error="DeepSeek不支持图像生成功能",
+            error="DeepSeeknot support image Sheng Cheng feature",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.PORTRAIT_GENERATION,
@@ -147,13 +147,13 @@ class DeepSeekProvider(BaseProvider):
         **kwargs,
     ) -> AIResponse:
         """Solve math problems with DeepSeek V4 Pro."""
-        system_prompt = """你是一个数学专家。请仔细分析数学问题，提供详细的解题步骤和最终答案。
-解答应该包括：
-1. 问题分析
-2. 解题思路
-3. 详细步骤
-4. 最终答案
-5. 验证过程（如果适用）"""
+        system_prompt = """you Shi a Shu Xue Zhuan Jia.Qing Zi Xi Fen Xi Shu Xue Wen Ti, Ti Gong detailed Jie Ti Bu Zhou and Zui Zhong Da An.
+Jie Da Ying Gai Bao Kuo: 
+1. Wen Ti Fen Xi
+2. Jie Ti Si Lu
+3. detailed Bu Zhou
+4. Zui Zhong Da An
+5. validation Guo Cheng(Ru Guo Shi Yong)"""
         return await self.generate_text(
             prompt=problem,
             model=model,
@@ -170,11 +170,11 @@ class DeepSeekProvider(BaseProvider):
     ) -> AIResponse:
         """Analyze text with DeepSeek."""
         analysis_prompts = {
-            "sentiment": "请分析以下文本的情感倾向，包括积极、消极、中性程度：",
-            "summary": "请总结以下文本的主要内容：",
-            "keywords": "请提取以下文本的关键词和主题：",
-            "structure": "请分析以下文本的结构和逻辑：",
-            "style": "请分析以下文本的写作风格和特点：",
+            "sentiment": "Qing Fen Xi Yi Xia text Qing Gan Qing Xiang, Bao Kuo Ji Ji, Xiao Ji, Zhong Xing Cheng Du: ",
+            "summary": "Qing Zong Jie Yi Xia text Zhu Yao content: ",
+            "keywords": "Qing extract Yi Xia text Guan Jian Ci and Zhu Ti: ",
+            "structure": "Qing Fen Xi Yi Xia text structure and Luo Ji: ",
+            "style": "Qing Fen Xi Yi Xia text Xie Zuo style and Te Dian: ",
         }
         prompt = analysis_prompts.get(analysis_type, analysis_prompts["sentiment"])
         return await self.generate_text(

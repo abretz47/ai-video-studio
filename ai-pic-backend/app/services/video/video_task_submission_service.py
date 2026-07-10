@@ -76,7 +76,7 @@ class VideoTaskSubmissionService:
     def _load_task(self, task_id: int) -> Task:
         task = self.db.query(Task).filter(Task.id == task_id).first()
         if not task:
-            raise RuntimeError("任务不存在")
+            raise RuntimeError("Task not found")
         task.status = TaskStatus.PROCESSING
         self.db.commit()
         return task
@@ -84,11 +84,11 @@ class VideoTaskSubmissionService:
     def _load_storyboard_frames(self, script_id: int) -> List[Dict[str, Any]]:
         script = self.db.query(Script).filter(Script.id == script_id).first()
         if not script:
-            raise RuntimeError("剧本不存在")
+            raise RuntimeError("Script not found")
         storyboard = (script.extra_metadata or {}).get("storyboard") or {}
         frames_src = list(storyboard.get("frames") or [])
         if not frames_src:
-            raise RuntimeError("未找到分镜数据")
+            raise RuntimeError("Wei Zhao Dao storyboard data")
         return [dict(fr) if isinstance(fr, dict) else {} for fr in frames_src]
 
     def _resolve_target_indexes(
@@ -143,7 +143,7 @@ class VideoTaskSubmissionService:
 
         provider_task_id = (response.data or {}).get("task_id")
         if not provider_task_id:
-            self._record_failure(task, script_id, frame_index, "未返回任务ID")
+            self._record_failure(task, script_id, frame_index, "Task ID was not returned")
             return False, f"frame {frame_index}: 未返回任务ID"
 
         provider_duration_seconds = int(
@@ -217,7 +217,7 @@ class VideoTaskSubmissionService:
         self, task: Task, submitted: int, failures: List[str]
     ) -> None:
         if submitted == 0:
-            error_msg = "未生成任何视频" + (f"：{failures[0]}" if failures else "")
+            error_msg = "not Sheng Cheng any video" + (f"：{failures[0]}" if failures else "")
             task.status = TaskStatus.FAILED
             task.error_message = error_msg
             self.db.commit()

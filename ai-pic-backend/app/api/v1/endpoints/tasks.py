@@ -21,7 +21,7 @@ def _not_deleted(query, model):
 
 
 def _serialize_task(task: Task) -> TaskResponse:
-    """将ORM任务对象序列化为响应模型，解析parameters为dict"""
+    """Serialize ORM task objects into response models and parse parameters as dicts"""
     params = None
     if task.parameters:
         try:
@@ -58,8 +58,8 @@ def create_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """创建新任务"""
-    # 将参数转换为JSON字符串
+    """Create a new task"""
+    # Convert parameters to a JSON string
     parameters_json = None
     if task_data.parameters:
         parameters_json = json.dumps(task_data.parameters)
@@ -89,7 +89,7 @@ def get_tasks(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """获取用户的任务列表"""
+    """Get the user's task list"""
     query = _not_deleted(db.query(Task), Task).filter(Task.user_id == current_user.id)
 
     if status_filter:
@@ -119,9 +119,9 @@ def get_tasks_no_slash(
     current_user: User = Depends(get_current_active_user),
 ):
     """
-    兼容无尾斜杠的 /api/v1/tasks 请求，避免 FastAPI 返回 307 重定向。
+    Support /api/v1/tasks requests without a trailing slash to avoid FastAPI returning 307 redirects.
 
-    内部直接复用 get_tasks 的分页与过滤逻辑。
+    Internally reuse get_tasks pagination and filtering logic directly.
     """
     return get_tasks(
         skip=skip,
@@ -139,7 +139,7 @@ def get_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """获取特定任务信息"""
+    """Get specific task information"""
     task = (
         _not_deleted(db.query(Task), Task)
         .filter(Task.id == task_id, Task.user_id == current_user.id)
@@ -147,7 +147,7 @@ def get_task(
     )
 
     if task is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="任务不存在")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task does not exist")
 
     return _serialize_task(task)
 
@@ -159,7 +159,7 @@ def update_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """更新任务信息"""
+    """Update task information"""
     task = (
         _not_deleted(db.query(Task), Task)
         .filter(Task.id == task_id, Task.user_id == current_user.id)
@@ -167,9 +167,9 @@ def update_task(
     )
 
     if task is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="任务不存在")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task does not exist")
 
-    # 更新任务信息
+    # Update task information
     update_data = task_data.model_dump(exclude_unset=True)
 
     # Validate status transitions
@@ -180,12 +180,12 @@ def update_task(
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=(
-                    f"不允许从 {task.status.value} 转换到 {new_status.value}，"
-                    f"允许的目标状态: {[s.value for s in allowed] or '无'}"
+                    f"Transition from {task.status.value} to {new_status.value} is not allowed, "
+                    f"allowed target states: {[s.value for s in allowed] or 'none'}"
                 ),
             )
 
-    # 如果更新参数，需要转换为JSON字符串
+    # If parameters are updated, convert them to a JSON string
     if "parameters" in update_data:
         update_data["parameters"] = json.dumps(update_data["parameters"])
 
@@ -205,7 +205,7 @@ def delete_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """删除任务"""
+    """Delete task"""
     task = (
         _not_deleted(db.query(Task), Task)
         .filter(Task.id == task_id, Task.user_id == current_user.id)
@@ -213,12 +213,12 @@ def delete_task(
     )
 
     if task is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="任务不存在")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task does not exist")
 
     task.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
 
-    return {"message": "任务已删除"}
+    return {"message": "Task deleted"}
 
 
 def _dispatch_celery_task(task: Task, user_id: int) -> bool:
@@ -282,7 +282,7 @@ def start_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user),
 ):
-    """开始执行任务"""
+    """Start executing task"""
     task = (
         _not_deleted(db.query(Task), Task)
         .filter(Task.id == task_id, Task.user_id == current_user.id)
@@ -290,19 +290,19 @@ def start_task(
     )
 
     if task is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="任务不存在")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task does not exist")
 
     if task.status not in (TaskStatus.PENDING, TaskStatus.FAILED):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"当前状态({task.status.value})不允许开始执行",
+            detail=f"Current status ({task.status.value}) does not allow execution to start",
         )
 
     dispatched = _dispatch_celery_task(task, current_user.id)
     if not dispatched:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"任务类型 {task.task_type.value} 暂不支持手动启动",
+            detail=f"Task type {task.task_type.value} does not currently support manual start",
         )
 
     task.status = TaskStatus.PROCESSING
@@ -310,4 +310,4 @@ def start_task(
     db.commit()
     logger.info("Task %s dispatched to Celery (type=%s)", task_id, task.task_type.value)
 
-    return {"message": "任务已开始执行", "task_id": task_id}
+    return {"message": "Task execution started", "task_id": task_id}

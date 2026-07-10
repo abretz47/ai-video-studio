@@ -50,7 +50,7 @@ def get_script_with_auth(
 
     script = script_query.first()
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     return script
 
@@ -105,9 +105,9 @@ def enforce_storyboard_variety(frames: List[dict]) -> List[dict]:
     """Apply cinematic variety rules to storyboard frames.
 
     Ensures visual diversity across shots by cycling through:
-    - Shot types: 远景, 中景, 近景, 特写
-    - Camera movements: 固定, 推, 拉, 摇, 移, 跟, 变焦
-    - Compositions: 三分法, 对称, 前后景, 对角线, 中心对称
+    - Shot types: Wide shot, Medium shot, Close shot, Close-up
+    - Camera movements: Static, Push, Pull, Pan, Move, Follow, Zoom
+    - Compositions: Rule of thirds, Symmetry, Foreground/background layering, Diagonal composition, Central symmetry
 
     Args:
         frames: List of frame dictionaries
@@ -115,9 +115,9 @@ def enforce_storyboard_variety(frames: List[dict]) -> List[dict]:
     Returns:
         Modified frames with enforced variety
     """
-    shot_types = ["远景", "中景", "近景", "特写"]
-    camera_movements = ["固定", "推", "拉", "摇", "移", "跟", "变焦"]
-    compositions = ["三分法", "对称", "前后景", "对角线", "中心对称"]
+    shot_types = ["Wide shot", "Medium shot", "Close shot", "Close-up"]
+    camera_movements = ["Static", "Push", "Pull", "Pan", "Move", "Follow", "Zoom"]
+    compositions = ["Rule of thirds", "Symmetry", "Foreground/background layering", "Diagonal composition", "Central symmetry"]
 
     for i, frame in enumerate(frames):
         variety_index = i % 4
@@ -137,8 +137,8 @@ def enforce_storyboard_variety(frames: List[dict]) -> List[dict]:
         # Update description with camera movement emphasis
         desc = frame.get("description", "")
         movement = frame["camera_movement"]
-        if movement != "固定" and movement not in desc:
-            frame["description"] = f"{desc}（{movement}镜头）"
+        if movement != "Static" and movement not in desc:
+            frame["description"] = f"{desc} ({movement} shot)"
 
         # Sync ai_prompt with description if needed
         if not frame.get("ai_prompt"):
@@ -161,27 +161,27 @@ def build_reference_image_context(
     if not labeled_references:
         return ""
 
-    lines = ["[参考图说明]"]
+    lines = ["[Reference image notes]"]
     type_labels = {
-        "character": "角色",
-        "environment": "场景环境",
-        "primary": "主要风格/构图",
-        "other": "补充参考",
+        "character": "Character",
+        "environment": "Scene environment",
+        "primary": "Primary style/composition",
+        "other": "Supplementary reference",
     }
 
     for i, ref in enumerate(labeled_references, 1):
         ref_type = ref.get("type", "other")
         label = ref.get("label", "")
-        type_desc = type_labels.get(ref_type, "参考")
+        type_desc = type_labels.get(ref_type, "Reference")
 
         if ref_type == "character" and label:
-            lines.append(f"- 第{i}张图是角色「{label}」的参考形象")
+            lines.append(f"- Image {i} is a reference portrayal of character '{label}'")
         elif ref_type == "environment":
-            lines.append(f"- 第{i}张图是{type_desc}参考")
+            lines.append(f"- Image {i} is a {type_desc} reference")
         else:
             desc = f"{type_desc}"
             if label:
                 desc += f"（{label}）"
-            lines.append(f"- 第{i}张图是{desc}")
+            lines.append(f"- Image {i} is {desc}")
 
     return "\n".join(lines)

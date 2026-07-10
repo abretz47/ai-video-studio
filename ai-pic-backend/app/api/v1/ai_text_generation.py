@@ -14,18 +14,18 @@ router = APIRouter()
 class TextGenerationRequest(BaseModel):
     """Text generation request."""
 
-    prompt: str = Field(..., description="生成提示词")
-    model: Optional[str] = Field(None, description="指定模型")
-    prefer_provider: Optional[str] = Field(None, description="首选提供商")
-    system_prompt: Optional[str] = Field(None, description="系统提示词")
+    prompt: str = Field(..., description="Generation prompt")
+    model: Optional[str] = Field(None, description="Specific model")
+    prefer_provider: Optional[str] = Field(None, description="Preferred provider")
+    system_prompt: Optional[str] = Field(None, description="System prompt")
     max_tokens: Optional[int] = Field(
-        None, description="最大token数（为空则不限制，由模型决定）"
+        None, description="Maximum token count (unlimited when empty; determined by the model)"
     )
-    temperature: float = Field(0.7, description="创造性参数")
-    stream: bool = Field(False, description="是否使用流式文本生成")
-    thinking: Optional[bool] = Field(None, description="是否启用模型思考模式")
+    temperature: float = Field(0.7, description="Creativity parameter")
+    stream: bool = Field(False, description="Whether to use streaming text generation")
+    thinking: Optional[bool] = Field(None, description="Whether to enable model thinking mode")
     json_schema: Optional[dict[str, Any]] = Field(
-        None, description="结构化输出 JSON schema"
+        None, description="Structured output JSON schema"
     )
 
 
@@ -69,4 +69,4 @@ async def generate_text(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"文本生成失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Text generation failed: {str(e)}")

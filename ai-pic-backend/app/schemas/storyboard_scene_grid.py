@@ -10,22 +10,22 @@ from pydantic import BaseModel, Field
 class SceneGridCell(BaseModel):
     """One panel's metadata inside the grid sheet."""
 
-    panel_index: int = Field(..., description="宫格序号，从1开始")
-    title: str = Field(..., description="镜头名称（说明栏标题）")
-    caption: str = Field("", description="说明栏文字")
+    panel_index: int = Field(..., description="Gong Ge Xu Hao, Cong1Kai Shi")
+    title: str = Field(..., description="shot name(note Lan title)")
+    caption: str = Field("", description="note Lan Wen Zi")
 
 
 class SceneGridPromptModel(BaseModel):
     """LLM output schema for the grid sheet prompt."""
 
-    sheet_prompt: str = Field(..., description="宫格分镜大图生图提示词")
+    sheet_prompt: str = Field(..., description="Gong Ge storyboard Da Tu Sheng Tu prompt Ci")
     cells: List[SceneGridCell]
 
 
 class SceneGridVideoPromptModel(BaseModel):
     """LLM output schema for the grid-to-video prompt."""
 
-    video_prompt: str = Field(..., description="宫格图转连续成片的视频提示词")
+    video_prompt: str = Field(..., description="Gong Ge Tu Zhuan Lian Xu Cheng Pian video prompt Ci")
 
 
 class SceneGridCharacterRef(BaseModel):
@@ -39,32 +39,32 @@ class SceneGridCharacterRef(BaseModel):
 class SceneGridSheetRequest(BaseModel):
     """Request schema for generating a scene grid storyboard sheet."""
 
-    scene_number: int = Field(..., description="场景编号")
-    grid_size: int = Field(12, description="宫格数量（4/6/9/12/16）")
-    model: Optional[str] = Field(None, description="生图模型")
+    scene_number: int = Field(..., description="scene ID")
+    grid_size: int = Field(12, description="Gong Ge Shu Liang(4/6/9/12/16)")
+    model: Optional[str] = Field(None, description="Sheng Tu model")
     generation_profile: Optional[str] = None
-    style: Optional[str] = Field(None, description="风格")
-    aspect_ratio: str = Field("16:9", description="画幅比例")
+    style: Optional[str] = Field(None, description="style")
+    aspect_ratio: str = Field("16:9", description="Hua Fu ratio")
     character_refs: Optional[List[SceneGridCharacterRef]] = Field(
-        None, description="用户选择的人物参考图"
+        None, description="user Xuan Ze character reference Tu"
     )
     environment_refs: Optional[List[str]] = Field(
-        None, description="用户选择的环境参考图 URL 列表"
+        None, description="user Xuan Ze environment reference Tu URL list"
     )
 
 
 class SceneGridVideoRequest(BaseModel):
     """Request schema for generating a continuous video from the grid sheet."""
 
-    scene_number: int = Field(..., description="场景编号")
-    model: Optional[str] = Field("seedance-2.0", description="视频模型")
+    scene_number: int = Field(..., description="scene ID")
+    model: Optional[str] = Field("seedance-2.0", description="video model")
     duration: Optional[int] = Field(
-        None, description="目标时长（秒，4-15；不传则按帧时长合计并截断）"
+        None, description="target when Zhang(seconds, 4-15; Bu Chuan then An Zhen duration He Ji and Jie Duan)"
     )
-    resolution: Optional[str] = Field("720p", description="分辨率")
-    ratio: Optional[str] = Field(None, description="画幅比例")
-    generate_audio: Optional[bool] = Field(None, description="是否生成音频")
-    prompt: Optional[str] = Field(None, description="自定义视频提示词覆盖")
+    resolution: Optional[str] = Field("720p", description="Fen Bian Lv")
+    ratio: Optional[str] = Field(None, description="Hua Fu ratio")
+    generate_audio: Optional[bool] = Field(None, description="Shi Fou Sheng Cheng audio")
+    prompt: Optional[str] = Field(None, description="Zi Ding Yi video prompt Ci Fu Gai")
 
 
 class SceneGridInfo(BaseModel):

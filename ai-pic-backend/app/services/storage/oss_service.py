@@ -10,10 +10,10 @@ from .oss_upload_mixin import OSSUploadMixin
 
 
 class OSSService(OSSUploadMixin, OSSAdminMixin, OSSBackupMixin):
-    """阿里云OSS存储服务"""
+    """A Li YunOSSCun Chu service"""
 
     def __init__(self):
-        # 基本配置，统一做strip去掉可能的空白字符，避免签名失败
+        # Ji Ben configuration, unified ZuostripQu Diao Ke Neng Kong Bai Zi Fu, avoid Qian Ming failed
         raw_access_key_id = getattr(settings, "ALIYUN_ACCESS_KEY_ID", None)
         raw_access_key_secret = getattr(settings, "ALIYUN_ACCESS_KEY_SECRET", None)
         raw_endpoint = getattr(settings, "ALIYUN_OSS_ENDPOINT", None)
@@ -47,9 +47,9 @@ class OSSService(OSSUploadMixin, OSSAdminMixin, OSSBackupMixin):
                 self.bucket_name,
             ]
         ):
-            raise ValueError("阿里云OSS配置不完整，请检查环境变量")
+            raise ValueError("A Li YunOSSconfiguration not complete, Qing check Huan Jing Bian Liang")
 
-        # 规范化 endpoint，保证后续 SDK 使用一致
+        # Gui Fan Hua endpoint, Bao Zheng subsequent SDK Shi Yong Yi Zhi
         parsed = urlparse(self.endpoint)
         if parsed.scheme:
             endpoint_host = parsed.netloc or parsed.path
@@ -57,18 +57,18 @@ class OSSService(OSSUploadMixin, OSSAdminMixin, OSSBackupMixin):
             endpoint_host = parsed.path or parsed.netloc
         self._endpoint_host = endpoint_host
 
-        # 使用官方 SDK 负责签名，避免手写签名出错导致 403
+        # Shi Yong Guan Fang SDK responsible for Qian Ming, avoid Shou Xie Qian Ming Chu Cuo Dao Zhi 403
         auth = oss2.Auth(self.access_key_id, self.access_key_secret)
         self.bucket = oss2.Bucket(
             auth, f"https://{self._endpoint_host}", self.bucket_name
         )
 
-        # 设置默认访问域名
+        # She Zhi default access Yu Ming
         if not self.domain:
             self.domain = f"https://{self.bucket_name}.{self._endpoint_host}"
 
 
-# 创建全局OSS服务实例
+# create Quan JuOSS serviceinstance
 try:
     oss_service = OSSService()
 except ValueError as e:

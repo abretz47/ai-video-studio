@@ -44,7 +44,7 @@ def get_episode_by_identifier(
         current_user=current_user,
     )
     if not episode:
-        raise HTTPException(status_code=404, detail="剧集不存在")
+        raise HTTPException(status_code=404, detail="Episode does not exist")
     return episode
 
 
@@ -64,7 +64,7 @@ def get_story_by_identifier(
         current_user=current_user,
     )
     if not story:
-        raise HTTPException(status_code=404, detail="故事不存在")
+        raise HTTPException(status_code=404, detail="Story does not exist")
     return story
 
 
@@ -168,7 +168,7 @@ def build_outline_rows(
                     beat_title=beat.get("beat_title") or f"Beat {beat_idx}",
                     beat_summary=beat.get("beat_summary")
                     or beat.get("description")
-                    or f"情节点 {beat_idx}",
+                    or f"Beat point {beat_idx}",
                     dramatic_question=beat.get("dramatic_question"),
                     characters_involved=beat.get("characters_involved"),
                     location_hint=beat.get("location_hint"),
@@ -197,7 +197,7 @@ def build_stub_episodes_from_outlines(
         if not logline:
             continue
         ep_number = outline.get("episode_number") or idx
-        title = outline.get("title") or f"第{ep_number}集"
+        title = outline.get("title") or f"Episode {ep_number}"
         episodes.append(
             {
                 "episode_number": ep_number,

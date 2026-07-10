@@ -70,8 +70,8 @@ def list_image_gen_profiles(
                 profiles=(
                     ImageGenProfile(
                         id="balanced",
-                        label="均衡",
-                        description="适合大多数场景的默认质量档位",
+                        label="Jun Heng",
+                        description="Shi He Da Duo Shu scene default Zhi Liang Dang Wei",
                         defaults=ImageGenProfileDefaults(
                             strength=0.75,
                             steps=25,
@@ -80,8 +80,8 @@ def list_image_gen_profiles(
                     ),
                     ImageGenProfile(
                         id="quality",
-                        label="质量优先",
-                        description="更高步数以获得更稳定细节（更慢）",
+                        label="Zhi Liang priority",
+                        description="Geng Gao Bu Shu Yi Huo De Geng Wen Ding Xi Jie(Geng Man)",
                         defaults=ImageGenProfileDefaults(
                             strength=0.7,
                             steps=35,
@@ -90,8 +90,8 @@ def list_image_gen_profiles(
                     ),
                     ImageGenProfile(
                         id="fast",
-                        label="速度优先",
-                        description="更低步数以加快生成（细节可能下降）",
+                        label="Su Du priority",
+                        description="Geng Di Bu Shu Yi Jia Kuai Sheng Cheng(Xi Jie Ke Neng Xia Jiang)",
                         defaults=ImageGenProfileDefaults(
                             strength=0.8,
                             steps=18,
@@ -106,8 +106,8 @@ def list_image_gen_profiles(
             profiles=(
                 ImageGenProfile(
                     id="balanced",
-                    label="均衡",
-                    description="适合大多数场景的默认质量档位",
+                    label="Jun Heng",
+                    description="Shi He Da Duo Shu scene default Zhi Liang Dang Wei",
                     defaults=ImageGenProfileDefaults(
                         steps=30,
                         cfg_scale=7.0,
@@ -116,8 +116,8 @@ def list_image_gen_profiles(
                 ),
                 ImageGenProfile(
                     id="quality",
-                    label="质量优先",
-                    description="更高步数以获得更稳定细节（更慢）",
+                    label="Zhi Liang priority",
+                    description="Geng Gao Bu Shu Yi Huo De Geng Wen Ding Xi Jie(Geng Man)",
                     defaults=ImageGenProfileDefaults(
                         steps=40,
                         cfg_scale=7.5,
@@ -126,8 +126,8 @@ def list_image_gen_profiles(
                 ),
                 ImageGenProfile(
                     id="fast",
-                    label="速度优先",
-                    description="更低步数以加快生成（细节可能下降）",
+                    label="Su Du priority",
+                    description="Geng Di Bu Shu Yi Jia Kuai Sheng Cheng(Xi Jie Ke Neng Xia Jiang)",
                     defaults=ImageGenProfileDefaults(
                         steps=20,
                         cfg_scale=6.5,
@@ -144,8 +144,8 @@ def list_image_gen_profiles(
                 profiles=(
                     ImageGenProfile(
                         id="balanced",
-                        label="均衡",
-                        description="使用可灵默认参考强度（更适合大多数场景）",
+                        label="Jun Heng",
+                        description="Shi Yong Kling default reference Qiang Du(Geng Shi He Da Duo Shu scene)",
                         defaults=ImageGenProfileDefaults(
                             image_fidelity=0.5,
                             human_fidelity=0.45,
@@ -153,8 +153,8 @@ def list_image_gen_profiles(
                     ),
                     ImageGenProfile(
                         id="identity",
-                        label="身份优先",
-                        description="更强参考强度，适合虚拟 IP 多次生成保持一致（更保守）",
+                        label="Shen Fen priority",
+                        description="Geng Qiang reference Qiang Du, Shi He Xu Ni IP Duo Ci Sheng Cheng Bao Chi Yi Zhi(Geng Bao Shou)",
                         defaults=ImageGenProfileDefaults(
                             image_fidelity=0.7,
                             human_fidelity=0.6,
@@ -162,8 +162,8 @@ def list_image_gen_profiles(
                     ),
                     ImageGenProfile(
                         id="creative",
-                        label="更自由",
-                        description="更弱参考强度，允许更多变化（更发散）",
+                        label="Geng Zi You",
+                        description="Geng Ruo reference Qiang Du, Yun Xu Geng multiple change(Geng Fa San)",
                         defaults=ImageGenProfileDefaults(
                             image_fidelity=0.35,
                             human_fidelity=0.35,
@@ -176,8 +176,8 @@ def list_image_gen_profiles(
             profiles=(
                 ImageGenProfile(
                     id="balanced",
-                    label="均衡",
-                    description="默认反向提示词（去水印/文字/低清晰度等）",
+                    label="Jun Heng",
+                    description="default Fan Xiang prompt Ci(Qu Shui Yin/Wen Zi/Di Qing Xi Du Deng)",
                     defaults=ImageGenProfileDefaults(
                         negative_prompt=DEFAULT_NEGATIVE_PROMPT,
                     ),
@@ -197,8 +197,8 @@ def list_image_gen_profiles(
                 profiles=(
                     ImageGenProfile(
                         id="balanced",
-                        label="默认",
-                        description="使用官方默认 guidance_scale（映射到 cfg_scale）",
+                        label="default",
+                        description="Shi Yong Guan Fang default guidance_scale(Ying She to cfg_scale)",
                         defaults=ImageGenProfileDefaults(cfg_scale=2.5),
                     ),
                 ),
@@ -213,8 +213,8 @@ def list_image_gen_profiles(
                 profiles=(
                     ImageGenProfile(
                         id="balanced",
-                        label="默认",
-                        description="使用官方默认 guidance_scale（映射到 cfg_scale）",
+                        label="default",
+                        description="Shi Yong Guan Fang default guidance_scale(Ying She to cfg_scale)",
                         defaults=ImageGenProfileDefaults(cfg_scale=5.5),
                     ),
                 ),

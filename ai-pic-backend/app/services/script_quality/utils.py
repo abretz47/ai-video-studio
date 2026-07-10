@@ -15,7 +15,7 @@ def is_dialogue(line: str) -> tuple[bool, str | None, str | None]:
         return False, None, None
     speaker = m.group(1).strip()
     content = m.group(2).strip()
-    if speaker in {"人物", "角色", "出场人物"}:
+    if speaker in {"character", "character", "Chu Chang character"}:
         return False, None, None
     return True, speaker, content
 

@@ -192,7 +192,7 @@ def _run_standard_scoring(generated: Dict[str, Any], score_attempt):
         return anyio.run(score_attempt, generated)
     except Exception:
         logger = get_logger("storyboard_image_task")
-        logger.warning("生成评分/投流表失败（generate-async）", exc_info=True)
+        logger.warning("Sheng Cheng Ping Fen/Tou Liu Biao failed(generate-async)", exc_info=True)
         generated["agent_run"] = {
             **(generated.get("agent_run") or {}),
             "scoring_error": "failed_to_generate",
@@ -229,7 +229,7 @@ def _apply_auto_timeline_pipeline(
             }
         except Exception as exc:
             logger.warning(
-                "生产级自动时间轴/分镜占位失败（generate-async）",
+                "production Ji automatic timeline/storyboard Zhan Wei failed(generate-async)",
                 exc_info=True,
             )
             production_meta["auto_timeline_pipeline"] = {

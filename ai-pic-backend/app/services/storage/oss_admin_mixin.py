@@ -7,13 +7,13 @@ import oss2
 
 class OSSAdminMixin:
     def delete_object(self, object_key: str) -> dict[str, Any]:
-        """删除OSS对象"""
+        """deleteOSSDui Xiang"""
         try:
             self.bucket.delete_object(object_key)
             return {
                 "success": True,
                 "object_key": object_key,
-                "message": "删除成功",
+                "message": "delete successful",
             }
         except Exception as exc:  # noqa: BLE001
             return {
@@ -25,7 +25,7 @@ class OSSAdminMixin:
     def get_signed_url(
         self, object_key: str, expires: int = 3600, method: str = "GET"
     ) -> str:
-        """生成签名URL"""
+        """Sheng Cheng Qian MingURL"""
         try:
             return self.bucket.sign_url(method, object_key, expires)
         except Exception as exc:  # noqa: BLE001
@@ -34,7 +34,7 @@ class OSSAdminMixin:
     def list_objects(
         self, prefix: str = "", max_keys: int = 100, marker: str = ""
     ) -> dict[str, Any]:
-        """列出对象"""
+        """Lie Chu Dui Xiang"""
         try:
             result = self.bucket.list_objects(
                 prefix=prefix, max_keys=max_keys, marker=marker
@@ -60,7 +60,7 @@ class OSSAdminMixin:
             return {"success": False, "error": f"列出对象失败: {exc}"}
 
     def get_object_info(self, object_key: str) -> dict[str, Any]:
-        """获取对象信息"""
+        """get Dui Xiang Xin Xi"""
         try:
             head_result = self.bucket.head_object(object_key)
             metadata = {
@@ -79,7 +79,7 @@ class OSSAdminMixin:
                 "url": f"{self.domain}/{object_key}",
             }
         except oss2.exceptions.NoSuchKey:
-            return {"success": False, "error": "对象不存在", "object_key": object_key}
+            return {"success": False, "error": "Dui Xiang not Cun Zai", "object_key": object_key}
         except Exception as exc:  # noqa: BLE001
             return {
                 "success": False,

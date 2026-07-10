@@ -17,8 +17,8 @@ def get_available_models() -> List[ModelInfo]:
         # V2 Series Models - Latest generation
         ModelInfo(
             model_id="kling-v2-6",
-            name="可灵 V2.6",
-            description="最新V2.6版本，支持声音控制，1080p高清输出",
+            name="Kling V2.6",
+            description="Zui XinV2.6version, support Sheng Yin Kong Zhi, 1080pGao Qing output",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=[
@@ -39,14 +39,14 @@ def get_available_models() -> List[ModelInfo]:
                     "default_ratio": "16:9",
                     "supports_camera_control": True,
                     "supports_watermark": False,
-                    "camera_control_hint": "按可灵 image2video camera_control JSON 传参，例如轨迹/速度。",
+                    "camera_control_hint": "An Ke Ling image2video camera_control JSON Chuan Can, for example Gui Ji/Su Du.",
                 }
             },
         ),
         ModelInfo(
             model_id="kling-v2-5-turbo",
-            name="可灵 V2.5 Turbo",
-            description="V2.5快速版本，生成速度更快",
+            name="Kling V2.5 Turbo",
+            description="V2.5quick version, Sheng Cheng Su Du Geng Kuai",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "fast_generation", "1080p", "30fps"],
@@ -61,14 +61,14 @@ def get_available_models() -> List[ModelInfo]:
                     "default_ratio": "16:9",
                     "supports_camera_control": True,
                     "supports_watermark": False,
-                    "camera_control_hint": "按可灵 image2video camera_control JSON 传参，例如轨迹/速度。",
+                    "camera_control_hint": "An Ke Ling image2video camera_control JSON Chuan Can, for example Gui Ji/Su Du.",
                 }
             },
         ),
         ModelInfo(
             model_id="kling-v2-1-master",
-            name="可灵 V2.1 Master",
-            description="V2.1专业版，支持更多高级特性",
+            name="Kling V2.1 Master",
+            description="V2.1Zhuan Ye Ban, support Geng multiple Gao Ji Te Xing",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=[
@@ -89,14 +89,14 @@ def get_available_models() -> List[ModelInfo]:
                     "default_ratio": "16:9",
                     "supports_camera_control": True,
                     "supports_watermark": False,
-                    "camera_control_hint": "按可灵 image2video camera_control JSON 传参，例如轨迹/速度。",
+                    "camera_control_hint": "An Ke Ling image2video camera_control JSON Chuan Can, for example Gui Ji/Su Du.",
                 }
             },
         ),
         ModelInfo(
             model_id="kling-v2-1",
-            name="可灵 V2.1",
-            description="V2.1标准版，平衡质量与速度",
+            name="Kling V2.1",
+            description="V2.1Biao Zhun Ban, Ping Heng Zhi Liang and Su Du",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "1080p", "30fps"],
@@ -111,15 +111,15 @@ def get_available_models() -> List[ModelInfo]:
                     "default_ratio": "16:9",
                     "supports_camera_control": True,
                     "supports_watermark": False,
-                    "camera_control_hint": "按可灵 image2video camera_control JSON 传参，例如轨迹/速度。",
+                    "camera_control_hint": "An Ke Ling image2video camera_control JSON Chuan Can, for example Gui Ji/Su Du.",
                 }
             },
         ),
         # V1 Series Models - Legacy but still supported
         ModelInfo(
             model_id="kling-v1-6",
-            name="可灵 V1.6",
-            description="V1.6版本，支持多图生成视频",
+            name="Kling V1.6",
+            description="V1.6version, support Duo Tu Sheng Cheng video",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "multi_image", "720p", "24fps"],
@@ -139,8 +139,8 @@ def get_available_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id="kling-v1-5",
-            name="可灵 V1.5",
-            description="V1.5版本，稳定可靠",
+            name="Kling V1.5",
+            description="V1.5version, Wen Ding Ke Kao",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "720p", "24fps"],
@@ -160,8 +160,8 @@ def get_available_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id="kling-v1",
-            name="可灵 V1",
-            description="V1基础版本",
+            name="Kling V1",
+            description="V1basic version",
             model_type=AIModelType.IMAGE_TO_VIDEO,
             supported_formats=["mp4"],
             capabilities=["image_to_video", "720p", "24fps"],
@@ -182,8 +182,8 @@ def get_available_models() -> List[ModelInfo]:
         # Image Generation Models
         ModelInfo(
             model_id="kling-v2",
-            name="可灵图像生成 V2",
-            description="可灵图像生成模型（kling-v2），支持文生图与图生图参考",
+            name="Kling image Sheng Cheng V2",
+            description="Kling image Sheng Cheng model(kling-v2), support Wen Sheng Tu and Tu Sheng Tu reference",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpg"],
             capabilities=["text_to_image", "image_to_image", "2k_resolution"],
@@ -207,8 +207,8 @@ def get_available_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id="kling-v2-1",
-            name="可灵图像生成 V2.1",
-            description="可灵图像生成模型（kling-v2-1），支持 2K 高质量文生图输出",
+            name="Kling image Sheng Cheng V2.1",
+            description="Kling image Sheng Cheng model(kling-v2-1), support 2K High qualityWen Sheng Tu output",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpg"],
             capabilities=["text_to_image", "2k_resolution"],
@@ -223,8 +223,8 @@ def get_available_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id="kling-v1",
-            name="可灵图像生成 V1",
-            description="可灵图像生成模型（kling-v1），支持 1K 输出与图生图参考",
+            name="Kling image Sheng Cheng V1",
+            description="Kling image Sheng Cheng model(kling-v1), support 1K output and Tu Sheng Tu reference",
             model_type=AIModelType.TEXT_TO_IMAGE,
             supported_formats=["png", "jpg"],
             capabilities=["text_to_image", "image_to_image", "1k_resolution"],

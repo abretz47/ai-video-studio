@@ -7,11 +7,11 @@ created_at: "2026-01-30"
 updated_at: "2026-05-25"
 
 variables:
-  speaker:
-    type: string
-    required: true
-    description: "阅读主体（可包含简短身份提示）"
-  reaction:
-    type: string
-    required: true
-    description: "读到关键信息后的视觉反应"
+ speaker:
+ type: string
+ required: true
+ description: "Yue Du Zhu Ti(Ke Bao Han Jian Duan identity prompt)"
+ reaction:
+ type: string
+ required: true
+ description: "Du to key information Hou De Shi Jue Fan Ying"

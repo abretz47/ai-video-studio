@@ -1,5 +1,5 @@
 name: episode_plan_repair
-description: "修复剧集规划输出为符合 EpisodePlanModel 的纯 JSON"
+description: "repair episode planning output Wei Fu He EpisodePlanModel De Chun JSON"
 category: general
 version: "1.0"
 author: "AI Video Studio"
@@ -7,24 +7,24 @@ created_at: "2025-12-10"
 updated_at: "2025-12-10"
 
 variables:
-  schema:
-    type: any
-    required: true
-    description: "EpisodePlanModel 的 JSON Schema"
-  missing_fields:
-    type: list
-    required: false
-    description: "校验失败时缺失或异常的字段路径列表"
-  original_prompt:
-    type: string
-    required: false
-    description: "初次生成使用的提示词"
-  original_output:
-    type: string
-    required: true
-    description: "需要修复的原始模型输出"
+ schema:
+ type: any
+ required: true
+ description: "EpisodePlanModel De JSON Schema"
+ missing_fields:
+ type: list
+ required: false
+ description: "Jiao Yan failed Shi Que Shi Huo exception De character Duan path list"
+ original_prompt:
+ type: string
+ required: false
+ description: "Chu Ci generate use De prompt text"
+ original_output:
+ type: string
+ required: true
+ description: "Xu Yao repair De Yuan Shi model output"
 
 usage_examples:
-  - schema: "{...EpisodePlanModel schema...}"
-    original_prompt: "生成 10 集都市职场剧集大纲"
-    original_output: '{"episodes": []}'
+ - schema: "{...EpisodePlanModel schema...}"
+ original_prompt: "generate 10 Ji urban Zhi Chang episode Da Gang"
+ original_output: '{"episodes": []}'

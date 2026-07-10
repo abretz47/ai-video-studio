@@ -71,15 +71,15 @@ async def generate_virtual_ip_image_variants(
 
     call = build_ai_manager_call(normalized)
     if not call.get("image_url"):
-        raise RuntimeError("基础图像地址缺失，无法执行图生图")
+        raise RuntimeError("basic image Di Zhi Que Shi, unable to execute Tu Sheng Tu")
 
     response = await ai_service.ai_manager.image_to_image(**call)
     if not response.success:
-        raise RuntimeError(response.error or "图生图生成失败")
+        raise RuntimeError(response.error or "Tu Sheng Tu Sheng Cheng failed")
 
     images = response.data.get("images", []) if isinstance(response.data, dict) else []
     if not images:
-        raise RuntimeError("图生图接口未返回任何图像")
+        raise RuntimeError("Tu Sheng Tu API not return any image")
 
     generation_params = dict(response.usage or {})
     if isinstance(response.metadata, dict):

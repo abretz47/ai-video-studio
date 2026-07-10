@@ -144,34 +144,34 @@ class StoryQualityValidator:
     # Hook quality indicators
     HOOK_KEYWORDS = {
         "strong": [
-            "突然",
-            "震惊",
-            "意外",
-            "神秘",
-            "危机",
-            "紧急",
-            "发现",
+            "Tu Ran",
+            "shocked",
+            "unexpected",
+            "Shen Mi",
+            "crisis",
+            "Jin Ji",
+            "discover",
             "sudden",
             "shocking",
             "mysterious",
             "crisis",
             "urgent",
             "discovery",
-            "问题",
-            "冲突",
-            "秘密",
-            "悬念",
-            "疑问",
+            "Wen Ti",
+            "conflict",
+            "secret",
+            "suspense",
+            "Yi Wen",
             "conflict",
             "secret",
             "suspense",
             "question",
         ],
         "weak": [
-            "平静",
-            "普通",
-            "日常",
-            "一如既往",
+            "calm",
+            "Pu Tong",
+            "Ri Chang",
+            "Yi Ru Ji Wang",
             "ordinary",
             "usual",
             "normal",
@@ -182,34 +182,34 @@ class StoryQualityValidator:
     # Cliffhanger quality indicators
     CLIFFHANGER_KEYWORDS = {
         "strong": [
-            "但是",
-            "然而",
-            "突然",
-            "谁知",
-            "没想到",
-            "危险",
-            "紧张",
+            "Dan Shi",
+            "Ran Er",
+            "Tu Ran",
+            "Shui Zhi",
+            "Mei Xiang Dao",
+            "Wei Xian",
+            "tense",
             "but",
             "however",
             "suddenly",
             "unexpectedly",
             "danger",
             "tension",
-            "悬念",
-            "未知",
-            "等待",
-            "即将",
-            "转折",
+            "suspense",
+            "unknown",
+            "waiting",
+            "Ji Jiang",
+            "Zhuan Zhe",
             "suspense",
             "unknown",
             "waiting",
             "turning point",
         ],
         "weak": [
-            "结束",
-            "完成",
-            "解决",
-            "平静",
+            "Jie Shu",
+            "complete",
+            "resolve",
+            "calm",
             "ended",
             "completed",
             "resolved",
@@ -220,22 +220,22 @@ class StoryQualityValidator:
     # Prohibited content patterns (simplified - real implementation would be more comprehensive)
     PROHIBITED_PATTERNS = [
         # Violence extremes
-        r"详细.*?酷刑|torture.*?detail",
-        r"虐待.*?儿童|child.*?abuse",
+        r"detailed.*?Ku Xing|torture.*?detail",
+        r"Nve Dai.*?Er Tong|child.*?abuse",
         # Illegal activities promotion
-        r"如何.*?制造.*?毒品|how.*?make.*?drug",
-        r"如何.*?制造.*?爆炸|how.*?make.*?explos",
+        r"Ru He.*?Zhi Zao.*?Du Pin|how.*?make.*?drug",
+        r"Ru He.*?Zhi Zao.*?Bao Zha|how.*?make.*?explos",
     ]
 
     # Pacing keywords for analysis
     PACING_KEYWORDS = {
         "tension_build": [
-            "紧张",
-            "压力",
-            "危机",
-            "冲突",
-            "对抗",
-            "升级",
+            "tense",
+            "Ya Li",
+            "crisis",
+            "conflict",
+            "Dui Kang",
+            "escalate",
             "tension",
             "pressure",
             "crisis",
@@ -243,12 +243,12 @@ class StoryQualityValidator:
             "escalate",
         ],
         "climax": [
-            "高潮",
-            "决战",
-            "对决",
-            "真相",
-            "揭示",
-            "爆发",
+            "climax",
+            "Jue Zhan",
+            "Dui Jue",
+            "truth",
+            "reveal",
+            "eruption",
             "climax",
             "showdown",
             "confrontation",
@@ -257,12 +257,12 @@ class StoryQualityValidator:
             "explosion",
         ],
         "resolution": [
-            "解决",
-            "和解",
-            "结局",
-            "收尾",
-            "完结",
-            "尾声",
+            "resolve",
+            "He Jie",
+            "Jie Ju",
+            "Shou Wei",
+            "Wan Jie",
+            "Wei Sheng",
             "resolve",
             "reconcile",
             "ending",
@@ -311,10 +311,10 @@ class StoryQualityValidator:
                         "act3_ratio": three_act.act3_ratio,
                     },
                     suggestions=[
-                        "调整各幕内容比例，理想比例为 25%/50%/25%",
-                        "第一幕应建立角色和世界观",
-                        "第二幕应展开冲突和挑战",
-                        "第三幕应解决冲突并收束",
+                        "adjust Ge Mu content ratio, Li Xiang ratio as 25%/50%/25%",
+                        "Di Yi Mu Ying Jian Li character and Shi Jie Guan",
+                        "Di Er Mu Ying Zhan Kai conflict and Tiao Zhan",
+                        "Di San Mu Ying resolve conflict and Shou Shu",
                     ],
                 )
             )
@@ -348,9 +348,9 @@ class StoryQualityValidator:
                     severity=StoryQualitySeverity.WARNING,
                     message=f"开场吸引力不足 (评分: {hook_score:.0%})",
                     suggestions=[
-                        "以冲突、悬念或意外事件开场",
-                        "在前几句话中建立紧张感",
-                        "引入引人入胜的问题或谜团",
+                        "Yi conflict, suspense or Yi Wai Shi Jian Kai Chang",
+                        "in before Ji Ju Hua in Jian Li Jin Zhang Gan",
+                        "Yin Ru Yin Ren Ru Sheng Wen Ti or Mi Tuan",
                     ],
                 )
             )
@@ -366,9 +366,9 @@ class StoryQualityValidator:
                         severity=StoryQualitySeverity.INFO,
                         message=f"剧集结尾悬念感不足 (评分: {cliffhanger_score:.0%})",
                         suggestions=[
-                            "每集结尾留下未解决的问题",
-                            "在关键时刻结束场景",
-                            "引入新的冲突或转折",
+                            "Mei Ji Jie Wei Liu Xia not resolve Wen Ti",
+                            "in Guan Jian Shi Ke Jie Shu scene",
+                            "Yin Ru Xin conflict or Zhuan Zhe",
                         ],
                     )
                 )
@@ -558,13 +558,13 @@ class StoryQualityValidator:
         suggestions = []
 
         if pacing.opening_score < 0.5:
-            suggestions.append("加强开场吸引力，以冲突或悬念开始")
+            suggestions.append("Jia Qiang Kai Chang Xi Yin Li, Yi conflict or suspense Kai Shi")
         if pacing.buildup_score < 0.5:
-            suggestions.append("增加第二幕的紧张感和冲突升级")
+            suggestions.append("increase Di Er Mu Jin Zhang Gan and conflict escalate")
         if pacing.climax_score < 0.5:
-            suggestions.append("强化高潮部分的戏剧性和冲击力")
+            suggestions.append("Qiang Hua climax Bu Fen Xi Ju Xing and Chong Ji Li")
         if pacing.resolution_score < 0.5:
-            suggestions.append("确保结局有足够的收束感和满足感")
+            suggestions.append("Que Bao Jie Ju has Zu Gou Shou Shu Gan and Man Zu Gan")
 
         return suggestions
 
@@ -651,8 +651,8 @@ class StoryQualityValidator:
 
         # Simple consistency checks
         if time_period:
-            if "古代" in time_period or "ancient" in time_period.lower():
-                modern_tech = ["手机", "电脑", "网络", "phone", "computer", "internet"]
+            if "Gu Dai" in time_period or "ancient" in time_period.lower():
+                modern_tech = ["phone", "Dian Nao", "Wang Luo", "phone", "computer", "internet"]
                 for tech in modern_tech:
                     for t in technology if isinstance(technology, list) else []:
                         if tech in str(t).lower():
@@ -662,8 +662,8 @@ class StoryQualityValidator:
                                     severity=StoryQualitySeverity.WARNING,
                                     message=f"世界观矛盾：古代设定中出现现代科技 '{t}'",
                                     suggestions=[
-                                        "移除不符合时代设定的元素",
-                                        "调整时代设定",
+                                        "Yi Chu not Fu He Shi Dai setting Yuan Su",
+                                        "adjust Shi Dai setting",
                                     ],
                                 )
                             )
@@ -698,9 +698,9 @@ class StoryQualityValidator:
                     StoryQualityIssue(
                         issue_type=StoryQualityIssueType.PROHIBITED_CONTENT,
                         severity=StoryQualitySeverity.ERROR,
-                        message="检测到禁止内容",
+                        message="Jian Ce to Jin Zhi content",
                         details={"pattern": pattern},
-                        suggestions=["移除违规内容", "修改相关描述"],
+                        suggestions=["Yi Chu Wei Gui content", "Xiu Gai related description"],
                     )
                 )
                 passed = False
@@ -714,7 +714,7 @@ class StoryQualityValidator:
                             issue_type=StoryQualityIssueType.PROHIBITED_CONTENT,
                             severity=StoryQualitySeverity.WARNING,
                             message=f"内容包含受限关键词: {restriction}",
-                            suggestions=["检查并修改相关内容"],
+                            suggestions=["check and Xiu Gai related content"],
                         )
                     )
 

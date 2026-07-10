@@ -13,7 +13,7 @@ from app.core.celery_app import celery_app
 def scene_grid_sheet_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int | None = None
 ) -> None:
-    """异步生成场景宫格分镜大图。"""
+    """async Sheng Cheng scene Gong Ge storyboard Da Tu."""
     from app.core.database import get_task_db
     from app.services.storyboard.scene_grid import process_scene_grid_sheet_task
 
@@ -25,7 +25,7 @@ def scene_grid_sheet_generate_task(
 def scene_grid_video_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int | None = None
 ) -> None:
-    """异步从宫格分镜图生成连续成片（Seedance 等参考图视频模型）。"""
+    """async Cong Gong Ge storyboard Tu Sheng Cheng Lian Xu Cheng Pian(Seedance Deng reference Tu video model)."""
     from app.core.database import get_task_db
     from app.services.storyboard.scene_grid import process_scene_grid_video_task
 

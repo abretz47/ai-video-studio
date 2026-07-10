@@ -34,7 +34,7 @@ def queue_script_generation_task(
     request: ScriptGenerationRequest,
     *,
     title: str | None = None,
-    description: str = "异步剧本生成",
+    description: str = "async script Sheng Cheng",
     prompt: str | None = None,
     target_business_id: str | None = None,
 ) -> Task:

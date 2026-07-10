@@ -10,10 +10,10 @@ from pydantic import BaseModel, Field
 class FramePromptItem(BaseModel):
     """One frame's dynamically generated prompt bundle."""
 
-    frame_index: int = Field(..., description="帧在分镜列表中的索引")
-    image_prompt: str = Field(..., description="单帧分镜图生图提示词")
-    start_keyframe_prompt: str = Field(..., description="首帧关键帧提示词")
-    end_keyframe_prompt: str = Field(..., description="尾帧关键帧提示词")
+    frame_index: int = Field(..., description="Zhen in storyboard list in index")
+    image_prompt: str = Field(..., description="Dan Zhen storyboard Tu Sheng Tu prompt Ci")
+    start_keyframe_prompt: str = Field(..., description="first frame Guan Jian Zhen prompt Ci")
+    end_keyframe_prompt: str = Field(..., description="Wei Zhen Guan Jian Zhen prompt Ci")
 
 
 class DynamicPromptBatch(BaseModel):

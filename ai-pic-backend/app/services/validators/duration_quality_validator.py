@@ -166,7 +166,7 @@ class DurationQualityValidator:
     # TTS Provider-specific WPS (Words Per Second) calibration
     # Based on actual TTS output measurements
     WPS_BY_PROVIDER: Dict[str, Dict[str, Dict[str, float]]] = {
-        # VolcEngine TTS (火山引擎)
+        # VolcEngine TTS (Volcengine Yin Qing)
         "volcengine": {
             "zh": {"slow": 3.5, "normal": 4.5, "fast": 5.5},
             "en": {"slow": 2.3, "normal": 3.0, "fast": 3.8},

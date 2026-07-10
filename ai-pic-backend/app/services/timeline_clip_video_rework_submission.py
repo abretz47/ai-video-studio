@@ -37,7 +37,7 @@ class TimelineClipVideoReworkSubmissionService:
     def submit(self, *, task_id: int, payload: dict[str, Any], user_id: int) -> None:
         task = self.tasks.get_by_id(task_id)
         if not task:
-            raise RuntimeError("任务不存在")
+            raise RuntimeError("Task not found")
         task.status = TaskStatus.PROCESSING
         self.db.commit()
 
@@ -61,15 +61,15 @@ class TimelineClipVideoReworkSubmissionService:
         if not response.success:
             self._record_failure(task_id, user_id, prompt, response.error, model_type)
             task.status = TaskStatus.FAILED
-            task.error_message = response.error or "视频重做任务提交失败"
+            task.error_message = response.error or "video Zhong Zuo Ren Wu submit failed"
             self.db.commit()
             raise RuntimeError(task.error_message)
 
         provider_task_id = self._string_value((response.data or {}).get("task_id"))
         if not provider_task_id:
-            self._record_failure(task_id, user_id, prompt, "未返回任务ID", model_type)
+            self._record_failure(task_id, user_id, prompt, "Task ID was not returned", model_type)
             task.status = TaskStatus.FAILED
-            task.error_message = "未返回任务ID"
+            task.error_message = "Task ID was not returned"
             self.db.commit()
             raise RuntimeError(task.error_message)
         model_type = self._response_model_type(response) or model_type
@@ -165,7 +165,7 @@ class TimelineClipVideoReworkSubmissionService:
             prompt=prompt,
             parameters=json.dumps({}, ensure_ascii=False),
             status=VideoGenerationTaskStatus.FAILED,
-            error_message=error_message or "视频重做任务提交失败",
+            error_message=error_message or "video Zhong Zuo Ren Wu submit failed",
         )
 
     @staticmethod

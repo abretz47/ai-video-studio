@@ -54,7 +54,7 @@ async def generate_prepared_script_attempt(
         generation_mode=request_dict.get("generation_mode") or "production",
     )
     if not result:
-        raise RuntimeError("AI剧本生成失败")
+        raise RuntimeError("AI script generation failed")
 
     agent_run = {**build_agent_run(result), "attempt": attempt_no}
     ai_content = normalize_script_content(
@@ -123,9 +123,9 @@ async def generate_prepared_script_attempt(
         target_chars_per_episode=request_dict.get("target_chars_per_episode", 1300),
         require_beat_contract=request_dict.get("generation_mode") == "production",
     )
-    # 自动创建的临时角色在 agent/quality gate 的顶层 result 上；并入 ai_content
-    # 后会随 build_generation_extra_metadata 持久化到 script.extra_metadata，
-    # 前端角色 tab 才能在 async 路径看到绑定提醒。
+    # automatic create temporary character in agent/quality gate Ding Ceng result on; Bing Ru ai_content
+    # Hou Hui Sui build_generation_extra_metadata Chi Jiu Hua Dao script.extra_metadata, 
+    # Qian Duan character tab Cai Neng in async path Kan Dao Bang Ding Ti Xing.
     auto_created = result.get("auto_created_characters")
     if isinstance(auto_created, list) and auto_created:
         ai_content["auto_created_characters"] = auto_created

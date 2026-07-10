@@ -209,31 +209,31 @@ class DialogueAudioAgent:
     # Emotion keywords mapping
     EMOTION_KEYWORDS: Dict[EmotionCategory, Dict[str, List[str]]] = {
         EmotionCategory.HAPPY: {
-            "zh": ["开心", "高兴", "兴奋", "喜悦", "愉快", "欢乐", "笑"],
+            "zh": ["happy", "happy", "excited", "joy", "pleasant", "Huan Le", "Xiao"],
             "en": ["happy", "excited", "joyful", "delighted", "pleased"],
         },
         EmotionCategory.SAD: {
-            "zh": ["悲伤", "难过", "伤心", "沮丧", "忧郁", "哭泣", "失落"],
+            "zh": ["sad", "sad", "sad", "frustrated", "You Yu", "Ku Qi", "Shi Luo"],
             "en": ["sad", "sorrowful", "melancholy", "depressed", "upset"],
         },
         EmotionCategory.ANGRY: {
-            "zh": ["愤怒", "生气", "恼怒", "暴怒", "怒吼", "气愤"],
+            "zh": ["angry", "angry", "Nao Nu", "Bao Nu", "Nu Hou", "Qi Fen"],
             "en": ["angry", "furious", "enraged", "mad", "irritated"],
         },
         EmotionCategory.FEARFUL: {
-            "zh": ["害怕", "恐惧", "惊恐", "胆怯", "紧张", "担忧"],
+            "zh": ["afraid", "fear", "Jing Kong", "Dan Qie", "tense", "worried"],
             "en": ["fearful", "scared", "terrified", "anxious", "worried"],
         },
         EmotionCategory.SURPRISED: {
-            "zh": ["惊讶", "震惊", "吃惊", "意外", "诧异"],
+            "zh": ["surprised", "shocked", "Chi Jing", "unexpected", "Cha Yi"],
             "en": ["surprised", "shocked", "astonished", "amazed"],
         },
         EmotionCategory.CALM: {
-            "zh": ["平静", "冷静", "淡定", "从容", "镇定"],
+            "zh": ["calm", "calm", "Dan Ding", "Cong Rong", "Zhen Ding"],
             "en": ["calm", "composed", "serene", "peaceful"],
         },
         EmotionCategory.WHISPER: {
-            "zh": ["低声", "悄悄", "耳语", "小声", "轻声"],
+            "zh": ["Di Sheng", "Qiao Qiao", "Er Yu", "Xiao Sheng", "Qing Sheng"],
             "en": ["whisper", "murmur", "quietly", "softly"],
         },
     }

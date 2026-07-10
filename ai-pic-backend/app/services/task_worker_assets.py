@@ -16,7 +16,7 @@ from app.core.celery_app import celery_app
 def virtual_ip_image_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步虚拟 IP 文生图任务入口。"""
+    """async Xu Ni IP Wen Sheng Tu Ren Wu entry point."""
     from app.api.v1.endpoints.virtual_ip_images import process_virtual_ip_image_task
 
     process_virtual_ip_image_task(task_id, payload, user_id)
@@ -33,7 +33,7 @@ def virtual_ip_image_generate_task(
 def virtual_ip_image_variant_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步虚拟 IP 图生图任务入口。"""
+    """async Xu Ni IP Tu Sheng Tu Ren Wu entry point."""
     from app.api.v1.endpoints.virtual_ip_images import (
         process_virtual_ip_image_variant_task,
     )
@@ -52,7 +52,7 @@ def virtual_ip_image_variant_task(
 def environment_image_generate_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步环境文生图任务入口。"""
+    """async environment Wen Sheng Tu Ren Wu entry point."""
     from app.api.v1.endpoints.story_structure import process_environment_image_task
 
     process_environment_image_task(task_id, payload, user_id)
@@ -69,7 +69,7 @@ def environment_image_generate_task(
 def environment_image_variant_task(
     task_id: int, payload: Dict[str, Any], user_id: int
 ) -> None:
-    """异步环境图生图任务入口。"""
+    """async environment Tu Sheng Tu Ren Wu entry point."""
     from app.api.v1.endpoints.story_structure import (
         process_environment_image_variant_task,
     )

@@ -56,7 +56,7 @@ async def generate_timeline_pipeline_async(
     """Queue one-click timeline pipeline (dialogue audio -> timeline -> storyboard)."""
     script = load_script_with_access(db, script_id, current_user)
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     params = body.model_dump()
     params["script_id"] = script_id
@@ -110,7 +110,7 @@ def _process_timeline_pipeline_task(task_id: int, payload: dict, user_id: int) -
                 raise RuntimeError("story_not_found")
 
             def _progress_cb(message: str) -> None:
-                update_task_progress(db, task, f"步骤 1-3/5：{message}")
+                update_task_progress(db, task, f"Steps 1-3/5: {message}")
 
             main_chain = await run_timeline_main_chain(
                 db,
@@ -128,7 +128,7 @@ def _process_timeline_pipeline_task(task_id: int, payload: dict, user_id: int) -
             )
             timeline = main_chain.timeline
 
-            update_task_progress(db, task, "步骤 4/5：生成分镜帧占位…")
+            update_task_progress(db, task, "Step 4/5: generating storyboard frame placeholders...")
             image_result = generate_storyboard_placeholders_and_queue_images(
                 db,
                 parent_task=task,
@@ -144,7 +144,7 @@ def _process_timeline_pipeline_task(task_id: int, payload: dict, user_id: int) -
                 task,
                 storyboard_image_queue_progress_message(
                     image_result,
-                    prefix="步骤 5/5",
+                    prefix="Step 5/5",
                 ),
             )
 
@@ -153,7 +153,7 @@ def _process_timeline_pipeline_task(task_id: int, payload: dict, user_id: int) -
         if task:
             task.status = TaskStatus.COMPLETED
             task.result_file_path = f"script:{script_id}:timeline_pipeline"
-            update_task_progress(db, task, "一键时间轴流水线完成")
+            update_task_progress(db, task, "One-click timeline pipeline completed")
     except Exception as exc:
         task = TaskRepository(db).get_by_id(task_id)
         if task:
@@ -162,7 +162,7 @@ def _process_timeline_pipeline_task(task_id: int, payload: dict, user_id: int) -
             task.error_message = error_message
             if isinstance(exc, HTTPException):
                 _persist_pipeline_error_detail(task, exc.detail)
-            update_task_progress(db, task, f"流水线失败：{error_message}")
+            update_task_progress(db, task, f"Pipeline failed: {error_message}")
     finally:
         db.close()
 

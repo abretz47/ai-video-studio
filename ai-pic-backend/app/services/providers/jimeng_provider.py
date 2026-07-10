@@ -1,7 +1,7 @@
 """
-即梦(JiMeng)服务提供商
+Ji Meng(JiMeng)service provider
 
-专注于图像生成和图像处理功能
+Zhuan Zhu Yu image Sheng Cheng and Tu Xiang Chu Li feature
 """
 
 import asyncio
@@ -24,7 +24,7 @@ from .image_param_utils import normalize_image_params, size_to_dimensions
 
 
 class JimengProvider(BaseProvider):
-    """即梦服务提供商"""
+    """Ji Meng service provider"""
 
     def __init__(self, config: ProviderConfig):
         super().__init__(config)
@@ -39,8 +39,8 @@ class JimengProvider(BaseProvider):
         return [
             ModelInfo(
                 model_id="jimeng-sd-v1.5",
-                name="即梦 Stable Diffusion 1.5",
-                description="基于SD1.5的高质量图像生成",
+                name="Ji Meng Stable Diffusion 1.5",
+                description="Ji YuSD1.5High qualityimage Sheng Cheng",
                 model_type=AIModelType.TEXT_TO_IMAGE,
                 supported_formats=["png", "jpg"],
                 capabilities=["text_to_image", "style_control", "high_detail"],
@@ -55,8 +55,8 @@ class JimengProvider(BaseProvider):
             ),
             ModelInfo(
                 model_id="jimeng-sdxl",
-                name="即梦 SDXL",
-                description="更大模型，更高质量输出",
+                name="Ji Meng SDXL",
+                description="Geng Da model, GengHigh qualityoutput",
                 model_type=AIModelType.TEXT_TO_IMAGE,
                 supported_formats=["png", "jpg"],
                 capabilities=["text_to_image", "ultra_high_quality", "realistic"],
@@ -71,8 +71,8 @@ class JimengProvider(BaseProvider):
             ),
             ModelInfo(
                 model_id="jimeng-anime",
-                name="即梦动漫风格",
-                description="专门优化的动漫风格图像生成",
+                name="Ji Meng Dong Man style",
+                description="Zhuan Men You Hua Dong Man style image Sheng Cheng",
                 model_type=AIModelType.TEXT_TO_IMAGE,
                 supported_formats=["png", "jpg"],
                 capabilities=["text_to_image", "anime_style", "character_design"],
@@ -87,8 +87,8 @@ class JimengProvider(BaseProvider):
             ),
             ModelInfo(
                 model_id="jimeng-img2img",
-                name="即梦图生图",
-                description="基于参考图像的风格转换",
+                name="Ji Meng Tu Sheng Tu",
+                description="Ji Yu reference image style Zhuan Huan",
                 model_type=AIModelType.IMAGE_TO_IMAGE,
                 supported_formats=["png", "jpg"],
                 capabilities=["image_to_image", "style_transfer", "inpainting"],
@@ -104,7 +104,7 @@ class JimengProvider(BaseProvider):
         ]
 
     async def _initialize_client(self):
-        """初始化HTTP客户端"""
+        """Chu Shi HuaHTTPclient"""
         self._client = httpx.AsyncClient(
             timeout=httpx.Timeout(120.0),
             headers={
@@ -116,10 +116,10 @@ class JimengProvider(BaseProvider):
     async def generate_text(
         self, prompt: str, model: str = None, **kwargs
     ) -> AIResponse:
-        """即梦不支持文本生成"""
+        """Ji Meng not support text Sheng Cheng"""
         return AIResponse(
             success=False,
-            error="即梦不支持纯文本生成功能",
+            error="Ji Meng not support Chun text Sheng Cheng feature",
             provider=self.name,
             model=model or "unknown",
             task_type=AITaskType.STORY_GENERATION,
@@ -139,7 +139,7 @@ class JimengProvider(BaseProvider):
         style: str = "realistic",
         **kwargs,
     ) -> AIResponse:
-        """使用即梦生成图像"""
+        """Shi Yong Ji Meng Sheng Cheng image"""
         try:
             size_value = kwargs.pop("size", None)
             try:
@@ -186,9 +186,9 @@ class JimengProvider(BaseProvider):
 
             data = response.json()
 
-            # 即梦可能返回任务ID需要轮询，或直接返回结果
+            # Ji Meng Ke Neng return Ren WuIDneed Lun Xun, or directly return Jie Guo
             if "task_id" in data:
-                # 异步任务，需要轮询（失败/超时时 _poll_task_status 抛异常）
+                # async Ren Wu, need Lun Xun(failed/Chao Shi when _poll_task_status Pao exception)
                 task_id = data["task_id"]
                 result = await self._poll_task_status(task_id)
                 return AIResponse(
@@ -209,7 +209,7 @@ class JimengProvider(BaseProvider):
                     },
                 )
             elif "images" in data:
-                # 直接返回结果
+                # directly return Jie Guo
                 return AIResponse(
                     success=True,
                     data={"images": data["images"]},
@@ -229,7 +229,7 @@ class JimengProvider(BaseProvider):
 
             return AIResponse(
                 success=False,
-                error="图像生成响应格式错误",
+                error="image Sheng Cheng response format error",
                 provider=self.name,
                 model=model,
                 task_type=AITaskType.PORTRAIT_GENERATION,
@@ -257,7 +257,7 @@ class JimengProvider(BaseProvider):
         seed: int = -1,
         **kwargs,
     ) -> AIResponse:
-        """即梦图生图"""
+        """Ji Meng Tu Sheng Tu"""
         try:
             size_value = kwargs.pop("size", None)
             width = None
@@ -350,7 +350,7 @@ class JimengProvider(BaseProvider):
 
             return AIResponse(
                 success=False,
-                error="图生图响应格式错误",
+                error="Tu Sheng Tu response format error",
                 provider=self.name,
                 model=model,
                 task_type=AITaskType.SCENE_GENERATION,
@@ -370,7 +370,7 @@ class JimengProvider(BaseProvider):
     async def _poll_task_status(
         self, task_id: str, max_attempts: int = 30, delay: int = 2
     ) -> Optional[Dict[str, Any]]:
-        """轮询任务状态，返回结果 dict 或在失败/超时时抛出异常。"""
+        """Lun Xun Ren Wu status, return Jie Guo dict or in failed/Chao Shi when Pao Chu exception."""
         client = await self.get_client()
         last_error: str | None = None
 
@@ -385,14 +385,14 @@ class JimengProvider(BaseProvider):
                 if task_status == "completed":
                     return data.get("result")
                 elif task_status == "failed":
-                    err_msg = data.get("error", "即梦任务执行失败")
-                    logger.warning("即梦任务 %s 失败: %s", task_id, err_msg)
+                    err_msg = data.get("error", "Ji Meng Ren Wu execute failed")
+                    logger.warning("Ji Meng Ren Wu %s failed: %s", task_id, err_msg)
                     raise RuntimeError(f"即梦任务失败: {err_msg}")
                 elif task_status in ["pending", "running"]:
                     await asyncio.sleep(delay)
                     continue
                 else:
-                    logger.warning("即梦任务 %s 未知状态: %s", task_id, task_status)
+                    logger.warning("Ji Meng Ren Wu %s unknown status: %s", task_id, task_status)
                     raise RuntimeError(f"即梦任务未知状态: {task_status}")
 
             except RuntimeError:
@@ -400,7 +400,7 @@ class JimengProvider(BaseProvider):
             except Exception as e:
                 last_error = str(e)
                 logger.warning(
-                    "轮询即梦任务状态失败 (尝试 %d/%d): %s",
+                    "Lun Xun Ji Meng Ren Wu status failed (Chang Shi %d/%d): %s",
                     attempt + 1,
                     max_attempts,
                     e,
@@ -413,7 +413,7 @@ class JimengProvider(BaseProvider):
         )
 
     async def get_styles(self) -> AIResponse:
-        """获取可用的风格列表"""
+        """get available style list"""
         try:
             client = await self.get_client()
 

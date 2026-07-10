@@ -12,7 +12,7 @@ class OSSBackupMixin:
         backup_prefix: str = "backup",
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """复制并备份文件"""
+        """Fu Zhi and Bei Fen Wen Jian"""
         results: dict[str, Any] = {"success_count": 0, "failed_count": 0, "results": []}
 
         for url in source_urls:

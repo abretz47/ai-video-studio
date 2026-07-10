@@ -93,7 +93,7 @@ async def generate_storyboard_logic(
     if not frames_generated:
         from fastapi import HTTPException
 
-        raise HTTPException(status_code=500, detail="分镜生成失败")
+        raise HTTPException(status_code=500, detail="Storyboard generation failed")
 
     frames_augmented = _augment_frames(
         frames_generated,
@@ -126,7 +126,7 @@ async def generate_storyboard_logic(
         logger.error(f"Storyboard validation failed before save: {exc}")
         from fastapi import HTTPException
 
-        raise HTTPException(status_code=500, detail="分镜结构不合法")
+        raise HTTPException(status_code=500, detail="Invalid storyboard structure")
 
     sb = _persist_storyboard(
         script, db, frames_serialized, gen_meta, scene_order, selected_scenes
@@ -337,14 +337,14 @@ def _supplement_deficit_scenes(
             )
             segs = [seg for seg in re.split(r"[。.!?！？]", desc or "") if seg.strip()]
             for i in range(deficit):
-                text = segs[i] if i < len(segs) else (desc or f"场景 {s}")
+                text = segs[i] if i < len(segs) else (desc or f"Scene {s}")
                 supplementary_raw.append(
                     {
                         "scene_number": s,
                         "description": (text or "").strip()[:200],
-                        "shot_type": "中景",
-                        "camera_movement": "固定",
-                        "composition": "三分法",
+                        "shot_type": "Medium shot",
+                        "camera_movement": "Static",
+                        "composition": "Rule of thirds",
                         "duration_seconds": 3,
                         "ai_prompt": (text or "").strip()[:200],
                         "reference_images": [],
@@ -365,27 +365,27 @@ def _supplement_deficit_scenes(
 
 
 def _normalize_shot_types(frames_list, all_scenes, story):
-    allowed = {"远景", "中景", "近景", "特写"}
+    allowed = {"Wide shot", "Medium shot", "Close shot", "Close-up"}
     en_to_cn = {
-        "wide": "远景",
-        "long": "远景",
-        "establishing": "远景",
-        "ws": "远景",
-        "medium": "中景",
-        "ms": "中景",
-        "close": "近景",
-        "cs": "近景",
-        "close-up": "特写",
-        "cu": "特写",
-        "extreme close-up": "特写",
-        "ecu": "特写",
+        "wide": "Wide shot",
+        "long": "Wide shot",
+        "establishing": "Wide shot",
+        "ws": "Wide shot",
+        "medium": "Medium shot",
+        "ms": "Medium shot",
+        "close": "Close shot",
+        "cs": "Close shot",
+        "close-up": "Close-up",
+        "cu": "Close-up",
+        "extreme close-up": "Close-up",
+        "ecu": "Close-up",
     }
     for fr in frames_list:
         shot = (fr.get("shot_type") or "").strip()
         norm = en_to_cn.get(shot.lower()) if isinstance(shot, str) else None
-        fr["shot_type"] = norm or (shot if shot in allowed else "中景")
-        fr["camera_movement"] = fr.get("camera_movement") or "固定"
-        fr["composition"] = fr.get("composition") or "三分法"
+        fr["shot_type"] = norm or (shot if shot in allowed else "Medium shot")
+        fr["camera_movement"] = fr.get("camera_movement") or "Static"
+        fr["composition"] = fr.get("composition") or "Rule of thirds"
         fr["duration_seconds"] = fr.get("duration_seconds") or 3
         scene_no = _to_int(fr.get("scene_number"))
         chars: List[str] = []

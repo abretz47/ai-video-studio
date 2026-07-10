@@ -154,7 +154,7 @@ def resolve_frame_urls(
         )
 
     if not raw_start_url:
-        return None, None, "未找到首帧"
+        return None, None, "Wei Zhao Dao first frame"
 
     start_url = abs_url(str(raw_start_url))
     end_url = abs_url(str(raw_end_url)) if raw_end_url else None

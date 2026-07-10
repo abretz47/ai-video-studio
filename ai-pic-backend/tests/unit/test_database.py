@@ -1,5 +1,5 @@
 """
-测试数据库配置和工具
+test database configuration He Gong Ju
 """
 
 from importlib import import_module
@@ -16,151 +16,151 @@ from tests.unit.test_config import test_settings
 
 
 class TestDatabase:
-    """测试数据库管理器"""
+ """test database Guan Li Qi"""
 
-    def __init__(self, use_memory: bool = True):
-        self.use_memory = use_memory
-        self.database_url = (
-            test_settings.MEMORY_DATABASE_URL
-            if use_memory
-            else test_settings.TEST_DATABASE_URL
-        )
+ def __init__(self, use_memory: bool = True):
+ self.use_memory = use_memory
+ self.database_url = (
+ test_settings.MEMORY_DATABASE_URL
+ if use_memory
+ else test_settings.TEST_DATABASE_URL
+)
 
-        # 创建引擎
-        self.engine = create_engine(
-            self.database_url,
-            connect_args=(
-                {"check_same_thread": False, "isolation_level": "DEFERRED"}
-                if "sqlite" in self.database_url
-                else {}
-            ),
-            poolclass=StaticPool if use_memory else None,
-            echo=False,  # 设置为True可以看到SQL语句
-        )
+ # Chuang Jian Yin Qing
+ self.engine = create_engine(
+ self.database_url,
+ connect_args=(
+ {"check_same_thread": False, "isolation_level": "DEFERRED"}
+ if "sqlite" in self.database_url
+ else {}
+),
+ poolclass=StaticPool if use_memory else None,
+ echo=False, # She Zhi WeiTrueKe Yi Kan DaoSQLYu Ju
+)
 
-        # 确保所有模型被加载以注册到 Base.metadata
-        import_module("app.models")
+ # Que Bao Suo You model Bei Jia Zai Yi Zhu Ce to Base.metadata
+ import_module("app.models")
 
-        # 创建会话工厂
-        self.SessionLocal = sessionmaker(
-            autocommit=False, autoflush=False, bind=self.engine
-        )
+ # create Hui Hua Gong Chang
+ self.SessionLocal = sessionmaker(
+ autocommit=False, autoflush=False, bind=self.engine
+)
 
-        # 启用外键约束（SQLite）
-        if "sqlite" in self.database_url:
+ # Qi Yong Wai Jian Yue Shu(SQLite)
+ if "sqlite" in self.database_url:
 
-            @event.listens_for(self.engine, "connect")
-            def set_sqlite_pragma(dbapi_connection, connection_record):
-                cursor = dbapi_connection.cursor()
-                cursor.execute("PRAGMA foreign_keys=ON")
-                cursor.close()
+ @event.listens_for(self.engine, "connect")
+ def set_sqlite_pragma(dbapi_connection, connection_record):
+ cursor = dbapi_connection.cursor()
+ cursor.execute("PRAGMA foreign_keys=ON")
+ cursor.close()
 
-    def create_tables(self):
-        """创建所有表"""
-        Base.metadata.create_all(bind=self.engine)
+ def create_tables(self):
+ """create Suo You table"""
+ Base.metadata.create_all(bind=self.engine)
 
-    def drop_tables(self):
-        """删除所有表"""
-        Base.metadata.drop_all(bind=self.engine)
+ def drop_tables(self):
+ """delete Suo You table"""
+ Base.metadata.drop_all(bind=self.engine)
 
-    def get_session(self) -> Generator[Session, None, None]:
-        """获取数据库会话"""
-        session = self.SessionLocal()
-        try:
-            yield session
-        finally:
-            session.close()
+ def get_session(self) -> Generator[Session, None, None]:
+ """get database Hui Hua"""
+ session = self.SessionLocal()
+ try:
+ yield session
+ finally:
+ session.close()
 
-    def run_migrations(self):
-        """运行迁移"""
-        alembic_cfg = Config("alembic.ini")
-        alembic_cfg.set_main_option("sqlalchemy.url", self.database_url)
+ def run_migrations(self):
+ """Yun Xing Qian Yi"""
+ alembic_cfg = Config("alembic.ini")
+ alembic_cfg.set_main_option("sqlalchemy.url", self.database_url)
 
-        # 运行迁移
-        command.upgrade(alembic_cfg, "head")
+ # Yun Xing Qian Yi
+ command.upgrade(alembic_cfg, "head")
 
-    def reset_database(self):
-        """重置数据库"""
-        self.drop_tables()
-        self.create_tables()
+ def reset_database(self):
+ """Zhong Zhi database"""
+ self.drop_tables()
+ self.create_tables()
 
 
-# 全局测试数据库实例
+# Quan Ju test database Shi Li
 test_db = TestDatabase(use_memory=True)
 
 
 def get_test_db() -> Generator[Session, None, None]:
-    """获取测试数据库会话的依赖注入函数"""
-    yield from test_db.get_session()
+ """get test database Hui Hua De Yi Lai Zhu Ru Han Shu"""
+ yield from test_db.get_session()
 
 
 def setup_test_database():
-    """设置测试数据库"""
-    test_db.create_tables()
+ """set test database"""
+ test_db.create_tables()
 
 
 def teardown_test_database():
-    """清理测试数据库"""
-    test_db.drop_tables()
+ """clean up test database"""
+ test_db.drop_tables()
 
 
 def reset_test_database():
-    """重置测试数据库"""
-    test_db.reset_database()
+ """Zhong Zhi test database"""
+ test_db.reset_database()
 
 
-# 异步数据库支持（如果需要）
+# Yi Bu database Zhi Chi(Ru Guo Xu Yao)
 class AsyncTestDatabase:
-    """异步测试数据库管理器"""
+ """Yi Bu test database Guan Li Qi"""
 
-    def __init__(self, use_memory: bool = True):
-        self.use_memory = use_memory
-        self.database_url = (
-            test_settings.MEMORY_DATABASE_URL
-            if use_memory
-            else test_settings.TEST_DATABASE_URL
-        )
+ def __init__(self, use_memory: bool = True):
+ self.use_memory = use_memory
+ self.database_url = (
+ test_settings.MEMORY_DATABASE_URL
+ if use_memory
+ else test_settings.TEST_DATABASE_URL
+)
 
-        # 转换为异步URL
-        if self.database_url.startswith("sqlite:///"):
-            self.async_database_url = self.database_url.replace(
-                "sqlite:///", "sqlite+aiosqlite:///"
-            )
-        else:
-            self.async_database_url = self.database_url
+ # Zhuan Huan Wei Yi BuURL
+ if self.database_url.startswith("sqlite:///"):
+ self.async_database_url = self.database_url.replace(
+ "sqlite:///", "sqlite+aiosqlite:///"
+)
+ else:
+ self.async_database_url = self.database_url
 
-        # 创建异步引擎
-        self.async_engine = create_async_engine(
-            self.async_database_url,
-            echo=False,
-            poolclass=StaticPool if use_memory else None,
-        )
+ # create Yi Bu Yin Qing
+ self.async_engine = create_async_engine(
+ self.async_database_url,
+ echo=False,
+ poolclass=StaticPool if use_memory else None,
+)
 
-        # 创建异步会话工厂
-        self.AsyncSessionLocal = sessionmaker(
-            self.async_engine, class_=AsyncSession, expire_on_commit=False
-        )
+ # create Yi Bu Hui Hua Gong Chang
+ self.AsyncSessionLocal = sessionmaker(
+ self.async_engine, class_=AsyncSession, expire_on_commit=False
+)
 
-    async def create_tables(self):
-        """创建所有表"""
-        async with self.async_engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+ async def create_tables(self):
+ """create Suo You table"""
+ async with self.async_engine.begin() as conn:
+ await conn.run_sync(Base.metadata.create_all)
 
-    async def drop_tables(self):
-        """删除所有表"""
-        async with self.async_engine.begin() as conn:
-            await conn.run_sync(Base.metadata.drop_all)
+ async def drop_tables(self):
+ """delete Suo You table"""
+ async with self.async_engine.begin() as conn:
+ await conn.run_sync(Base.metadata.drop_all)
 
-    async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
-        """获取异步数据库会话"""
-        async with self.AsyncSessionLocal() as session:
-            yield session
+ async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
+ """get Yi Bu database Hui Hua"""
+ async with self.AsyncSessionLocal() as session:
+ yield session
 
-    async def reset_database(self):
-        """重置数据库"""
-        await self.drop_tables()
-        await self.create_tables()
+ async def reset_database(self):
+ """Zhong Zhi database"""
+ await self.drop_tables()
+ await self.create_tables()
 
 
-# 全局异步测试数据库实例
+# Quan Ju Yi Bu test database Shi Li
 async_test_db = AsyncTestDatabase(use_memory=True)

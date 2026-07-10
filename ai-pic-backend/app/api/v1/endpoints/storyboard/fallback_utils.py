@@ -79,25 +79,25 @@ def _compose_fallback_text(
         characters = scene_payload.get("characters") or scene_payload.get("cast")
         notes = scene_payload.get("notes")
         if location:
-            details.append(f"地点:{_trim_local(location, 50)}")
+            details.append(f"Location: {_trim_local(location, 50)}")
         if time_info:
-            details.append(f"时间:{_trim_local(time_info, 40)}")
+            details.append(f"Time: {_trim_local(time_info, 40)}")
         if characters:
             if isinstance(characters, list):
                 details.append(
-                    f"角色:{_trim_local(', '.join(map(str, characters)), 80)}"
+                    f"Characters: {_trim_local(', '.join(map(str, characters)), 80)}"
                 )
             else:
-                details.append(f"角色:{_trim_local(characters, 80)}")
+                details.append(f"Characters: {_trim_local(characters, 80)}")
         if notes:
-            details.append(f"备注:{_trim_local(notes, 80)}")
+            details.append(f"Notes: {_trim_local(notes, 80)}")
     dialogues = _collect_dialogues_for_scene(script_obj, scene_number)
     if dialogues:
-        details.append("对白:" + " / ".join(dialogues))
+        details.append("Dialogue: " + " / ".join(dialogues))
     stage = _collect_stage_for_scene(script_obj, scene_number)
     if stage:
-        details.append("舞台:" + " / ".join(stage))
-    details.append("内容:" + _trim_local(base_text, 140))
+        details.append("Stage: " + " / ".join(stage))
+    details.append("Content: " + _trim_local(base_text, 140))
 
     description = (
         "；".join(details)[:200] if details else _trim_local(base_text, 200)
@@ -109,9 +109,9 @@ def generate_fallback_frames(
     script, scenes_filtered, scene_order, frames_per_scene, max_frames,
 ) -> List[Dict[str, Any]]:
     """Generate simple fallback storyboard frames from script structure."""
-    shot_cycle = ["远景", "中景", "近景", "特写"]
-    movement_cycle = ["固定", "推", "拉", "摇", "移", "跟", "变焦"]
-    composition_cycle = ["三分法", "对称", "前后景", "对角线", "中心对称"]
+    shot_cycle = ["Wide shot", "Medium shot", "Close shot", "Close-up"]
+    movement_cycle = ["Static", "Push", "Pull", "Pan", "Move", "Follow", "Zoom"]
+    composition_cycle = ["Rule of thirds", "Symmetry", "Foreground/background layering", "Diagonal composition", "Central symmetry"]
     frames_fallback: List[Dict[str, Any]] = []
     frame_no = 1
     if scenes_filtered:
@@ -124,7 +124,7 @@ def generate_fallback_frames(
             for i in range(max(1, frames_per_scene)):
                 if max_frames and len(frames_fallback) >= max_frames:
                     break
-                text = segments[i] if i < len(segments) else (desc or f"场景 {sidx}")
+                text = segments[i] if i < len(segments) else (desc or f"Scene {sidx}")
                 v = frame_no - 1
                 shot = shot_cycle[v % len(shot_cycle)]
                 movement = movement_cycle[v % len(movement_cycle)]

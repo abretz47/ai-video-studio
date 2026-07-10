@@ -1,8 +1,8 @@
 """
-剧本评分服务
+script Ping Fen service
 
-实现 HookScore/ScriptScore agent，评估短剧剧本的投流效果与制作可行性。
-评分维度：冲突强度、角色辨识度、文化适配、素材可剪性、逻辑一致性（各 0-5 分）
+Shi Xian HookScore/ScriptScore agent, Ping Gu short drama script Tou Liu Xiao Guo and Zhi Zuo Ke Xing Xing.
+Ping Fen Wei Du: conflict Qiang Du, character Bian Shi Du, Wen Hua Shi Pei, Su Cai can Jian Xing, Luo Ji Yi Zhi Xing(Ge 0-5 Fen)
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ logger = get_logger()
 
 
 class ScriptScoreService:
-    """剧本评分服务"""
+    """script Ping Fen service"""
 
     def __init__(self, ai_service: "AIService") -> None:
         self.ai_service = ai_service
@@ -52,21 +52,21 @@ class ScriptScoreService:
         prefer_model: Optional[str] = None,
     ) -> ScriptScoreResult:
         """
-        评估剧本质量并返回评分结果。
+ Ping Gu script Zhi Liang and return Ping Fen Jie Guo.
 
         Args:
-            script_content: 剧本正文内容
-            story: 故事上下文（标题、类型、市场、微类型）
-            episode: 剧集上下文（集数、标题、概要）
-            scenes: 场景列表
-            dialogues: 对白列表
-            prefer_provider: 优先使用的 AI 提供商
-            prefer_model: 优先使用的模型
+ script_content: script body text content
+ story: story context(title, type, market, Wei type)
+ episode: episode context(Ji Shu, title, outline)
+ scenes: scene list
+ dialogues: dialogue list
+ prefer_provider: priority Shi Yong AI provider
+ prefer_model: priority Shi Yong model
 
         Returns:
-            ScriptScoreResult: 评分结果
+ ScriptScoreResult: Ping Fen Jie Guo
         """
-        # 构建 prompt 变量
+        # build prompt Bian Liang
         variables = {
             "script_content": script_content,
             "story": story or {},
@@ -75,7 +75,7 @@ class ScriptScoreService:
             "dialogues": dialogues or [],
         }
 
-        # 渲染 prompt
+        # Xuan Ran prompt
         prompt = prompt_manager.render_prompt(
             PromptTemplate.SCRIPT_SCORE.value,
             variables,
@@ -90,7 +90,7 @@ class ScriptScoreService:
             },
         )
 
-        # 调用 AI 服务
+        # call AI service
         ai_manager = getattr(self.ai_service, "ai_manager", None)
         if not ai_manager:
             logger.warning("AI manager unavailable, returning default score result")
@@ -101,7 +101,7 @@ class ScriptScoreService:
             prefer_provider=prefer_provider,
             model=prefer_model,
             max_tokens=2000,
-            temperature=0.3,  # 低温度以保持评分一致性
+            temperature=0.3,  # Di Wen Du Yi keep Ping Fen Yi Zhi Xing
             json_schema={"name": "script_score", "schema": script_score_json_schema()},
             stream=False,
         )
@@ -112,7 +112,7 @@ class ScriptScoreService:
         if not isinstance(response_text, str):
             response_text = ""
 
-        # 解析响应
+        # parse response
         result = self._parse_score_response(response_text)
         result = calibrate_commercial_anchor_score(result, script_content)
 
@@ -131,13 +131,13 @@ class ScriptScoreService:
         return result
 
     def _parse_score_response(self, response: str) -> ScriptScoreResult:
-        """解析 AI 响应为评分结果"""
+        """parse AI response as Ping Fen Jie Guo"""
         try:
             data = extract_json_block(response)
             if not data:
                 raise ValueError("No JSON found in response")
 
-            # 解析维度评分
+            # parse Wei Du Ping Fen
             dim_data = data.get("dimension_scores", {})
             dimensions = ScriptScoreDimensions(
                 conflict_intensity=float(dim_data.get("conflict_intensity", 3.0)),
@@ -149,7 +149,7 @@ class ScriptScoreService:
                 logic_coherence=float(dim_data.get("logic_coherence", 3.0)),
             )
 
-            # 计算总分（如果 AI 未提供）
+            # Ji Suan Zong Fen(Ru Guo AI not Ti Gong)
             overall = data.get("overall_score")
             if overall is None:
                 overall = (
@@ -160,7 +160,7 @@ class ScriptScoreService:
                     + dimensions.logic_coherence
                 ) / 5.0
 
-            # 判定结果（如果 AI 未提供或不准确）
+            # Pan Ding Jie Guo(Ru Guo AI not Ti Gong or not Zhun Que)
             verdict = self._compute_verdict(float(overall), dimensions)
 
             return ScriptScoreResult(
@@ -180,7 +180,7 @@ class ScriptScoreService:
     def _compute_verdict(
         self, overall: float, dimensions: ScriptScoreDimensions
     ) -> str:
-        """根据阈值计算判定结果"""
+        """Gen Ju Yu Zhi Ji Suan Pan Ding Jie Guo"""
         min_dim = min(
             dimensions.conflict_intensity,
             dimensions.character_recognizability,
@@ -189,19 +189,19 @@ class ScriptScoreService:
             dimensions.logic_coherence,
         )
 
-        # Pass: 总分 >= 4.0 且无任何维度 < 3.5
+        # Pass: Zong Fen >= 4.0 Qie none any Wei Du < 3.5
         if overall >= PASS_OVERALL_THRESHOLD and min_dim >= PASS_DIMENSION_THRESHOLD:
             return "pass"
 
-        # Rewrite: 总分 < 3.5 或任一维度 < 3.0
+        # Rewrite: Zong Fen < 3.5 or Ren Yi Wei Du < 3.0
         if overall < REVIEW_OVERALL_MIN or min_dim < REVIEW_DIMENSION_MIN:
             return "rewrite"
 
-        # Review: 其他情况
+        # Review: Qi Ta Qing Kuang
         return "review"
 
     def _default_score_result(self) -> ScriptScoreResult:
-        """返回默认评分结果（解析失败时使用）"""
+        """return default Ping Fen Jie Guo(parse failed when Shi Yong)"""
         default_dims = ScriptScoreDimensions(
             conflict_intensity=3.0,
             character_recognizability=3.0,
@@ -214,7 +214,7 @@ class ScriptScoreService:
             dimension_scores=default_dims,
             verdict="review",
             strengths=[],
-            risks=["评分解析失败，建议人工审核"],
-            rewrite_guidance=["请重新提交评分或人工审核"],
+            risks=["Ping Fen parse failed, suggestion Ren Gong Shen He"],
+            rewrite_guidance=["Qing retry submit Ping Fen or Ren Gong Shen He"],
             suggested_ad_hooks=[],
         )

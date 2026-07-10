@@ -16,7 +16,7 @@ ProgressCallback = Callable[[str], Any]
 
 
 def chapter_max_tokens(target_words: int) -> int:
-    """Per-chapter token budget with headroom for正文+小结+卡点."""
+    """Per-chapter token budget with headroom forbody text+Xiao Jie+cliffhanger."""
     if target_words <= 0:
         return 1800
     budget = int(target_words * 1.3) + 900

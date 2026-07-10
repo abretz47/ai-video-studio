@@ -1,7 +1,7 @@
 """
-TTS 试跑节点
+TTS Shi Pao node
 
-调用 TTS 服务获取对白的实际时长，用于验证场景时长是否达标。
+call TTS service get dialogue Shi Ji when Zhang, Yong Yu validation scene when Zhang Shi Fou Da Biao.
 """
 
 import logging
@@ -19,17 +19,17 @@ def estimate_duration_from_dialogues(
     speaking_rate: float = WORDS_PER_SECOND,
 ) -> int:
     """
-    根据对白字数估算时长（毫秒）。
+ Gen Ju dialogue word count Gu Suan when Zhang(Hao Miao).
 
-    这是快速估算模式，不调用实际 TTS。
-    用于快速验证对白字数是否在目标范围内。
+ Zhe Shi quick Gu Suan mode, not call Shi Ji TTS.
+ Yong Yu quick validation dialogue word count Shi Fou in target range interior.
 
     Args:
-        dialogues: 对白列表，每个元素包含 content 字段
-        speaking_rate: 每秒汉字数（默认 4.7，来自线上 TTS 语速校准）
+ dialogues: dialogue list, Mei Ge Yuan Su Bao Han content character Duan
+ speaking_rate: Mei Miao Han Zi Shu(default 4.7, Lai Zi Xian Shang TTS Yu Su Jiao Zhun)
 
     Returns:
-        估算时长（毫秒）
+ Gu Suan when Zhang(Hao Miao)
     """
     word_count = count_dialogue_words(dialogues)
     duration_seconds = word_count / speaking_rate
@@ -38,31 +38,31 @@ def estimate_duration_from_dialogues(
 
 async def tts_trial_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    TTS 试跑节点。
+ TTS Shi Pao node.
 
-    获取场景对白的实际或估算时长。
+ get scene dialogue Shi Ji or Gu Suan when Zhang.
 
-    支持两种模式：
-    1. 估算模式（默认）：根据字数快速估算，无需调用 TTS
-    2. 实际模式：调用 TTS 服务获取真实时长
+ support Liang Zhong mode: 
+ 1. Gu Suan mode(default): Gen Ju word count quick Gu Suan, Wu Xu call TTS
+ 2. Shi Ji mode: call TTS service get Zhen Shi when Zhang
 
-    输入状态:
-        - scene_budgets: 场景预算列表
-        - current_scene_index: 当前场景索引
-        - generated_dialogues: 已生成的对白
-        - use_actual_tts: 是否使用实际 TTS（默认 False）
-        - tts_service: TTS 服务实例（实际模式需要）
+ input status:
+ - scene_budgets: scene Yu Suan list
+ - current_scene_index: current scene index
+ - generated_dialogues: Sheng Cheng dialogue
+ - use_actual_tts: Shi Fou Shi Yong Shi Ji TTS(default False)
+ - tts_service: TTS service instance(Shi Ji mode need)
 
-    输出状态更新:
-        - scene_budgets: 更新实际时长
-        - reasoning: 添加试跑日志
+ output status update:
+ - scene_budgets: update Shi Ji when Zhang
+ - reasoning: Tian Jia Shi Pao log
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
     use_actual_tts = state.get("use_actual_tts", False)
 
     if current_index >= len(budgets):
-        logger.warning("tts_trial_node: 当前索引越界")
+        logger.warning("tts_trial_node: current index Yue Jie")
         return {}
 
     budget: SceneBudget = budgets[current_index]
@@ -71,7 +71,7 @@ async def tts_trial_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     if not scene_dialogues:
         logger.warning(
-            "tts_trial_node: 场景 %d 无对白数据",
+            "tts_trial_node: scene %d none dialogue data",
             budget.scene_number,
         )
         return {}
@@ -79,28 +79,28 @@ async def tts_trial_node(state: Dict[str, Any]) -> Dict[str, Any]:
     reasoning = state.get("reasoning", [])
 
     if use_actual_tts:
-        # 实际 TTS 模式
+        # Shi Ji TTS mode
         actual_duration_ms = await _run_actual_tts(
             state=state,
             dialogues=scene_dialogues,
             budget=budget,
         )
     else:
-        # 估算模式
+        # Gu Suan mode
         actual_duration_ms = estimate_duration_from_dialogues(scene_dialogues)
 
-    # 转换为秒
+    # Zhuan Huan as seconds
     actual_duration_seconds = actual_duration_ms / 1000.0
     budget.actual_duration_seconds = actual_duration_seconds
 
-    # 计算偏差
+    # Ji Suan Pian Cha
     target_seconds = budget.target_duration_seconds
     deviation = actual_duration_seconds - target_seconds
     deviation_percent = (deviation / target_seconds * 100) if target_seconds > 0 else 0
 
-    mode_label = "TTS实测" if use_actual_tts else "字数估算"
+    mode_label = "TTSShi Ce" if use_actual_tts else "word count Gu Suan"
     logger.info(
-        "tts_trial_node: 场景 %d %s完成",
+        "tts_trial_node: scene %d %scomplete",
         budget.scene_number,
         mode_label,
         extra={
@@ -131,31 +131,31 @@ async def _run_actual_tts(
     budget: SceneBudget,
 ) -> int:
     """
-    调用实际 TTS 服务获取时长。
+ call Shi Ji TTS service get when Zhang.
 
-    使用采样策略：如果对白超过 5 条，采样 3 条计算平均语速。
+ Shi Yong sampling Ce Lve: Ru Guo dialogue Chao Guo 5 Tiao, sampling 3 Tiao Ji Suan Ping Jun Yu Su.
 
     Args:
-        state: 状态字典
-        dialogues: 对白列表
-        budget: 场景预算
+ state: status Zi Dian
+ dialogues: dialogue list
+ budget: scene Yu Suan
 
     Returns:
-        估算的总时长（毫秒）
+ Gu Suan total duration(Hao Miao)
     """
     tts_service = state.get("tts_service")
     voice_config = state.get("voice_config", {})
 
     if not tts_service:
-        logger.warning("tts_trial_node: 无 TTS 服务，降级为估算模式")
+        logger.warning("tts_trial_node: none TTS service, Jiang Ji as Gu Suan mode")
         return estimate_duration_from_dialogues(dialogues)
 
-    # 采样策略：超过 5 条对白时采样 3 条
+    # sampling Ce Lve: Chao Guo 5 Tiao dialogue when sampling 3 Tiao
     sample_size = 3
     if len(dialogues) <= sample_size:
         sample_dialogues = dialogues
     else:
-        # 采样首、中、尾
+        # sampling Shou, in, Wei
         mid_index = len(dialogues) // 2
         sample_dialogues = [
             dialogues[0],
@@ -172,7 +172,7 @@ async def _run_actual_tts(
             if not content:
                 continue
 
-            # 调用 TTS 获取时长
+            # call TTS get when Zhang
             result = await tts_service.generate_speech(
                 text=content,
                 voice_type=voice_config.get("voice_type"),
@@ -186,17 +186,17 @@ async def _run_actual_tts(
                 total_sample_duration_ms += duration_ms
 
         if total_sample_chars > 0 and total_sample_duration_ms > 0:
-            # 计算实际语速
+            # Ji Suan Shi Ji Yu Su
             actual_chars_per_second = total_sample_chars / (
                 total_sample_duration_ms / 1000
             )
 
-            # 用实际语速估算总时长
+            # Yong Shi Ji Yu Su Gu Suan total duration
             total_chars = count_dialogue_words(dialogues)
             estimated_total_ms = int(total_chars / actual_chars_per_second * 1000)
 
             logger.info(
-                "tts_trial_node: 采样 TTS 完成",
+                "tts_trial_node: sampling TTS complete",
                 extra={
                     "scene_number": budget.scene_number,
                     "sample_count": len(sample_dialogues),
@@ -209,9 +209,9 @@ async def _run_actual_tts(
 
     except Exception as exc:
         logger.warning(
-            "tts_trial_node: TTS 采样失败，降级为估算模式: %s",
+            "tts_trial_node: TTS sampling failed, Jiang Ji as Gu Suan mode: %s",
             exc,
         )
 
-    # 降级为估算模式
+    # Jiang Ji as Gu Suan mode
     return estimate_duration_from_dialogues(dialogues)

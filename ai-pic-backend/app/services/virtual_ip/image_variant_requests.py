@@ -13,7 +13,7 @@ from app.services.image_gen.coerce import (
     value_from_payload,
 )
 
-DEFAULT_VARIANT_PROMPT = "为当前角色生成不同视角/姿态的图像，如背面照或全身照"
+DEFAULT_VARIANT_PROMPT = "as current character Sheng Cheng Bu Tong Shi Jiao/Zi Tai image, for example Bei Mian Zhao or Quan Shen Zhao"
 
 
 @dataclass(frozen=True, slots=True)

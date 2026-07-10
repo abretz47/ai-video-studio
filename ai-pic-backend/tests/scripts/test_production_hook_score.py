@@ -7,106 +7,106 @@ BACKEND_ROOT = REPO_ROOT / "ai-pic-backend"
 sys.path.append(str(REPO_ROOT))
 sys.path.append(str(BACKEND_ROOT))
 
-from tests.scripts.provider_chain_fixtures import provider_payload  # noqa: E402
+from tests.scripts.provider_chain_fixtures import provider_payload # noqa: E402
 
-from scripts.harness.production_quality_script import (  # noqa: E402
-    structured_script_score,
+from scripts.harness.production_quality_script import (# noqa: E402
+ structured_script_score,
 )
 
 
 def test_structured_score_rejects_slow_provider_opening_hook() -> None:
-    payload = provider_payload()
-    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
-    for beat, duration in zip(script["scenes"][0]["beats"], [5, 5, 5], strict=True):
-        beat["duration_seconds"] = duration
-    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
-        script, ensure_ascii=False
-    )
+ payload = provider_payload()
+ script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+ for beat, duration in zip(script["scenes"][0]["beats"], [5, 5, 5], strict=True):
+ beat["duration_seconds"] = duration
+ payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+ script, ensure_ascii=False
+)
 
-    result = structured_script_score(payload)
+ result = structured_script_score(payload)
 
-    assert result["passed"] is False
-    assert "opening_hook_duration" in result["failed_checks"]
+ assert result["passed"] is False
+ assert "opening_hook_duration" in result["failed_checks"]
 
 
 def test_structured_score_rejects_provider_opening_hook_without_immediate_threat() -> (
-    None
+ None
 ):
-    payload = provider_payload()
-    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
-    first_beat = script["scenes"][0]["beats"][0]
-    first_beat["visible_event"] = "小蓝推开玻璃门，灯带依次亮起"
-    first_beat["action"] = ["小蓝把背包放到桌面，整理围巾"]
-    first_beat["dialogue"] = [{"speaker": "小蓝", "line": "我到了"}]
-    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
-        script, ensure_ascii=False
-    )
+ payload = provider_payload()
+ script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+ first_beat = script["scenes"][0]["beats"][0]
+ first_beat["visible_event"] = "Xiaolan Tui Kai Bo Li Men, Deng Dai Yi Ci Liang Qi"
+ first_beat["action"] = ["Xiaolan Ba Bei Bao Fang Dao Zhuo Mian, Zheng Li Wei Jin"]
+ first_beat["dialogue"] = [{"speaker": "Xiaolan", "line": "Wo Dao Le"}]
+ payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+ script, ensure_ascii=False
+)
 
-    result = structured_script_score(payload)
+ result = structured_script_score(payload)
 
-    assert result["passed"] is False
-    assert "opening_hook_substance" in result["failed_checks"]
+ assert result["passed"] is False
+ assert "opening_hook_substance" in result["failed_checks"]
 
 
 def test_structured_score_accepts_opening_warning_as_immediate_threat() -> None:
-    payload = provider_payload()
-    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
-    first_beat = script["scenes"][0]["beats"][0]
-    first_beat["visible_event"] = "小蓝盯着屏幕，系统弹出无钩子警告"
-    first_beat["action"] = ["小蓝按住红色提示框，调出剪辑面板"]
-    first_beat["dialogue"] = [{"speaker": "小蓝", "line": "警告来了"}]
-    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
-        script, ensure_ascii=False
-    )
+ payload = provider_payload()
+ script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+ first_beat = script["scenes"][0]["beats"][0]
+ first_beat["visible_event"] = "Xiaolan Ding Zhe screen, system Dan Chu none hook Jing Gao"
+ first_beat["action"] = ["Xiaolan An Zhu red Ti Shi Kuang, Diao Chu Jian Ji Mian Ban"]
+ first_beat["dialogue"] = [{"speaker": "Xiaolan", "line": "Jing Gao Lai Le"}]
+ payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+ script, ensure_ascii=False
+)
 
-    result = structured_script_score(payload)
+ result = structured_script_score(payload)
 
-    assert "opening_hook_substance" not in result["failed_checks"]
+ assert "opening_hook_substance" not in result["failed_checks"]
 
 
 def test_structured_score_accepts_reference_reuse_as_visual_anomaly_hook() -> None:
-    payload = provider_payload()
-    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
-    first_beat = script["scenes"][0]["beats"][0]
-    first_beat["visible_event"] = "时间线所有镜头缩略图都复用同一张参考图"
-    first_beat["action"] = ["小蓝快速滑过十个镜头，画面全部相同"]
-    first_beat["dialogue"] = [{"speaker": "小蓝", "line": "怎么全同一张？"}]
-    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
-        script, ensure_ascii=False
-    )
+ payload = provider_payload()
+ script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+ first_beat = script["scenes"][0]["beats"][0]
+ first_beat["visible_event"] = "time Xian Suo You camera Suo Lve Tu Dou Fu Yong Tong Yi Zhang Can Kao image"
+ first_beat["action"] = ["Xiaolan Kuai Su Hua Guo Shi Ge camera, frame Quan Bu Xiang Tong"]
+ first_beat["dialogue"] = [{"speaker": "Xiaolan", "line": "Zen Me Quan Tong Yi Zhang?"}]
+ payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+ script, ensure_ascii=False
+)
 
-    result = structured_script_score(payload)
+ result = structured_script_score(payload)
 
-    assert "opening_hook_substance" not in result["failed_checks"]
+ assert "opening_hook_substance" not in result["failed_checks"]
 
 
 def test_structured_score_accepts_missing_character_as_visual_anomaly_hook() -> None:
-    payload = provider_payload()
-    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
-    first_beat = script["scenes"][0]["beats"][0]
-    first_beat["visible_event"] = "预览屏幕只有空白场景，没有角色出现"
-    first_beat["action"] = ["小蓝拖动播放条，第二段仍然缺少角色"]
-    first_beat["dialogue"] = [{"speaker": "小蓝", "line": "角色呢"}]
-    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
-        script, ensure_ascii=False
-    )
+ payload = provider_payload()
+ script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+ first_beat = script["scenes"][0]["beats"][0]
+ first_beat["visible_event"] = "Yu Lan screen Zhi You Kong Bai scene, Mei You character Chu Xian"
+ first_beat["action"] = ["Xiaolan Tuo Dong Bo Fang Tiao, Di Er Duan Reng Ran Que Shao character"]
+ first_beat["dialogue"] = [{"speaker": "Xiaolan", "line": "Jue Se Ne"}]
+ payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+ script, ensure_ascii=False
+)
 
-    result = structured_script_score(payload)
+ result = structured_script_score(payload)
 
-    assert "opening_hook_substance" not in result["failed_checks"]
+ assert "opening_hook_substance" not in result["failed_checks"]
 
 
 def test_structured_score_accepts_no_payment_as_opening_stakes_hook() -> None:
-    payload = provider_payload()
-    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
-    first_beat = script["scenes"][0]["beats"][0]
-    first_beat["visible_event"] = "客户代表关闭播放器，屏幕变黑"
-    first_beat["action"] = ["客户代表转身要走，尾款状态变成待拒付"]
-    first_beat["dialogue"] = [{"speaker": "客户代表", "line": "没钩子不付款"}]
-    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
-        script, ensure_ascii=False
-    )
+ payload = provider_payload()
+ script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+ first_beat = script["scenes"][0]["beats"][0]
+ first_beat["visible_event"] = "customer Dai Biao close Bo Fang Qi, Ping Mu Bian Hei"
+ first_beat["action"] = ["customer Dai Biao Zhuan Shen Yao Zou, Wei Kuan status Bian Cheng pending Ju Fu"]
+ first_beat["dialogue"] = [{"speaker": "Ke Hu Dai Biao", "line": "Mei hook Bu Fu Kuan"}]
+ payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+ script, ensure_ascii=False
+)
 
-    result = structured_script_score(payload)
+ result = structured_script_score(payload)
 
-    assert "opening_hook_substance" not in result["failed_checks"]
+ assert "opening_hook_substance" not in result["failed_checks"]

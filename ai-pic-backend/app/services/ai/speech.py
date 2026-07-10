@@ -15,7 +15,7 @@ class SpeechGenerationMixin:
         speed: float = 1.0,
         prefer_provider: str = None,
     ) -> Optional[Dict[str, Any]]:
-        """生成语音"""
+        """Sheng Cheng voice"""
         try:
             response = await self.ai_manager.text_to_speech(
                 text=text,
@@ -27,7 +27,7 @@ class SpeechGenerationMixin:
             if response.success:
                 original_audio_url = response.data.get("audio_url")
 
-                # 自动上传音频到OSS
+                # automatic Shang Chuan audio toOSS
                 audio_oss_result = None
                 if original_audio_url and oss_service:
                     try:

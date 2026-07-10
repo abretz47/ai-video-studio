@@ -87,7 +87,7 @@ class StoryboardPlanMixin:
         prefer_provider: Optional[str] = None,
         temperature: float = 0.3,
     ) -> Optional[Dict[str, Any]]:
-        """先生成分镜规划：每个场景的帧数与每帧的镜别/运镜/构图/意图。"""
+        """Xian Sheng Cheng Fen Jing Gui Hua: Mei Ge scene Zhen Shu and Mei Zhen Jing Bie/Yun Jing/Gou Tu/Yi Tu."""
         if not self.ai_manager:
             return None
         try:
@@ -152,7 +152,7 @@ class StoryboardPlanMixin:
         temperature: float = 0.7,
         max_frames: Optional[int] = None,
     ) -> Optional[List[Dict[str, Any]]]:
-        """根据某一场景的规划，细化生成该场景的分镜帧（一次一场景）。"""
+        """Gen Ju Mou Yi scene Gui Hua, Xi Hua Sheng Cheng Gai scene storyboard Zhen(Yi Ci Yi scene)."""
         if not self.ai_manager:
             return None
         try:
@@ -212,7 +212,7 @@ class StoryboardPlanMixin:
                 except Exception:
                     return None
                 frames = data.get("frames") or []
-                # 统一 scene_number
+                # unified scene_number
                 for fr in frames:
                     fr["scene_number"] = scene_plan.scene_number
                 return frames

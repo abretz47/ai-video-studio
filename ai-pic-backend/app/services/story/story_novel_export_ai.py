@@ -36,4 +36,4 @@ async def generate_story_novel_text(
     content = await ai_service._call_text_generation_service(prompt, "story_novel")
     if content and content.strip():
         return content.strip()
-    raise HTTPException(status_code=500, detail="AI生成失败（无可用 provider）")
+    raise HTTPException(status_code=500, detail="AISheng Cheng failed(none available provider)")

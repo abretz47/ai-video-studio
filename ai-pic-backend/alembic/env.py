@@ -5,10 +5,10 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-# 添加项目根目录到 Python 路径
+# Add the project root directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 导入应用配置和模型
+# Import application configuration and models
 from app.core.config import settings
 from app.core.database import Base
 
@@ -16,7 +16,7 @@ from app.core.database import Base
 # access to the values within the .ini file in use.
 config = context.config
 
-# 从环境变量设置数据库 URL（允许测试覆盖 sqlalchemy.url）
+# Set the database URL from environment variables (allow tests to override sqlalchemy.url)
 if not config.get_main_option("sqlalchemy.url"):
     config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
@@ -25,7 +25,7 @@ if not config.get_main_option("sqlalchemy.url"):
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# 导入所有模型以确保它们被注册到 Base.metadata
+# Import all models to ensure they are registered with Base.metadata
 
 # add your model's MetaData object here
 # for 'autogenerate' support

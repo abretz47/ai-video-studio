@@ -1,11 +1,11 @@
-"""前端管理界面工作流测试脚本
+"""frontend management Jie Mian work Liu test Jiao Ben
 
-测试完整的前端管理界面功能：
-1. 管理员登录
-2. 查看用户统计
-3. 管理用户列表
-4. 用户审批操作
-5. 界面响应性测试
+test complete De frontend management Jie Mian function: 
+1. administrator login
+2. Cha Kan user statistics
+3. management user list
+4. user approval operation
+5. Jie Mian response Xing test
 """
 
 import time
@@ -22,379 +22,379 @@ API_BASE_URL = "http://localhost:8000/api/v1"
 
 
 def setup_webdriver():
-    """设置Chrome WebDriver"""
-    options = Options()
-    options.add_argument("--headless")  # 无头模式
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
+ """setChrome WebDriver"""
+ options = Options()
+ options.add_argument("--headless") # Wu Tou Mo Shi
+ options.add_argument("--no-sandbox")
+ options.add_argument("--disable-dev-shm-usage")
+ options.add_argument("--disable-gpu")
+ options.add_argument("--window-size=1920,1080")
 
-    try:
-        driver = webdriver.Chrome(options=options)
-        return driver
-    except Exception as e:
-        print(f"❌ 无法启动Chrome WebDriver: {e}")
-        print("请确保已安装Chrome浏览器和ChromeDriver")
-        return None
+ try:
+ driver = webdriver.Chrome(options=options)
+ return driver
+ except Exception as e:
+ print(f"❌ Wu Fa Qi DongChrome WebDriver: {e}")
+ print("please Que Bao Yi An ZhuangChromeLiu Lan Qi HeChromeDriver")
+ return None
 
 
 def test_servers_running():
-    """测试服务器是否正在运行"""
-    print("🔍 测试 1: 检查服务器状态")
+ """test server Shi Fou Zheng Zai run"""
+ print("🔍 test 1: check server status")
 
-    try:
-        # 检查后端API服务器
-        response = requests.get(f"{API_BASE_URL}/auth/me", timeout=5)
-        print(f"✅ 后端API服务器运行正常 (状态码: {response.status_code})")
-    except Exception as e:
-        print(f"❌ 后端API服务器连接失败: {e}")
-        return False
+ try:
+ # Jian Cha Hou DuanAPIserver
+ response = requests.get(f"{API_BASE_URL}/auth/me", timeout=5)
+ print(f"✅ Hou DuanAPIserver run normal (Zhuang Tai Ma: {response.status_code})")
+ except Exception as e:
+ print(f"❌ Hou DuanAPIserver connection failed: {e}")
+ return False
 
-    try:
-        # 检查前端服务器
-        response = requests.get(BASE_URL, timeout=5)
-        print(f"✅ 前端服务器运行正常 (状态码: {response.status_code})")
-        return True
-    except Exception as e:
-        print(f"❌ 前端服务器连接失败: {e}")
-        return False
+ try:
+ # check frontend server
+ response = requests.get(BASE_URL, timeout=5)
+ print(f"✅ frontend server run normal (Zhuang Tai Ma: {response.status_code})")
+ return True
+ except Exception as e:
+ print(f"❌ frontend server connection failed: {e}")
+ return False
 
 
 def create_test_user():
-    """创建测试用户"""
-    print("🔍 测试 2: 创建测试用户")
+ """create test user"""
+ print("🔍 test 2: create test user")
 
-    test_user_data = {
-        "username": "frontend_testuser",
-        "email": "frontend_test@example.com",
-        "password": "testpass123",
-        "full_name": "Frontend Test User",
-    }
+ test_user_data = {
+ "username": "frontend_testuser",
+ "email": "frontend_test@example.com",
+ "password": "testpass123",
+ "full_name": "Frontend Test User",
+ }
 
-    try:
-        response = requests.post(f"{API_BASE_URL}/auth/register", json=test_user_data)
-        if response.status_code == 200:
-            print("✅ 测试用户创建成功")
-            return response.json()
-        else:
-            print(f"⚠️  测试用户可能已存在 (状态码: {response.status_code})")
-            return None
-    except Exception as e:
-        print(f"❌ 创建测试用户失败: {e}")
-        return None
+ try:
+ response = requests.post(f"{API_BASE_URL}/auth/register", json=test_user_data)
+ if response.status_code == 200:
+ print("✅ test user create success")
+ return response.json()
+ else:
+ print(f"⚠️ test user possible Yi exists (Zhuang Tai Ma: {response.status_code})")
+ return None
+ except Exception as e:
+ print(f"❌ create test user failed: {e}")
+ return None
 
 
 def test_admin_login_ui(driver):
-    """测试管理员登录界面"""
-    print("🔍 测试 3: 管理员登录界面")
+ """test administrator login Jie Mian"""
+ print("🔍 test 3: administrator login Jie Mian")
 
-    try:
-        # 访问登录页面
-        driver.get(f"{BASE_URL}/login")
+ try:
+ # access login page
+ driver.get(f"{BASE_URL}/login")
 
-        # 等待页面加载
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "form"))
-        )
+ # Deng Dai page Jia Zai
+ WebDriverWait(driver, 10).until(
+ EC.presence_of_element_located((By.TAG_NAME, "form"))
+)
 
-        # 查找登录表单元素
-        username_input = driver.find_element(By.NAME, "username")  # 使用正确的字段名
-        password_input = driver.find_element(By.NAME, "password")
-        login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+ # Cha Zhao login Biao Dan Yuan Su
+ username_input = driver.find_element(By.NAME, "username") # use correct De Zi Duan Ming
+ password_input = driver.find_element(By.NAME, "password")
+ login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
 
-        # 输入管理员凭据
-        username_input.clear()
-        username_input.send_keys("admin")
-        password_input.clear()
-        password_input.send_keys("Ai7dio")
+ # Shu Ru administrator Ping Ju
+ username_input.clear()
+ username_input.send_keys("admin")
+ password_input.clear()
+ password_input.send_keys("Ai7dio")
 
-        # 点击登录
-        login_button.click()
+ # Dian Ji Deng Lu
+ login_button.click()
 
-        # 等待重定向或者错误信息
-        time.sleep(3)
+ # Deng Dai Zhong Ding Xiang Huo Zhe Cuo Wu Xin Xi
+ time.sleep(3)
 
-        current_url = driver.current_url
-        if "/admin" in current_url or current_url.endswith("/"):
-            print("✅ 管理员登录成功")
-            return True
-        else:
-            print(f"❌ 登录可能失败，当前URL: {current_url}")
-            # 检查是否有错误信息
-            page_text = driver.page_source
-            print(f"页面内容预览: {page_text[:500]}...")
-            return False
+ current_url = driver.current_url
+ if "/admin" in current_url or current_url.endswith("/"):
+ print("✅ administrator login success")
+ return True
+ else:
+ print(f"❌ login possible failed, Dang QianURL: {current_url}")
+ # check Shi Fou You Cuo Wu Xin Xi
+ page_text = driver.page_source
+ print(f"page content Yu Lan: {page_text[:500]}...")
+ return False
 
-    except Exception as e:
-        print(f"❌ 登录界面测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ login Jie Mian test failed: {e}")
+ return False
 
 
 def test_admin_dashboard_access(driver):
-    """测试管理员面板访问"""
-    print("🔍 测试 4: 管理员面板访问")
+ """test administrator Mian Ban access"""
+ print("🔍 test 4: administrator Mian Ban access")
 
-    try:
-        # 直接访问管理员面板
-        driver.get(f"{BASE_URL}/admin")
+ try:
+ # Zhi Jie access administrator Mian Ban
+ driver.get(f"{BASE_URL}/admin")
 
-        # 等待页面加载
-        time.sleep(3)
+ # Deng Dai page Jia Zai
+ time.sleep(3)
 
-        # 检查是否成功访问管理员面板
-        if "/admin" in driver.current_url:
-            # 查找管理员面板特有的元素
-            try:
-                WebDriverWait(driver, 5).until(
-                    EC.presence_of_element_located((By.TEXT, "用户管理"))
-                )
-                print("✅ 管理员面板访问成功")
-                return True
-            except:
-                # 如果找不到特定文字，检查是否有导航元素
-                nav_elements = driver.find_elements(By.TAG_NAME, "nav")
-                if len(nav_elements) > 0:
-                    print("✅ 管理员面板访问成功 (检测到导航元素)")
-                    return True
-                else:
-                    print("❌ 管理员面板可能未正确加载")
-                    return False
-        else:
-            print(f"❌ 未能访问管理员面板，当前URL: {driver.current_url}")
-            return False
+ # check Shi Fou success access administrator Mian Ban
+ if "/admin" in driver.current_url:
+ # Cha Zhao administrator Mian Ban Te You De Yuan Su
+ try:
+ WebDriverWait(driver, 5).until(
+ EC.presence_of_element_located((By.TEXT, "Yong Hu Guan Li"))
+)
+ print("✅ administrator Mian Ban access success")
+ return True
+ except:
+ # Ru Guo Zhao Bu Dao Te Ding Wen Zi, check Shi Fou You Dao Hang Yuan Su
+ nav_elements = driver.find_elements(By.TAG_NAME, "nav")
+ if len(nav_elements) > 0:
+ print("✅ administrator Mian Ban access success (Jian Ce to Dao Hang Yuan Su)")
+ return True
+ else:
+ print("❌ administrator Mian Ban possible not yet correct Jia Zai")
+ return False
+ else:
+ print(f"❌ Wei Neng access administrator Mian Ban, Dang QianURL: {driver.current_url}")
+ return False
 
-    except Exception as e:
-        print(f"❌ 管理员面板访问测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ administrator Mian Ban access test failed: {e}")
+ return False
 
 
 def test_user_list_page(driver):
-    """测试用户列表页面"""
-    print("🔍 测试 5: 用户列表页面")
+ """test user list page"""
+ print("🔍 test 5: user list page")
 
-    try:
-        # 访问用户管理页面
-        driver.get(f"{BASE_URL}/admin/users")
+ try:
+ # access user management page
+ driver.get(f"{BASE_URL}/admin/users")
 
-        # 等待页面加载
-        time.sleep(3)
+ # Deng Dai page Jia Zai
+ time.sleep(3)
 
-        # 检查页面是否包含用户管理相关内容
-        page_text = driver.page_source.lower()
+ # check page Shi Fou Bao Han user management related content
+ page_text = driver.page_source.lower()
 
-        success_indicators = [
-            "用户管理" in page_text,
-            "搜索" in page_text,
-            "用户" in page_text,
-            len(driver.find_elements(By.TAG_NAME, "table")) > 0,
-            len(driver.find_elements(By.TAG_NAME, "input")) > 0,
-        ]
+ success_indicators = [
+ "Yong Hu Guan Li" in page_text,
+ "Sou Suo" in page_text,
+ "user" in page_text,
+ len(driver.find_elements(By.TAG_NAME, "table")) > 0,
+ len(driver.find_elements(By.TAG_NAME, "input")) > 0,
+ ]
 
-        if any(success_indicators):
-            print("✅ 用户列表页面加载成功")
-            print(
-                f"   - 检测到的功能: {sum(success_indicators)} / {len(success_indicators)}"
-            )
-            return True
-        else:
-            print("❌ 用户列表页面未正确加载")
-            print(f"页面内容预览: {page_text[:300]}...")
-            return False
+ if any(success_indicators):
+ print("✅ user list page Jia Zai success")
+ print(
+ f" - Jian Ce to De function: {sum(success_indicators)} / {len(success_indicators)}"
+)
+ return True
+ else:
+ print("❌ user list page not yet correct Jia Zai")
+ print(f"page content Yu Lan: {page_text[:300]}...")
+ return False
 
-    except Exception as e:
-        print(f"❌ 用户列表页面测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ user list page test failed: {e}")
+ return False
 
 
 def test_statistics_page(driver):
-    """测试统计数据页面"""
-    print("🔍 测试 6: 统计数据页面")
+ """test Tong Ji Shu Ju page"""
+ print("🔍 test 6: Tong Ji Shu Ju page")
 
-    try:
-        # 访问统计页面
-        driver.get(f"{BASE_URL}/admin/stats")
+ try:
+ # access statistics page
+ driver.get(f"{BASE_URL}/admin/stats")
 
-        # 等待页面加载
-        time.sleep(3)
+ # Deng Dai page Jia Zai
+ time.sleep(3)
 
-        # 检查页面是否包含统计相关内容
-        page_text = driver.page_source.lower()
+ # check page Shi Fou Bao Han statistics related content
+ page_text = driver.page_source.lower()
 
-        success_indicators = [
-            "统计" in page_text,
-            "用户" in page_text,
-            "总" in page_text,
-            len(driver.find_elements(By.CLASS_NAME, "bg-blue-50")) > 0
-            or len(driver.find_elements(By.CLASS_NAME, "bg-green-50")) > 0,
-        ]
+ success_indicators = [
+ "statistics" in page_text,
+ "user" in page_text,
+ "total" in page_text,
+ len(driver.find_elements(By.CLASS_NAME, "bg-blue-50")) > 0
+ or len(driver.find_elements(By.CLASS_NAME, "bg-green-50")) > 0,
+ ]
 
-        if any(success_indicators):
-            print("✅ 统计数据页面加载成功")
-            return True
-        else:
-            print("❌ 统计数据页面未正确加载")
-            return False
+ if any(success_indicators):
+ print("✅ Tong Ji Shu Ju page Jia Zai success")
+ return True
+ else:
+ print("❌ Tong Ji Shu Ju page not yet correct Jia Zai")
+ return False
 
-    except Exception as e:
-        print(f"❌ 统计数据页面测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ Tong Ji Shu Ju page test failed: {e}")
+ return False
 
 
 def test_responsive_design(driver):
-    """测试响应式设计"""
-    print("🔍 测试 7: 响应式设计")
+ """test response Shi She Ji"""
+ print("🔍 test 7: response Shi She Ji")
 
-    try:
-        driver.get(f"{BASE_URL}/admin/users")
+ try:
+ driver.get(f"{BASE_URL}/admin/users")
 
-        # 测试桌面视图
-        driver.set_window_size(1920, 1080)
-        time.sleep(1)
-        desktop_elements = len(driver.find_elements(By.TAG_NAME, "div"))
+ # test Zhuo Mian Shi Tu
+ driver.set_window_size(1920, 1080)
+ time.sleep(1)
+ desktop_elements = len(driver.find_elements(By.TAG_NAME, "div"))
 
-        # 测试移动视图
-        driver.set_window_size(375, 667)
-        time.sleep(1)
-        mobile_elements = len(driver.find_elements(By.TAG_NAME, "div"))
+ # test Yi Dong Shi Tu
+ driver.set_window_size(375, 667)
+ time.sleep(1)
+ mobile_elements = len(driver.find_elements(By.TAG_NAME, "div"))
 
-        # 恢复桌面视图
-        driver.set_window_size(1920, 1080)
+ # Hui Fu Zhuo Mian Shi Tu
+ driver.set_window_size(1920, 1080)
 
-        if desktop_elements > 0 and mobile_elements > 0:
-            print("✅ 响应式设计测试通过")
-            print(f"   - 桌面元素数量: {desktop_elements}")
-            print(f"   - 移动元素数量: {mobile_elements}")
-            return True
-        else:
-            print("❌ 响应式设计测试失败")
-            return False
+ if desktop_elements > 0 and mobile_elements > 0:
+ print("✅ response Shi She Ji Ce Shi Tong Guo")
+ print(f" - Zhuo Mian Yuan Su count: {desktop_elements}")
+ print(f" - Yi Dong Yuan Su count: {mobile_elements}")
+ return True
+ else:
+ print("❌ response Shi She Ji test failed")
+ return False
 
-    except Exception as e:
-        print(f"❌ 响应式设计测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ response Shi She Ji test failed: {e}")
+ return False
 
 
 def test_navigation(driver):
-    """测试导航功能"""
-    print("🔍 测试 8: 导航功能")
+ """test Dao Hang function"""
+ print("🔍 test 8: Dao Hang Gong Neng")
 
-    try:
-        driver.get(f"{BASE_URL}/admin")
-        time.sleep(2)
+ try:
+ driver.get(f"{BASE_URL}/admin")
+ time.sleep(2)
 
-        # 测试导航到不同页面
-        test_pages = [
-            ("/admin/users", "用户"),
-            ("/admin/stats", "统计"),
-        ]
+ # test Dao Hang to Bu Tong page
+ test_pages = [
+ ("/admin/users", "user"),
+ ("/admin/stats", "statistics"),
+ ]
 
-        successful_navigations = 0
+ successful_navigations = 0
 
-        for url, expected_content in test_pages:
-            try:
-                driver.get(f"{BASE_URL}{url}")
-                time.sleep(2)
+ for url, expected_content in test_pages:
+ try:
+ driver.get(f"{BASE_URL}{url}")
+ time.sleep(2)
 
-                if expected_content.lower() in driver.page_source.lower():
-                    successful_navigations += 1
-                    print(f"   ✅ 导航到 {url} 成功")
-                else:
-                    print(f"   ❌ 导航到 {url} 失败")
+ if expected_content.lower() in driver.page_source.lower():
+ successful_navigations += 1
+ print(f" ✅ Dao Hang Dao {url} success")
+ else:
+ print(f" ❌ Dao Hang Dao {url} failed")
 
-            except Exception as e:
-                print(f"   ❌ 导航到 {url} 出错: {e}")
+ except Exception as e:
+ print(f" ❌ Dao Hang Dao {url} Chu Cuo: {e}")
 
-        if successful_navigations >= len(test_pages) // 2:
-            print(f"✅ 导航功能测试通过 ({successful_navigations}/{len(test_pages)})")
-            return True
-        else:
-            print(f"❌ 导航功能测试失败 ({successful_navigations}/{len(test_pages)})")
-            return False
+ if successful_navigations >= len(test_pages) // 2:
+ print(f"✅ Dao Hang Gong Neng Ce Shi pass ({successful_navigations}/{len(test_pages)})")
+ return True
+ else:
+ print(f"❌ Dao Hang Gong Neng Ce Shi failed ({successful_navigations}/{len(test_pages)})")
+ return False
 
-    except Exception as e:
-        print(f"❌ 导航功能测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ Dao Hang Gong Neng Ce Shi failed: {e}")
+ return False
 
 
 def main():
-    """主测试函数"""
-    print("🚀 开始前端管理界面工作流测试")
-    print("=" * 60)
+ """main test function"""
+ print("🚀 start frontend management Jie Mian work Liu test")
+ print("=" * 60)
 
-    test_results = []
+ test_results = []
 
-    # 测试 1: 检查服务器状态
-    result = test_servers_running()
-    test_results.append(result)
+ # test 1: check server status
+ result = test_servers_running()
+ test_results.append(result)
 
-    if not result:
-        print("❌ 服务器未运行，终止测试")
-        return
+ if not result:
+ print("❌ server not yet run, Zhong Zhi Ce Shi")
+ return
 
-    # 测试 2: 创建测试用户
-    create_test_user()  # 不计入测试结果，因为用户可能已存在
+ # test 2: create test user
+ create_test_user() # Bu Ji Ru test Jie Guo, Yin Wei user possible Yi exists
 
-    # 设置WebDriver
-    print("\n🔧 设置浏览器...")
-    driver = setup_webdriver()
+ # setWebDriver
+ print("\n🔧 set Liu Lan Qi...")
+ driver = setup_webdriver()
 
-    if not driver:
-        print("❌ 无法设置浏览器，跳过UI测试")
-        print("💡 提示: 请安装Chrome浏览器和ChromeDriver来运行完整测试")
-        return
+ if not driver:
+ print("❌ Wu Fa set Liu Lan Qi, Tiao GuoUItest")
+ print("💡 prompt: Qing An ZhuangChromeLiu Lan Qi HeChromeDriverLai run complete test")
+ return
 
-    try:
-        # UI测试
-        test_results.append(test_admin_login_ui(driver))
-        test_results.append(test_admin_dashboard_access(driver))
-        test_results.append(test_user_list_page(driver))
-        test_results.append(test_statistics_page(driver))
-        test_results.append(test_responsive_design(driver))
-        test_results.append(test_navigation(driver))
+ try:
+ # UItest
+ test_results.append(test_admin_login_ui(driver))
+ test_results.append(test_admin_dashboard_access(driver))
+ test_results.append(test_user_list_page(driver))
+ test_results.append(test_statistics_page(driver))
+ test_results.append(test_responsive_design(driver))
+ test_results.append(test_navigation(driver))
 
-    finally:
-        driver.quit()
+ finally:
+ driver.quit()
 
-    # 汇总结果
-    print("\n" + "=" * 60)
-    print("📊 测试结果汇总")
-    print("=" * 60)
+ # summary result
+ print("\n" + "=" * 60)
+ print("📊 test result summary")
+ print("=" * 60)
 
-    passed = sum(test_results)
-    total = len(test_results)
+ passed = sum(test_results)
+ total = len(test_results)
 
-    print(f"✅ 通过: {passed}/{total}")
-    print(f"❌ 失败: {total - passed}/{total}")
-    print(f"📈 成功率: {passed/total*100:.1f}%")
+ print(f"✅ pass: {passed}/{total}")
+ print(f"❌ failed: {total - passed}/{total}")
+ print(f"📈 Cheng Gong Lv: {passed/total*100:.1f}%")
 
-    if passed == total:
-        print("\n🎉 所有测试通过！前端管理界面工作正常！")
-        print("\n📋 功能清单:")
-        print("   ✅ 管理员身份验证")
-        print("   ✅ 用户管理界面")
-        print("   ✅ 统计数据显示")
-        print("   ✅ 响应式设计")
-        print("   ✅ 页面导航")
-    else:
-        print(f"\n⚠️  有 {total - passed} 个测试失败，建议检查以下内容:")
-        print("   - 前端组件是否正确渲染")
-        print("   - API接口是否正常响应")
-        print("   - 样式和布局是否正确")
+ if passed == total:
+ print("\n🎉 Suo You Ce Shi Tong Guo!frontend management Jie Mian work normal!")
+ print("\n📋 Gong Neng Qing Dan:")
+ print(" ✅ administrator Shen Fen Yan Zheng")
+ print(" ✅ user management Jie Mian")
+ print(" ✅ Tong Ji Shu Ju display")
+ print(" ✅ response Shi She Ji")
+ print(" ✅ Ye Mian Dao Hang")
+ else:
+ print(f"\n⚠️ You {total - passed} Ge test failed, Jian Yi check Yi Xia Nei Rong:")
+ print(" - frontend Zu Jian Shi Fou correct Xuan Ran")
+ print(" - APIJie Kou Shi Fou normal response")
+ print(" - Yang Shi He Bu Ju Shi Fou correct")
 
-    # 访问说明
-    print("\n🌐 访问地址:")
-    print(f"   前端: {BASE_URL}")
-    print(f"   管理后台: {BASE_URL}/admin")
-    print("   登录凭据: admin / Ai7dio")
+ # Fang Wen Shuo Ming
+ print("\n🌐 Fang Wen Di Zhi:")
+ print(f" frontend: {BASE_URL}")
+ print(f" Guan Li Hou Tai: {BASE_URL}/admin")
+ print(" Deng Lu Ping Ju: admin / Ai7dio")
 
-    return passed == total
+ return passed == total
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\n❌ 测试被用户中断")
-    except Exception as e:
-        print(f"\n❌ 测试过程中发生错误: {e}")
+ try:
+ main()
+ except KeyboardInterrupt:
+ print("\n❌ test Bei user Zhong Duan")
+ except Exception as e:
+ print(f"\n❌ An error occurred during testing: {e}")

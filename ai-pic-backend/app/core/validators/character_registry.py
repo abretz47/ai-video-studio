@@ -14,19 +14,19 @@ from typing import Iterable
 # Allowed generic roles (non-named extras). These are functional short-drama
 # roles, not durable story characters.
 GENERIC_ROLE_BASES = (
-    "路人",
-    "店员",
-    "旁白",
-    "客户",
-    "助理",
-    "团队成员",
-    "篡改者",
-    "录音",
-    "短信",
+    "Lu Ren",
+    "clerk",
+    "narration",
+    "customer",
+    "Zhu Li",
+    "Tuan Dui Cheng Yuan",
+    "Cuan Gai Zhe",
+    "recording",
+    "text message",
 )
 
 _GENERIC_ROLE_RE = re.compile(
-    r"^(?P<base>路人|店员|团队成员)(?P<suffix>[甲乙丙丁A-D]|\d+)?$"
+    r"^(?P<base>Lu Ren|clerk|Tuan Dui Cheng Yuan)(?P<suffix>[Jia Yi Bing DingA-D]|\d+)?$"
 )
 _NAME_SPLIT_RE = re.compile(r"[\s\-_—|/\\\\]+")
 _CJK_RE = re.compile(r"[\u4e00-\u9fff]")
@@ -62,8 +62,8 @@ def extract_name_aliases(name: str | None) -> list[str]:
     """Extract reasonable name aliases for prompt matching.
 
     Examples:
-      - "短剧E2E女主-林雪-2026-01-19T03-52-25-958Z" -> ["短剧E2E女主-林雪-2026-01-19T03-52-25-958Z", "短剧E2E女主", "林雪"]
-      - "老拐" -> ["老拐"]
+ - "short dramaE2ENv Zhu-Lin Xue-2026-01-19T03-52-25-958Z" -> ["short dramaE2ENv Zhu-Lin Xue-2026-01-19T03-52-25-958Z", "short dramaE2ENv Zhu", "Lin Xue"]
+ - "Lao Guai" -> ["Lao Guai"]
     """
     token = normalize_character_name_token(name)
     if not token:
@@ -142,7 +142,7 @@ def normalize_to_registered_or_generic(
     """Return canonical name if registered, else allowed generic role, else None."""
     token = normalize_character_name_token(name)
     if not token:
-        return "旁白"
+        return "narration"
 
     generic = normalize_generic_role(token)
     if generic:
@@ -151,8 +151,8 @@ def normalize_to_registered_or_generic(
     if token in alias_to_canonical:
         return alias_to_canonical[token]
 
-    # Nickname heuristics: 小X / 阿X / 老X -> try stripping the prefix if unique.
-    if len(token) >= 2 and token[0] in {"小", "阿", "老"}:
+    # Nickname heuristics: XiaoX/AX/LaoX -> try stripping the prefix if unique.
+    if len(token) >= 2 and token[0] in {"Xiao", "A", "Lao"}:
         stripped = token[1:]
         if stripped in alias_to_canonical:
             return alias_to_canonical[stripped]

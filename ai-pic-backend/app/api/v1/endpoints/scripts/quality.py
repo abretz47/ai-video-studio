@@ -29,7 +29,7 @@ async def quality_check_script(
     current_user: User = Depends(get_current_active_user),
     service: ScriptService = Depends(_service),
 ) -> ScriptLintResult:
-    """同步质检剧本，包含 LLM 悬念结尾判断。"""
+    """Run synchronous quality checks on the script, including LLM cliffhanger-ending evaluation."""
     script = service.get_script(script_id=script_id, user=current_user)
     return await lint_script_content_async(
         script.content or "",
@@ -46,13 +46,13 @@ async def quality_check_script_async(
     current_user: User = Depends(get_current_active_user),
     service: ScriptService = Depends(_service),
 ) -> dict[str, Any]:
-    """异步质检剧本：创建 Task 并交给 Celery 执行。"""
+    """Run asynchronous quality checks on the script: create a Task and hand it off to Celery."""
     script = service.get_script(script_id=script_id, user=current_user)
 
     payload = {"script_id": script_id, "options": options.model_dump(mode="json")}
     task = Task(
-        title=f"剧本质检 - {script.title}",
-        description="按工业化约束进行脚本质检",
+        title=f"Script quality check - {script.title}",
+        description="Perform script quality checks against industrialized constraints",
         task_type=TaskType.SCRIPT_REVIEW,
         prompt=f"Script quality check for script {script_id}",
         parameters=json.dumps(payload, ensure_ascii=False),

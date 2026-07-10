@@ -39,8 +39,8 @@ def _latest_script(scripts: list[Script]) -> Script | None:
 
 
 def _timeline_row_ready(timeline: Timeline | None) -> bool:
-    # Timeline 表是唯一事实来源；episode.extra_metadata 里的旧 audio_timeline
-    # 不再参与判定，避免 timeline 删除后 dashboard 仍显示就绪。
+    # Timeline Biao Shi Wei Yi Shi Shi Lai Yuan; episode.extra_metadata Li Jiu audio_timeline
+    # Bu Zai Can Yu Pan Ding, avoid timeline delete after dashboard Reng Xian Shi Jiu Xu.
     return timeline is not None and not getattr(timeline, "is_deleted", False)
 
 
@@ -54,12 +54,12 @@ def _storyboard_ready(script: Script | None) -> bool:
 
 def _episode_stage(script_ready: bool, timeline_ready: bool, storyboard_ready: bool):
     if storyboard_ready:
-        return "storyboard_ready", "分镜就绪"
+        return "storyboard_ready", "storyboard Jiu Xu"
     if timeline_ready:
-        return "timeline_ready", "时间轴就绪"
+        return "timeline_ready", "timeline Jiu Xu"
     if script_ready:
-        return "script_ready", "剧本就绪"
-    return "script_pending", "待生成剧本"
+        return "script_ready", "script Jiu Xu"
+    return "script_pending", "pending Sheng Cheng script"
 
 
 def _task_parameters(task: Task) -> dict[str, Any]:

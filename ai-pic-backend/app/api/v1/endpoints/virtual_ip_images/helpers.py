@@ -53,12 +53,12 @@ def get_owned_virtual_ip(
     elif vid is not None:
         query = query.filter(VirtualIP.id == vid)
     else:
-        raise HTTPException(status_code=400, detail="虚拟IP标识缺失")
+        raise HTTPException(status_code=400, detail="Missing virtual IP identifier")
     if not current_user.is_admin and not current_user.is_superuser:
         query = query.filter(VirtualIP.user_id == current_user.id)
     vip = query.first()
     if not vip:
-        raise HTTPException(status_code=404, detail="虚拟IP不存在")
+        raise HTTPException(status_code=404, detail="Virtual IP does not exist")
     return vip
 
 
@@ -77,10 +77,10 @@ def get_virtual_ip_image(
     elif image_id is not None:
         query = query.filter(VirtualIPImage.id == image_id)
     else:
-        raise HTTPException(status_code=400, detail="图像标识缺失")
+        raise HTTPException(status_code=400, detail="Missing image identifier")
     image = query.first()
     if not image:
-        raise HTTPException(status_code=404, detail="虚拟IP图像不存在")
+        raise HTTPException(status_code=404, detail="Virtual IP image does not exist")
     return image
 
 

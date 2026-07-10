@@ -59,9 +59,9 @@ class VirtualIPVoiceSampleService:
         preview_text: Optional[str],
     ) -> Dict[str, Any]:
         if not source_url:
-            raise ValidationError("试听URL不能为空", field="source_url")
+            raise ValidationError("Shi TingURLcannot Wei Kong", field="source_url")
         if not oss_service:
-            raise ConfigurationError("OSS服务未配置")
+            raise ConfigurationError("OSS servicenot configuration")
 
         voice_config = (
             virtual_ip.voice_config if isinstance(virtual_ip.voice_config, dict) else {}
@@ -84,11 +84,11 @@ class VirtualIPVoiceSampleService:
             },
         )
         if not upload_result.get("success"):
-            raise ExternalServiceError("OSS", upload_result.get("error") or "上传失败")
+            raise ExternalServiceError("OSS", upload_result.get("error") or "Shang Chuan failed")
 
         sample_url = upload_result.get("file_url")
         if not sample_url:
-            raise ExternalServiceError("OSS", "未返回文件地址")
+            raise ExternalServiceError("OSS", "not return file Di Zhi")
 
         sample_payload = {
             "sample_url": sample_url,

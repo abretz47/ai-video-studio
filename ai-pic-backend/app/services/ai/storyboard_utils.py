@@ -42,7 +42,7 @@ def _format_hook_plan(plan: Any) -> str:
                 if desc:
                     reversal_desc.append(desc)
             if reversal_desc:
-                parts.append("反转:" + "；".join(reversal_desc))
+                parts.append("twist:" + "；".join(reversal_desc))
         return "；".join(parts) if parts else str(plan)
     return str(plan)
 
@@ -134,13 +134,13 @@ def build_storyboard_context(script: Dict[str, Any]) -> str:
         cliffhangers = story.get("cliffhanger_plan")
         if isinstance(cliffhangers, list) and cliffhangers:
             story_bits.append(
-                "卡点:" + _trim_text("；".join(map(str, cliffhangers[:3])), 80)
+                "cliffhanger:" + _trim_text("；".join(map(str, cliffhangers[:3])), 80)
             )
         ad_snippets = _format_ad_snippets(story.get("ad_snippets"))
         if ad_snippets:
             story_bits.append(f"投流:{_trim_text(ad_snippets, 100)}")
         if story_bits:
-            sections.append("故事背景：" + "，".join(story_bits))
+            sections.append("story background: " + "，".join(story_bits))
 
     if episode:
         epi_bits = []
@@ -157,10 +157,10 @@ def build_storyboard_context(script: Dict[str, Any]) -> str:
         epi_cliffs = episode.get("cliffhanger_plan")
         if isinstance(epi_cliffs, list) and epi_cliffs:
             epi_bits.append(
-                "卡点:" + _trim_text("；".join(map(str, epi_cliffs[:3])), 60)
+                "cliffhanger:" + _trim_text("；".join(map(str, epi_cliffs[:3])), 60)
             )
         elif isinstance(epi_cliffs, str) and epi_cliffs:
-            epi_bits.append("卡点:" + _trim_text(epi_cliffs, 60))
+            epi_bits.append("cliffhanger:" + _trim_text(epi_cliffs, 60))
         if episode.get("summary"):
             epi_bits.append(f"概要:{_trim_text(episode['summary'], 120)}")
         if episode.get("duration_minutes"):
@@ -168,7 +168,7 @@ def build_storyboard_context(script: Dict[str, Any]) -> str:
         if episode.get("scene_count"):
             epi_bits.append(f"场景数:{episode['scene_count']}")
         if epi_bits:
-            sections.append("剧集信息：" + "，".join(epi_bits))
+            sections.append("episode Xin Xi: " + "，".join(epi_bits))
 
     for idx, raw_scene in enumerate(scenes):
         if isinstance(raw_scene, dict):
@@ -203,10 +203,10 @@ def build_storyboard_context(script: Dict[str, Any]) -> str:
 
         dialogues = _collect_scene_dialogues(script, scene_no)
         if dialogues:
-            details.append("对白:" + " / ".join(dialogues))
+            details.append("dialogue:" + " / ".join(dialogues))
         stage_notes = _collect_stage_notes(script, scene_no)
         if stage_notes:
-            details.append("舞台:" + " / ".join(stage_notes))
+            details.append("Wu Tai:" + " / ".join(stage_notes))
 
         sections.append(f"{heading} -> " + "；".join(details))
 

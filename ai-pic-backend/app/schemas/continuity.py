@@ -6,86 +6,86 @@ from pydantic import BaseModel, Field
 
 
 class ContinuityTimelineItem(BaseModel):
-    episode_number: int = Field(..., description="集数（从 1 开始）")
+    episode_number: int = Field(..., description="Ji Shu(Cong 1 Kai Shi)")
     time_anchor: Optional[str] = Field(
-        None, description="时间锚点（同一天/第二天/一周后/具体日期等）"
+        None, description="time Mao Dian(Tong Yi Tian/Di Er Tian/Yi Zhou after/specific Ri Qi Deng)"
     )
     location_anchor: Optional[str] = Field(
-        None, description="地点锚点（城市/区域/关键主要地点）"
+        None, description="Di Dian Mao Dian(Cheng Shi/Qu Yu/key Zhu Yao Di Dian)"
     )
-    events: List[str] = Field(default_factory=list, description="关键事件（短句）")
-    end_state: Optional[str] = Field(None, description="本集结尾的关键状态（短句）")
+    events: List[str] = Field(default_factory=list, description="key Shi Jian(short sentence)")
+    end_state: Optional[str] = Field(None, description="Ben Ji Jie Wei key status(short sentence)")
     reveals: List[str] = Field(
-        default_factory=list, description="本集揭示的信息（短句）"
+        default_factory=list, description="Ben Ji reveal Xin Xi(short sentence)"
     )
 
 
 class ContinuityInfoAcquisitionEvent(BaseModel):
-    episode_number: Optional[int] = Field(None, description="集数（若适用）")
-    scene_number: Optional[int] = Field(None, description="场景号（若适用）")
-    who: str = Field(..., description="谁获得信息（角色名/旁白/观众）")
-    what: str = Field(..., description="获得的信息（姓名/身份/事实/动机等）")
+    episode_number: Optional[int] = Field(None, description="Ji Shu(if Shi Yong)")
+    scene_number: Optional[int] = Field(None, description="scene Hao(if Shi Yong)")
+    who: str = Field(..., description="Shui Huo De Xin Xi(character Ming/narration/Guan Zhong)")
+    what: str = Field(..., description="Huo De Xin Xi(Xing Ming/Shen Fen/Shi Shi/Dong Ji Deng)")
     how: str = Field(
-        ..., description="获得方式（自报/他人介绍/工牌/手机备注/目击/推断等）"
+        ..., description="Huo De Fang Shi(Zi Bao/Ta Ren Jie Shao/Gong Pai/phone Bei Zhu/Mu Ji/Tui Duan Deng)"
     )
-    evidence: Optional[str] = Field(None, description="证据片段/引用（可选）")
+    evidence: Optional[str] = Field(None, description="evidence Pian Duan/Yin Yong(can Xuan)")
 
 
 class RevealedInfoItem(BaseModel):
-    """信息揭示记录，用于信息门控校验。"""
+    """Xin Xi reveal Ji Lu, Yong Yu Xin Xi Men Kong Jiao Yan."""
 
-    info_key: str = Field(..., description="信息唯一标识（如：character_identity_张三）")
-    info_content: str = Field(..., description="信息内容描述")
+    info_key: str = Field(..., description="Xin Xi Wei Yi Biao Shi(for example: character_identity_Zhang San)")
+    info_content: str = Field(..., description="Xin Xi Nei Rong description")
     revealed_to: List[str] = Field(
         default_factory=list,
-        description="信息揭示给谁（角色名列表，'观众' 表示观众已知但角色未知）",
+        description="Xin Xi reveal Gei Shui(character Ming list, 'Guan Zhong' Biao Shi Guan Zhong Yi Zhi Dan character unknown)",
     )
-    revealed_at_episode: int = Field(..., description="揭示的集数")
-    revealed_at_scene: Optional[int] = Field(None, description="揭示的场景号（可选）")
+    revealed_at_episode: int = Field(..., description="reveal Ji Shu")
+    revealed_at_scene: Optional[int] = Field(None, description="reveal scene Hao(can Xuan)")
     info_type: str = Field(
         "fact",
-        description="信息类型：identity/relationship/secret/event/location/motive",
+        description="Xin Xi type: identity/relationship/secret/event/location/motive",
     )
     is_public: bool = Field(
-        False, description="是否为公开信息（所有角色+观众都知道）"
+        False, description="Shi Fou as Gong Kai Xin Xi(all character+Guan Zhong all Zhi Dao)"
     )
 
 
 class ContinuityCharacterState(BaseModel):
-    status: Optional[str] = Field(None, description="当前状态/处境（短句）")
-    goal: Optional[str] = Field(None, description="当前目标（短句）")
+    status: Optional[str] = Field(None, description="current status/Chu Jing(short sentence)")
+    goal: Optional[str] = Field(None, description="current target(short sentence)")
     relationships: Dict[str, str] = Field(
-        default_factory=dict, description="与他人的关系"
+        default_factory=dict, description="and Ta Ren relationship"
     )
     known_info: List[str] = Field(
-        default_factory=list, description="角色已知信息（短句）"
+        default_factory=list, description="character Yi Zhi Xin Xi(short sentence)"
     )
     unknown_info: List[str] = Field(
-        default_factory=list, description="角色未知但重要的信息（短句，可为空）"
+        default_factory=list, description="character unknown Dan Zhong Yao Xin Xi(short sentence, Ke Wei Kong)"
     )
 
 
 class ContinuityLedger(BaseModel):
-    version: int = Field(1, description="账本版本号")
-    facts: List[str] = Field(default_factory=list, description="已确认事实（短句）")
+    version: int = Field(1, description="Zhang Ben Ban Ben Hao")
+    facts: List[str] = Field(default_factory=list, description="Que Ren Shi Shi(short sentence)")
     timeline: List[ContinuityTimelineItem] = Field(
-        default_factory=list, description="时间线"
+        default_factory=list, description="time Xian"
     )
     characters: Dict[str, ContinuityCharacterState] = Field(
-        default_factory=dict, description="角色状态/关系/知识"
+        default_factory=dict, description="character status/relationship/Zhi Shi"
     )
     info_acquisition_events: List[ContinuityInfoAcquisitionEvent] = Field(
-        default_factory=list, description="信息获得事件（用于知识门控）"
+        default_factory=list, description="Xin Xi Huo De Shi Jian(Yong Yu Zhi Shi Men Kong)"
     )
     revealed_info_timeline: List[RevealedInfoItem] = Field(
         default_factory=list,
-        description="信息揭示时间线（用于信息门控校验，记录每条信息何时向谁揭示）",
+        description="Xin Xi reveal time Xian(Yong Yu Xin Xi Men Kong Jiao Yan, Ji Lu Mei Tiao Xin Xi He Shi Xiang Shui reveal)",
     )
     open_threads: List[str] = Field(
-        default_factory=list, description="未解决线索/悬念（短句）"
+        default_factory=list, description="not resolve clue/suspense(short sentence)"
     )
     resolved_threads: List[str] = Field(
-        default_factory=list, description="已收束线索/悬念（短句）"
+        default_factory=list, description="Shou Shu clue/suspense(short sentence)"
     )
 
 
@@ -108,15 +108,15 @@ class EpisodeContinuityUpdatePayload(BaseModel):
 class ContinuityAuditIssue(BaseModel):
     issue_type: str = Field(
         ...,
-        description="问题类型：causality/timeline/knowledge/relationship/location/plausibility 等",
+        description="Wen Ti type: causality/timeline/knowledge/relationship/location/plausibility Deng",
     )
-    severity: str = Field(..., description="严重度：low/medium/high")
-    description: str = Field(..., description="问题描述（短句）")
-    evidence: Optional[str] = Field(None, description="触发问题的片段/定位（可选）")
-    fix_guidance: Optional[str] = Field(None, description="修复指导（可选）")
+    severity: str = Field(..., description="Yan Zhong Du: low/medium/high")
+    description: str = Field(..., description="Wen Ti description(short sentence)")
+    evidence: Optional[str] = Field(None, description="Chu Fa Wen Ti Pian Duan/Ding Wei(can Xuan)")
+    fix_guidance: Optional[str] = Field(None, description="Xiu Fu Zhi Dao(can Xuan)")
 
 
 class ContinuityAuditResult(BaseModel):
     verdict: str = Field(..., description="pass/fail")
     issues: List[ContinuityAuditIssue] = Field(default_factory=list)
-    summary: Optional[str] = Field(None, description="一句话总结（可选）")
+    summary: Optional[str] = Field(None, description="Yi Ju Hua Zong Jie(can Xuan)")

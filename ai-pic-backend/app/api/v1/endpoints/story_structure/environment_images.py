@@ -108,14 +108,14 @@ async def upload_environment_image(
     if ext not in settings.ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=400,
-            detail=f"不支持的文件类型。支持的类型: {', '.join(settings.ALLOWED_EXTENSIONS)}",
+            detail=f"Unsupported file type. Supported types: {', '.join(settings.ALLOWED_EXTENSIONS)}",
         )
 
     content = await image.read()
     if len(content) > settings.MAX_FILE_SIZE:
         raise HTTPException(
             status_code=400,
-            detail=f"文件大小超过限制 ({settings.MAX_FILE_SIZE / 1024 / 1024}MB)",
+            detail=f"File size exceeds the limit ({settings.MAX_FILE_SIZE / 1024 / 1024}MB)",
         )
 
     try:
@@ -131,11 +131,11 @@ async def upload_environment_image(
             require_upload=bool(oss_service),
         )
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"环境图像保存失败: {exc}") from exc
+        raise HTTPException(status_code=500, detail=f"Failed to save environment image: {exc}") from exc
 
     final_url = stored.get("oss_url") or stored.get("relative_path")
     if not final_url:
-        raise HTTPException(status_code=500, detail="环境图像未返回可用 URL")
+        raise HTTPException(status_code=500, detail="Environment image did not return a usable URL")
 
     refs = env.reference_images or []
     refs.insert(0, final_url)

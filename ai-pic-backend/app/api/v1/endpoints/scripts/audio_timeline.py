@@ -44,7 +44,7 @@ async def generate_script_audio_timeline_async(
     """Queue async episode audio timeline generation for a script."""
     script = load_script_with_access(db, script_id, current_user)
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     story = script.episode.story if script.episode else None
     episode = script.episode if script.episode else None
@@ -52,8 +52,8 @@ async def generate_script_audio_timeline_async(
     params["script_id"] = script_id
 
     task = Task(
-        title=friendly_task_title("时间轴生成", script, episode, story),
-        description="拼接场景音轨并生成时间轴（episode）",
+        title=friendly_task_title("Timeline generation", script, episode, story),
+        description="Concatenate scene audio tracks and generate the timeline (episode)",
         task_type=TaskType.TIMELINE_GENERATION,
         prompt=f"Episode audio timeline generation for script {script_id}",
         parameters=json.dumps(params, ensure_ascii=False),
@@ -113,10 +113,10 @@ def _process_script_audio_timeline_task(
                 update_task_progress(
                     db,
                     task,
-                    "已存在 episode 时间轴，导入 Timeline Spec（如需重算请开启 overwrite）",
+                    "An episode timeline already exists; import the Timeline Spec instead (enable overwrite to recompute)",
                 )
             else:
-                update_task_progress(db, task, "拼接场景音轨并生成时间轴中…")
+                update_task_progress(db, task, "Concatenating scene audio tracks and generating timeline...")
                 audio_timeline_payload = await generate_episode_audio_timeline(
                     db,
                     story=story,
@@ -143,13 +143,13 @@ def _process_script_audio_timeline_task(
         if task:
             task.status = TaskStatus.COMPLETED
             task.result_file_path = f"script:{script_id}:audio_timeline"
-            update_task_progress(db, task, "时间轴生成完成")
+            update_task_progress(db, task, "Timeline generation completed")
     except Exception as exc:
         task = TaskRepository(db).get_by_id(task_id)
         if task:
             task.status = TaskStatus.FAILED
             task.error_message = str(exc)
-            update_task_progress(db, task, f"时间轴生成失败：{exc}")
+            update_task_progress(db, task, f"Timeline generation failed: {exc}")
     finally:
         db.close()
 

@@ -1,7 +1,7 @@
 """
-Duration Orchestrator 工具函数
+Duration Orchestrator Gong Ju function
 
-提供预算分配、字数计算、调整建议生成等工具函数。
+Ti Gong Yu Suan Fen Pei, word count Ji Suan, adjust suggestion Sheng Cheng Deng Gong Ju function.
 """
 
 import logging
@@ -27,22 +27,22 @@ logger = logging.getLogger(__name__)
 
 def calculate_target_word_count(duration_seconds: int) -> int:
     """
-    根据目标时长计算目标对白字数。
+ Gen Ju target when Zhang Ji Suan target dialogue word count.
 
-    考虑因素:
-    - DIALOGUE_DENSITY_FACTOR (0.90): 不是所有时间都在说话，需要考虑
-      停顿、语气词、情绪表达、角色反应时间、环境音等
-    - WORDS_PER_SECOND (4.7): 校准后的中文 TTS 语速
+ consider Yin Su:
+ - DIALOGUE_DENSITY_FACTOR (0.90): Bu Shi all time all in Shuo Hua, need consider
+ Ting Dun, Yu Qi Ci, EmotionBiao Da, character Fan Ying Shi Jian, environment Yin Deng
+ - WORDS_PER_SECOND (4.7): Jiao Zhun after Zhong Wen TTS Yu Su
 
-    例如: 60秒场景
-    - 实际对白时间: 60 * 0.90 = 54秒
-    - 目标字数: 54 * 4.7 ≈ 254字
+ for example: 60seconds scene
+ - Shi Ji dialogue time: 60 * 0.90 = 54seconds
+ - target word count: 54 * 4.7 ≈ 254character
 
     Args:
-        duration_seconds: 目标时长 (秒)
+ duration_seconds: target when Zhang (seconds)
 
     Returns:
-        目标对白字数
+ target dialogue word count
     """
     effective_seconds = duration_seconds * DIALOGUE_DENSITY_FACTOR
     return int(effective_seconds * WORDS_PER_SECOND)
@@ -54,36 +54,36 @@ def allocate_scene_budgets(
     buffer_ratio: float = BUFFER_RATIO,
 ) -> Tuple[List[SceneBudget], int]:
     """
-    分配每个场景的时长预算。
+ Fen Pei Mei Ge scene duration Yu Suan.
 
-    策略:
-    1. 保留 buffer_ratio (默认 5%) 用于场景间过渡
-    2. 如果场景有 estimated_duration_seconds，按比例缩放
-    3. 否则平均分配
+ Ce Lve:
+ 1. Bao Liu buffer_ratio (default 5%) Yong Yu scene Jian Guo Du
+ 2. Ru Guo scene has estimated_duration_seconds, An ratio Suo Fang
+ 3. Fou Ze Ping Jun Fen Pei
 
     Args:
-        total_duration_minutes: 总时长 (分钟)
-        scenes: 场景列表 (来自 Episode Agent)
-        buffer_ratio: 预留 buffer 比例
+ total_duration_minutes: total duration (minutes)
+ scenes: scene list (Lai Zi Episode Agent)
+ buffer_ratio: Yu Liu buffer ratio
 
     Returns:
-        (场景预算列表, buffer 秒数)
+ (scene Yu Suan list, buffer Miao Shu)
     """
     if not scenes:
-        logger.warning("allocate_scene_budgets: 无场景可分配")
+        logger.warning("allocate_scene_budgets: none scene can Fen Pei")
         return [], 0
 
     total_seconds = total_duration_minutes * 60
     buffer_seconds = int(total_seconds * buffer_ratio)
     available_seconds = total_seconds - buffer_seconds
 
-    # 检查是否有估算时长
+    # check Shi Fou has Gu Suan when Zhang
     has_estimates = any(s.get("estimated_duration_seconds") for s in scenes)
 
     budgets: List[SceneBudget] = []
 
     if has_estimates:
-        # 按估算时长比例分配
+        # An Gu Suan when Zhang ratio Fen Pei
         total_estimated = sum(
             s.get("estimated_duration_seconds", DEFAULT_SCENE_DURATION_SECONDS)
             for s in scenes
@@ -98,7 +98,7 @@ def allocate_scene_budgets(
             )
             target = int(available_seconds * ratio)
 
-            # 确保在合理范围内
+            # Que Bao in He Li range interior
             target = max(
                 MIN_SCENE_DURATION_SECONDS, min(target, MAX_SCENE_DURATION_SECONDS)
             )
@@ -114,7 +114,7 @@ def allocate_scene_budgets(
                 )
             )
     else:
-        # 平均分配
+        # Ping Jun Fen Pei
         per_scene = available_seconds // len(scenes)
         per_scene = max(
             MIN_SCENE_DURATION_SECONDS, min(per_scene, MAX_SCENE_DURATION_SECONDS)
@@ -133,7 +133,7 @@ def allocate_scene_budgets(
             )
 
     logger.info(
-        "allocate_scene_budgets: 分配完成",
+        "allocate_scene_budgets: Fen Pei complete",
         extra={
             "total_duration_minutes": total_duration_minutes,
             "scene_count": len(scenes),
@@ -152,14 +152,14 @@ def compute_adjustment_hint(
     target_duration_seconds: int,
 ) -> Tuple[str, str]:
     """
-    计算调整建议。
+ Ji Suan adjust suggestion.
 
-    根据实际时长与目标时长的差异，生成具体的调整建议。
+ Gen Ju Shi Ji duration and target duration Cha Yi, Sheng Cheng specific adjust suggestion.
 
     Args:
-        actual_word_count: 实际对白字数
-        actual_duration_ms: 实际 TTS 时长 (毫秒)
-        target_duration_seconds: 目标时长 (秒)
+ actual_word_count: Shi Ji dialogue word count
+ actual_duration_ms: Shi Ji TTS when Zhang (Hao Miao)
+ target_duration_seconds: target when Zhang (seconds)
 
     Returns:
         (rejection_reason, adjustment_hint)
@@ -168,15 +168,15 @@ def compute_adjustment_hint(
     diff_ms = target_ms - actual_duration_ms
     diff_seconds = abs(diff_ms) / 1000
 
-    # 估算需要增减的字数（按当前基准语速）
+    # Gu Suan need Zeng Jian word count(An current Ji Zhun Yu Su)
     words_per_second = WORDS_PER_SECOND
     word_diff = max(int(abs(diff_seconds) * words_per_second), MIN_WORD_ADJUSTMENT)
 
-    # 估算需要增减的对白句数
+    # Gu Suan need Zeng Jian dialogue Ju Shu
     dialogue_diff = max(1, word_diff // ADJUSTMENT_WORDS_PER_DIALOGUE)
 
     if diff_ms > 0:
-        # 时长不足
+        # when Zhang insufficient
         reason = "duration_too_short"
         hint = (
             f"当前对白时长 {actual_duration_ms / 1000:.1f} 秒，"
@@ -190,7 +190,7 @@ def compute_adjustment_hint(
             f"4. 丰富场景细节描述"
         )
     else:
-        # 时长过长
+        # when Zhang Guo Chang
         word_diff = max(word_diff, MIN_WORD_REDUCTION)
         dialogue_diff = max(1, word_diff // ADJUSTMENT_WORDS_PER_DIALOGUE)
         reason = "duration_too_long"
@@ -211,13 +211,13 @@ def compute_adjustment_hint(
 
 def count_dialogue_words(dialogues: List[Dict[str, Any]]) -> int:
     """
-    统计对白总字数。
+ Tong Ji dialogue Zong word count.
 
     Args:
-        dialogues: 对白列表
+ dialogues: dialogue list
 
     Returns:
-        总字数
+ Zong word count
     """
     total = 0
     for dlg in dialogues:
@@ -229,13 +229,13 @@ def count_dialogue_words(dialogues: List[Dict[str, Any]]) -> int:
 
 def estimate_duration_from_words(word_count: int) -> int:
     """
-    根据字数估算时长 (秒)。
+ Gen Ju word count Gu Suan when Zhang (seconds).
 
     Args:
-        word_count: 字数
+ word_count: word count
 
     Returns:
-        估算时长 (秒)
+ Gu Suan when Zhang (seconds)
     """
     return int(word_count / WORDS_PER_SECOND)
 
@@ -246,27 +246,27 @@ def rebalance_remaining_budgets(
     actual_duration: float,
 ) -> None:
     """
-    根据实际时长调整后续场景的预算。
+ Gen Ju Shi Ji when Zhang adjust subsequent scene Yu Suan.
 
-    如果当前场景超时/欠时，从后续场景预算中调整。
+ Ru Guo current scene Chao Shi/Qian Shi, Cong subsequent scene Yu Suan in adjust.
 
     Args:
-        budgets: 场景预算列表 (会被原地修改)
-        current_index: 当前场景索引
-        actual_duration: 当前场景实际时长 (秒)
+ budgets: scene Yu Suan list (will Yuan Di Xiu Gai)
+ current_index: current scene index
+ actual_duration: current scene Shi Ji when Zhang (seconds)
     """
     if current_index >= len(budgets) - 1:
-        # 已是最后一个场景，无需调整
+        # Shi Zui Hou a scene, Wu Xu adjust
         return
 
     current_budget = budgets[current_index]
     diff = actual_duration - current_budget.target_duration_seconds
 
     if abs(diff) < 5:
-        # 差异太小，不调整
+        # Cha Yi Tai Xiao, not adjust
         return
 
-    # 计算后续待处理场景
+    # Ji Suan subsequent Dai Chu Li scene
     remaining_budgets = [
         b for b in budgets[current_index + 1 :] if b.status == SceneStatus.PENDING
     ]
@@ -274,12 +274,12 @@ def rebalance_remaining_budgets(
     if not remaining_budgets:
         return
 
-    # 将差异平均分配到后续场景
+    # Cha Yi Ping Jun Fen Pei to subsequent scene
     adjustment_per_scene = -diff / len(remaining_budgets)
 
     for budget in remaining_budgets:
         new_target = int(budget.target_duration_seconds + adjustment_per_scene)
-        # 确保在合理范围内
+        # Que Bao in He Li range interior
         new_target = max(
             MIN_SCENE_DURATION_SECONDS, min(new_target, MAX_SCENE_DURATION_SECONDS)
         )
@@ -289,7 +289,7 @@ def rebalance_remaining_budgets(
         budget.max_duration_seconds = int(new_target * DURATION_TOLERANCE_SCENE_HIGH)
 
     logger.info(
-        "rebalance_remaining_budgets: 预算再平衡",
+        "rebalance_remaining_budgets: Yu Suan then Ping Heng",
         extra={
             "current_scene": current_budget.scene_number,
             "diff_seconds": diff,
@@ -301,15 +301,15 @@ def rebalance_remaining_budgets(
 
 def format_budget_summary(budgets: List[SceneBudget]) -> str:
     """
-    格式化预算摘要，用于日志和调试。
+ Ge Shi Hua Yu Suan summary, Yong Yu log and Tiao Shi.
 
     Args:
-        budgets: 场景预算列表
+ budgets: scene Yu Suan list
 
     Returns:
-        格式化的摘要字符串
+ Ge Shi Hua summary Zi Fu Chuan
     """
-    lines = ["场景预算摘要:"]
+    lines = ["scene Yu Suan summary:"]
     for b in budgets:
         status_icon = {
             SceneStatus.PENDING: "⏳",

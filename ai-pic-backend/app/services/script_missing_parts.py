@@ -37,7 +37,7 @@ def populate_dialogues_and_stage_if_missing(
     - If a scene has no dialogue lines but its summary/description contains
       quoted spoken lines, extract those lines before using narration fallback.
     - If no quoted dialogue can be extracted, add a single narration line derived
-      from the scene summary/description (character="旁白"). This is clearly
+ from the scene summary/description (character="narration"). This is clearly
       marked as a fallback so quality gates can reject it for production output.
     - If a scene has no stage direction, add an action stage direction using
       the same summary/description.
@@ -100,7 +100,7 @@ def populate_dialogues_and_stage_if_missing(
             generated_dialogues.append(
                 {
                     "scene_number": scene_no,
-                    "character": "旁白",
+                    "character": "narration",
                     "content": str(summary),
                     "fallback": True,
                     "fallback_reason": "missing_dialogues",

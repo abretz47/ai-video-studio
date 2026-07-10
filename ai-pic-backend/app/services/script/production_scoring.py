@@ -90,7 +90,7 @@ async def run_production_script_generation(
 
         rewrite_guidance = extract_rewrite_guidance(scoring)
         if not rewrite_guidance:
-            rewrite_guidance = ["提高冲突强度、角色辨识度、投流可剪性和逻辑清晰度。"]
+            rewrite_guidance = ["Ti Gao conflict Qiang Du, character Bian Shi Du, Tou Liu can Jian Xing and Luo Ji Qing Xi Du."]
 
     selected = select_best_attempt(attempts)
     selected_attempt = int(selected.get("attempt") or 1)
@@ -192,7 +192,7 @@ def _default_scoring(*, error: Optional[str] = None) -> Dict[str, Any]:
             "overall_score": 0.0,
             "verdict": "review",
             "risks": [error or "scoring_failed"],
-            "rewrite_guidance": ["重新强化冲突、爽点、卡点和投流可剪性。"],
+            "rewrite_guidance": ["retry Qiang Hua conflict, Shuang Dian, cliffhanger and Tou Liu can Jian Xing."],
         },
         "traffic_sheet": {"assets": []},
         "asset_tags": {"asset_count": 0, "hook_types": [], "durations": []},

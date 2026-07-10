@@ -1,5 +1,5 @@
 """
-基础测试 - 验证测试框架是否正常工作
+Ji Chu Ce Shi - validate test Kuang Jia Shi Fou normal work
 """
 
 import pytest
@@ -9,39 +9,39 @@ from tests.unit.test_database import reset_test_database, test_db
 
 @pytest.mark.unit
 def test_basic_functionality():
-    """测试基本功能"""
-    assert 1 + 1 == 2
-    assert "hello" == "hello"
-    assert True is True
+ """test Ji Ben Gong Neng"""
+ assert 1 + 1 == 2
+ assert "hello" == "hello"
+ assert True is True
 
 
 @pytest.mark.unit
 def test_database_connection():
-    """测试数据库连接"""
-    # 重置测试数据库
-    reset_test_database()
+ """test database connection"""
+ # Zhong Zhi test database
+ reset_test_database()
 
-    # 获取会话
-    session = next(test_db.get_session())
+ # Huo Qu Hui Hua
+ session = next(test_db.get_session())
 
-    try:
-        # 执行简单查询
-        result = session.execute(text("SELECT 1 as test_value"))
-        value = result.scalar()
-        assert value == 1
+ try:
+ # Zhi Xing Jian Dan Cha Xun
+ result = session.execute(text("SELECT 1 as test_value"))
+ value = result.scalar()
+ assert value == 1
 
-    finally:
-        session.close()
+ finally:
+ session.close()
 
 
 @pytest.mark.unit
 def test_imports():
-    """测试重要模块导入"""
-    from app.core.config import settings
-    from app.models.user import User
-    from app.models.virtual_ip import VirtualIP
+ """test Zhong Yao Mo Kuai import"""
+ from app.core.config import settings
+ from app.models.user import User
+ from app.models.virtual_ip import VirtualIP
 
-    # 基本断言
-    assert User is not None
-    assert VirtualIP is not None
-    assert settings is not None
+ # Ji Ben Duan Yan
+ assert User is not None
+ assert VirtualIP is not None
+ assert settings is not None

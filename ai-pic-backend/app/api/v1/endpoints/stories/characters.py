@@ -21,7 +21,7 @@ async def get_story_characters(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """获取故事角色列表"""
+    """Get story character list"""
     story = get_story_by_identifier(db, story_id, None, current_user)
 
     characters = (
@@ -41,7 +41,7 @@ async def get_story_characters_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 获取故事角色列表"""
+    """Get story character list by business_id"""
     story = get_story_by_identifier(db, None, story_business_id, current_user)
     characters = (
         not_deleted(db.query(StoryCharacter), StoryCharacter)

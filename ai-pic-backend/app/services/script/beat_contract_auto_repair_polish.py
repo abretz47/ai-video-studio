@@ -16,22 +16,22 @@ from app.services.script.beat_contract_auto_repair_common import (
     visible_len,
 )
 
-_VAGUE_VISUAL = ("气氛", "氛围", "紧张感", "压迫感")
+_VAGUE_VISUAL = ("Qi Fen", "atmosphere", "Jin Zhang Gan", "Ya Po Gan")
 _VAGUE = (
-    "意识到",
-    "明白",
-    "内心",
-    "崩溃",
-    "发现关键线索",
-    "关键线索",
-    "出现转折",
-    "发生反转",
-    "制造冲突",
-    "制造悬念",
-    "留下悬念",
-    "推动冲突",
-    "升级冲突",
-    "推进剧情",
+    "Yi Shi to",
+    "understand",
+    "Nei Xin",
+    "Beng Kui",
+    "discoverKey clue",
+    "Key clue",
+    "Chu Xian Zhuan Zhe",
+    "Fa Sheng twist",
+    "Zhi Zao conflict",
+    "Zhi Zao Xuan Nian",
+    "Liu Xia suspense",
+    "drive conflict",
+    "escalate conflict",
+    "advance plot",
 )
 
 
@@ -42,10 +42,10 @@ def repair_beats(scene: dict[str, Any], beats: list[dict[str, Any]]) -> None:
         if has_any(visible, _VAGUE_VISUAL):
             beat["visible_event"] = f"{protagonist}停住脚步举起手机，云端日志时间戳映在屏幕上。"
         if (beat.get("beat_type") == "payoff" or beat.get("payoff_tag")) and has_any(
-            visible, ("信任", "崩溃", "承认")
+            visible, ("Xin Ren", "Beng Kui", "Cheng Ren")
         ):
-            beat["visible_event"] = "客户在会议纪要上签字确认继续项目，篡改者手机弹出解雇短信。"
-            beat["payoff_tag"] = "客户签字继续项目"
+            beat["visible_event"] = "customer in Hui Yi Ji Yao on Qian Zi Que Ren continue Xiang Mu, Cuan Gai Zhe phone Dan Chu Jie Gu text message."
+            beat["payoff_tag"] = "Client signs to continue the project"
         purpose = str(beat.get("dramatic_purpose") or "")
         if not purpose or has_any(purpose, _VAGUE):
             beat["dramatic_purpose"] = f"{beat['visible_event']}让证据链进入下一步。"
@@ -53,7 +53,7 @@ def repair_beats(scene: dict[str, Any], beats: list[dict[str, Any]]) -> None:
             if isinstance(action, dict) and has_any(
                 str(action.get("content") or ""), _VAGUE_VISUAL
             ):
-                action["content"] = "小陈横在门口按住平板，云端日志时间戳被蓝框锁定。"
+                action["content"] = "Xiao Chen Heng in Men Kou An Zhu Ping Ban, cloud log time Chuo Lan Kuang lock."
     if protagonist.replace(" ", "") not in scene_screen_text(beats):
         beats[0].setdefault("action_lines", []).insert(
             0,
@@ -66,8 +66,8 @@ def repair_beats(scene: dict[str, Any], beats: list[dict[str, Any]]) -> None:
     if not any(beat.get("beat_type") == "payoff" or beat.get("payoff_tag") for beat in beats):
         target = beats[1 if len(beats) > 1 else 0]
         target["beat_type"] = "reveal"
-        target["payoff_tag"] = "客户签字继续项目"
-        target["visible_event"] = "客户在会议纪要上签字确认继续项目，AP把原始文件编号圈给镜头。"
+        target["payoff_tag"] = "Client signs to continue the project"
+        target["visible_event"] = "customer in Hui Yi Ji Yao on Qian Zi Que Ren continue Xiang Mu, APOriginal fileID Quan Gei shot."
     _ensure_recurring_dialogue(beats, protagonist)
 
 
@@ -75,12 +75,12 @@ def harden_opening_hook(beat: dict[str, Any] | None) -> None:
     if not isinstance(beat, dict):
         return
     beat["beat_type"] = "hook"
-    if not has_any(beat_text(beat), ("异常", "倒计时", "删除", "危机", "证据", "反转", "改")):
-        beat["visible_event"] = "客户拍桌质疑：投影数据被改了，原始文件证据与屏幕数字不符。"
+    if not has_any(beat_text(beat), ("exception", "countdown", "delete", "crisis", "evidence", "twist", "Gai")):
+        beat["visible_event"] = "customer Pai Zhuo Zhi Yi: Tou Ying data Gai, Original fileevidence and screen Shu Zi Bu Fu."
         beat.setdefault("action_lines", []).insert(
             0,
             {
-                "content": "投影数字变红，客户手指重重敲在错误数据上。",
+                "content": "Tou Ying Shu Zi Bian Hong, customer Shou Zhi Chong Chong Qiao in error data on.",
                 "timing": "0-2s",
                 "type": "action",
             },
@@ -91,11 +91,11 @@ def harden_final_cliffhanger(beat: dict[str, Any] | None) -> None:
     if not isinstance(beat, dict):
         return
     beat["beat_type"] = "cliffhanger"
-    beat["visible_event"] = "AP手机弹出匿名短信：原始文件将在30秒后删除，下一个停职的是你。"
-    beat["cliffhanger_tag"] = "匿名短信威胁删除原始文件"
+    beat["visible_event"] = "APphone Dan Chu Ni Ming text message: Original filein30 secondsafter delete, below a Ting Zhi Shi you."
+    beat["cliffhanger_tag"] = "Ni Ming text message threat deleteOriginal file"
     beat.setdefault("action_lines", []).append(
         {
-            "content": "AP把手机举到镜头前，短信倒计时从30秒跳到29秒。",
+            "content": "APphone Ju Dao shot before, text message countdown Cong30 secondsTiao to29seconds.",
             "timing": "outro",
             "type": "action",
         }
@@ -159,13 +159,13 @@ def shorten_dialogue_lines(beats: list[dict[str, Any]]) -> None:
 
 def _short_dialogue(text: str) -> str:
     replacements = (
-        (("版本同步",), "可能是同步问题。"),
-        (("会议纪要",), "纪要有你签字。"),
-        (("刚才", "误会"), "刚才误会了。"),
-        (("原始文件",), "原始文件在这。"),
-        (("云端数据",), "云端875，投影920。"),
-        (("左边", "右边"), "左云端，右投影。"),
-        (("签过字",), "签字在这，怎么说？"),
+        (("version sync",), "Ke Neng Shi sync Wen Ti."),
+        (("Hui Yi Ji Yao",), "Ji Yao has you Qian Zi."),
+        (("Gang Cai", "Wu Hui"), "Gang Cai Wu Hui."),
+        (("Original file",), "Original filein Zhe."),
+        (("cloud data",), "cloud875, Tou Ying920."),
+        (("Zuo Bian", "You Bian"), "Zuo cloud, You Tou Ying."),
+        (("Qian Guo character",), "Qian Zi in Zhe, Zen Me Shuo?"),
     )
     for markers, replacement in replacements:
         if all(marker in text for marker in markers):

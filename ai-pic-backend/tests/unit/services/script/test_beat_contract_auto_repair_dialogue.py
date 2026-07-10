@@ -1,7 +1,7 @@
 import pytest
 
 from app.services.script.beat_contract_auto_repair import (
-    auto_repair_script_beat_contract,
+ auto_repair_script_beat_contract,
 )
 from app.services.script.beat_contract_normalizer import normalize_script_beat_contract
 from app.services.script.beat_contract_quality import evaluate_beat_contract_quality
@@ -10,192 +10,192 @@ from tests.unit.services.script.test_beat_contract_auto_repair import _valid_con
 
 @pytest.mark.unit
 def test_auto_repair_dedupes_screen_dialogue_and_hardens_payoff():
-    payload = _valid_contract()
-    scene = payload["scenes"][0]
-    scene["beats"][1]["visible_event"] = scene["beats"][0]["visible_event"]
-    scene["beats"][1]["action_lines"] = list(scene["beats"][0]["action_lines"])
-    scene["beats"][1]["dialogue_lines"][0]["content"] = "证据在这。"
-    scene["beats"][1]["beat_type"] = "payoff"
-    scene["beats"][1]["payoff_tag"] = "客户信任"
-    scene["beats"][1]["visible_event"] = "篡改者崩溃承认，客户信任AP回归"
-    scene["beats"][1]["action_lines"] = [{"content": "篡改者崩溃，客户脸色缓和"}]
-    scene["beats"][2]["dialogue_lines"][0]["content"] = "证据在这。"
+ payload = _valid_contract()
+ scene = payload["scenes"][0]
+ scene["beats"][1]["visible_event"] = scene["beats"][0]["visible_event"]
+ scene["beats"][1]["action_lines"] = list(scene["beats"][0]["action_lines"])
+ scene["beats"][1]["dialogue_lines"][0]["content"] = "Zheng Ju Zai Zhe."
+ scene["beats"][1]["beat_type"] = "payoff"
+ scene["beats"][1]["payoff_tag"] = "Ke Hu Xin Ren"
+ scene["beats"][1]["visible_event"] = "Cuan Gai Zhe Beng Kui Cheng Ren, Ke Hu Xin RenAPreturn"
+ scene["beats"][1]["action_lines"] = [{"content": "Cuan Gai Zhe Beng Kui, customer Lian Se Huan He"}]
+ scene["beats"][2]["dialogue_lines"][0]["content"] = "Zheng Ju Zai Zhe."
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    contract = normalize_script_beat_contract(repaired)
-    report = evaluate_beat_contract_quality(contract)
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ contract = normalize_script_beat_contract(repaired)
+ report = evaluate_beat_contract_quality(contract)
 
-    failed = {item["check_id"] for item in report["failed_checks"]}
-    assert "beat_progression_repetition" not in failed
-    assert "dialogue_progression_repetition" not in failed
-    assert "beat_visible_event_specificity" not in failed
-    assert "payoff_specificity" not in failed
+ failed = {item["check_id"] for item in report["failed_checks"]}
+ assert "beat_progression_repetition" not in failed
+ assert "dialogue_progression_repetition" not in failed
+ assert "beat_visible_event_specificity" not in failed
+ assert "payoff_specificity" not in failed
 
 
 @pytest.mark.unit
 def test_auto_repair_shortens_dialogue_lines_for_short_drama_gate():
-    payload = _valid_contract()
-    long_lines = [
-        "陈总，原始文件在我手上，数据差异我会查清。",
-        "我记得原始数据是875万，对吗？",
-        "云端数据是875万，投影上是920万。",
-        "左边是云端原始数据，右边是投影数据。",
-        "你签过字确认数据无误，现在怎么说？",
-    ]
-    first_scene = payload["scenes"][0]
-    for idx, text in enumerate(long_lines):
-        beat = first_scene["beats"][idx % len(first_scene["beats"])]
-        beat.setdefault("dialogue_lines", [])
-        beat["dialogue_lines"][0]["content"] = text
+ payload = _valid_contract()
+ long_lines = [
+ "Chen Zong, Yuan Shi file Zai Wo Shou Shang, data Cha Yi Wo Hui Cha Qing.",
+ "Wo Ji De Yuan Shi Shu Ju Shi875Wan, Dui Ma?",
+ "Yun Duan data Shi875Wan, Tou Ying Shang Shi920Wan.",
+ "Zuo Bian Shi Yun Duan Yuan Shi Shu Ju, You Bian Shi Tou Ying data.",
+ "you Qian Guo character confirm data Wu Wu, Xian Zai Zen Me Shuo?",
+ ]
+ first_scene = payload["scenes"][0]
+ for idx, text in enumerate(long_lines):
+ beat = first_scene["beats"][idx % len(first_scene["beats"])]
+ beat.setdefault("dialogue_lines", [])
+ beat["dialogue_lines"][0]["content"] = text
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    contract = normalize_script_beat_contract(repaired)
-    report = evaluate_beat_contract_quality(contract)
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ contract = normalize_script_beat_contract(repaired)
+ report = evaluate_beat_contract_quality(contract)
 
-    failed = {item["check_id"] for item in report["failed_checks"]}
-    repaired_text = repaired["content"]
-    assert "dialogue_line_length" not in failed
-    assert "陈总，原始文件在我手上，数据差异我会查清。" not in repaired_text
-    for scene in contract.scenes:
-        for beat in scene.beats:
-            for line in beat.dialogue_lines:
-                assert len("".join(ch for ch in line.content if not ch.isspace())) <= 15
+ failed = {item["check_id"] for item in report["failed_checks"]}
+ repaired_text = repaired["content"]
+ assert "dialogue_line_length" not in failed
+ assert "Chen Zong, Yuan Shi file Zai Wo Shou Shang, data Cha Yi Wo Hui Cha Qing." not in repaired_text
+ for scene in contract.scenes:
+ for beat in scene.beats:
+ for line in beat.dialogue_lines:
+ assert len("".join(ch for ch in line.content if not ch.isspace())) <= 15
 
 
 @pytest.mark.unit
 def test_auto_repair_shortens_dialogue_to_complete_short_sentences():
-    payload = _valid_contract()
-    first_scene = payload["scenes"][0]
-    lines = [
-        "陈总，可能是版本同步问题。我让助理调取原始备份。",
-        "这是你签的会议纪要，同意数据无误。",
-        "AP，抱歉刚才误会了。你们内部要继续查。",
-    ]
-    for idx, text in enumerate(lines):
-        beat = first_scene["beats"][idx % len(first_scene["beats"])]
-        beat["dialogue_lines"][0]["content"] = text
+ payload = _valid_contract()
+ first_scene = payload["scenes"][0]
+ lines = [
+ "Chen Zong, possible Shi Ban Ben Tong Bu issue.Wo Rang Zhu Li Diao Qu Yuan Shi Bei Fen.",
+ "Zhe Shi you Qian De Hui Yi Ji Yao, Tong Yi data Wu Wu.",
+ "AP, Bao Qian Gang Cai Wu Hui Le.Ni Men Nei Bu Yao continue Cha.",
+ ]
+ for idx, text in enumerate(lines):
+ beat = first_scene["beats"][idx % len(first_scene["beats"])]
+ beat["dialogue_lines"][0]["content"] = text
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    repaired_text = repaired["content"]
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ repaired_text = repaired["content"]
 
-    assert "我让助理调取" not in repaired_text
-    assert "同意数据无" not in repaired_text
-    assert "你们内部" not in repaired_text
-    assert "可能是同步问题。" in repaired_text
-    assert "纪要有你签字。" in repaired_text
-    assert "刚才误会了。" in repaired_text
+ assert "Wo Rang Zhu Li Diao Qu" not in repaired_text
+ assert "Tong Yi data none" not in repaired_text
+ assert "Ni Men Nei Bu" not in repaired_text
+ assert "possible Shi Tong Bu issue." in repaired_text
+ assert "Ji Yao You you signed." in repaired_text
+ assert "Gang Cai Wu Hui Le." in repaired_text
 
 
 @pytest.mark.unit
 def test_auto_repair_replaces_vague_stakes_and_purpose():
-    payload = _valid_contract()
-    scene = payload["scenes"][0]
-    scene["conflict"]["stakes"] = "若不澄清，合同作废，团队信任崩溃。"
-    scene["conflict"]["turn"] = "AP投屏原始数据与录音，陈默当场崩溃。"
-    scene["beats"][0]["dramatic_purpose"] = "引入冲突，激发紧张感。"
+ payload = _valid_contract()
+ scene = payload["scenes"][0]
+ scene["conflict"]["stakes"] = "Ruo Bu Cheng Qing, He Tong Zuo Fei, team Xin Ren Beng Kui."
+ scene["conflict"]["turn"] = "APTou Ping Yuan Shi Shu Ju Yu recording, Chen Mo Dang Chang Beng Kui."
+ scene["beats"][0]["dramatic_purpose"] = "Yin Ru Chong Tu, Ji Fa Jin Zhang Gan."
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    contract = normalize_script_beat_contract(repaired)
-    report = evaluate_beat_contract_quality(contract)
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ contract = normalize_script_beat_contract(repaired)
+ report = evaluate_beat_contract_quality(contract)
 
-    failed = {item["check_id"] for item in report["failed_checks"]}
-    assert "scene_conflict_specificity" not in failed
-    assert "scene_conflict_turn" not in failed
-    assert "beat_dramatic_purpose_specificity" not in failed
-    assert "300万项目合同" in contract.scenes[0].conflict.stakes
+ failed = {item["check_id"] for item in report["failed_checks"]}
+ assert "scene_conflict_specificity" not in failed
+ assert "scene_conflict_turn" not in failed
+ assert "beat_dramatic_purpose_specificity" not in failed
+ assert "300Wan project He Tong" in contract.scenes[0].conflict.stakes
 
 
 @pytest.mark.unit
 def test_auto_repair_replaces_prompt_style_opening_purpose():
-    payload = _valid_contract()
-    scene = payload["scenes"][0]
-    scene["beats"][0]["dramatic_purpose"] = "3秒内制造冲突：客户拍桌质问，数据异常。"
+ payload = _valid_contract()
+ scene = payload["scenes"][0]
+ scene["beats"][0]["dramatic_purpose"] = "3seconds INT Zhi Zao conflict: customer Pai Zhuo Zhi Wen, Shu Ju Yi Chang."
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    contract = normalize_script_beat_contract(repaired)
-    report = evaluate_beat_contract_quality(contract)
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ contract = normalize_script_beat_contract(repaired)
+ report = evaluate_beat_contract_quality(contract)
 
-    failed = {item["check_id"] for item in report["failed_checks"]}
-    assert "beat_dramatic_purpose_specificity" not in failed
-    assert "制造冲突" not in contract.scenes[0].beats[0].dramatic_purpose
+ failed = {item["check_id"] for item in report["failed_checks"]}
+ assert "beat_dramatic_purpose_specificity" not in failed
+ assert "Zhi Zao Chong Tu" not in contract.scenes[0].beats[0].dramatic_purpose
 
 
 @pytest.mark.unit
 def test_auto_repair_replaces_generic_scene_turn_key_line():
-    payload = _valid_contract()
-    payload["scenes"][0]["conflict"]["turn"] = "发现关键线索"
+ payload = _valid_contract()
+ payload["scenes"][0]["conflict"]["turn"] = "discover key Xian Suo"
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    contract = normalize_script_beat_contract(repaired)
-    report = evaluate_beat_contract_quality(contract)
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ contract = normalize_script_beat_contract(repaired)
+ report = evaluate_beat_contract_quality(contract)
 
-    failed = {item["check_id"] for item in report["failed_checks"]}
-    assert "scene_conflict_turn" not in failed
-    assert contract.scenes[0].conflict.turn != "发现关键线索"
-    assert "原始文件" in contract.scenes[0].conflict.turn
+ failed = {item["check_id"] for item in report["failed_checks"]}
+ assert "scene_conflict_turn" not in failed
+ assert contract.scenes[0].conflict.turn!= "discover key Xian Suo"
+ assert "Yuan Shi Wen Jian" in contract.scenes[0].conflict.turn
 
 
 @pytest.mark.unit
 def test_auto_repair_replaces_vague_visual_language_in_actions():
-    payload = _valid_contract()
-    scene = payload["scenes"][0]
-    scene["beats"][0]["visible_event"] = "会议室气氛紧张，所有人注视AP。"
-    scene["beats"][1]["action_lines"][0][
-        "content"
-    ] = "电话上显示倒计时，紧张气氛再度升级。"
+ payload = _valid_contract()
+ scene = payload["scenes"][0]
+ scene["beats"][0]["visible_event"] = "conference room Qi Fen tense, Suo You Ren Zhu ShiAP."
+ scene["beats"][1]["action_lines"][0][
+ "content"
+ ] = "Dian Hua Shang display countdown, tense Qi Fen Zai Du escalate."
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": payload},
-        target_chars_per_episode=500,
-    )
-    repaired_text = repaired["content"]
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": payload},
+ target_chars_per_episode=500,
+)
+ repaired_text = repaired["content"]
 
-    assert "气氛" not in repaired_text
-    assert "云端日志时间戳" in repaired_text
+ assert "Qi Fen" not in repaired_text
+ assert "Yun Duan Ri Zhi time Chuo" in repaired_text
 
 
 @pytest.mark.unit
 def test_auto_repair_coerces_malformed_embedded_contract_without_top_level_scenes():
-    malformed_contract = {
-        "contract_version": "script-beat-v1",
-        "scenes": [
-            {
-                "scene_number": 1,
-                "estimated_duration_seconds": 15,
-                "beats": [
-                    {"order_index": 1, "beat_type": "hook", "duration_seconds": 3},
-                    {"order_index": 2, "beat_type": "conflict", "duration_seconds": 6},
-                    {"order_index": 3, "beat_type": "reveal", "duration_seconds": 6},
-                ],
-            }
-        ],
-    }
+ malformed_contract = {
+ "contract_version": "script-beat-v1",
+ "scenes": [
+ {
+ "scene_number": 1,
+ "estimated_duration_seconds": 15,
+ "beats": [
+ {"order_index": 1, "beat_type": "hook", "duration_seconds": 3},
+ {"order_index": 2, "beat_type": "conflict", "duration_seconds": 6},
+ {"order_index": 3, "beat_type": "reveal", "duration_seconds": 6},
+ ],
+ }
+ ],
+ }
 
-    repaired = auto_repair_script_beat_contract(
-        {"structured_script_contract": malformed_contract},
-        target_chars_per_episode=500,
-    )
-    contract = normalize_script_beat_contract(repaired)
-    report = evaluate_beat_contract_quality(contract)
+ repaired = auto_repair_script_beat_contract(
+ {"structured_script_contract": malformed_contract},
+ target_chars_per_episode=500,
+)
+ contract = normalize_script_beat_contract(repaired)
+ report = evaluate_beat_contract_quality(contract)
 
-    assert contract.scenes[0].slug_line == "内. 会议室 - 日"
-    assert contract.scenes[0].beats[0].visible_event
-    assert report["passed"] is True, report
+ assert contract.scenes[0].slug_line == "INT. conference room - day"
+ assert contract.scenes[0].beats[0].visible_event
+ assert report["passed"] is True, report

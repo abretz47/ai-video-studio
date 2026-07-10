@@ -185,7 +185,7 @@ def _dialogue_excerpt(beat: dict[str, Any]) -> str | None:
     for line in _line_list(beat, "dialogue_lines", "dialogue")[:3]:
         if not isinstance(line, dict):
             continue
-        who = line.get("character") or line.get("speaker") or "旁白"
+        who = line.get("character") or line.get("speaker") or "narration"
         text = line.get("content") or line.get("line") or line.get("text") or ""
         if text:
             parts.append(f"{who}: {text}")

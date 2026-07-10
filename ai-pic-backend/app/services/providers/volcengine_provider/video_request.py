@@ -71,7 +71,7 @@ def build_video_request(
 ) -> tuple[str, AIModelType, Dict[str, Any], Dict[str, Any]]:
     """Return normalized model, model type, request body, and metadata."""
     ark_model = _normalize_model(model)
-    final_prompt = (prompt or "").strip() or "生成一段符合描述的视频"
+    final_prompt = (prompt or "").strip() or "Sheng Cheng Yi Duan Fu He description video"
     content = _build_content(
         final_prompt,
         image_url,

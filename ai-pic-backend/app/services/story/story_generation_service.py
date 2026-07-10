@@ -90,7 +90,7 @@ class StoryGenerationService:
             generation_mode=request.generation_mode,
         )
         if not result:
-            raise HTTPException(status_code=500, detail="AI故事生成失败")
+            raise HTTPException(status_code=500, detail="AIstory Sheng Cheng failed")
         return result
 
     def _enforce_story_quality_gate(
@@ -223,7 +223,7 @@ class StoryGenerationService:
 
     async def generate_story(self, request: StoryGenerationRequest) -> Story:
         if not self.current_user:
-            raise HTTPException(status_code=401, detail="缺少用户上下文")
+            raise HTTPException(status_code=401, detail="missing user context")
 
         characters = self._build_characters(request.character_ids)
         result = await self._run_story_outline(request, characters)

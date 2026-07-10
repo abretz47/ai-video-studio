@@ -40,15 +40,15 @@ class StoryboardUpdateRequest(BaseModel):
 async def generate_storyboard(
     script_id: int,
     model: str | None = None,
-    temperature: float = Query(0.7, ge=0.0, le=1.5, description="创造性温度"),
-    frames_per_scene: int = Query(7, ge=1, le=10, description="每场景建议分镜数"),
-    max_frames: int | None = Query(None, ge=1, le=500, description="最大分镜帧数上限"),
+    temperature: float = Query(0.7, ge=0.0, le=1.5, description="Creativity temperature"),
+    frames_per_scene: int = Query(7, ge=1, le=10, description="Suggested storyboard count per scene"),
+    max_frames: int | None = Query(None, ge=1, le=500, description="Maximum storyboard frame count"),
     scene_numbers: str | None = Query(
-        None, description="逗号分隔的场景编号列表，如 1,3,4"
+        None, description="Comma-separated list of scene numbers, such as 1,3,4"
     ),
-    use_plan: bool = Query(True, description="是否先使用分镜规划，再逐场景生成"),
+    use_plan: bool = Query(True, description="Whether to use storyboard planning first, then generate scene by scene"),
     use_new_pipeline: bool = Query(
-        False, description="是否使用新的React验证管线（实验性）"
+        False, description="Whether to use the new React validation pipeline (experimental)"
     ),
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
@@ -71,7 +71,7 @@ async def generate_storyboard(
     """
     script = db.query(Script).filter(Script.id == script_id).first()
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     # Parse selected scenes
     selected_scenes: list[int] | None = None
@@ -81,7 +81,7 @@ async def generate_storyboard(
                 int(x.strip()) for x in scene_numbers.split(",") if x.strip()
             ]
         except Exception:
-            raise HTTPException(status_code=400, detail="scene_numbers 格式不正确")
+            raise HTTPException(status_code=400, detail="Invalid scene_numbers format")
 
     # Parse provider and model
     prefer_provider = "openai"
@@ -116,7 +116,7 @@ async def generate_storyboard(
                 int(x.strip()) for x in scene_numbers.split(",") if x.strip()
             ]
         except Exception:
-            raise HTTPException(status_code=400, detail="scene_numbers 格式不正确")
+            raise HTTPException(status_code=400, detail="Invalid scene_numbers format")
 
     return await generate_storyboard_logic(
         script,
@@ -159,17 +159,17 @@ async def _generate_with_new_pipeline(
         )
     except Exception as exc:
         logger.error(f"New pipeline failed: {exc}")
-        raise HTTPException(status_code=500, detail=f"管线执行失败: {exc}")
+        raise HTTPException(status_code=500, detail=f"Pipeline execution failed: {exc}")
 
     if not result.get("success"):
         raise HTTPException(
             status_code=500,
-            detail=result.get("error") or "分镜生成失败",
+            detail=result.get("error") or "Storyboard generation failed",
         )
 
     frames = result.get("frames", [])
     if not frames:
-        raise HTTPException(status_code=500, detail="分镜生成失败：无帧返回")
+        raise HTTPException(status_code=500, detail="Storyboard generation failed: no frames returned")
 
     # Persist results
     sb_meta = {
@@ -228,8 +228,8 @@ async def generate_storyboard_async(
 
     # Create task record
     t = Task(
-        title=f"生成分镜 - 剧本{script_id}",
-        description="异步分镜结构生成",
+        title=f"Generate storyboard - script {script_id}",
+        description="Asynchronous storyboard structure generation",
         task_type=TaskType.STORYBOARD_GENERATION,
         prompt=f"Storyboard generation for script {script_id}",
         parameters=json.dumps(task_payload, ensure_ascii=False),
@@ -314,7 +314,7 @@ async def update_storyboard(
     return {
         "success": True,
         "data": {
-            "message": "分镜已保存",
+            "message": "Storyboard saved",
             "version": new_version,
             "frame_count": len(serialized_frames),
         },

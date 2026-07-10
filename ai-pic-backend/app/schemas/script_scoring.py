@@ -7,75 +7,75 @@ from pydantic import BaseModel, Field
 
 
 class ScriptScoreDimensions(BaseModel):
-    """评分维度，每项 0-5 分"""
+    """Ping Fen Wei Du, Mei Xiang 0-5 Fen"""
 
     conflict_intensity: float = Field(
-        ..., ge=0, le=5, description="冲突强度：冲突是否明确、激烈、持续升级"
+        ..., ge=0, le=5, description="conflict Qiang Du: conflict Shi Fou clear, Ji Lie, Chi Xu escalate"
     )
     character_recognizability: float = Field(
-        ..., ge=0, le=5, description="角色辨识度：角色是否有清晰标签、动机、行为一致性"
+        ..., ge=0, le=5, description="character Bian Shi Du: character Shi Fou has Qing Xi tag, Dong Ji, Xing Wei Yi Zhi Xing"
     )
     cultural_fit: float = Field(
-        ..., ge=0, le=5, description="文化适配：是否符合目标市场的审美与禁忌"
+        ..., ge=0, le=5, description="Wen Hua Shi Pei: Shi Fou Fu He target market Shen Mei and Jin Ji"
     )
     clip_ability: float = Field(
-        ..., ge=0, le=5, description="素材可剪性：每 60 秒内可拆出的投流钩子数"
+        ..., ge=0, le=5, description="Su Cai can Jian Xing: Mei 60 seconds interior can Chai Chu Tou Liu Gou Zi Shu"
     )
     logic_coherence: float = Field(
-        ..., ge=0, le=5, description="逻辑一致性：情节连贯、无明显漏洞"
+        ..., ge=0, le=5, description="Luo Ji Yi Zhi Xing: Qing Jie Lian Guan, none Ming Xian Lou Dong"
     )
 
 
 class ScriptScoreResult(BaseModel):
-    """剧本评分结果"""
+    """script Ping Fen Jie Guo"""
 
-    overall_score: float = Field(..., ge=0, le=5, description="总体评分（加权平均）")
-    dimension_scores: ScriptScoreDimensions = Field(..., description="各维度评分")
-    verdict: str = Field(..., description="判定结果：pass/review/rewrite")
-    strengths: List[str] = Field(default_factory=list, description="剧本优势点")
-    risks: List[str] = Field(default_factory=list, description="风险点/问题")
+    overall_score: float = Field(..., ge=0, le=5, description="Zong Ti Ping Fen(Jia Quan Ping Jun)")
+    dimension_scores: ScriptScoreDimensions = Field(..., description="Ge Wei Du Ping Fen")
+    verdict: str = Field(..., description="Pan Ding Jie Guo: pass/review/rewrite")
+    strengths: List[str] = Field(default_factory=list, description="script You Shi Dian")
+    risks: List[str] = Field(default_factory=list, description="Feng Xian Dian/Wen Ti")
     rewrite_guidance: List[str] = Field(
-        default_factory=list, description="修订建议（仅当 verdict != pass 时）"
+        default_factory=list, description="Xiu Ding suggestion(Jin Dang verdict!= pass when)"
     )
     suggested_ad_hooks: List[str] = Field(
-        default_factory=list, description="可提炼的投流钩子建议"
+        default_factory=list, description="can Ti Lian Tou Liu Gou Zi suggestion"
     )
 
 
 class TrafficSheetAsset(BaseModel):
-    """投流表单条素材"""
+    """Tou Liu Biao Dan Tiao Su Cai"""
 
-    asset_id: str = Field(..., description="素材唯一标识")
-    duration_seconds: int = Field(..., description="素材时长：15/30/60")
-    market_region: Optional[str] = Field(None, description="目标市场")
-    micro_genre: Optional[str] = Field(None, description="微类型")
+    asset_id: str = Field(..., description="Su Cai Wei Yi Biao Shi")
+    duration_seconds: int = Field(..., description="Su Cai when Zhang: 15/30/60")
+    market_region: Optional[str] = Field(None, description="target market")
+    micro_genre: Optional[str] = Field(None, description="Wei type")
     hook_type: str = Field(
         ...,
-        description="钩子类型：betrayal/reveal/revenge/reunion/threat/taboo/power-shift",
+        description="Gou Zi type: betrayal/reveal/revenge/reunion/threat/taboo/power-shift",
     )
-    source_episode: int = Field(..., description="来源剧集编号")
-    source_timecode_start: Optional[str] = Field(None, description="起始时间码")
-    source_timecode_end: Optional[str] = Field(None, description="结束时间码")
-    key_line: str = Field(..., description="字幕锚点/核心台词")
-    visual_hook: str = Field(..., description="首帧动作/视觉钩子")
+    source_episode: int = Field(..., description="Lai Yuan episode ID")
+    source_timecode_start: Optional[str] = Field(None, description="Qi Shi Shi Jian Ma")
+    source_timecode_end: Optional[str] = Field(None, description="Jie Shu Shi Jian Ma")
+    key_line: str = Field(..., description="Zi Mu Mao Dian/core line")
+    visual_hook: str = Field(..., description="first frame action/Shi Jue Gou Zi")
     shot_list: List[str] = Field(
-        default_factory=list, description="关键镜头列表（1-5 个）"
+        default_factory=list, description="key shot list(1-5 Ge)"
     )
-    cliff_or_cta: str = Field(..., description="卡点/CTA 文案")
-    music_reference: Optional[str] = Field(None, description="音乐参考")
-    compliance_flags: Optional[List[str]] = Field(None, description="合规标记")
+    cliff_or_cta: str = Field(..., description="cliffhanger/CTA Wen An")
+    music_reference: Optional[str] = Field(None, description="Yin Yue reference")
+    compliance_flags: Optional[List[str]] = Field(None, description="He Gui Biao Ji")
 
 
 class TrafficSheet(BaseModel):
-    """投流表（Traffic Sheet）"""
+    """Tou Liu Biao(Traffic Sheet)"""
 
-    episode_id: Optional[int] = Field(None, description="关联剧集 ID")
-    script_id: Optional[int] = Field(None, description="关联剧本 ID")
-    market_region: Optional[str] = Field(None, description="目标市场")
-    micro_genre: Optional[str] = Field(None, description="微类型")
+    episode_id: Optional[int] = Field(None, description="Guan Lian episode ID")
+    script_id: Optional[int] = Field(None, description="Guan Lian script ID")
+    market_region: Optional[str] = Field(None, description="target market")
+    micro_genre: Optional[str] = Field(None, description="Wei type")
     assets: List[TrafficSheetAsset] = Field(
-        default_factory=list, description="素材列表"
+        default_factory=list, description="Su Cai list"
     )
     generated_at: Optional[datetime] = Field(
-        default_factory=datetime.utcnow, description="生成时间"
+        default_factory=datetime.utcnow, description="Sheng Cheng time"
     )

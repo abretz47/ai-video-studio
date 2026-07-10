@@ -25,7 +25,7 @@ async def get_script(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """获取剧本详情"""
+    """Get script details"""
     script = get_script_by_identifier(db, script_id, None, current_user)
     return ScriptResponse.from_orm(script)
 
@@ -36,7 +36,7 @@ async def get_script_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 获取剧本详情"""
+    """Get script details by business_id"""
     script = get_script_by_identifier(db, None, script_business_id, current_user)
     return ScriptResponse.from_orm(script)
 
@@ -48,7 +48,7 @@ async def update_script(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """更新剧本"""
+    """Update script"""
     script = get_script_by_identifier(db, script_id, None, current_user)
     for field, value in script_update.dict(exclude_unset=True).items():
         setattr(script, field, value)
@@ -70,7 +70,7 @@ async def update_script_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 更新剧本"""
+    """Update script by business_id"""
     script = get_script_by_identifier(db, None, script_business_id, current_user)
     for field, value in script_update.dict(exclude_unset=True).items():
         setattr(script, field, value)
@@ -91,11 +91,11 @@ async def delete_script(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """删除剧本"""
+    """Delete script"""
     script = get_script_by_identifier(db, script_id, None, current_user)
     script.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
-    return {"message": "剧本删除成功"}
+    return {"message": "Script deleted successfully"}
 
 
 @router.delete("/business/{script_business_id}")
@@ -104,27 +104,27 @@ async def delete_script_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 business_id 删除剧本"""
+    """Delete script by business_id"""
     script = get_script_by_identifier(db, None, script_business_id, current_user)
     script.soft_delete(user_id=current_user.id, reason="user delete")
     db.commit()
-    return {"message": "剧本删除成功"}
+    return {"message": "Script deleted successfully"}
 
 
 @router.post("/{script_id}/export")
 async def export_script(
     script_id: int,
-    format: str = Query("txt", description="导出格式：txt, pdf, docx"),
+    format: str = Query("txt", description="Export format: txt, pdf, docx"),
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """导出剧本"""
+    """Export script"""
     script = ScriptsRouteRepository(db).get_export_script(
         script_id=script_id,
         current_user=current_user,
     )
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     return {
         "script_id": script_id,
@@ -140,4 +140,4 @@ def _sync_script_scenes(db: Session, script: Script, action: str) -> None:
         sync_script_scenes_to_story_structure(db, script)
     except Exception:
         logger = get_logger()
-        logger.warning("同步规范化场景失败（%s）", action, exc_info=True)
+        logger.warning("Synchronous scene normalization failed (%s)", action, exc_info=True)

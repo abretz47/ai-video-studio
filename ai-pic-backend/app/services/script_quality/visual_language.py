@@ -33,7 +33,7 @@ def check_visual_language(
     return (
         ScriptLintRuleResult(
             rule_id="visual_language",
-            title="拒绝不可拍心理/氛围词（视觉指令化）",
+            title="Ju Jue not allowed Pai Xin Li/atmosphere Ci(Shi Jue Zhi Ling Hua)",
             weight=3.0,
             score=score_visual,
             passed=hits == 0,

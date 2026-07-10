@@ -20,29 +20,29 @@ def _not_deleted(query, model):
 
 @router.post("/register", response_model=UserResponse)
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
-    """用户注册。
+    """User registration.
 
-    - 首个用户（无任何用户存在时）自动晋升为激活的超级管理员，便于自助审批/运营。
-    - 之后的用户维持原有流程：未激活、未审批、未验证邮箱。
+    - The first user (when no users exist) is automatically promoted to an active superuser for self-service approval and operations.
+    - Subsequent users follow the existing process: inactive, unapproved, and email-unverified.
     """
     is_first_user = db.query(User).count() == 0
-    # 检查用户名是否已存在
+    # Check whether the username already exists
     if (
         _not_deleted(db.query(User), User)
         .filter(User.username == user_data.username)
         .first()
     ):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="用户名已存在"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
         )
 
-    # 检查邮箱是否已存在
+    # Check whether the email already exists
     if _not_deleted(db.query(User), User).filter(User.email == user_data.email).first():
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="邮箱已存在"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
         )
 
-    # 创建新用户 - 默认未激活状态
+    # Create a new user - inactive by default
     hashed_password = get_password_hash(user_data.password)
 
     db_user = User(
@@ -52,7 +52,7 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
         full_name=user_data.full_name,
         language=user_data.language,
         timezone=user_data.timezone,
-        # 首个用户自助晋升管理员，其余维持审批流程
+        # The first user self-promotes to administrator; all others remain in the approval workflow
         is_active=is_first_user,
         is_approved=is_first_user,
         email_verified=is_first_user,
@@ -65,7 +65,7 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
 
     if not is_first_user:
-        # 后续用户仍需邮箱验证/审批
+        # Subsequent users still require email verification/approval
         service = UserManagementService(db)
         service.generate_activation_token(db_user.id)
 
@@ -78,58 +78,58 @@ def login(
     request: Request = None,
     db: Session = Depends(get_db),
 ):
-    """用户登录"""
+    """User login"""
     user = (
         _not_deleted(db.query(User), User)
         .filter(User.username == form_data.username)
         .first()
     )
 
-    # 验证用户名和密码
+    # Validate username and password
     if not user or not verify_password(form_data.password, user.hashed_password):
-        # 如果用户存在，增加失败登录次数
+        # If the user exists, increment failed login attempts
         if user:
             record_user_login(user, db, success=False)
 
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="用户名或密码错误",
+            detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # 检查账户锁定状态
+    # Check account lock status
     if user.is_account_locked:
         raise HTTPException(
             status_code=status.HTTP_423_LOCKED,
-            detail="账户已被锁定，请稍后再试或联系管理员",
+            detail="The account is locked. Please try again later or contact an administrator.",
         )
 
-    # 检查用户状态 - 这里只检查基础状态，详细检查在中间件中进行
+    # Check user status - only basic status is checked here; detailed checks are performed in middleware
     if not user.can_login:
         if not user.email_verified:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="请先验证邮箱后再登录"
+                status_code=status.HTTP_403_FORBIDDEN, detail="Please verify your email before logging in"
             )
         elif not user.is_approved:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="账户待管理员审批，请耐心等待",
+                detail="The account is pending administrator approval. Please wait patiently.",
             )
         elif not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="账户已被停用，请联系管理员",
+                detail="The account has been deactivated. Please contact an administrator.",
             )
         else:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="账户状态异常，请联系管理员",
+                detail="The account status is abnormal. Please contact an administrator.",
             )
 
-    # 记录成功登录
+    # Record successful login
     record_user_login(user, db, success=True)
 
-    # 创建访问令牌
+    # Create access token
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
@@ -140,37 +140,37 @@ def login(
 
 @router.get("/me", response_model=UserResponse)
 def get_current_user_info(current_user: User = Depends(get_current_active_user)):
-    """获取当前用户信息 - 需要通过审批的活跃用户"""
+    """Get current user information - requires an active approved user"""
     return current_user
 
 
 @router.post("/verify-email/{token}")
 def verify_email(token: str, db: Session = Depends(get_db)):
-    """验证邮箱"""
+    """Verify email"""
     service = UserManagementService(db)
     user = service.verify_activation_token(token)
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="无效的验证令牌或令牌已过期"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid verification token or token has expired"
         )
 
-    return {"message": "邮箱验证成功", "user_id": user.id}
+    return {"message": "Email verified successfully", "user_id": user.id}
 
 
 @router.post("/resend-verification/{user_id}")
 def resend_verification_email(user_id: int, db: Session = Depends(get_db)):
-    """重新发送验证邮件"""
+    """Resend verification email"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="用户不存在")
+        raise HTTPException(status_code=404, detail="User does not exist")
 
     if user.email_verified:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="邮箱已经验证过了"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email has already been verified"
         )
 
     service = UserManagementService(db)
     activation_token = service.generate_activation_token(user_id)
 
-    return {"message": "验证邮件已重新发送", "activation_token": activation_token}
+    return {"message": "Verification email resent", "activation_token": activation_token}

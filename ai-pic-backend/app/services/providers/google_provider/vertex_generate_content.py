@@ -81,7 +81,7 @@ def vertex_generate_content_endpoint_headers(
             model_id=model_id,
             task_type=task_type,
             model_type=model_type,
-            message="GoogleProvider 未配置 Vertex project/location",
+            message="GoogleProvider not configuration Vertex project/location",
         )
 
     headers = build_vertex_headers(access_token, vertex_api_key)
@@ -91,7 +91,7 @@ def vertex_generate_content_endpoint_headers(
             model_id=model_id,
             task_type=task_type,
             model_type=model_type,
-            message="GoogleProvider 未配置 Vertex 鉴权（access_token / api_key）",
+            message="GoogleProvider not configuration Vertex Jian Quan(access_token/api_key)",
         )
 
     endpoint = build_vertex_generate_content_url(
@@ -126,7 +126,7 @@ async def post_generate_content(
             model_id=model_id,
             task_type=task_type,
             model_type=model_type,
-            message="GoogleProvider Vertex 响应格式异常",
+            message="GoogleProvider Vertex response format exception",
         )
     except httpx.HTTPStatusError as exc:
         return error_response(

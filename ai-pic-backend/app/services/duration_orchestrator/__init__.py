@@ -1,13 +1,13 @@
 """
 Duration Orchestrator Agent
 
-端到端时长闭环验证系统，确保从剧集到时间轴/对白到分镜的时长精确对齐。
+Duan Dao Duan duration Bi Huan validation system, Que Bao Cong episode to timeline/dialogue to storyboard duration Jing Que Dui Qi.
 
-核心功能:
-1. 预算分配: 根据 total_duration_minutes 计算每个场景的时长预算和字数目标
-2. 场景级闭环: 每个场景生成后立即 TTS 测量，不达标则重新生成
-3. 预算再平衡: 某场景超时/欠时时动态调整后续场景预算
-4. 最终验证: 确保剧集总时长在 ±10% 容差内
+core feature:
+1. Yu Suan Fen Pei: Gen Ju total_duration_minutes Ji Suan Mei Ge scene duration Yu Suan and word count target
+2. scene Ji Bi Huan: Mei Ge scene Sheng Cheng after Li Ji TTS Ce Liang, not Da Biao then retry Sheng Cheng
+3. Yu Suan then Ping Heng: Mou scene Chao Shi/Qian Shi Shi Dong Tai adjust subsequent scene Yu Suan
+4. Zui Zhong validation: Que Bao episode total duration in ±10% Rong Cha interior
 """
 
 from app.services.duration_orchestrator.agent import (

@@ -34,7 +34,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.PROJECT_NAME,
         version=settings.VERSION,
-        description="AI图片生成API服务",
+        description="AIimage Sheng ChengAPIservice",
         openapi_url=f"{settings.API_V1_STR}/openapi.json",
     )
 
@@ -69,7 +69,7 @@ def create_app() -> FastAPI:
     @app.get("/")
     async def root():
         logger.info("Root endpoint accessed")
-        return {"message": "AI图片生成API服务", "version": settings.VERSION}
+        return {"message": "AIimage Sheng ChengAPIservice", "version": settings.VERSION}
 
     @app.get("/health")
     async def health_check():

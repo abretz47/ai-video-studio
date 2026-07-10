@@ -26,7 +26,7 @@ async def get_scripts(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """获取剧本列表"""
+    """Get script list"""
     scripts = ScriptsRouteRepository(db).list_scripts(
         episode_id=episode_id,
         episode_business_id=episode_business_id,
@@ -46,7 +46,7 @@ async def get_episode_scripts(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """获取剧集的所有剧本"""
+    """Get all scripts for the episode"""
     repository = ScriptsRouteRepository(db)
     episode = repository.get_episode_for_user(
         episode_id=episode_id,
@@ -54,7 +54,7 @@ async def get_episode_scripts(
         current_user=current_user,
     )
     if not episode:
-        raise HTTPException(status_code=404, detail="剧集不存在")
+        raise HTTPException(status_code=404, detail="Episode does not exist")
 
     scripts = repository.list_scripts_for_episode(episode_id)
     scripts_sorted = sorted(
@@ -74,14 +74,14 @@ async def get_episode_scripts_by_business_id(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """按 episode business_id 获取剧本列表"""
+    """Get the script list by episode business_id"""
     repository = ScriptsRouteRepository(db)
     episode = repository.get_episode_for_user(
         episode_business_id=episode_business_id,
         current_user=current_user,
     )
     if not episode:
-        raise HTTPException(status_code=404, detail="剧集不存在")
+        raise HTTPException(status_code=404, detail="Episode does not exist")
 
     scripts = repository.list_scripts_for_episode(episode.id)
     scripts_sorted = sorted(

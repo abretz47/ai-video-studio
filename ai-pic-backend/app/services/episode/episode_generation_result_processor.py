@@ -33,7 +33,7 @@ def process_episode_generation_result(
     created_ids: list[int],
     progress_fn,
 ) -> None:
-    progress_fn("剧集生成：模型返回结果解析中")
+    progress_fn("episode Sheng Cheng: model return Jie Guo parse in")
     content = (
         result.get("normalized") if isinstance(result, dict) else None
     ) or extract_json_block(result.get("content") if isinstance(result, dict) else None)
@@ -58,7 +58,7 @@ def process_episode_generation_result(
             prompt=result.get("step_outline_prompt"),
             agent_run=agent_run,
         )
-        progress_fn("剧集生成：大纲校验通过，写入故事信息")
+        progress_fn("episode Sheng Cheng: Da Gang Jiao Yan through, write story Xin Xi")
         db.refresh(story)
 
     if not episodes_data and parsed_outlines:
@@ -71,7 +71,7 @@ def process_episode_generation_result(
             "content": json.dumps({"episodes": episodes_data}, ensure_ascii=False),
         }
         agent_run = {**agent_run, "fallback_from_outline": True}
-        progress_fn("模型输出无效，使用大纲兜底生成")
+        progress_fn("model output Wu Xiao, Shi Yong Da Gang fallback Sheng Cheng")
 
     if episodes_data:
         result = {
@@ -98,7 +98,7 @@ def process_episode_generation_result(
     if isinstance(quality_gate, dict):
         agent_run["quality_gate"] = quality_gate
     if not episodes_data:
-        raise RuntimeError("AI生成内容格式错误")
+        raise RuntimeError("AISheng Cheng content format error")
     if len(episodes_data) < episode_count:
         raise RuntimeError(
             f"AI生成剧集数量不足：期望 {episode_count} 集，实际 {len(episodes_data)} 集"

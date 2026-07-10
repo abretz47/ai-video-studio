@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""测试用户详情模态框功能"""
+"""test user details Mo Tai Kuang function"""
 
 import json
 import time
@@ -16,276 +16,276 @@ API_BASE_URL = "http://localhost:8000/api/v1"
 
 
 def setup_webdriver():
-    """设置Chrome WebDriver"""
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
+ """setChrome WebDriver"""
+ options = Options()
+ options.add_argument("--headless")
+ options.add_argument("--no-sandbox")
+ options.add_argument("--disable-dev-shm-usage")
+ options.add_argument("--disable-gpu")
+ options.add_argument("--window-size=1920,1080")
 
-    try:
-        driver = webdriver.Chrome(options=options)
-        return driver
-    except Exception as e:
-        print(f"❌ 无法启动Chrome WebDriver: {e}")
-        return None
+ try:
+ driver = webdriver.Chrome(options=options)
+ return driver
+ except Exception as e:
+ print(f"❌ Wu Fa Qi DongChrome WebDriver: {e}")
+ return None
 
 
 def test_user_details_modal():
-    """测试用户详情模态框"""
-    print("🔍 测试用户详情模态框功能")
+ """test user details Mo Tai Kuang"""
+ print("🔍 test user details Mo Tai Kuang function")
 
-    driver = setup_webdriver()
-    if not driver:
-        return False
+ driver = setup_webdriver()
+ if not driver:
+ return False
 
-    try:
-        # 1. 访问登录页面
-        driver.get(f"{BASE_URL}/login")
-        time.sleep(2)
+ try:
+ # 1. access login page
+ driver.get(f"{BASE_URL}/login")
+ time.sleep(2)
 
-        # 2. 登录
-        username_input = driver.find_element(By.NAME, "username")
-        password_input = driver.find_element(By.NAME, "password")
-        login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+ # 2. login
+ username_input = driver.find_element(By.NAME, "username")
+ password_input = driver.find_element(By.NAME, "password")
+ login_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
 
-        username_input.clear()
-        username_input.send_keys("admin")
-        password_input.clear()
-        password_input.send_keys("Ai7dio")
-        login_button.click()
+ username_input.clear()
+ username_input.send_keys("admin")
+ password_input.clear()
+ password_input.send_keys("Ai7dio")
+ login_button.click()
 
-        time.sleep(3)
+ time.sleep(3)
 
-        # 3. 导航到用户管理页面
-        driver.get(f"{BASE_URL}/admin/users")
-        time.sleep(3)
+ # 3. Dao Hang to user management page
+ driver.get(f"{BASE_URL}/admin/users")
+ time.sleep(3)
 
-        # 4. 查找第一个用户的详情按钮
-        detail_buttons = driver.find_elements(By.CSS_SELECTOR, "[title='查看用户详情']")
-        if len(detail_buttons) == 0:
-            print("❌ 未找到用户详情按钮")
-            return False
+ # 4. Cha Zhao Di Yi Ge user De details button
+ detail_buttons = driver.find_elements(By.CSS_SELECTOR, "[title='Cha Kan user details']")
+ if len(detail_buttons) == 0:
+ print("❌ Wei Zhao Dao user details button")
+ return False
 
-        print(f"✅ 找到 {len(detail_buttons)} 个用户详情按钮")
+ print(f"✅ Zhao Dao {len(detail_buttons)} Ge user details button")
 
-        # 5. 点击第一个详情按钮
-        detail_buttons[0].click()
-        time.sleep(2)
+ # 5. Dian Ji Di Yi Ge details button
+ detail_buttons[0].click()
+ time.sleep(2)
 
-        # 6. 检查模态框是否出现
-        try:
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, ".fixed.inset-0"))
-            )
-            print("✅ 用户详情模态框已显示")
-        except Exception:
-            print("❌ 用户详情模态框未显示")
-            return False
+ # 6. check Mo Tai Kuang Shi Fou Chu Xian
+ try:
+ WebDriverWait(driver, 10).until(
+ EC.presence_of_element_located((By.CSS_SELECTOR, ".fixed.inset-0"))
+)
+ print("✅ user details Mo Tai Kuang Yi display")
+ except Exception:
+ print("❌ user details Mo Tai Kuang Wei display")
+ return False
 
-        # 7. 检查模态框内容
-        success_indicators = []
+ # 7. check Mo Tai Kuang content
+ success_indicators = []
 
-        # 检查标签页
-        tabs = driver.find_elements(By.CSS_SELECTOR, "nav button")
-        tab_texts = [tab.text for tab in tabs]
-        if (
-            "基本信息" in tab_texts
-            and "操作记录" in tab_texts
-            and "安全信息" in tab_texts
-        ):
-            success_indicators.append("标签页")
-            print("✅ 模态框标签页正确显示")
-        else:
-            print(f"❌ 标签页显示异常: {tab_texts}")
+ # check Biao Qian Ye
+ tabs = driver.find_elements(By.CSS_SELECTOR, "nav button")
+ tab_texts = [tab.text for tab in tabs]
+ if (
+ "Ji Ben Xin Xi" in tab_texts
+ and "Cao Zuo Ji Lu" in tab_texts
+ and "An Quan Xin Xi" in tab_texts
+):
+ success_indicators.append("Biao Qian Ye")
+ print("✅ Mo Tai Kuang Biao Qian Ye correct display")
+ else:
+ print(f"❌ Biao Qian Ye display exception: {tab_texts}")
 
-        # 检查用户信息
-        user_info_elements = driver.find_elements(By.CSS_SELECTOR, "label")
-        user_info_texts = [elem.text for elem in user_info_elements]
-        if any("用户名" in text for text in user_info_texts) and any(
-            "邮箱地址" in text for text in user_info_texts
-        ):
-            success_indicators.append("用户信息")
-            print("✅ 用户基本信息正确显示")
-        else:
-            print("❌ 用户基本信息显示异常")
+ # Jian Cha Yong Hu information
+ user_info_elements = driver.find_elements(By.CSS_SELECTOR, "label")
+ user_info_texts = [elem.text for elem in user_info_elements]
+ if any("Yong Hu Ming" in text for text in user_info_texts) and any(
+ "You Xiang Di Zhi" in text for text in user_info_texts
+):
+ success_indicators.append("Yong Hu Xin Xi")
+ print("✅ user Ji Ben information correct display")
+ else:
+ print("❌ user Ji Ben information display exception")
 
-        # 8. 测试标签切换
-        audit_tab = None
-        for tab in tabs:
-            if tab.text == "操作记录":
-                audit_tab = tab
-                break
+ # 8. test Biao Qian Qie Huan
+ audit_tab = None
+ for tab in tabs:
+ if tab.text == "Cao Zuo Ji Lu":
+ audit_tab = tab
+ break
 
-        if audit_tab:
-            audit_tab.click()
-            time.sleep(1)
-            print("✅ 成功切换到操作记录标签")
-            success_indicators.append("标签切换")
+ if audit_tab:
+ audit_tab.click()
+ time.sleep(1)
+ print("✅ success Qie Huan to operation record Biao Qian")
+ success_indicators.append("Biao Qian Qie Huan")
 
-        # 9. 测试关闭模态框
-        close_buttons = driver.find_elements(By.CSS_SELECTOR, "button")
-        for button in close_buttons:
-            if "关闭" in button.text:
-                button.click()
-                time.sleep(1)
-                print("✅ 成功关闭模态框")
-                success_indicators.append("关闭功能")
-                break
+ # 9. test close Mo Tai Kuang
+ close_buttons = driver.find_elements(By.CSS_SELECTOR, "button")
+ for button in close_buttons:
+ if "close" in button.text:
+ button.click()
+ time.sleep(1)
+ print("✅ success close Mo Tai Kuang")
+ success_indicators.append("Guan Bi Gong Neng")
+ break
 
-        # 10. 验证模态框已关闭
-        modals = driver.find_elements(By.CSS_SELECTOR, ".fixed.inset-0")
-        if len(modals) == 0:
-            print("✅ 模态框已正确关闭")
-            success_indicators.append("关闭确认")
-        else:
-            print("❌ 模态框未正确关闭")
+ # 10. validate Mo Tai Kuang Yi close
+ modals = driver.find_elements(By.CSS_SELECTOR, ".fixed.inset-0")
+ if len(modals) == 0:
+ print("✅ Mo Tai Kuang Yi correct close")
+ success_indicators.append("Guan Bi Que Ren")
+ else:
+ print("❌ Mo Tai Kuang Wei correct close")
 
-        print(f"\n📊 测试结果: {len(success_indicators)}/5 项功能正常")
-        print(f"   ✅ 正常功能: {', '.join(success_indicators)}")
+ print(f"\n📊 Ce Shi Jie Guo: {len(success_indicators)}/5 Xiang function normal")
+ print(f" ✅ Zheng Chang Gong Neng: {', '.join(success_indicators)}")
 
-        return len(success_indicators) >= 3  # 至少3项功能正常才算成功
+ return len(success_indicators) >= 3 # Zhi Shao3Xiang function normal Cai Suan success
 
-    except Exception as e:
-        print(f"❌ 测试过程中发生错误: {e}")
-        return False
-    finally:
-        driver.quit()
+ except Exception as e:
+ print(f"❌ An error occurred during testing: {e}")
+ return False
+ finally:
+ driver.quit()
 
 
 def test_backend_audit_api():
-    """测试后端审计日志API"""
-    print("\n🔍 测试后端审计日志API")
+ """test Hou Duan Shen Ji Ri ZhiAPI"""
+ print("\n🔍 test Hou Duan Shen Ji Ri ZhiAPI")
 
-    try:
-        # 1. 登录获取token
-        login_data = {"username": "admin", "password": "Ai7dio"}
+ try:
+ # 1. Deng Lu Huo Qutoken
+ login_data = {"username": "admin", "password": "Ai7dio"}
 
-        # 使用form data格式
-        login_response = requests.post(
-            f"{API_BASE_URL}/auth/login",
-            data=login_data,  # 注意这里使用data而不是json
-            headers={"Content-Type": "application/x-www-form-urlencoded"},
-        )
+ # useform dataformat
+ login_response = requests.post(
+ f"{API_BASE_URL}/auth/login",
+ data=login_data, # Zhu Yi Zhe Li usedataEr Bu Shijson
+ headers={"Content-Type": "application/x-www-form-urlencoded"},
+)
 
-        if login_response.status_code != 200:
-            print(f"❌ 登录失败: {login_response.status_code} - {login_response.text}")
-            return False
+ if login_response.status_code!= 200:
+ print(f"❌ login failed: {login_response.status_code} - {login_response.text}")
+ return False
 
-        token_data = login_response.json()
-        token = token_data.get("access_token")
+ token_data = login_response.json()
+ token = token_data.get("access_token")
 
-        if not token:
-            print(f"❌ 未获取到访问令牌: {token_data}")
-            return False
+ if not token:
+ print(f"❌ not yet get to access Ling Pai: {token_data}")
+ return False
 
-        print("✅ 成功获取访问令牌")
+ print("✅ success get access Ling Pai")
 
-        # 2. 获取用户列表
-        headers = {"Authorization": f"Bearer {token}"}
-        users_response = requests.get(f"{API_BASE_URL}/admin/users", headers=headers)
+ # 2. get user list
+ headers = {"Authorization": f"Bearer {token}"}
+ users_response = requests.get(f"{API_BASE_URL}/admin/users", headers=headers)
 
-        if users_response.status_code != 200:
-            print(f"❌ 获取用户列表失败: {users_response.status_code}")
-            return False
+ if users_response.status_code!= 200:
+ print(f"❌ get user list failed: {users_response.status_code}")
+ return False
 
-        users_data = users_response.json()
-        if not users_data.get("users"):
-            print("❌ 用户列表为空")
-            return False
+ users_data = users_response.json()
+ if not users_data.get("users"):
+ print("❌ user list Wei Kong")
+ return False
 
-        user_id = users_data["users"][0]["id"]
-        print(f"✅ 获取到用户ID: {user_id}")
+ user_id = users_data["users"][0]["id"]
+ print(f"✅ get to userID: {user_id}")
 
-        # 3. 获取审计日志
-        audit_response = requests.get(
-            f"{API_BASE_URL}/admin/users/{user_id}/audit-logs", headers=headers
-        )
+ # 3. get Shen Ji Ri Zhi
+ audit_response = requests.get(
+ f"{API_BASE_URL}/admin/users/{user_id}/audit-logs", headers=headers
+)
 
-        if audit_response.status_code != 200:
-            print(f"❌ 获取审计日志失败: {audit_response.status_code}")
-            return False
+ if audit_response.status_code!= 200:
+ print(f"❌ get Shen Ji Ri Zhi failed: {audit_response.status_code}")
+ return False
 
-        audit_data = audit_response.json()
-        print(f"✅ 获取到 {len(audit_data)} 条审计日志")
+ audit_data = audit_response.json()
+ print(f"✅ Huo Qu Dao {len(audit_data)} Tiao Shen Ji Ri Zhi")
 
-        if len(audit_data) > 0:
-            sample_log = audit_data[0]
-            required_fields = ["id", "user_id", "action", "created_at"]
-            missing_fields = [
-                field for field in required_fields if field not in sample_log
-            ]
+ if len(audit_data) > 0:
+ sample_log = audit_data[0]
+ required_fields = ["id", "user_id", "action", "created_at"]
+ missing_fields = [
+ field for field in required_fields if field not in sample_log
+ ]
 
-            if missing_fields:
-                print(f"❌ 审计日志缺少字段: {missing_fields}")
-                return False
-            else:
-                print("✅ 审计日志结构正确")
-                print(
-                    f"   示例日志: {json.dumps(sample_log, indent=2, ensure_ascii=False)}"
-                )
+ if missing_fields:
+ print(f"❌ Shen Ji Ri Zhi Que Shao character Duan: {missing_fields}")
+ return False
+ else:
+ print("✅ Shen Ji Ri Zhi structure correct")
+ print(
+ f" Shi Li Ri Zhi: {json.dumps(sample_log, indent=2, ensure_ascii=False)}"
+)
 
-        return True
+ return True
 
-    except Exception as e:
-        print(f"❌ API测试失败: {e}")
-        return False
+ except Exception as e:
+ print(f"❌ APItest failed: {e}")
+ return False
 
 
 def main():
-    """主测试函数"""
-    print("🚀 开始用户详情模态框测试")
-    print("=" * 60)
+ """main test function"""
+ print("🚀 start user details Mo Tai Kuang test")
+ print("=" * 60)
 
-    # 测试后端API
-    api_success = test_backend_audit_api()
+ # Ce Shi Hou DuanAPI
+ api_success = test_backend_audit_api()
 
-    # 测试前端UI
-    ui_success = test_user_details_modal()
+ # Ce Shi Qian DuanUI
+ ui_success = test_user_details_modal()
 
-    # 汇总结果
-    print("\n" + "=" * 60)
-    print("📊 测试结果汇总")
-    print("=" * 60)
+ # summary result
+ print("\n" + "=" * 60)
+ print("📊 test result summary")
+ print("=" * 60)
 
-    if api_success:
-        print("✅ 后端API测试: 通过")
-    else:
-        print("❌ 后端API测试: 失败")
+ if api_success:
+ print("✅ Hou DuanAPItest: pass")
+ else:
+ print("❌ Hou DuanAPItest: failed")
 
-    if ui_success:
-        print("✅ 前端UI测试: 通过")
-    else:
-        print("❌ 前端UI测试: 失败")
+ if ui_success:
+ print("✅ frontendUItest: pass")
+ else:
+ print("❌ frontendUItest: failed")
 
-    overall_success = api_success and ui_success
+ overall_success = api_success and ui_success
 
-    if overall_success:
-        print("\n🎉 用户详情模态框功能测试全部通过！")
-        print("\n📋 实现的功能:")
-        print("   ✅ 用户基本信息显示")
-        print("   ✅ 用户操作记录显示")
-        print("   ✅ 用户安全信息显示")
-        print("   ✅ 标签页切换功能")
-        print("   ✅ 模态框打开/关闭")
-        print("   ✅ 后端API集成")
-    else:
-        print("\n⚠️ 部分功能测试失败，建议检查:")
-        if not api_success:
-            print("   - 后端API接口")
-            print("   - 数据库连接")
-        if not ui_success:
-            print("   - 前端组件渲染")
-            print("   - JavaScript/TypeScript代码")
+ if overall_success:
+ print("\n🎉 user details Mo Tai Kuang Gong Neng Ce Shi Quan Bu pass!")
+ print("\n📋 Shi Xian De function:")
+ print(" ✅ user Ji Ben information display")
+ print(" ✅ user operation record display")
+ print(" ✅ user An Quan information display")
+ print(" ✅ Biao Qian Ye Qie Huan function")
+ print(" ✅ Mo Tai Kuang Da Kai/close")
+ print(" ✅ Hou DuanAPIintegration")
+ else:
+ print("\n⚠️ Bu Fen Gong Neng Ce Shi failed, Jian Yi Jian Cha:")
+ if not api_success:
+ print(" - Hou DuanAPIJie Kou")
+ print(" - database connection")
+ if not ui_success:
+ print(" - frontend Zu Jian Xuan Ran")
+ print(" - JavaScript/TypeScriptDai Ma")
 
-    return overall_success
+ return overall_success
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\n❌ 测试被用户中断")
-    except Exception as e:
-        print(f"\n❌ 测试过程中发生错误: {e}")
+ try:
+ main()
+ except KeyboardInterrupt:
+ print("\n❌ test Bei user Zhong Duan")
+ except Exception as e:
+ print(f"\n❌ An error occurred during testing: {e}")

@@ -12,18 +12,18 @@ from app.services.validators.character_consistency_validator import (
 
 
 _GENERIC_STORY_ROLE_NAMES = {
-    "客户",
-    "客户代表",
-    "客户方",
-    "团队",
-    "团队成员",
-    "同事",
-    "背景人",
-    "竞争对手",
-    "竞争对手公司",
-    "董事会",
-    "内鬼",
-    "篡改者",
+    "customer",
+    "customer Dai Biao",
+    "customer Fang",
+    "Tuan Dui",
+    "Tuan Dui Cheng Yuan",
+    "Tong Shi",
+    "background Ren",
+    "Jing Zheng Dui Shou",
+    "Jing Zheng Dui Shou Gong Si",
+    "Dong Shi Hui",
+    "interior Gui",
+    "Cuan Gai Zhe",
 }
 
 
@@ -74,8 +74,8 @@ def _build_character_profiles(
 def _character_aliases(char: Dict[str, Any]) -> list[str]:
     aliases = [str(item) for item in char.get("aliases", []) if item]
     name = str(char.get("name") or "")
-    if "角色" in name:
-        aliases.append(re.sub(r"角色(?=[\-_—－]|$)", "", name).strip())
+    if "character" in name:
+        aliases.append(re.sub(r"character(?=[\-_—－]|$)", "", name).strip())
     return [alias for alias in aliases if alias]
 
 

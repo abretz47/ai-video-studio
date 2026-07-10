@@ -55,7 +55,7 @@ def story_outline_schema(*, production_mode: bool) -> dict[str, Any]:
 
     schema.setdefault("properties", {})["structured_story_contract"] = {
         "type": "object",
-        "description": "生产级短剧故事合同；production 生成必须完整返回。",
+        "description": "production Ji short drama story contract; production Sheng Cheng Bi Xu complete return.",
         "required": list(_STORY_CONTRACT_FIELDS),
         "additionalProperties": True,
         "properties": _story_contract_schema_properties(),

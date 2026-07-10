@@ -26,7 +26,7 @@ def upgrade() -> None:
             sa.String(length=8),
             nullable=False,
             server_default="9:16",
-            comment="默认画幅：9:16/16:9",
+            comment="Default aspect ratio: 9:16/16:9",
         ),
     )
     op.alter_column("stories", "default_aspect_ratio", server_default=None)

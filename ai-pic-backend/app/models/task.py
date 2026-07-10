@@ -56,7 +56,7 @@ class Task(SoftDeleteBusinessMixin, Base):
 
     id = Column(Integer, primary_key=True, index=True)
     target_business_id = Column(
-        String(32), nullable=True, index=True, comment="业务目标对象 business_id"
+        String(32), nullable=True, index=True, comment="Ye Wu target Dui Xiang business_id"
     )
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
@@ -65,12 +65,12 @@ class Task(SoftDeleteBusinessMixin, Base):
     prompt = Column(Text, nullable=True)
     parameters = Column(
         Text().with_variant(mysql.LONGTEXT(), "mysql"), nullable=True
-    )  # JSON字符串
+    )  # JSONZi Fu Chuan
     result_file_path = Column(String(512), nullable=True)
     error_message = Column(Text, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # 关系
+    # relationship
     user = relationship("User", back_populates="tasks")

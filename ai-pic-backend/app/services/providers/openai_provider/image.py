@@ -160,7 +160,7 @@ async def understand_image(
     base_url: str,
     provider_name: str,
     image_url: str,
-    question: str = "请描述这张图片",
+    question: str = "Qing description Zhe Zhang image",
     model: str = "gpt-4o",
     max_tokens: Optional[int] = None,
     format_error: Callable = str,
@@ -277,7 +277,7 @@ async def image_to_image(
     if model != "dall-e-2":
         return AIResponse(
             success=False,
-            error="图像变换仅DALL-E 2支持",
+            error="image Bian Huan onlyDALL-E 2support",
             provider=provider_name,
             model=model,
             task_type=AITaskType.SCENE_GENERATION,

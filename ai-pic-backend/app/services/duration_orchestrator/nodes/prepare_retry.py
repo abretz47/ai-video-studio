@@ -1,7 +1,7 @@
 """
-重试准备节点
+retry Zhun Bei node
 
-当场景时长验证失败时，生成调整建议供下次生成使用。
+Dang scene when Zhang validation failed when, Sheng Cheng adjust suggestion Gong Xia Ci Sheng Cheng Shi Yong.
 """
 
 import logging
@@ -16,36 +16,36 @@ logger = logging.getLogger(__name__)
 
 def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    重试准备节点。
+ retry Zhun Bei node.
 
-    当场景时长验证失败时：
-    1. 生成调整建议（增加/删减多少字）
-    2. 更新场景状态为待重试
-    3. 清空已生成的对白
+ Dang scene when Zhang validation failed when: 
+ 1. Sheng Cheng adjust suggestion(increase/Shan Jian Duo Shao character)
+ 2. update scene status as pending retry
+ 3. Qing Kong Sheng Cheng dialogue
 
-    输入状态:
-        - scene_budgets: 场景预算列表
-        - current_scene_index: 当前场景索引
-        - generated_dialogues: 已生成的对白
+ input status:
+ - scene_budgets: scene Yu Suan list
+ - current_scene_index: current scene index
+ - generated_dialogues: Sheng Cheng dialogue
 
-    输出状态更新:
-        - scene_budgets: 更新调整建议
-        - generated_dialogues: 清空当前场景对白
-        - reasoning: 添加重试准备日志
+ output status update:
+ - scene_budgets: update adjust suggestion
+ - generated_dialogues: Qing Kong current scene dialogue
+ - reasoning: Tian Jia retry Zhun Bei log
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
 
     if current_index >= len(budgets):
-        logger.warning("prepare_retry_node: 当前索引越界")
+        logger.warning("prepare_retry_node: current index Yue Jie")
         return {}
 
     budget: SceneBudget = budgets[current_index]
 
-    # 检查是否达到最大重试次数
+    # check Shi Fou reach maximum retry Ci Shu
     if budget.attempt_count >= MAX_RETRY_ATTEMPTS:
         logger.warning(
-            "prepare_retry_node: 场景 %d 达到最大重试次数 %d，强制提交",
+            "prepare_retry_node: scene %d reach maximum retry Ci Shu %d, Qiang Zhi submit",
             budget.scene_number,
             MAX_RETRY_ATTEMPTS,
         )
@@ -63,7 +63,7 @@ def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
             "reasoning": reasoning,
         }
 
-    # 计算调整建议
+    # Ji Suan adjust suggestion
     actual_duration_ms = int((budget.actual_duration_seconds or 0) * 1000)
     actual_word_count = budget.actual_word_count or 0
 
@@ -73,13 +73,13 @@ def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
         target_duration_seconds=budget.target_duration_seconds,
     )
 
-    # 更新预算状态
+    # update Yu Suan status
     budget.status = SceneStatus.PENDING
     budget.last_rejection_reason = reason
     budget.adjustment_hint = hint
 
     logger.info(
-        "prepare_retry_node: 场景 %d 准备第 %d 次重试",
+        "prepare_retry_node: scene %d Zhun Bei Di %d Ci retry",
         budget.scene_number,
         budget.attempt_count + 1,
         extra={
@@ -91,7 +91,7 @@ def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
         },
     )
 
-    # 清空当前场景的已生成对白
+    # Qing Kong current scene Sheng Cheng dialogue
     generated_dialogues = state.get("generated_dialogues", {})
     if budget.scene_number in generated_dialogues:
         del generated_dialogues[budget.scene_number]
@@ -110,11 +110,11 @@ def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def should_retry_or_fail(state: Dict[str, Any]) -> str:
     """
-    路由函数：判断是否应该重试或标记失败。
+ Lu You function: determine Shi Fou Ying Gai retry or Biao Ji failed.
 
     Returns:
-        "retry" - 可以重试
-        "commit" - 达到最大重试次数，强制提交
+ "retry" - Canretry
+ "commit" - reach maximum retry Ci Shu, Qiang Zhi submit
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)

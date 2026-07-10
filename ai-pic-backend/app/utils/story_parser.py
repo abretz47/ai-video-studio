@@ -4,18 +4,18 @@ from typing import Any, Dict
 from app.utils.json_utils import extract_json_block
 
 CHINESE_KEY_MAP = {
-    "故事前提": "premise",
-    "前提": "premise",
-    "详细概要": "synopsis",
-    "故事概要": "synopsis",
-    "梗概": "synopsis",
-    "主要冲突": "main_conflict",
-    "冲突": "main_conflict",
-    "解决方案": "resolution",
-    "结局": "resolution",
-    "角色关系": "character_relationships",
-    "主角信息": "main_characters",
-    "主要角色": "main_characters",
+    "story Qian Ti": "premise",
+    "Qian Ti": "premise",
+    "detailed outline": "synopsis",
+    "story outline": "synopsis",
+    "Geng Gai": "synopsis",
+    "Main conflict": "main_conflict",
+    "conflict": "main_conflict",
+    "Jie Jue Fang An": "resolution",
+    "Jie Ju": "resolution",
+    "character relationship": "character_relationships",
+    "Zhu Jue Xin Xi": "main_characters",
+    "Main character": "main_characters",
 }
 
 _OUTLINE_KEYS = {
@@ -30,16 +30,16 @@ _OUTLINE_KEYS = {
 
 def normalize_story_json_keys(data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    将包含中文键名的故事概念JSON映射到标准键：
+ Bao Han Zhong Wen Jian Ming story Gai NianJSONYing She to Biao Zhun Jian: 
     premise, synopsis, main_conflict, resolution, character_relationships, main_characters
-    其他键保留原样，便于存入 extra_metadata。
+ Qi Ta Jian Bao Liu Yuan Yang, Bian Yu Cun Ru extra_metadata.
     """
     if not isinstance(data, dict):
         return {}
 
     normalized: Dict[str, Any] = dict(data)
 
-    # 映射中文键
+    # Ying She Zhong Wen Jian
     for zh_key, std_key in CHINESE_KEY_MAP.items():
         if zh_key in data and std_key not in normalized:
             normalized[std_key] = data.get(zh_key)
@@ -49,10 +49,10 @@ def normalize_story_json_keys(data: Dict[str, Any]) -> Dict[str, Any]:
 
 def extract_story_outline_payload(data: Any) -> Dict[str, Any]:
     """
-    从任意 JSON 结构中尽量抽取包含故事概要字段的 dict。
+ Cong Ren Yi JSON structure in Jin Liang Chou Qu Bao Han story outline Zi Duan dict.
 
-    部分模型/代理可能会把结果包裹在 `data`/`story_outline`/`result` 等字段里，
-    直接用顶层 dict 写入 comfortably 会导致 premise/synopsis 等字段为空。
+ Bu Fen model/Dai Li Ke Neng will Jie Guo Bao Guo in `data`/`story_outline`/`result` Deng character Duan Li, 
+ directly Yong Ding Ceng dict write comfortably will Dao Zhi premise/synopsis Deng character Duan as Kong.
     """
     if isinstance(data, dict):
         if _OUTLINE_KEYS.intersection(data.keys()) or set(CHINESE_KEY_MAP).intersection(
@@ -60,14 +60,14 @@ def extract_story_outline_payload(data: Any) -> Dict[str, Any]:
         ):
             return normalize_story_json_keys(data)
 
-        # 常见包裹：只有一个 key 且值为 dict/list
+        # Chang Jian Bao Guo: Zhi You a key Qie Zhi as dict/list
         if len(data) == 1:
             only_value = next(iter(data.values()))
             extracted = extract_story_outline_payload(only_value)
             if extracted:
                 return extracted
 
-        # 递归在子结构中寻找第一份可用 payload
+        # Di Gui in Zi Jie Gou in Xun Zhao Di Yi Fen available payload
         for value in data.values():
             extracted = extract_story_outline_payload(value)
             if extracted:
@@ -86,9 +86,9 @@ def extract_story_outline_payload(data: Any) -> Dict[str, Any]:
 
 def extract_outline_from_text(text: str) -> Dict[str, Any]:
     """
-    从自由文本中抽取故事概要关键字段（启发式）。
-    支持识别类似：
-    "故事前提：..."、"详细概要：..."、"主要冲突：..."、"解决方案：..."、"角色关系：..." 等段落。
+ Cong Zi You text in Chou Qu story outline Guan Jian Zi Duan(Qi Fa Shi).
+ support Shi Bie Lei Si: 
+ "story Qian Ti:...", "detailed outline:...", "Main conflict:...", "Jie Jue Fang An:...", "character relationship:..." Deng Duan Luo.
     """
     fields = {
         "premise": None,
@@ -99,17 +99,17 @@ def extract_outline_from_text(text: str) -> Dict[str, Any]:
         "main_characters": None,
     }
 
-    # 以常见标题做分段
+    # Yi Chang Jian title Zuo Fen Duan
     sections = {
-        "premise": [r"故事前提", r"前提"],
-        "synopsis": [r"详细概要", r"故事概要", r"梗概"],
-        "main_conflict": [r"主要冲突", r"冲突"],
-        "resolution": [r"解决方案", r"结局"],
-        "character_relationships": [r"角色关系"],
-        "main_characters": [r"主角信息", r"主要角色"],
+        "premise": [r"story Qian Ti", r"Qian Ti"],
+        "synopsis": [r"detailed outline", r"story outline", r"Geng Gai"],
+        "main_conflict": [r"Main conflict", r"conflict"],
+        "resolution": [r"Jie Jue Fang An", r"Jie Ju"],
+        "character_relationships": [r"character relationship"],
+        "main_characters": [r"Zhu Jue Xin Xi", r"Main character"],
     }
 
-    # 构造正则，找出每个段落
+    # Gou Zao Zheng Ze, Zhao Chu Mei Ge Duan Luo
     for key, titles in sections.items():
         pattern = re.compile(
             r"(?:^|\n)\s*(?:"
@@ -123,7 +123,7 @@ def extract_outline_from_text(text: str) -> Dict[str, Any]:
         if m:
             fields[key] = m.group(1).strip()
 
-    # 若 synopsis 仍为空，用全文兜底
+    # if synopsis Reng Wei Kong, Yong Quan Wen fallback
     if not fields["synopsis"]:
         fields["synopsis"] = text.strip()
 

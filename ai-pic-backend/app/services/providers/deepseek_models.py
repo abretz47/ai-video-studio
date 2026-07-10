@@ -23,7 +23,7 @@ def get_static_models() -> List[ModelInfo]:
         _v4_model(
             model_id=DEEPSEEK_V4_FLASH_MODEL,
             name="DeepSeek V4 Flash",
-            description="DeepSeek V4 Flash，快速、经济的 1M 上下文文本模型",
+            description="DeepSeek V4 Flash, quick, Jing Ji 1M context text model",
             capabilities=[
                 "text_generation",
                 "chat",
@@ -38,7 +38,7 @@ def get_static_models() -> List[ModelInfo]:
         _v4_model(
             model_id=DEEPSEEK_V4_PRO_MODEL,
             name="DeepSeek V4 Pro",
-            description="DeepSeek V4 Pro，高质量推理、代码和 agentic 任务模型",
+            description="DeepSeek V4 Pro, High qualityTui Li, Dai Ma and agentic Ren Wu Mo Xing",
             capabilities=[
                 "text_generation",
                 "chat",
@@ -55,10 +55,10 @@ def get_static_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id=DEEPSEEK_LEGACY_CHAT_MODEL,
-            name="DeepSeek Chat（兼容旧名称）",
+            name="DeepSeek Chat(Jian Rong Jiu name)",
             description=(
-                "兼容旧模型名；当前对应 DeepSeek V4 Flash 非思考模式，"
-                "将于 2026-07-24 退役"
+                "Jian Rong Jiu model Ming; current Dui Ying DeepSeek V4 Flash Fei thoughtful mode, "
+                "Yu 2026-07-24 Tui Yi"
             ),
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=1_000_000,
@@ -70,10 +70,10 @@ def get_static_models() -> List[ModelInfo]:
         ),
         ModelInfo(
             model_id=DEEPSEEK_LEGACY_REASONER_MODEL,
-            name="DeepSeek Reasoner（兼容旧名称）",
+            name="DeepSeek Reasoner(Jian Rong Jiu name)",
             description=(
-                "兼容旧推理模型名；当前对应 DeepSeek V4 Flash 思考模式，"
-                "将于 2026-07-24 退役"
+                "Jian Rong Jiu Tui Li Mo Xing Ming; current Dui Ying DeepSeek V4 Flash thoughtful mode, "
+                "Yu 2026-07-24 Tui Yi"
             ),
             model_type=AIModelType.TEXT_GENERATION,
             max_tokens=1_000_000,

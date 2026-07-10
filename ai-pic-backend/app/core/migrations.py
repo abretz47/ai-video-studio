@@ -1,7 +1,7 @@
 """
-数据库迁移核心模块
+database migration core module
 
-提供与FastAPI架构一致的数据库迁移机制，扩展Alembic功能
+Ti Gong andFastAPIJia Gou Yi Zhi database migration Ji Zhi, Kuo ZhanAlembicfeature
 """
 
 import importlib.util
@@ -23,13 +23,13 @@ logger = logging.getLogger(__name__)
 
 
 class MigrationError(Exception):
-    """迁移异常"""
+    """migration exception"""
 
     pass
 
 
 class MigrationManager:
-    """数据库迁移管理器"""
+    """database migration manager"""
 
     def __init__(self, engine: Engine = None):
         self.engine = engine or create_engine(settings.DATABASE_URL)
@@ -37,8 +37,8 @@ class MigrationManager:
         self.script_dir = ScriptDirectory.from_config(self.config)
 
     def _get_alembic_config(self) -> Config:
-        """获取Alembic配置"""
-        # 获取项目根目录
+        """getAlembicconfiguration"""
+        # get Xiang Mu Gen Mu Lu
         project_root = Path(__file__).parent.parent.parent
         alembic_ini_path = project_root / "alembic.ini"
 
@@ -51,7 +51,7 @@ class MigrationManager:
         return config
 
     def get_current_revision(self) -> Optional[str]:
-        """获取当前数据库版本"""
+        """get current database version"""
         try:
             with self.engine.connect() as conn:
                 context = MigrationContext.configure(conn)
@@ -61,7 +61,7 @@ class MigrationManager:
             return None
 
     def get_head_revision(self) -> Optional[str]:
-        """获取最新版本"""
+        """get Zui Xin version"""
         try:
             return self.script_dir.get_current_head()
         except Exception as e:
@@ -69,7 +69,7 @@ class MigrationManager:
             return None
 
     def get_migration_history(self) -> List[Dict[str, Any]]:
-        """获取迁移历史"""
+        """get migration Li Shi"""
         history = []
         try:
             for revision in self.script_dir.walk_revisions():
@@ -89,7 +89,7 @@ class MigrationManager:
         return history
 
     def check_migration_status(self) -> Dict[str, Any]:
-        """检查迁移状态"""
+        """Check migration status"""
         current = self.get_current_revision()
         head = self.get_head_revision()
 
@@ -102,7 +102,7 @@ class MigrationManager:
         }
 
         if current and head:
-            # 检查是否有未应用的迁移
+            # check Shi Fou has not Ying Yong migration
             pending_migrations = self._get_pending_migrations(current, head)
             status["pending_migrations"] = pending_migrations
             status["pending_count"] = len(pending_migrations)
@@ -110,17 +110,17 @@ class MigrationManager:
         return status
 
     def _check_database_exists(self) -> bool:
-        """检查数据库是否存在"""
+        """check database Shi Fou Cun Zai"""
         try:
             with self.engine.connect() as conn:
-                # 尝试执行简单查询
+                # Chang Shi execute Jian Dan Cha Xun
                 conn.execute(text("SELECT 1"))
                 return True
         except Exception:
             return False
 
     def _get_pending_migrations(self, current: str, head: str) -> List[str]:
-        """获取待应用的迁移"""
+        """get pending Ying Yong migration"""
         pending = []
         try:
             for revision in self.script_dir.walk_revisions(head, current):
@@ -132,9 +132,9 @@ class MigrationManager:
         return pending
 
     def create_migration(self, message: str, autogenerate: bool = True) -> str:
-        """创建新的迁移文件"""
+        """create Xin migration file"""
         try:
-            # 生成时间戳作为revision id的一部分
+            # Sheng Cheng time Chuo Zuo Weirevision idYi Bu Fen
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
             command.revision(
@@ -151,47 +151,47 @@ class MigrationManager:
             raise MigrationError(f"创建迁移失败: {e}")
 
     def upgrade(self, revision: str = "head") -> bool:
-        """升级数据库"""
+        """escalate database"""
         try:
             logger.info(f"开始升级数据库到版本: {revision}")
             command.upgrade(self.config, revision)
-            logger.info("数据库升级成功")
+            logger.info("database escalate successful")
             return True
         except Exception as e:
             logger.error(f"数据库升级失败: {e}")
             raise MigrationError(f"数据库升级失败: {e}")
 
     def downgrade(self, revision: str) -> bool:
-        """降级数据库"""
+        """Jiang Ji database"""
         try:
             logger.info(f"开始降级数据库到版本: {revision}")
             command.downgrade(self.config, revision)
-            logger.info("数据库降级成功")
+            logger.info("database Jiang Ji successful")
             return True
         except Exception as e:
             logger.error(f"数据库降级失败: {e}")
             raise MigrationError(f"数据库降级失败: {e}")
 
     def stamp(self, revision: str) -> bool:
-        """标记数据库版本（不运行迁移）"""
+        """Biao Ji database version(not run migration)"""
         try:
             logger.info(f"标记数据库版本: {revision}")
             command.stamp(self.config, revision)
-            logger.info("版本标记成功")
+            logger.info("version Biao Ji successful")
             return True
         except Exception as e:
             logger.error(f"版本标记失败: {e}")
             raise MigrationError(f"版本标记失败: {e}")
 
     def validate_migrations(self) -> Dict[str, Any]:
-        """验证迁移文件的完整性"""
+        """validation migration file Wan Zheng Xing"""
         validation_result = {"valid": True, "errors": [], "warnings": []}
 
         try:
-            # 检查迁移文件语法
+            # check migration file Yu Fa
             for revision in self.script_dir.walk_revisions():
                 try:
-                    # 尝试导入迁移模块
+                    # Chang Shi Dao Ru migration module
                     spec = importlib.util.spec_from_file_location(
                         f"migration_{revision.revision}", revision.path
                     )
@@ -199,7 +199,7 @@ class MigrationManager:
                         module = importlib.util.module_from_spec(spec)
                         spec.loader.exec_module(module)
 
-                        # 检查必需的函数
+                        # check Bi Xu function
                         if not hasattr(module, "upgrade"):
                             validation_result["errors"].append(
                                 f"迁移 {revision.revision} 缺少 upgrade 函数"
@@ -224,27 +224,27 @@ class MigrationManager:
         return validation_result
 
     def backup_before_migration(self) -> Optional[str]:
-        """迁移前备份数据库（MySQL）"""
+        """migration before backup database(MySQL)"""
         if "mysql" not in settings.DATABASE_URL:
-            logger.warning("当前数据库不是MySQL，跳过备份")
+            logger.warning("current database Bu ShiMySQL, Tiao Guo backup")
             return None
 
         try:
             import subprocess
             from urllib.parse import urlparse
 
-            # 解析数据库URL
+            # Parse database URL
             parsed = urlparse(
                 settings.DATABASE_URL.replace("mysql+pymysql://", "mysql://")
             )
 
-            # 生成备份文件名
+            # Generate backup filename
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             backup_file = f"backup_{timestamp}.sql"
             backup_path = Path(__file__).parent.parent.parent / "backups" / backup_file
             backup_path.parent.mkdir(exist_ok=True)
 
-            # 构建mysqldump命令
+            # Build mysqldump command
             cmd = [
                 "mysqldump",
                 f"--host={parsed.hostname}",
@@ -257,7 +257,7 @@ class MigrationManager:
                 parsed.path.lstrip("/"),
             ]
 
-            # 执行备份
+            # Execute backup
             with open(backup_path, "w") as f:
                 result = subprocess.run(
                     cmd, stdout=f, stderr=subprocess.PIPE, text=True
@@ -275,7 +275,7 @@ class MigrationManager:
             return None
 
     def get_schema_diff(self) -> Dict[str, Any]:
-        """获取当前数据库与模型的差异"""
+        """get current database and model Cha Yi"""
         try:
             from alembic.autogenerate import compare_metadata
 
@@ -295,7 +295,7 @@ class MigrationManager:
 
 
 class DataSeeder:
-    """数据种子管理器"""
+    """data seed manager"""
 
     def __init__(self, engine: Engine = None):
         self.engine = engine or create_engine(settings.DATABASE_URL)
@@ -303,14 +303,14 @@ class DataSeeder:
         self.seeds_dir.mkdir(exist_ok=True)
 
     def create_seed_file(self, name: str) -> Path:
-        """创建种子文件"""
+        """create seed file"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"{timestamp}_{name}.py"
         seed_file = self.seeds_dir / filename
 
         template = '''"""
-数据种子文件: {name}
-创建时间: {create_time}
+data seed file: {name}
+create time: {create_time}
 """
 
 from sqlalchemy.orm import Session
@@ -318,35 +318,35 @@ from app.core.database import SessionLocal
 from app.models import *
 
 def seed_data():
-    """执行数据种子"""
+ """execute data seed"""
     db = SessionLocal()
     try:
-        # TODO: 在这里添加种子数据
+ # TODO: in here Tian Jia seed data
 
-        # 示例:
+ # Shi Li:
         # user = User(username="admin", email="admin@example.com")
         # db.add(user)
         # db.commit()
 
-        print(f"种子数据 {name} 执行成功")
+ print(f"seed data {name} execute successful")
 
     except Exception as e:
-        print(f"种子数据执行失败: {{e}}")
+ print(f"seed data execute failed: {__PH_0__}")
         db.rollback()
         raise
     finally:
         db.close()
 
 def rollback_data():
-    """回滚种子数据"""
+ """Hui Gun seed data"""
     db = SessionLocal()
     try:
-        # TODO: 在这里添加回滚逻辑
+ # TODO: in here Tian Jia Hui Gun Luo Ji
 
-        print(f"种子数据 {name} 回滚成功")
+ print(f"seed data {name} Hui Gun successful")
 
     except Exception as e:
-        print(f"种子数据回滚失败: {{e}}")
+ print(f"seed data Hui Gun failed: {__PH_0__}")
         db.rollback()
         raise
     finally:
@@ -363,7 +363,7 @@ if __name__ == "__main__":
         return seed_file
 
     def run_seed(self, seed_name: str) -> bool:
-        """运行指定的种子"""
+        """run Zhi Ding seed"""
         try:
             seed_files = list(self.seeds_dir.glob(f"*{seed_name}.py"))
             if not seed_files:
@@ -371,7 +371,7 @@ if __name__ == "__main__":
 
             seed_file = seed_files[0]
 
-            # 动态导入并执行种子
+            # Dong Tai Dao Ru and execute seed
             spec = importlib.util.spec_from_file_location("seed_module", seed_file)
             if spec and spec.loader:
                 module = importlib.util.module_from_spec(spec)
@@ -391,13 +391,13 @@ if __name__ == "__main__":
             raise
 
     def run_all_seeds(self) -> int:
-        """运行所有种子"""
+        """run all seed"""
         seed_files = sorted(self.seeds_dir.glob("*.py"))
         success_count = 0
 
         for seed_file in seed_files:
             try:
-                seed_name = seed_file.stem.split("_", 2)[-1]  # 提取种子名称
+                seed_name = seed_file.stem.split("_", 2)[-1]  # extract seed name
                 self.run_seed(seed_name)
                 success_count += 1
             except Exception as e:
@@ -408,6 +408,6 @@ if __name__ == "__main__":
         return success_count
 
 
-# 全局实例
+# Quan Ju instance
 migration_manager = MigrationManager()
 data_seeder = DataSeeder()

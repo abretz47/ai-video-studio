@@ -100,11 +100,11 @@ async def try_fill_pending_scenes_after_react(
     )
     base_prompt = (
         base_prompt
-        + "\n\n## 重要：仅补全以下场景\n"
+        + "\n\n## Zhong Yao: only Bu Quan Yi Xia scene\n"
         + f"你只能生成这些 scene_number 的对白与舞台指示：{pending_scene_numbers}\n"
-        + "硬性要求：每个场景至少 2 句对白，scene_number 必须为整数且准确。\n"
-        + "严禁输出编剧/助手元语言（如“这里可以…”），严禁跨场景重复模板台词。\n"
-        + "不要输出其它场景的内容。\n"
+        + "Ying Xing requirement: Mei Ge scene Zhi Shao 2 Ju dialogue, scene_number Bi Xu as Zheng Shu Qie Zhun Que.\n"
+        + "Yan Jin output Bian Ju/Zhu Shou Yuan Yu Yan(for example"hereCan…"), Yan Jin Kua scene Chong Fu template line.\n"
+        + "Bu Yao output Qi Ta scene content.\n"
     )
 
     constraints_text = build_word_count_constraints(
@@ -172,7 +172,7 @@ async def try_fill_pending_scenes_after_react(
             model=model,
             prefer_provider=prefer_provider,
             json_schema=schema,
-            system_prompt="你是专业的剧本对白与舞台指示写手，请严格按 JSON 返回。",
+            system_prompt="you Shi professional script dialogue and Wu Tai Zhi Shi Xie Shou, Qing strict An JSON return.",
         )
         if not getattr(resp, "success", False):
             continue
@@ -204,8 +204,8 @@ async def try_fill_pending_scenes_after_react(
         if has_writer_notes:
             prompt = (
                 base_prompt
-                + "\n\n## REACT 驳回\n"
-                + "你输出了编剧/助手元语言（如“这里可以…”）。请全部改写为戏内台词，不要保留元语言。\n"
+                + "\n\n## REACT Bo Hui\n"
+                + "you output Bian Ju/Zhu Shou Yuan Yu Yan(for example"hereCan…").Qing Quan Bu Gai Xie as Xi Nei line, Bu Yao Bao Liu Yuan Yu Yan.\n"
             )
             continue
 
@@ -255,23 +255,23 @@ async def try_fill_pending_scenes_after_react(
 
             reject_lines: list[str] = []
             if too_short:
-                reject_lines.append("以下场景对白时长仍不足：" + "；".join(too_short))
+                reject_lines.append("Yi Xia scene dialogue duration Reng insufficient: " + "；".join(too_short))
             if too_long:
-                reject_lines.append("以下场景对白时长过长：" + "；".join(too_long))
+                reject_lines.append("Yi Xia scene dialogue when Zhang Guo Chang: " + "；".join(too_long))
 
             prompt = (
                 base_prompt
-                + "\n\n## REACT 驳回（时长不达标）\n"
+                + "\n\n## REACT Bo Hui(duration not Da Biao)\n"
                 + "\n".join(reject_lines)
-                + "\n硬性要求：严格满足各场景字数/时长约束；只能输出指定 scene_number；禁止编剧/助手元语言与跨场景重复模板台词。\n"
+                + "\nYing Xing requirement: strict Man Zu Ge scene word count/when Zhang Yue Shu; Zhi Neng output Zhi Ding scene_number; Jin Zhi Bian Ju/Zhu Shou Yuan Yu Yan and Kua scene Chong Fu template line.\n"
             )
             continue
 
         prompt = (
             base_prompt
-            + "\n\n## REACT 驳回\n"
+            + "\n\n## REACT Bo Hui\n"
             + f"以下场景对白条数仍不足 2 句：{missing}；当前计数：{per_scene_counts}\n"
-            + "请仅针对这些场景补足到 2-3 句对白。\n"
+            + "Qing Jin Zhen Dui Zhe Xie scene Bu Zu to 2-3 Ju dialogue.\n"
         )
 
     if not passed_constraints:

@@ -346,9 +346,9 @@ class TimelineLangGraphAgent:
             else:
                 tolerance_high = 1.4
 
-            # NOTE: 目标时长对齐的“补足”由 audio segment padding 负责（见 segment_padding.py），
-            # Timeline Agent 只负责节奏合理的间隔计算；因此不把“时长不足”视为硬错误，
-            # 否则在对白数量较少的场景下会出现不可满足的约束并触发无意义的修复循环。
+            # NOTE: target when Zhang Dui Qi"Bu Zu"You audio segment padding responsible for(Jian segment_padding.py), 
+            # Timeline Agent only responsible for Jie Zou He Li Jian Ge Ji Suan; Yin Ci not"when Zhang insufficient"Shi Wei Ying Cuo Wu, 
+            # Fou Ze in dialogue Shu Liang Jiao Shao scene Xia Hui Chu Xian not allowed Man Zu Yue Shu and Chu Fa none Yi Yi Xiu Fu Xun Huan.
             if duration_ratio > tolerance_high:
                 errors.append(
                     f"duration_too_long: {computed_total_ms}ms vs target {target_ms}ms "
@@ -507,8 +507,8 @@ class TimelineLangGraphAgent:
 
         # Build enhanced scene info
         slug_line = scene_context.get("slug_line") or ""
-        location = scene_context.get("location") or "未知"
-        time_of_day = scene_context.get("time_of_day") or "未知"
+        location = scene_context.get("location") or "unknown"
+        time_of_day = scene_context.get("time_of_day") or "unknown"
         summary = scene_context.get("summary") or ""
 
         scene_description = (
@@ -548,7 +548,7 @@ class TimelineLangGraphAgent:
 - 场景编号: {scene_context.get('scene_number', 1)}
 {scene_description}
 {summary_line}
-- 整体情绪: {scene_context.get('mood') or '未标注'}
+- 整体情绪: {scene_context.get('mood') or 'not Biao Zhu'}
 - 冲突程度: {scene_context.get('conflict_level', 'medium')}
 - 节奏类型: {scene_context.get('pacing', 'medium')}
 - 角色数量: {scene_context.get('character_count', 1)}

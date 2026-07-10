@@ -13,13 +13,13 @@ class EpisodeMockScriptMixin:
         scene_number: int,
         fallback_characters: List[str],
     ) -> List[Dict[str, Any]]:
-        """从场景 summary 中提取角色对白。
+        """Cong scene summary in extract character dialogue.
 
-        支持两种对白格式：
-        1. 直接格式：老拐：'撑住，我们快到了。'
-        2. 叙述格式：阿盖儿轻声说："它想活，我便予它一点生气。"
+ support Liang Zhong dialogue format: 
+ 1. directly format: Lao Guai: 'Cheng Zhu, Wo Men Kuai Dao.'
+ 2. Xu Shu format: A Gai Er Qing Sheng Shuo: "Ta Xiang Huo, I Bian Yu Ta Yi Dian angry."
 
-        如果无法提取到对白，返回空列表。
+ Ru Guo unable to extract to dialogue, return Kong list.
         """
         from app.services.script_missing_parts import (
             extract_dialogues_from_scene_summary,
@@ -45,23 +45,23 @@ class EpisodeMockScriptMixin:
         additional_requirements: Optional[str] = None,
         style_preferences: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
-        """生成模拟剧本内容，保证无外部模型时的回退体验。
+        """Sheng Cheng mock script content, Bao Zheng none Wai Bu model when fallback Ti Yan.
 
-        注意：此方法会尝试从场景 summary 中提取真实对白，
-        而不是生成假的描述性对白。如果无法提取，返回空对白列表。
+ Zhu Yi: Ci Fang Fa will Chang Shi Cong scene summary in extract Zhen Shi dialogue, 
+ Er Bu Shi Sheng Cheng Jia Miao Shu Xing dialogue.Ru Guo unable to extract, return Kong dialogue list.
         """
         await asyncio.sleep(1)
 
-        # 优先使用已生成的场景，保持与剧集一致；否则退回 plot_points
+        # priority Shi Yong Sheng Cheng scene, keep and episode Yi Zhi; Fou Ze Tui Hui plot_points
         base_scenes = episode.get("scenes") or []
         plot_points = episode.get("plot_points") or []
         if not base_scenes and not plot_points:
             summary = (
                 episode.get("summary")
                 or story.get("synopsis")
-                or "角色在本集中推进剧情。"
+                or "character in Ben Ji Zhong advance plot."
             )
-            plot_points = [{"description": summary, "timing": "中段"}]
+            plot_points = [{"description": summary, "timing": "Zhong Duan"}]
 
         focus_characters: List[str] = []
         for char in story.get("main_characters") or []:
@@ -73,12 +73,12 @@ class EpisodeMockScriptMixin:
         scenes: List[Dict[str, Any]] = []
         dialogues: List[Dict[str, Any]] = []
         stage_directions: List[Dict[str, Any]] = []
-        script_sections: List[str] = [f"# {episode.get('title', '未命名剧集')}"]
+        script_sections: List[str] = [f"# {episode.get('title', 'Wei Ming Ming episode')}"]
 
-        default_locations = ["教室", "校园花园", "图书馆", "操场"]
+        default_locations = ["Jiao Shi", "Xiao Yuan Hua Yuan", "Tu Shu Guan", "Cao Chang"]
         default_times = ["DAY", "EVENING", "NIGHT"]
 
-        # 若有真实场景，按场景生成；否则使用情节点生成
+        # Ruo You Zhen Shi scene, An scene Sheng Cheng; Fou Ze Shi Yong Qing Jie Dian Sheng Cheng
         if base_scenes:
             iterable = list(base_scenes)
         else:
@@ -121,7 +121,7 @@ class EpisodeMockScriptMixin:
                 }
             )
 
-            # 从场景 summary 中提取真实对白，而不是生成假的描述性对白
+            # Cong scene summary in extract Zhen Shi dialogue, Er Bu Shi Sheng Cheng Jia Miao Shu Xing dialogue
             extracted_dialogues = self._extract_dialogues_from_summary(
                 description, idx, focus_characters
             )
@@ -131,8 +131,8 @@ class EpisodeMockScriptMixin:
                 {
                     "scene_number": idx,
                     "content": f"镜头捕捉角色与场景，突出：{description}",
-                    "camera_suggestion": "中景",
-                    "lighting": "自然光",
+                    "camera_suggestion": "medium shot",
+                    "lighting": "Zi Ran Guang",
                 }
             )
 
@@ -143,7 +143,7 @@ class EpisodeMockScriptMixin:
             ]
             for dialog in [d for d in dialogues if d["scene_number"] == idx]:
                 line_text = dialog.get("content") or dialog.get("line") or ""
-                section_lines.append(f"{dialog.get('character', '旁白')}: {line_text}")
+                section_lines.append(f"{dialog.get('character', 'narration')}: {line_text}")
             script_sections.append("\n".join(section_lines))
 
         if additional_requirements:
@@ -183,7 +183,7 @@ class EpisodeMockScriptMixin:
                     "style_preferences": style_preferences or [],
                 },
             },
-            "prompt": "模拟剧本生成提示词",
+            "prompt": "mock scriptGeneration prompt",
             "generation_method": "mock_service",
             "template_used": "mock_script_template",
             "provider_used": "mock",

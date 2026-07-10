@@ -31,7 +31,7 @@ def queue_timeline_pipeline_task(
     *,
     params: dict[str, Any] | None = None,
     title: str | None = None,
-    description: str = "一键生成对白音轨、时间轴、分镜帧占位",
+    description: str = "Yi Jian Sheng Cheng dialogue Yin Gui, timeline, storyboard Zhen Zhan Wei",
     prompt: str | None = None,
     target_business_id: str | None = None,
 ) -> Task:
@@ -43,7 +43,7 @@ def queue_timeline_pipeline_task(
     episode = script.episode if script.episode else None
     story = episode.story if episode else None
     task = Task(
-        title=title or friendly_task_title("一键时间轴流水线", script, episode, story),
+        title=title or friendly_task_title("Yi Jian timeline Liu Shui Xian", script, episode, story),
         description=description,
         task_type=TaskType.TIMELINE_PIPELINE,
         prompt=prompt or f"Timeline pipeline for script {script.id}",

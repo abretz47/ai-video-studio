@@ -40,36 +40,36 @@ class CinematicRulesValidator:
             "extreme close-up",
             "extreme closeup",
             "ECU",
-            "特写",
-            "大特写",
-            "超特写",
+            "close-up",
+            "Da Te Xie",
+            "Chao close-up",
         ],
         "close_up": [
             "close-up",
             "closeup",
             "close up",
             "CU",
-            "近景",
-            "特写镜头",
+            "Jin Jing",
+            "Te Xie Jing Tou",
         ],
         "medium_close_up": [
             "medium close-up",
             "MCU",
             "medium closeup",
-            "中近景",
+            "in Jin Jing",
         ],
         "medium": [
             "medium shot",
             "MS",
             "waist shot",
-            "中景",
-            "半身",
+            "medium shot",
+            "Ban Shen",
         ],
         "medium_wide": [
             "medium wide",
             "MWS",
             "medium long",
-            "中全景",
+            "in Quan Jing",
         ],
         "wide": [
             "wide shot",
@@ -77,27 +77,27 @@ class CinematicRulesValidator:
             "full shot",
             "long shot",
             "LS",
-            "全景",
-            "远景",
-            "广角",
+            "Quan Jing",
+            "wide shot",
+            "Guang Jiao",
         ],
         "extreme_wide": [
             "extreme wide",
             "EWS",
             "establishing",
-            "大全景",
-            "极远景",
-            "建立镜头",
+            "Da Quan Jing",
+            "Ji wide shot",
+            "Jian Li shot",
         ],
     }
 
     # Camera positions for 180-degree rule
     CAMERA_POSITIONS = {
-        "left": ["left", "左侧", "左边", "screen left"],
-        "right": ["right", "右侧", "右边", "screen right"],
-        "center": ["center", "中间", "正面", "front"],
-        "over_shoulder_left": ["OTS left", "过肩左", "左过肩"],
-        "over_shoulder_right": ["OTS right", "过肩右", "右过肩"],
+        "left": ["left", "Zuo Ce", "Zuo Bian", "screen left"],
+        "right": ["right", "You Ce", "You Bian", "screen right"],
+        "center": ["center", "Zhong Jian", "Zheng Mian", "front"],
+        "over_shoulder_left": ["OTS left", "Guo Jian Zuo", "Zuo Guo Jian"],
+        "over_shoulder_right": ["OTS right", "Guo Jian You", "You Guo Jian"],
     }
 
     # Lighting keywords
@@ -108,13 +108,13 @@ class CinematicRulesValidator:
         "morning",
         "afternoon",
         "noon",
-        "白天",
-        "日光",
-        "早晨",
-        "上午",
-        "下午",
-        "正午",
-        "阳光",
+        "Daytime",
+        "Ri Guang",
+        "Zao Chen",
+        "morning",
+        "afternoon",
+        "Zheng Wu",
+        "Yang Guang",
     ]
     LIGHTING_NIGHT = [
         "night",
@@ -122,12 +122,12 @@ class CinematicRulesValidator:
         "evening",
         "midnight",
         "dark",
-        "夜晚",
-        "夜间",
-        "傍晚",
-        "深夜",
-        "黑暗",
-        "月光",
+        "Ye Wan",
+        "Ye Jian",
+        "dusk",
+        "Shen Ye",
+        "Hei An",
+        "Yue Guang",
     ]
 
     # Minimum shot variety threshold (percentage of dominant shot type)
@@ -304,9 +304,9 @@ class CinematicRulesValidator:
                             "violations": violations,
                         },
                         suggestions=[
-                            "检查分镜描述中的角色位置是否一致",
-                            "确保同一对话场景中相机不跨越轴线",
-                            "考虑添加过渡镜头（如中性镜头）来合理化位置变化",
+                            "check storyboard description in character Wei Zhi Shi Fou Yi Zhi",
+                            "Que Bao Tong Yi Dui Hua scene in Xiang Ji not Kua Yue Zhou Xian",
+                            "consider Tian Jia Guo Du shot(for example Zhong Xing shot)Lai He Li Hua Wei Zhi change",
                         ],
                     )
                 )
@@ -386,8 +386,8 @@ class CinematicRulesValidator:
                         message=f"场景 {scene_num}: 无法识别镜头景别",
                         details={"scene_number": scene_num, "frame_count": len(frames)},
                         suggestions=[
-                            "在分镜描述中明确标注景别（特写/中景/全景）",
-                            "使用 shot_type 字段指定镜头类型",
+                            "in storyboard description in clear Biao Zhu Jing Bie(close-up/medium shot/Quan Jing)",
+                            "Shi Yong shot_type character Duan Zhi Ding shot type",
                         ],
                     )
                 )
@@ -412,9 +412,9 @@ class CinematicRulesValidator:
                             "distribution": dict(counter),
                         },
                         suggestions=[
-                            "增加景别变化以丰富视觉节奏",
+                            "increase Jing Bie change Yi Feng Fu Shi Jue Jie Zou",
                             f"减少 {most_common_type} 的使用，添加其他景别",
-                            "考虑在对话场景中交替使用近景和中景",
+                            "consider in Dui Hua scene in Jiao Ti Shi Yong Jin Jing and medium shot",
                         ],
                     )
                 )
@@ -453,9 +453,9 @@ class CinematicRulesValidator:
                                     "to_lighting": current_lighting,
                                 },
                                 suggestions=[
-                                    "确保同一场景内光线条件一致",
-                                    "如需日夜变化，添加过渡场景或时间标记",
-                                    "检查分镜描述中的光线/时间关键词",
+                                    "Que Bao Tong Yi scene interior Guang Xian Tiao Jian Yi Zhi",
+                                    "Ru Xu Ri Ye change, Tian Jia Guo Du scene or time Biao Ji",
+                                    "check storyboard description in Guang Xian/time Guan Jian Ci",
                                 ],
                             )
                         )
@@ -505,9 +505,9 @@ class CinematicRulesValidator:
                             "consecutive_same_type": consecutive_same,
                         },
                         suggestions=[
-                            "在相同景别之间插入不同景别的镜头",
-                            "使用过渡镜头打破单调节奏",
-                            "考虑使用运动镜头增加动态感",
+                            "in Xiang Tong Jing Bie Zhi Jian Cha Ru Bu Tong Jing Bie De shot",
+                            "Shi Yong Guo Du shot Da Po Dan Diao Jie Zou",
+                            "consider Shi Yong Yun Dong shot increase Dong Tai Gan",
                         ],
                     )
                 )

@@ -1,5 +1,5 @@
 name: virtual_ip_image_variant
-description: "虚拟 IP 图生图变体提示词（直接用于图像模型）"
+description: "virtual IP Tu Sheng image Bian Ti prompt text(Zhi Jie Yong Yu image model)"
 category: image
 version: "1.3"
 author: "AI Video Studio"
@@ -7,53 +7,53 @@ created_at: "2026-01-09"
 updated_at: "2026-01-12"
 
 variables:
-  character_name:
-    type: string
-    required: true
-    description: "角色名称"
-    min_length: 1
+ character_name:
+ type: string
+ required: true
+ description: "character name"
+ min_length: 1
 
-  variant_prompt:
-    type: string
-    required: true
-    description: "变体/变化指令（例如背面照、全身照、不同光线等）"
-    min_length: 1
+ variant_prompt:
+ type: string
+ required: true
+ description: "Bian Ti/Bian Hua Zhi Ling(Li Ru back view Zhao, Quan Shen Zhao, Bu Tong Guang Xian etc.)"
+ min_length: 1
 
-  character_description:
-    type: string
-    required: false
-    description: "角色外观与设定描述（可选）"
+ character_description:
+ type: string
+ required: false
+ description: "character Wai Guan Yu She Ding description(optional)"
 
-  background_story:
-    type: string
-    required: false
-    description: "背景故事（可选）"
+ background_story:
+ type: string
+ required: false
+ description: "Bei Jing Gu Shi(optional)"
 
-  style:
-    type: string
-    required: false
-    description: "风格（realistic/anime/cartoon/…）"
-    default: "realistic"
+ style:
+ type: string
+ required: false
+ description: "style(realistic/anime/cartoon/...)"
+ default: "realistic"
 
-  category:
-    type: string
-    required: false
-    description: "图像类别（portrait/full_body/action/emotion/…）"
-    default: "portrait"
+ category:
+ type: string
+ required: false
+ description: "Tu Xiang Lei Bie(portrait/full_body/action/emotion/...)"
+ default: "portrait"
 
-  style_prompt:
-    type: string
-    required: false
-    description: "风格补充提示词（可选）"
+ style_prompt:
+ type: string
+ required: false
+ description: "style Bu Chong prompt text(optional)"
 
-  base_prompt:
-    type: string
-    required: false
-    description: "基础图像生成时的 prompt（可选）"
+ base_prompt:
+ type: string
+ required: false
+ description: "basic image generate Shi De prompt(optional)"
 
 usage_examples:
-  - character_name: "小雅"
-    variant_prompt: "背面照，全身照，保持同一人物特征"
-    character_description: "22岁女性，银色短发，精致五官，气质清冷，黑色高领毛衣"
-    style: "realistic"
-    category: "portrait"
+ - character_name: "Mia"
+ variant_prompt: "back-view shot, Quan Shen Zhao, keep Tong Yi Ren Wu Te Zheng"
+ character_description: "22 years oldfemale, Yin Se Duan Fa, Jing Zhi Wu Guan, Qi Zhi Qing Leng, Hei Se Gao Ling Mao Yi"
+ style: "realistic"
+ category: "portrait"

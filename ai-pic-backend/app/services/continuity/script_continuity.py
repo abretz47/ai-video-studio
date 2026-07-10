@@ -84,9 +84,9 @@ async def run_script_continuity_audit(
                 {
                     "issue_type": "plausibility",
                     "severity": "high",
-                    "description": "script_continuity_audit 输出无法解析/不符合 schema",
+                    "description": "script_continuity_audit output unable to parse/not Fu He schema",
                     "evidence": str(raw)[:500],
-                    "fix_guidance": "请严格输出 JSON 并遵守 schema。",
+                    "fix_guidance": "Qing strict output JSON and Zun Shou schema.",
                 }
             ],
             summary="audit_parse_failed",

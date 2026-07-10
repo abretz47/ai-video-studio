@@ -59,14 +59,14 @@ def _process_storyboard_image_task(
 
         script = get_script_by_id(db, script_id)
         if not script:
-            raise RuntimeError("剧本不存在")
+            raise RuntimeError("Script does not exist")
         sb = (
             (script.extra_metadata or {}).get("storyboard")
             if script.extra_metadata
             else None
         )
         if not sb or not sb.get("frames"):
-            raise RuntimeError("未找到分镜数据")
+            raise RuntimeError("Storyboard data not found")
 
         frames_src = list((sb or {}).get("frames") or [])
         frames = [

@@ -9,9 +9,9 @@ from sqlalchemy.orm import sessionmaker
 logger = logging.getLogger(__name__)
 
 
-# 根据数据库类型设置连接参数
+# Gen Ju database type She Zhi connection parameters
 def get_engine_config():
-    """根据数据库URL类型获取相应的引擎配置"""
+    """Gen Ju databaseURLtype get Xiang Ying Yin Qing configuration"""
     if "sqlite" in settings.DATABASE_URL:
         return {"connect_args": {"check_same_thread": False}}
     elif "mysql" in settings.DATABASE_URL:
@@ -26,18 +26,18 @@ def get_engine_config():
         return {}
 
 
-# 创建数据库引擎
+# create database Yin Qing
 engine_config = get_engine_config()
 engine = create_engine(settings.DATABASE_URL, **engine_config)
 
-# 创建会话工厂
+# create Hui Hua Gong Chang
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# 创建基础模型类
+# create basic model Lei
 Base = declarative_base()
 
 
-# 依赖注入函数
+# Yi Lai Zhu Ru function
 def get_db():
     db = SessionLocal()
     try:

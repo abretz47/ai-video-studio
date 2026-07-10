@@ -9,9 +9,9 @@ class ImageOpsMixin:
     async def generate_image(
         self, prompt: str, parameters: Optional[Dict[str, Any]] = None
     ) -> Optional[str]:
-        """生成图片（保持向后兼容）"""
+        """Sheng Cheng image(keep Xiang after Jian Rong)"""
         if not self.base_url or not self.api_key:
-            raise ValueError("AI服务配置不完整")
+            raise ValueError("AIservice configuration not complete")
 
         payload = {"prompt": prompt, "parameters": parameters or {}}
 

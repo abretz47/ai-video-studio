@@ -42,7 +42,7 @@ class AIService(
     VideoGenerationMixin,
     SpeechGenerationMixin,
 ):
-    """AI服务接口 - 集成新的多提供商系统"""
+    """AIservice API - Ji Cheng Xin multiple provider system"""
 
     def _initialize_ai_manager(self):
         manager = super()._initialize_ai_manager()

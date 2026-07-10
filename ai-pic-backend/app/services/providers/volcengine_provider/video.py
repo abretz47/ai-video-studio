@@ -53,14 +53,14 @@ async def poll_task_status(
                 await asyncio.sleep(delay)
                 continue
 
-            logger.warning("火山引擎任务 %s 未知状态: %s", task_id, status)
+            logger.warning("Volcengine Yin Qing Ren Wu %s unknown status: %s", task_id, status)
             raise RuntimeError(f"火山引擎任务未知状态: {status}")
         except RuntimeError:
             raise
         except Exception as exc:
             last_error = str(exc)
             logger.warning(
-                "轮询火山引擎任务状态失败 (尝试 %d/%d): %s",
+                "Lun Xun Volcengine Yin Qing Ren Wu status failed (Chang Shi %d/%d): %s",
                 attempt + 1,
                 max_attempts,
                 exc,
@@ -132,7 +132,7 @@ async def generate_video(
         task_id = extract_task_id(create_data)
         if not task_id:
             return _failure_response(
-                "火山引擎视频生成响应缺少任务ID",
+                "Volcengine Yin Qing video Sheng Cheng response missing Ren WuID",
                 provider_name,
                 ark_model,
                 model_type,
@@ -149,7 +149,7 @@ async def generate_video(
         urls = extract_output_urls(result)
         if not urls.get("video_url"):
             return _failure_response(
-                "火山引擎视频生成成功但未返回视频URL",
+                "Volcengine Yin Qing video Sheng Cheng successful Dan not return videoURL",
                 provider_name,
                 ark_model,
                 model_type,

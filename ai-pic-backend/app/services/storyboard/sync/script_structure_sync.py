@@ -315,7 +315,7 @@ class ScriptStructureSync:
         """Create SceneBeat from dialogue dict."""
         from app.models.story_structure import SceneBeat as SceneBeatModel
 
-        character = dialogue.get("character") or "旁白"
+        character = dialogue.get("character") or "narration"
         content = dialogue.get("content") or ""
 
         return SceneBeatModel(
@@ -358,7 +358,7 @@ class ScriptStructureSync:
             scene_num = None
 
         chars = beat.characters_involved or []
-        character = chars[0] if chars else "旁白"
+        character = chars[0] if chars else "narration"
 
         return {
             "scene_number": scene_num,

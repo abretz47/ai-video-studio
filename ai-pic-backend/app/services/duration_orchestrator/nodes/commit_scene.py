@@ -1,7 +1,7 @@
 """
-场景提交节点
+scene submit node
 
-验证通过后提交场景，并触发后续场景的预算再平衡。
+validation through after submit scene, and Chu Fa subsequent scene Yu Suan then Ping Heng.
 """
 
 from typing import Any, Dict
@@ -15,42 +15,42 @@ logger = get_logger()
 
 def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
     """
-    场景提交节点。
+ scene submit node.
 
-    将当前场景标记为已提交，并触发后续场景的预算再平衡。
+ current scene Biao Ji as submit, and Chu Fa subsequent scene Yu Suan then Ping Heng.
 
-    输入状态:
-        - scene_budgets: 场景预算列表
-        - current_scene_index: 当前场景索引
-        - generated_dialogues: 已生成的对白
+ input status:
+ - scene_budgets: scene Yu Suan list
+ - current_scene_index: current scene index
+ - generated_dialogues: Sheng Cheng dialogue
 
-    输出状态更新:
-        - scene_budgets: 更新状态和后续场景预算
-        - committed_scenes: 添加已提交场景数据
-        - current_scene_index: 移动到下一个场景
-        - reasoning: 添加提交日志
+ output status update:
+ - scene_budgets: update status and subsequent scene Yu Suan
+ - committed_scenes: Tian Jia submit scene data
+ - current_scene_index: Yi Dong to below a scene
+ - reasoning: Tian Jia submit log
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
 
     if current_index >= len(budgets):
-        logger.warning("commit_scene_node: 当前索引越界")
+        logger.warning("commit_scene_node: current index Yue Jie")
         return {}
 
     budget: SceneBudget = budgets[current_index]
     generated_dialogues = state.get("generated_dialogues", {})
     scene_dialogues = generated_dialogues.get(budget.scene_number, [])
 
-    # 标记为已提交
+    # Biao Ji as submit
     budget.status = SceneStatus.COMMITTED
 
-    # 计算时长偏差
+    # Ji Suan when Zhang Pian Cha
     actual_seconds = budget.actual_duration_seconds or 0
     target_seconds = budget.target_duration_seconds
     deviation_seconds = actual_seconds - target_seconds
 
     logger.info(
-        "commit_scene_node: 场景 %d 已提交",
+        "commit_scene_node: scene %d submit",
         budget.scene_number,
         extra={
             "event": "scene_committed",
@@ -66,7 +66,7 @@ def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
         },
     )
 
-    # 触发预算再平衡（如果有偏差且还有后续场景）
+    # Chu Fa Yu Suan then Ping Heng(Ru Guo has Pian Cha Qie Hai You subsequent scene)
     if deviation_seconds != 0 and current_index < len(budgets) - 1:
         rebalance_remaining_budgets(
             budgets=budgets,
@@ -74,7 +74,7 @@ def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
             actual_duration=actual_seconds,
         )
         logger.info(
-            "commit_scene_node: 已触发预算再平衡",
+            "commit_scene_node: Chu Fa Yu Suan then Ping Heng",
             extra={
                 "event": "budget_rebalanced",
                 "episode_id": state.get("episode_id"),
@@ -84,7 +84,7 @@ def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
             },
         )
 
-    # 保存已提交的场景数据
+    # save submit scene data
     committed_scenes = state.get("committed_scenes", {})
     committed_scenes[budget.scene_number] = {
         "scene_number": budget.scene_number,
@@ -95,7 +95,7 @@ def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
         "attempt_count": budget.attempt_count,
     }
 
-    # 移动到下一个场景
+    # Yi Dong to below a scene
     next_index = current_index + 1
 
     reasoning = state.get("reasoning", [])
@@ -116,11 +116,11 @@ def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def should_continue_or_assemble(state: Dict[str, Any]) -> str:
     """
-    路由函数：判断是否继续处理下一个场景或进入组装阶段。
+ Lu You function: determine Shi Fou continue process below a scene or Jin Ru assemble Jie Duan.
 
     Returns:
-        "continue" - 还有待处理的场景
-        "assemble" - 所有场景已处理，进入组装阶段
+ "continue" - Hai You Dai Chu Li scene
+ "assemble" - all scene process, Jin Ru assemble Jie Duan
     """
     budgets = state.get("scene_budgets", [])
     current_index = state.get("current_scene_index", 0)
@@ -128,7 +128,7 @@ def should_continue_or_assemble(state: Dict[str, Any]) -> str:
     if current_index >= len(budgets):
         return "assemble"
 
-    # 检查是否还有待处理的场景
+    # check Shi Fou Hai You Dai Chu Li scene
     remaining_pending = [
         b for b in budgets[current_index:] if b.status == SceneStatus.PENDING
     ]

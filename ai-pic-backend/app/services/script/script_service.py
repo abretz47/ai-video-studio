@@ -58,7 +58,7 @@ class ScriptService:
             script_id=script_id, business_id=business_id, user_id=user_id
         )
         if not script:
-            raise NotFoundError("剧本", script_id or business_id)
+            raise NotFoundError("script", script_id or business_id)
         return script
 
     def list_scripts(
@@ -92,7 +92,7 @@ class ScriptService:
             episode_id=episode_id, user_id=user_id
         )
         if not episode:
-            raise NotFoundError("剧集", episode_id)
+            raise NotFoundError("episode", episode_id)
 
         return self.script_repo.list_by_episode(
             episode_id=episode_id, user_id=user_id, limit=limit
@@ -105,7 +105,7 @@ class ScriptService:
             episode_id=script_data.episode_id, user_id=user_id
         )
         if not episode:
-            raise NotFoundError("剧集", script_data.episode_id)
+            raise NotFoundError("episode", script_data.episode_id)
 
         word_count = len(script_data.content.split()) if script_data.content else 0
         character_count = len(script_data.content) if script_data.content else 0
@@ -171,7 +171,7 @@ class ScriptService:
 
             sync_script_scenes_to_story_structure(self.session, script)
         except Exception:
-            logger.warning("同步规范化场景失败", exc_info=True)
+            logger.warning("sync Gui Fan Hua scene failed", exc_info=True)
 
 
 def get_script_service(session: Session) -> ScriptService:

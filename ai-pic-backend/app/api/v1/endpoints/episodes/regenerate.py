@@ -61,19 +61,21 @@ def _build_regenerate_request(
 
     # Build detailed additional requirements with full context
     additional_req_parts = [
-        f"【重要】这是第{episode.episode_number}集的重新生成，不是第1集。",
-        f"剧集编号必须是 {episode.episode_number}。",
+        f"[IMPORTANT] This is a regeneration of episode {episode.episode_number}, not episode 1.",
+        f"The episode number must be {episode.episode_number}.",
     ]
 
     if episode.summary:
-        additional_req_parts.append(f"\n原剧集概要（必须遵循）：\n{episode.summary}")
+        additional_req_parts.append(
+            f"\nOriginal episode summary (must be followed):\n{episode.summary}"
+        )
 
     if previous_episodes:
         additional_req_parts.append(
-            "\n【前序剧集摘要】（保持连贯性，不要重复已有内容）："
+            "\n[Previous episode summaries] (maintain continuity and do not repeat existing content):"
         )
         for prev in previous_episodes:
-            ep_desc = f"- 第{prev['episode_number']}集《{prev['title']}》: {prev['logline'] or '无摘要'}"
+            ep_desc = f"- Episode {prev['episode_number']} '{prev['title']}': {prev['logline'] or 'No summary'}"
             additional_req_parts.append(ep_desc)
 
     additional_requirements = "\n".join(additional_req_parts)
@@ -127,8 +129,8 @@ async def regenerate_episode_async(
 
     # Create task
     task = Task(
-        title=f"重新生成剧集 - 第{episode.episode_number}集",
-        description=f"重新生成故事{story.id}的第{episode.episode_number}集",
+        title=f"Regenerate episode - episode {episode.episode_number}",
+        description=f"Regenerate episode {episode.episode_number} for story {story.id}",
         task_type=TaskType.EPISODE_GENERATION,
         prompt=f"Regenerate episode {episode.episode_number} for story {story.id}",
         parameters=json.dumps(request_dict, ensure_ascii=False),
@@ -146,7 +148,7 @@ async def regenerate_episode_async(
         "data": {
             "task_id": task.id,
             "status": task.status,
-            "message": f"第{episode.episode_number}集重新生成任务已提交",
+            "message": f"Episode {episode.episode_number} regeneration task submitted",
         },
     }
 
@@ -180,8 +182,8 @@ async def regenerate_episode_by_business_id_async(
 
     # Create task
     task = Task(
-        title=f"重新生成剧集 - 第{episode.episode_number}集",
-        description=f"重新生成故事{story.id}的第{episode.episode_number}集",
+        title=f"Regenerate episode - episode {episode.episode_number}",
+        description=f"Regenerate episode {episode.episode_number} for story {story.id}",
         task_type=TaskType.EPISODE_GENERATION,
         prompt=f"Regenerate episode {episode.episode_number} for story {story.id}",
         parameters=json.dumps(request_dict, ensure_ascii=False),
@@ -199,6 +201,6 @@ async def regenerate_episode_by_business_id_async(
         "data": {
             "task_id": task.id,
             "status": task.status,
-            "message": f"第{episode.episode_number}集重新生成任务已提交",
+            "message": f"Episode {episode.episode_number} regeneration task submitted",
         },
     }

@@ -1,5 +1,5 @@
 """
-提示词管理API端点
+Prompt management API endpoints
 """
 
 from typing import Any, Dict, List, Optional
@@ -15,7 +15,7 @@ router = APIRouter()
 
 
 class PromptTemplateInfo(BaseModel):
-    """提示词模板信息"""
+    """Prompt template information"""
 
     name: str
     description: str
@@ -28,14 +28,14 @@ class PromptTemplateInfo(BaseModel):
 
 
 class PromptRenderRequest(BaseModel):
-    """提示词渲染请求"""
+    """Prompt render request"""
 
     template_name: str
     variables: Dict[str, Any]
 
 
 class PromptRenderResponse(BaseModel):
-    """提示词渲染响应"""
+    """Prompt render response"""
 
     rendered_prompt: str
     template_name: str
@@ -43,7 +43,7 @@ class PromptRenderResponse(BaseModel):
 
 
 class PromptCreateRequest(BaseModel):
-    """创建提示词模板请求"""
+    """Create prompt template request"""
 
     template_name: str
     content: str
@@ -52,10 +52,10 @@ class PromptCreateRequest(BaseModel):
 
 @router.get("/templates", response_model=List[PromptTemplateInfo])
 async def list_templates(
-    category: Optional[str] = Query(None, description="模板类别过滤"),
+    category: Optional[str] = Query(None, description="Template category filter"),
     current_user: User = Depends(get_current_active_user),
 ):
-    """获取所有可用的提示词模板"""
+    """Get all available prompt templates"""
     try:
         templates = prompt_manager.list_templates(category)
         return [
@@ -72,48 +72,48 @@ async def list_templates(
             for template in templates
         ]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取模板列表失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get template list: {str(e)}")
 
 
 @router.get("/categories")
 async def list_categories(current_user: User = Depends(get_current_active_user)):
-    """获取所有模板类别"""
+    """Get all template categories"""
     try:
         categories = prompt_manager.get_categories()
         return {"success": True, "data": categories}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"获取类别列表失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get category list: {str(e)}")
 
 
 @router.get("/templates/{template_name}")
 async def get_template_info(
     template_name: str, current_user: User = Depends(get_current_active_user)
 ):
-    """获取指定模板的详细信息"""
+    """Get details for the specified template"""
     try:
         info = prompt_manager.get_template_info(template_name)
         return {"success": True, "data": info}
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"模板不存在: {str(e)}")
+        raise HTTPException(status_code=404, detail=f"Template does not exist: {str(e)}")
 
 
 @router.post("/render", response_model=PromptRenderResponse)
 async def render_prompt(
     request: PromptRenderRequest, current_user: User = Depends(get_current_active_user)
 ):
-    """渲染提示词模板"""
+    """Render prompt template"""
     try:
-        # 验证模板变量
+        # Validate template variables
         validation_result = prompt_manager.validate_template(
             request.template_name, request.variables
         )
 
         if not validation_result["valid"]:
             raise HTTPException(
-                status_code=400, detail=f"模板变量验证失败: {validation_result}"
+                status_code=400, detail=f"Template variable validation failed: {validation_result}"
             )
 
-        # 渲染提示词
+        # Render prompt
         rendered_prompt = prompt_manager.render_prompt(
             request.template_name, request.variables
         )
@@ -127,14 +127,14 @@ async def render_prompt(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"渲染失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Render failed: {str(e)}")
 
 
 @router.post("/templates")
 async def create_template(
     request: PromptCreateRequest, current_user: User = Depends(get_current_active_user)
 ):
-    """创建新的提示词模板"""
+    """Create a new prompt template"""
     try:
         success = prompt_manager.create_template(
             request.template_name, request.content, request.metadata
@@ -143,13 +143,13 @@ async def create_template(
         if success:
             return {
                 "success": True,
-                "message": f"模板 {request.template_name} 创建成功",
+                "message": f"Template {request.template_name} created successfully",
             }
         else:
-            raise HTTPException(status_code=500, detail="模板创建失败")
+            raise HTTPException(status_code=500, detail="Template creation failed")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"创建模板失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to create template: {str(e)}")
 
 
 @router.post("/validate")
@@ -158,18 +158,18 @@ async def validate_template_variables(
     variables: Dict[str, Any],
     current_user: User = Depends(get_current_active_user),
 ):
-    """验证模板变量"""
+    """Validate template variables"""
     try:
         validation_result = prompt_manager.validate_template(template_name, variables)
         return {"success": True, "data": validation_result}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"验证失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Validation failed: {str(e)}")
 
 
-# 预定义的提示词模板枚举端点
+# Predefined prompt template enum endpoints
 @router.get("/enums/templates")
 async def get_template_enums():
-    """获取所有预定义的模板枚举"""
+    """Get all predefined template enums"""
     templates = [
         {
             "name": template.value,
@@ -183,7 +183,7 @@ async def get_template_enums():
 
 @router.get("/enums/categories")
 async def get_category_enums():
-    """获取所有预定义的类别枚举"""
+    """Get all predefined category enums"""
     categories = [
         {"name": category.value, "display_name": category.name}
         for category in PromptCategory
@@ -191,7 +191,7 @@ async def get_category_enums():
     return {"success": True, "data": categories}
 
 
-# 特定工作流的提示词生成API
+# Prompt generation APIs for specific workflows
 @router.post("/generate/character")
 async def generate_character_prompt(
     name: str,
@@ -201,7 +201,7 @@ async def generate_character_prompt(
     personality_traits: Optional[List[str]] = None,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成角色创建提示词"""
+    """Generate character creation prompt"""
     try:
         variables = {
             "name": name,
@@ -224,7 +224,7 @@ async def generate_character_prompt(
             },
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"生成角色提示词失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate character prompt: {str(e)}")
 
 
 @router.post("/generate/story")
@@ -236,7 +236,7 @@ async def generate_story_prompt(
     target_audience: Optional[str] = None,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成故事大纲提示词"""
+    """Generate story outline prompt"""
     try:
         variables = {
             "title": title,
@@ -259,7 +259,7 @@ async def generate_story_prompt(
             },
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"生成故事提示词失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate story prompt: {str(e)}")
 
 
 @router.post("/generate/image")
@@ -271,7 +271,7 @@ async def generate_image_prompt(
     additional_prompts: Optional[List[str]] = None,
     current_user: User = Depends(get_current_active_user),
 ):
-    """生成图像生成提示词"""
+    """Generate imageGeneration prompt"""
     try:
         variables = {
             "character_name": character_name,
@@ -295,4 +295,4 @@ async def generate_image_prompt(
             },
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"生成图像提示词失败: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate image prompt: {str(e)}")

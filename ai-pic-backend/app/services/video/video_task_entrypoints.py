@@ -17,7 +17,7 @@ def submit_storyboard_video_tasks(
 ) -> None:
     with get_task_db() as db:
         if not ai_service.ai_manager:
-            raise RuntimeError("AI管理器未初始化，无法提交视频任务")
+            raise RuntimeError("AImanager not Chu Shi Hua, unable to submit video Ren Wu")
         service = VideoTaskSubmissionService(db, ai_service.ai_manager)
         service.submit_storyboard_video_tasks(
             task_id=task_id,

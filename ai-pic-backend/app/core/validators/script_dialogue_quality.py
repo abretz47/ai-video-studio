@@ -26,24 +26,24 @@ def looks_like_writer_note(text: str) -> bool:
     if not s:
         return False
 
-    if s.startswith(("提示：", "注：", "备注：", "建议：")):
+    if s.startswith(("prompt: ", "Zhu: ", "Bei Zhu: ", "suggestion: ")):
         return True
 
-    locators = ("这里", "此处", "这一段", "这段", "这一幕", "本段", "本场", "此时")
+    locators = ("here", "Ci Chu", "Zhe Yi Duan", "Zhe Duan", "Zhe Yi Mu", "Ben Duan", "Ben Chang", "Ci Shi")
     verbs = (
-        "可以",
-        "建议",
-        "应该",
-        "需要",
-        "用来",
-        "用于",
-        "突出",
-        "加强",
-        "体现",
-        "表现",
-        "铺垫",
+        "Can",
+        "suggestion",
+        "Ying Gai",
+        "need",
+        "Yong Lai",
+        "Yong Yu",
+        "Tu Chu",
+        "Jia Qiang",
+        "Ti Xian",
+        "Biao Xian",
+        "Foreshadowing",
     )
-    targets = ("冲突", "情绪", "张力", "节奏", "氛围", "转折", "反转", "矛盾")
+    targets = ("conflict", "Emotion", "Zhang Li", "Jie Zou", "atmosphere", "Zhuan Zhe", "twist", "Conflict")
 
     has_locator = any(k in s for k in locators)
     has_meta_signal = any(k in s for k in verbs) or any(k in s for k in targets)
@@ -109,7 +109,7 @@ def validate_scene_dialogues(
             issues.append(
                 SceneDialogueIssue(
                     code="writer_note",
-                    message="检测到疑似编剧/助手元语言（如“这里可以…”），需改写为戏内台词",
+                    message="Jian Ce to Yi Si Bian Ju/Zhu Shou Yuan Yu Yan(for example"hereCan…"), need Gai Xie as Xi Nei line",
                 )
             )
             break
@@ -125,7 +125,7 @@ def validate_scene_dialogues(
                 issues.append(
                     SceneDialogueIssue(
                         code="reused_filler",
-                        message="检测到跨场景重复的模板台词（请替换为与本场景相关的具体台词）",
+                        message="Jian Ce to Kua scene Chong Fu template line(Qing Ti Huan as and Ben scene related specific line)",
                     )
                 )
                 break

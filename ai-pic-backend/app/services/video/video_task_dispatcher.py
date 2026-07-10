@@ -40,7 +40,7 @@ class VideoTaskDispatcher:
         )
         if not available:
             return build_failure_response(
-                "没有可用的视频生成提供商",
+                "missing available video Sheng Cheng provider",
                 DISPATCHER_PROVIDER,
                 model,
                 model_type,
@@ -129,7 +129,7 @@ class VideoTaskDispatcher:
                 )
             return last_response
         return build_failure_response(
-            "所有视频生成提供商都失败了",
+            "all video Sheng Cheng provider all failed",
             DISPATCHER_PROVIDER,
             last_model_used,
             model_type,

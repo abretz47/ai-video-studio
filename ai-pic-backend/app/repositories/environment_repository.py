@@ -21,7 +21,7 @@ class EnvironmentRepository(BaseRepository[Environment]):
 
     def get_owned_by_identifier(self, env_id: int | str, user: User) -> Environment:
         if env_id is None or str(env_id).strip() == "":
-            raise ValidationError("环境标识缺失", field="environment_id")
+            raise ValidationError("environment Biao Shi Que Shi", field="environment_id")
 
         query = self._owned_query(user)
         raw = str(env_id)
@@ -32,7 +32,7 @@ class EnvironmentRepository(BaseRepository[Environment]):
 
         env = query.first()
         if not env:
-            raise NotFoundError("环境", env_id)
+            raise NotFoundError("environment", env_id)
         return env
 
     def list_accessible(

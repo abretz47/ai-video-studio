@@ -101,11 +101,11 @@ class ScriptGenerator:
             episode_id=episode_id, user_id=user_id
         )
         if not episode:
-            raise NotFoundError("剧集", episode_id)
+            raise NotFoundError("episode", episode_id)
 
         story = episode.story
         if not story:
-            raise NotFoundError("故事", episode.story_id)
+            raise NotFoundError("story", episode.story_id)
 
         # Build context data
         episode_data, story_data = self._build_context(episode, story)
@@ -135,7 +135,7 @@ class ScriptGenerator:
         )
 
         if not result:
-            raise GenerationFailedError("AI剧本生成失败")
+            raise GenerationFailedError("AI script generation failed")
 
         # Parse and normalize content
         ai_content = self._parse_ai_result(result)
@@ -198,7 +198,7 @@ class ScriptGenerator:
             )
         except NarrativeQualityGateError as exc:
             raise GenerationFailedError(
-                "剧本",
+                "script",
                 f"质量校验失败: {exc}",
                 context={"quality_gate": exc.quality_gate},
             ) from exc
@@ -212,10 +212,10 @@ class ScriptGenerator:
         )
         if policy.unknown_names:
             raise GenerationFailedError(
-                "检测到未注册角色，已阻断生成。"
+                "Jian Ce to Wei Zhu Ce character, Zu Duan Sheng Cheng."
                 f" 未注册角色: {policy.unknown_names};"
                 f" 已注册角色: {policy.canonical_names};"
-                " 允许的泛化小角色: ['路人','店员','旁白']"
+                " Yun Xu Fan Hua Xiao Jiao Se: ['Lu Ren','clerk','narration']"
             )
 
         # Calculate statistics
@@ -297,11 +297,11 @@ class ScriptGenerator:
             episode_id=episode_id, user_id=user_id
         )
         if not episode:
-            raise NotFoundError("剧集", episode_id)
+            raise NotFoundError("episode", episode_id)
 
         story = episode.story
         if not story:
-            raise NotFoundError("故事", episode.story_id)
+            raise NotFoundError("story", episode.story_id)
 
         episode_data, story_data = self._build_context(episode, story)
 

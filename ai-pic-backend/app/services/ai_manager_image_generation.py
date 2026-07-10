@@ -73,7 +73,7 @@ async def generate_image_with_fallback(
 
     if not available_providers:
         return failure_responses.manager_failure_response(
-            error="没有可用的图像生成提供商",
+            error="missing available image Sheng Cheng provider",
             model=model,
             task_type=AITaskType.PORTRAIT_GENERATION,
             model_type=AIModelType.TEXT_TO_IMAGE,
@@ -142,7 +142,7 @@ async def generate_image_with_fallback(
             last_model = provider_model
             if not enable_fallback:
                 return failure_responses.exception_failure_response(
-                    action="图像生成失败",
+                    action="image Sheng Cheng failed",
                     exc=exc,
                     provider=provider_name,
                     model=model,
@@ -166,7 +166,7 @@ async def generate_image_with_fallback(
         )
 
     return failure_responses.manager_failure_response(
-        error="所有图像生成提供商都失败了",
+        error="all image Sheng Cheng provider all failed",
         model=last_model_used,
         task_type=AITaskType.PORTRAIT_GENERATION,
         model_type=AIModelType.TEXT_TO_IMAGE,

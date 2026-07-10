@@ -4,41 +4,41 @@ from app.prompts.templates import PromptTemplate
 
 
 def test_virtual_ip_creation_template_includes_constraints():
-    prompt = prompt_manager.render_prompt(
-        PromptTemplate.VIRTUAL_IP_CREATION.value,
-        {
-            "name": "测试角色",
-            "description": "35岁上海金融行业女性合伙人，外表冷静利落，内心重情义；整体写实现代；拒绝夸张中二语气。",
-            "age": None,
-            "gender": None,
-            "personality_traits": None,
-            "style_preference": None,
-            "target_audience": None,
-            "content_type": None,
-        },
-    )
+ prompt = prompt_manager.render_prompt(
+ PromptTemplate.VIRTUAL_IP_CREATION.value,
+ {
+ "name": "Ce Shi Jue Se",
+ "description": "35Sui Shang Hai Jin Rong Hang YefemaleHe Huo Ren, Wai Biao calm Li Luo, Nei Xin Zhong Qing Yi; Zheng Ti Xie Shi modern; Ju Jue Kua Zhang Zhong Er Yu Qi.",
+ "age": None,
+ "gender": None,
+ "personality_traits": None,
+ "style_preference": None,
+ "target_audience": None,
+ "content_type": None,
+ },
+)
 
-    assert "重要约束" in prompt
-    assert "不要在任何字段中提及“虚拟IP" in prompt
-    assert "不要以“测试角色是一个" in prompt
+ assert "Zhong Yao Yue Shu" in prompt
+ assert "Bu Yao Zai Ren He Zi Duan Zhong Ti Ji"virtualIP" in prompt
+ assert "Bu Yao Yi"test character Shi Yi Ge" in prompt
 
 
 def test_virtual_ip_style_prompt_template_renders():
-    prompt = prompt_manager.render_prompt(
-        PromptTemplate.VIRTUAL_IP_STYLE_PROMPT.value,
-        {
-            "name": "测试角色",
-            "description": "短发，职业装，冷静利落",
-            "biography": "金融行业合伙人，克制理性但重情义",
-            "image_category": "portrait",
-        },
-    )
+ prompt = prompt_manager.render_prompt(
+ PromptTemplate.VIRTUAL_IP_STYLE_PROMPT.value,
+ {
+ "name": "Ce Shi Jue Se",
+ "description": "Duan Fa, Zhi Ye Zhuang, Leng Jing Li Luo",
+ "biography": "Jin Rong Hang Ye He Huo Ren, Ke Zhi Li Xing Dan Zhong Qing Yi",
+ "image_category": "portrait",
+ },
+)
 
-    assert "只输出中文提示词" in prompt
-    assert "虚拟 ip" not in prompt.lower()
+ assert "only output Zhong Wen prompt text" in prompt
+ assert "virtual ip" not in prompt.lower()
 
 
 @pytest.mark.asyncio
 async def test_virtual_ip_style_prompt_template_is_registered():
-    # PromptTemplate 枚举存在即代表模板名已注册；此处避免被重构误删
-    assert PromptTemplate.VIRTUAL_IP_STYLE_PROMPT.value == "virtual_ip_style_prompt"
+ # PromptTemplate Mei Ju exists Ji Dai Biao template Ming Yi Zhu Ce; Ci Chu Bi Mian Bei Zhong Gou Wu Shan
+ assert PromptTemplate.VIRTUAL_IP_STYLE_PROMPT.value == "virtual_ip_style_prompt"

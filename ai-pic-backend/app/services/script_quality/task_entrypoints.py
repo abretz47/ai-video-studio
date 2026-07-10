@@ -44,7 +44,7 @@ def process_script_quality_task(
         if task is None:
             return
         task.status = TaskStatus.PROCESSING
-        task.description = "剧本质检中…"
+        task.description = "script Zhi Jian in…"
         db.commit()
 
         script_id = int(payload.get("script_id"))
@@ -87,7 +87,7 @@ def process_script_quality_task(
         params["result"] = result_payload
         task.parameters = _dump_json(params)
         task.status = TaskStatus.COMPLETED
-        task.description = "剧本质检完成"
+        task.description = "script Zhi Jian complete"
         task.result_file_path = f"script:{script_id}:quality"
         db.commit()
     except Exception as exc:

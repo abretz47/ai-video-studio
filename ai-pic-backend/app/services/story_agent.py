@@ -116,7 +116,7 @@ class StoryLangGraphAgent:
                 PromptTemplate.SYSTEM_PROMPT_STORY.value,
                 {"story_format": story_format},
             )
-            + " 并严格输出 JSON。"
+            + " and strict output JSON."
         )
 
         resp = await self.service.ai_manager.generate_text(

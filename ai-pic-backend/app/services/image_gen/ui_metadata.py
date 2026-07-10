@@ -105,19 +105,19 @@ def build_image_gen_ui_metadata(
     text_notes: list[str] = []
     image_notes: list[str] = []
 
-    negative_prompt_note = "该提供商不支持 negative_prompt：常用约束需写入 prompt（模板已内置 Constraints）"
+    negative_prompt_note = "Gai provider not support negative_prompt: Chang Yong Yue Shu need write prompt(template Nei Zhi Constraints)"
     if not text_to_image["supports_negative_prompt"]:
         _append_note(text_notes, negative_prompt_note)
 
     if supports_reference_image and not image_to_image["supports_negative_prompt"]:
         if provider_key == "keling":
             _append_note(
-                image_notes, "可灵图生图不支持 negative_prompt：请将约束写入 prompt"
+                image_notes, "Ke Ling Tu Sheng Tu not support negative_prompt: Qing Yue Shu write prompt"
             )
         else:
             _append_note(image_notes, negative_prompt_note)
 
-    volc_cfg_note = "火山引擎 cfg_scale 会映射到 guidance_scale（有效范围约 1-10）"
+    volc_cfg_note = "Volcengine Yin Qing cfg_scale will Ying She to guidance_scale(You Xiao range Yue 1-10)"
     if provider_key == "volcengine":
         if text_to_image["supports_cfg_scale"]:
             _append_note(text_notes, volc_cfg_note)
@@ -127,18 +127,18 @@ def build_image_gen_ui_metadata(
     if provider_key == "keling" and text_to_image["supports_reference_images"]:
         _append_note(
             text_notes,
-            "可灵文生图参考图仅支持 1 张；使用参考图时 negative_prompt 会合并进 prompt",
+            "Kling Wen Sheng Tu reference Tu Jin support 1 Zhang; Shi Yong reference Tu Shi negative_prompt will He Bing Jin prompt",
         )
 
     if provider_key == "google" and text_to_image["supports_reference_images"]:
         _append_note(
             text_notes,
-            "Google/Gemini 参考图会以内联方式上传：为避免 413，建议≤4张且尽量小图（后台会自动压缩）",
+            "Google/Gemini reference Tu Hui Yi Nei Lian Fang Shi Shang Chuan: as avoid 413, suggestion≤4Zhang Qie Jin Liang Xiao Tu(background will automatic Ya Suo)",
         )
     if is_openai_gpt_image and text_to_image["supports_reference_images"]:
         _append_note(
             text_notes,
-            "GPT Image 2 参考图会通过 OpenAI image edit 接口处理，图片输入自动按高保真计费",
+            "GPT Image 2 reference Tu Hui through OpenAI image edit API process, image input automatic An Gao Bao Zhen Ji Fei",
         )
 
     payload: dict[str, Any] = {

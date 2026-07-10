@@ -5,27 +5,27 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    # 项目基本信息
-    PROJECT_NAME: str = "AI图片生成API"
+    # Xiang Mu Ji Ben Xin Xi
+    PROJECT_NAME: str = "AIimage Sheng ChengAPI"
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
 
-    # 安全配置
+    # An Quan configuration
     SECRET_KEY: str = "your-secret-key-here"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
-    # 数据库配置
+    # database configuration
     DATABASE_URL: str = (
         "mysql+pymysql://root:Pa88word@127.0.0.1:13306/ai_video_studio?charset=utf8mb4"
     )
 
-    # Redis配置
+    # Redisconfiguration
     REDIS_URL: str = "redis://localhost:6379"
     CELERY_TASK_ALWAYS_EAGER: bool = False
     CELERY_TASK_EAGER_PROPAGATES: bool = True
 
-    # CORS配置
+    # CORSconfiguration
     ALLOWED_HOSTS: List[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
@@ -34,16 +34,16 @@ class Settings(BaseSettings):
         "*",
     ]
 
-    # 文件上传配置
+    # file Shang Chuan configuration
     UPLOAD_DIR: str = "uploads"
     MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB
     ALLOWED_EXTENSIONS: List[str] = [".jpg", ".jpeg", ".png", ".gif"]
 
-    # AI服务配置
+    # AIservice configuration
     AI_SERVICE_URL: Optional[str] = None
     AI_API_KEY: Optional[str] = None
 
-    # OpenAI配置
+    # OpenAIconfiguration
     OPENAI_API_KEY: Optional[str] = None
     OPENAI_BASE_URL: Optional[str] = None
     CODEX_AUTH_PATH: Optional[str] = None
@@ -51,31 +51,31 @@ class Settings(BaseSettings):
     CODEX_DEFAULT_MODEL: Optional[str] = "gpt-5.4"
     AI_FORCE_MOCK: bool = False
 
-    # Stability AI配置
+    # Stability AIconfiguration
     STABILITY_API_KEY: Optional[str] = None
 
-    # 其他AI服务配置
-    # 可灵AI（快手）- 双密钥认证
+    # Qi TaAIservice configuration
+    # KlingAI(Kuai Shou)- Shuang key Ren Zheng
     KELING_API_KEY: Optional[str] = None
     KELING_SECRET_KEY: Optional[str] = None
 
-    # 即梦AI - 双密钥认证
+    # Ji MengAI - Shuang key Ren Zheng
     JIMENG_API_KEY: Optional[str] = None
     JIMENG_SECRET_KEY: Optional[str] = None
 
-    # MiniMax配置
+    # MiniMaxconfiguration
     MINIMAX_API_KEY: Optional[str] = None
     MINIMAX_GROUP_ID: Optional[str] = None
 
-    # DeepSeek配置
+    # DeepSeekconfiguration
     DEEPSEEK_API_KEY: Optional[str] = None
 
-    # 火山引擎配置
+    # Volcengine Yin Qing configuration
     VOLCENGINE_API_KEY: Optional[str] = None
     VOLCENGINE_SECRET_KEY: Optional[str] = None
     VOLCENGINE_REGION: Optional[str] = None
 
-    # Google Gemini / Vertex AI 配置（文本模型）
+    # Google Gemini/Vertex AI configuration(text model)
     GOOGLE_API_KEY: Optional[str] = None
     GOOGLE_DEFAULT_MODEL: Optional[str] = "gemini-3-pro-preview"
     GOOGLE_BASE_URL: Optional[str] = None
@@ -87,20 +87,20 @@ class Settings(BaseSettings):
     GOOGLE_VERTEX_SERVICE_ACCOUNT_JSON: Optional[str] = None
     GOOGLE_VERTEX_SERVICE_ACCOUNT_PATH: Optional[str] = None
 
-    # 阿里云OSS配置
+    # A Li YunOSSconfiguration
     ALIYUN_ACCESS_KEY_ID: Optional[str] = None
     ALIYUN_ACCESS_KEY_SECRET: Optional[str] = None
     ALIYUN_OSS_ENDPOINT: Optional[str] = None
     ALIYUN_OSS_BUCKET: Optional[str] = None
     ALIYUN_OSS_DOMAIN: Optional[str] = None
 
-    # 邮件配置
+    # You Jian configuration
     SMTP_HOST: Optional[str] = None
     SMTP_PORT: int = 587
     SMTP_USER: Optional[str] = None
     SMTP_PASSWORD: Optional[str] = None
 
-    # 日志配置
+    # log configuration
     LOG_LEVEL: str = "INFO"
     LOG_DIR: str = "logs"
     ENABLE_FILE_LOGGING: bool = True
@@ -110,10 +110,10 @@ class Settings(BaseSettings):
     LOG_BACKUP_COUNT: int = 7
     FEISHU_WEBHOOK_URL: Optional[str] = None
 
-    # 容器内部访问后端的基础地址（用于 Celery / Provider 拉取本机上传的图片等资源）
+    # Rong Qi Nei Bu access after Duan De basic Di Zhi(Yong Yu Celery/Provider La Qu Ben Ji Shang Chuan image Deng Zi Yuan)
     INTERNAL_BACKEND_URL: Optional[str] = None
 
-    # 分镜图动态提示词（生图任务内按场景批量调用 LLM，结合剧本上下文生成提示词）
+    # storyboard Tu Dong Tai prompt Ci(Sheng Tu Ren Wu interior An scene Pi Liang call LLM, Jie He script contextGeneration prompt)
     STORYBOARD_DYNAMIC_PROMPT_ENABLED: bool = False
     STORYBOARD_DYNAMIC_PROMPT_MAX_FRAMES_PER_CALL: int = 8
     STORYBOARD_DYNAMIC_PROMPT_MODEL: Optional[str] = None
@@ -134,7 +134,7 @@ def _normalize_optional_str(value: Optional[str]) -> Optional[str]:
     return value or None
 
 
-# 规范化部分可选密钥，避免 ".env" 中留下空字符串时被误判为已配置
+# Gui Fan Hua Bu Fen can Xuan key, avoid ".env" in Liu Xia Kong Zi Fu Chuan when Wu Pan as configuration
 settings.GOOGLE_API_KEY = _normalize_optional_str(settings.GOOGLE_API_KEY)
 settings.OPENAI_API_KEY = _normalize_optional_str(settings.OPENAI_API_KEY)
 settings.OPENAI_BASE_URL = _normalize_optional_str(settings.OPENAI_BASE_URL)
@@ -202,7 +202,7 @@ def _resolve_internal_backend_url(raw: Optional[str]) -> str:
     )
 
     if _is_container_env():
-        # 在容器里不要使用 localhost，Celery worker 需要访问后端容器
+        # in Rong Qi Li Bu Yao Shi Yong localhost, Celery worker need access after Duan Rong Qi
         if normalized and not _looks_like_localhost(normalized):
             return normalized
         return container_default
@@ -210,10 +210,10 @@ def _resolve_internal_backend_url(raw: Optional[str]) -> str:
     return normalized or "http://localhost:8000"
 
 
-# 容器外默认 localhost，容器内默认 docker-compose service，允许显式覆盖
+# Rong Qi exterior default localhost, Rong Qi interior default docker-compose service, Yun Xu Xian Shi Fu Gai
 settings.INTERNAL_BACKEND_URL = _resolve_internal_backend_url(
     settings.INTERNAL_BACKEND_URL
 )
 
-# 确保上传目录存在
+# Que Bao Shang Chuan Mu Lu Cun Zai
 os.makedirs(settings.UPLOAD_DIR, exist_ok=True)

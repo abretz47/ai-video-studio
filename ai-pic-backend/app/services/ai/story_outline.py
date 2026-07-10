@@ -42,7 +42,7 @@ class StoryOutlineMixin:
         prefer_provider: Optional[str] = None,
         generation_mode: str = "standard",
     ) -> Optional[Dict[str, Any]]:
-        """生成故事概要"""
+        """Sheng Cheng story outline"""
 
         try:
             production_mode = generation_mode == "production"
@@ -124,7 +124,7 @@ class StoryOutlineMixin:
                 PromptTemplate.STORY_OUTLINE.value, variables
             )
 
-            # 优先使用新的AI服务管理器；如果失败则尝试兜底。
+            # priority Shi Yong XinAIservice manager; Ru Guo failed then Chang Shi fallback.
             if self.ai_manager:
                 try:
                     system_prompt = prompt_manager.render_prompt(
@@ -187,7 +187,7 @@ class StoryOutlineMixin:
                 except Exception as exc:
                     self.logger.warning(f"AI服务管理器故事生成失败，尝试回退: {exc}")
 
-            # 兜底：使用文本生成服务链（最终会回退到 mock）；若用户显式指定 provider/model，则直接失败，避免“扯淡”内容落库。
+            # fallback: Shi Yong text Sheng Cheng service Lian(Zui Zhong will fallback to mock); if user Xian Shi Zhi Ding provider/model, then directly failed, avoid"Che Dan"content Luo Ku.
             if production_mode:
                 self.logger.warning(
                     "Production story outline generation failed; skip legacy fallback",

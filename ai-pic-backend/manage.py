@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Django风格的管理脚本
+Django-style management script
 
-提供统一的CLI接口来管理FastAPI应用
+Provides a unified CLI interface for managing the FastAPI application
 """
 
 import sys
@@ -10,7 +10,7 @@ from pathlib import Path
 
 import click
 
-# 添加项目根目录到Python路径
+# Add the project root directory to the Python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
@@ -20,51 +20,51 @@ from app.core.config import settings
 @click.group(invoke_without_command=True)
 @click.pass_context
 def manage(ctx):
-    """AI Video Studio 管理工具"""
+    """AI Video Studio management tool."""
     if ctx.invoked_subcommand is None:
-        click.echo("🎬 AI Video Studio 管理工具")
+        click.echo("🎬 AI Video Studio Management Tool")
         click.echo("=" * 50)
-        click.echo(f"项目: {settings.PROJECT_NAME}")
-        click.echo(f"版本: {settings.VERSION}")
+        click.echo(f"Project: {settings.PROJECT_NAME}")
+        click.echo(f"Version: {settings.VERSION}")
         click.echo(
-            f"数据库: {settings.DATABASE_URL.split('@')[-1] if '@' in settings.DATABASE_URL else 'SQLite'}"
+            f"Database: {settings.DATABASE_URL.split('@')[-1] if '@' in settings.DATABASE_URL else 'SQLite'}"
         )
         click.echo()
-        click.echo("可用命令:")
-        click.echo("  migration  - 数据库迁移管理")
-        click.echo("  seed      - 数据种子管理")
-        click.echo("  server    - 服务器管理")
-        click.echo("  dev       - 开发工具")
+        click.echo("Available commands:")
+        click.echo("  migration  - Database migration management")
+        click.echo("  seed      - Data seed management")
+        click.echo("  server    - Server management")
+        click.echo("  dev       - Development tools")
         click.echo()
-        click.echo("使用 'python manage.py <命令> --help' 查看详细帮助")
+        click.echo("Use 'python manage.py <command> --help' to view detailed help")
 
 
-# 添加迁移命令组
+# Add migration command groups
 from app.cli.migration_commands import migration, seed
 
 manage.add_command(migration)
 manage.add_command(seed)
 
 
-# 服务器管理命令
+# Server management commands
 @manage.group()
 def server():
-    """服务器管理命令"""
+    """Server management commands."""
     pass
 
 
 @server.command()
-@click.option("--host", default="0.0.0.0", help="服务器主机地址")
-@click.option("--port", default=8000, help="服务器端口")
-@click.option("--reload/--no-reload", default=True, help="是否启用热重载")
-@click.option("--workers", default=1, help="工作进程数")
+@click.option("--host", default="0.0.0.0", help="Server host address")
+@click.option("--port", default=8000, help="Server port")
+@click.option("--reload/--no-reload", default=True, help="Whether to enable hot reload")
+@click.option("--workers", default=1, help="Number of worker processes")
 def run(host: str, port: int, reload: bool, workers: int):
-    """启动开发服务器"""
+    """Start the development server."""
     import uvicorn
 
-    click.echo(f"🚀 启动服务器: http://{host}:{port}")
-    click.echo(f"热重载: {'启用' if reload else '禁用'}")
-    click.echo(f"工作进程: {workers}")
+    click.echo(f"🚀 Starting server: http://{host}:{port}")
+    click.echo(f"Hot reload: {'enabled' if reload else 'disabled'}")
+    click.echo(f"Worker processes: {workers}")
 
     uvicorn.run(
         "main:app",
@@ -77,15 +77,15 @@ def run(host: str, port: int, reload: bool, workers: int):
 
 
 @server.command()
-@click.option("--host", default="0.0.0.0", help="服务器主机地址")
-@click.option("--port", default=8000, help="服务器端口")
-@click.option("--workers", default=4, help="工作进程数")
+@click.option("--host", default="0.0.0.0", help="Server host address")
+@click.option("--port", default=8000, help="Server port")
+@click.option("--workers", default=4, help="Number of worker processes")
 def production(host: str, port: int, workers: int):
-    """启动生产服务器"""
+    """Start the production server."""
     import uvicorn
 
-    click.echo(f"🏭 启动生产服务器: http://{host}:{port}")
-    click.echo(f"工作进程: {workers}")
+    click.echo(f"🏭 Starting production server: http://{host}:{port}")
+    click.echo(f"Worker processes: {workers}")
 
     uvicorn.run(
         "main:app",
@@ -97,39 +97,39 @@ def production(host: str, port: int, workers: int):
     )
 
 
-# 开发工具命令
+# Development tool commands
 @manage.group()
 def dev():
-    """开发工具命令"""
+    """Development tool commands."""
     pass
 
 
 @dev.command()
 def check():
-    """检查项目配置和依赖"""
-    click.echo("🔍 检查项目配置...")
+    """Check project configuration and dependencies."""
+    click.echo("🔍 Checking project configuration...")
 
     issues = []
 
-    # 检查环境变量
+    # Check environment variables
     if settings.SECRET_KEY == "your-secret-key-here":
-        issues.append("⚠️  SECRET_KEY 使用默认值，请修改")
+        issues.append("⚠️  SECRET_KEY is using the default value; please change it")
 
-    # 检查数据库连接
+    # Check database connection
     try:
         from app.core.migrations import migration_manager
 
         status = migration_manager.check_migration_status()
         if not status["database_exists"]:
-            issues.append("❌ 数据库连接失败")
+            issues.append("❌ Database connection failed")
         elif not status["is_up_to_date"]:
-            issues.append("⚠️  数据库需要升级")
+            issues.append("⚠️  Database needs to be upgraded")
         else:
-            click.echo("✅ 数据库连接正常")
+            click.echo("✅ Database connection is healthy")
     except Exception as e:
-        issues.append(f"❌ 数据库检查失败: {e}")
+        issues.append(f"❌ Database check failed: {e}")
 
-    # 检查依赖文件
+    # Check required files
     required_files = [
         "requirements.txt",
         "alembic.ini",
@@ -139,30 +139,30 @@ def check():
 
     for file_path in required_files:
         if not Path(file_path).exists():
-            issues.append(f"❌ 缺少文件: {file_path}")
+            issues.append(f"❌ Missing file: {file_path}")
 
-    # 检查目录结构
+    # Check directory structure
     required_dirs = ["app/api", "app/core", "app/models", "alembic/versions"]
 
     for dir_path in required_dirs:
         if not Path(dir_path).exists():
-            issues.append(f"❌ 缺少目录: {dir_path}")
+            issues.append(f"❌ Missing directory: {dir_path}")
 
     if issues:
-        click.echo("\n发现以下问题:")
+        click.echo("\nThe following issues were found:")
         for issue in issues:
             click.echo(f"  {issue}")
-        click.echo(f"\n共发现 {len(issues)} 个问题")
+        click.echo(f"\nA total of {len(issues)} issues were found")
     else:
-        click.echo("✅ 项目配置检查通过")
+        click.echo("✅ Project configuration check passed")
 
 
 @dev.command()
 def test():
-    """运行测试"""
+    """Run tests."""
     import subprocess
 
-    click.echo("🧪 运行测试...")
+    click.echo("🧪 Running tests...")
 
     try:
         result = subprocess.run(
@@ -174,22 +174,22 @@ def test():
             click.echo(result.stderr)
 
         if result.returncode == 0:
-            click.echo("✅ 测试通过")
+            click.echo("✅ Tests passed")
         else:
-            click.echo("❌ 测试失败")
+            click.echo("❌ Tests failed")
             sys.exit(1)
 
     except FileNotFoundError:
-        click.echo("❌ 找不到测试脚本 run_tests.py")
+        click.echo("❌ Could not find the test script run_tests.py")
         sys.exit(1)
 
 
 @dev.command()
 def lint():
-    """代码质量检查"""
+    """Run code quality checks."""
     import subprocess
 
-    click.echo("🔍 代码质量检查...")
+    click.echo("🔍 Running code quality checks...")
 
     commands = [
         (
@@ -206,27 +206,27 @@ def lint():
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
             if result.returncode == 0:
-                click.echo(f"✅ {name} 检查通过")
+                click.echo(f"✅ {name} check passed")
             else:
-                click.echo(f"❌ {name} 检查失败:")
+                click.echo(f"❌ {name} check failed:")
                 click.echo(result.stdout)
                 all_passed = False
         except FileNotFoundError:
-            click.echo(f"⚠️  {name} 未安装，跳过检查")
+            click.echo(f"⚠️  {name} is not installed, skipping check")
 
     if all_passed:
-        click.echo("✅ 所有代码质量检查通过")
+        click.echo("✅ All code quality checks passed")
     else:
-        click.echo("❌ 代码质量检查有问题，请修复后重试")
+        click.echo("❌ Code quality checks found issues; please fix them and try again")
         sys.exit(1)
 
 
 @dev.command()
 def format():
-    """格式化代码"""
+    """Format code."""
     import subprocess
 
-    click.echo("🎨 格式化代码...")
+    click.echo("🎨 Formatting code...")
 
     commands = [("isort", ["isort", "app/"]), ("black", ["black", "app/"])]
 
@@ -234,20 +234,20 @@ def format():
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
             if result.returncode == 0:
-                click.echo(f"✅ {name} 格式化完成")
+                click.echo(f"✅ {name} formatting completed")
             else:
-                click.echo(f"❌ {name} 格式化失败:")
+                click.echo(f"❌ {name} formatting failed:")
                 click.echo(result.stderr)
         except FileNotFoundError:
-            click.echo(f"⚠️  {name} 未安装，跳过格式化")
+            click.echo(f"⚠️  {name} is not installed, skipping formatting")
 
 
 @dev.command()
 def shell():
-    """启动交互式Python shell"""
+    """Start an interactive Python shell."""
     import code
 
-    # 导入常用模块
+    # Import commonly used modules
     import sys
 
     sys.path.insert(0, str(project_root))
@@ -256,52 +256,52 @@ def shell():
     from app.core.config import settings
     from app.core.database import SessionLocal, engine
 
-    click.echo("🐍 启动Python shell...")
-    click.echo("已导入的模块:")
-    click.echo("  - SessionLocal, engine (数据库)")
-    click.echo("  - settings (配置)")
-    click.echo("  - 所有模型 (from app.models import *)")
+    click.echo("🐍 Starting Python shell...")
+    click.echo("Imported modules:")
+    click.echo("  - SessionLocal, engine (database)")
+    click.echo("  - settings (configuration)")
+    click.echo("  - all models (from app.models import *)")
     click.echo()
 
-    # 创建数据库会话
+    # Create a database session
     db = SessionLocal()
 
-    # 启动交互式shell
+    # Start the interactive shell
     code.interact(
-        banner="AI Video Studio 开发Shell",
+        banner="AI Video Studio Development Shell",
         local={"db": db, "engine": engine, "settings": settings, "models": app.models},
     )
 
 
-# 快捷命令
+# Shortcut command
 @manage.command()
 def quickstart():
-    """快速启动项目"""
-    click.echo("🚀 快速启动项目...")
+    """Quickly start the project."""
+    click.echo("🚀 Starting the project quickly...")
 
-    # 检查数据库
+    # Check the database
     try:
         from app.core.migrations import migration_manager
 
         status = migration_manager.check_migration_status()
 
         if not status["database_exists"]:
-            click.echo("📦 初始化数据库...")
-            if click.confirm("数据库不存在，是否创建？"):
-                # 这里可以调用数据库初始化脚本
+            click.echo("📦 Initializing database...")
+            if click.confirm("The database does not exist. Would you like to create it?"):
+                # The database initialization script can be called here
                 pass
 
         if not status["is_up_to_date"]:
-            click.echo("🔄 升级数据库...")
-            if click.confirm("数据库需要升级，是否升级？"):
+            click.echo("🔄 Upgrading database...")
+            if click.confirm("The database needs to be upgraded. Continue?"):
                 migration_manager.upgrade()
 
     except Exception as e:
-        click.echo(f"❌ 数据库检查失败: {e}")
+        click.echo(f"❌ Database check failed: {e}")
         return
 
-    # 启动服务器
-    click.echo("🚀 启动开发服务器...")
+    # Start the server
+    click.echo("🚀 Starting development server...")
     import uvicorn
 
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

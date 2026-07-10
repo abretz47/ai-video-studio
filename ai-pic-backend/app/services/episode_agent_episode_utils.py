@@ -9,10 +9,10 @@ MAX_REACT_REGENERATE_ATTEMPTS = 3
 MAX_FALLBACK_SCENES = 12
 MIN_ACCEPTED_SCENES = 2
 DEFAULT_FALLBACK_SCENES = (
-    ("开场钩子", "开场钩子：围绕核心冲突抛出直接可拍的信息爆点。"),
-    ("升级推进", "升级推进：主角被迫做出选择，冲突继续加压。"),
-    ("爽点落点", "爽点：主角抓住证据或机会完成一次明确反击。"),
-    ("结尾卡点", "卡点：更大的危机或反转出现，推动观众追下一集。"),
+    ("Kai Chang Gou Zi", "Kai Chang Gou Zi: Wei Rao core conflict Pao Chu directly can Pai Xin Xi Bao Dian."),
+    ("escalate advance", "escalate advance: Zhu Jue Bei Po Zuo Chu Xuan Ze, conflict continue Jia Ya."),
+    ("Shuang Dian Luo Dian", "Shuang Dian: Zhu Jue Zhua Zhu evidence or Ji Hui complete Yi Ci clear Fan Ji."),
+    ("Jie Wei cliffhanger", "cliffhanger: Geng Da crisis or twist Chu Xian, drive Guan Zhong Zhui below Yi Ji."),
 )
 
 
@@ -118,7 +118,7 @@ def _fallback_scenes_from_logline(
 
 def stub_episode_from_outline(outline: Dict[str, Any]) -> Dict[str, Any]:
     ep_num = outline.get("episode_number") or 1
-    logline = (outline.get("logline") or "").strip() or "本集出现关键转折。"
+    logline = (outline.get("logline") or "").strip() or "Ben Ji Chu Xian key Zhuan Zhe."
     title = outline.get("title") or f"第{ep_num}集"
 
     plot_points: list[dict[str, Any]] = []

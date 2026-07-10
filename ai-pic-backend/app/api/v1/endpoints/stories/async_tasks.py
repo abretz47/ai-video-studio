@@ -32,7 +32,7 @@ def _story_generation_error_message(exc: Exception) -> str:
 
 
 def _process_story_generation_task(task_id: int, request_dict: dict, user_id: int):
-    """后台处理故事生成任务（供 Celery worker 调用）。"""
+    """Process story-generation tasks in the background (invoked by Celery workers)."""
     from app.core.database import get_task_db
 
     with get_task_db() as db:
@@ -72,13 +72,13 @@ async def generate_story_async(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """异步生成故事：创建任务并在后台生成"""
+    """Generate a story asynchronously: create a task and generate it in the background"""
     payload = request.model_dump()
     payload["generation_mode"] = "production"
     payload["production_mode"] = True
     task = Task(
-        title=f"生成故事 - {request.title}",
-        description="异步故事生成",
+        title=f"Generate story - {request.title}",
+        description="Asynchronous story generation",
         task_type=TaskType.STORY_GENERATION,
         prompt=f"Story outline: {request.title}",
         parameters=json.dumps(payload, ensure_ascii=False),
@@ -88,7 +88,7 @@ async def generate_story_async(
     db.commit()
     db.refresh(task)
 
-    # 后台处理：交给 Celery worker，而非本进程 BackgroundTasks
+    # Background processing: hand off to a Celery worker instead of this process's BackgroundTasks
     story_generate_task.delay(task.id, payload, current_user.id)
 
     return {"success": True, "data": {"task_id": task.id, "status": task.status}}

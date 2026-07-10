@@ -38,16 +38,16 @@ def process_story_novel_export_task(
         task = db.query(Task).filter(Task.id == task_id).first()
         if task:
             task.status = TaskStatus.PROCESSING
-            task.description = "开始生成知乎体小说…"
+            task.description = "Starting Zhihu-style novel generation..."
             db.commit()
 
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
-            raise HTTPException(status_code=404, detail="用户不存在")
+            raise HTTPException(status_code=404, detail="User does not exist")
 
         story_business_id = str(payload.get("story_business_id") or "").strip()
         if not story_business_id:
-            raise HTTPException(status_code=400, detail="缺少 story_business_id")
+            raise HTTPException(status_code=400, detail="Missing story_business_id")
 
         request_dict = payload.get("request") or {}
         export_request = StoryNovelExportRequest(**request_dict)
@@ -105,7 +105,7 @@ def process_story_novel_export_task(
             task.status = TaskStatus.COMPLETED
             task.result_file_path = build_export_result_path(result.relative_path)
             task.description = (
-                f"完成：约 {result.total_words} 字（{result.chapter_count} 章）"
+                f"Completed: about {result.total_words} words ({result.chapter_count} chapters)"
             )
             db.commit()
     except Exception as exc:
@@ -118,7 +118,7 @@ def process_story_novel_export_task(
         if task:
             task.status = TaskStatus.FAILED
             task.error_message = error_message
-            task.description = "生成失败"
+            task.description = "Generation failed"
             db.commit()
     finally:
         db.close()
@@ -131,13 +131,13 @@ async def generate_story_novel_async(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """异步导出知乎体小说：创建任务并交给 Celery worker 生成文本文件。"""
+    """Export a Zhihu-style novel asynchronously: create a task and hand it off to a Celery worker to generate the text file."""
     service = StoryNovelExportService(db)
     story = service.get_story_for_user(story_business_id, current_user)
 
     task = Task(
-        title=f"导出知乎体小说 - {story.title}",
-        description="等待生成…",
+        title=f"Export Zhihu-style novel - {story.title}",
+        description="Waiting for generation...",
         task_type=TaskType.TEXT_GENERATION,
         prompt=f"Zhihu novel export: {story.title}",
         parameters=json.dumps(request.model_dump(), ensure_ascii=False),
@@ -166,16 +166,16 @@ def download_story_novel_export(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """下载已生成的知乎体小说导出文件。"""
+    """Download the generated Zhihu-style novel export file."""
     query = db.query(Task).filter(Task.id == task_id)
     if not (current_user.is_admin or current_user.is_superuser):
         query = query.filter(Task.user_id == current_user.id)
     task = query.first()
     if not task:
-        raise HTTPException(status_code=404, detail="任务不存在")
+        raise HTTPException(status_code=404, detail="Task does not exist")
 
     if task.status != TaskStatus.COMPLETED:
-        raise HTTPException(status_code=400, detail="任务未完成")
+        raise HTTPException(status_code=400, detail="Task is not complete")
 
     relative_path = parse_export_result_path(task.result_file_path or "")
     if relative_path:
@@ -195,7 +195,7 @@ def download_story_novel_export(
         export_query = export_query.filter(StoryNovelExport.user_id == current_user.id)
     export_row = export_query.order_by(StoryNovelExport.id.desc()).first()
     if not export_row:
-        raise HTTPException(status_code=404, detail="导出内容不存在")
+        raise HTTPException(status_code=404, detail="Export content does not exist")
 
     filename = "zhihu_novel.txt"
     if export_row.file_relative_path:
@@ -218,7 +218,7 @@ def list_story_novel_exports(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """列出故事的小说导出历史（用于刷新后恢复查看/下载入口）。"""
+    """List a story's novel export history (used to restore view/download entry points after refresh)."""
     service = StoryNovelExportService(db)
     story = service.get_story_for_user(story_business_id, current_user)
 

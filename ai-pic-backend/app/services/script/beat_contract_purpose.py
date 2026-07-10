@@ -3,21 +3,21 @@ from __future__ import annotations
 from typing import Any
 
 _VAGUE_PURPOSE_PHRASES = (
-    "推进剧情",
-    "推动剧情",
-    "故事继续",
-    "铺垫剧情",
-    "制造悬念",
-    "留下悬念",
-    "制造冲突",
-    "推动冲突",
-    "升级冲突",
-    "出现转折",
-    "发生反转",
-    "完成转折",
-    "承上启下",
-    "情绪变化",
-    "关系变化",
+    "advance plot",
+    "drive plot",
+    "story continue",
+    "Foreshadowingplot",
+    "Zhi Zao Xuan Nian",
+    "Liu Xia suspense",
+    "Zhi Zao conflict",
+    "drive conflict",
+    "escalate conflict",
+    "Chu Xian Zhuan Zhe",
+    "Fa Sheng twist",
+    "complete Zhuan Zhe",
+    "Cheng Shang Qi Xia",
+    "Emotionchange",
+    "relationship change",
 )
 
 

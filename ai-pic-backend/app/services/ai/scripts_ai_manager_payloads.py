@@ -24,9 +24,9 @@ _BEAT_CONTRACT_SCHEMA_PAYLOAD = {
     ),
 }
 
-_SCENE_PLAN_REPAIR_HINT = '{"scenes":[{"scene_number":1,"slug_line":"INT. 地点 - 时间","location":"地点","time_of_day":"day","summary":"场景摘要","estimated_duration_seconds":30,"dialogue_ratio":0.6}]}'
-_DIALOGUE_REPAIR_HINT = '{"dialogues":[{"scene_number":1,"character":"角色","content":"对白","emotion":null,"action":null}],"stage_directions":[{"scene_number":1,"timing":"intro","content":"舞台指示","type":"action"}],"scenes":[{"scene_number":1,"slug_line":"INT. 地点 - 时间","summary":"场景摘要"}]}'
-_BEAT_CONTRACT_REPAIR_HINT = '{"contract_version":"script-beat-v1","scenes":[{"scene_number":1,"slug_line":"内. 地点 - 夜","dramatic_role":"hook","conflict":{"question":"问题","stakes":"代价","opposition":"阻力","turn":"转折"},"beats":[{"order_index":1,"beat_type":"hook","dramatic_purpose":"目的","visible_event":"可拍事件","action_lines":[{"content":"动作"}],"dialogue_lines":[{"character":"角色","content":"短对白"}]}]}]}'
+_SCENE_PLAN_REPAIR_HINT = '{"scenes":[__PH_0__]}'
+_DIALOGUE_REPAIR_HINT = '{"dialogues":[__PH_0__],"stage_directions":[__PH_1__],"scenes":[__PH_2__]}'
+_BEAT_CONTRACT_REPAIR_HINT = '{"contract_version":"script-beat-v1","scenes":[__PH_4__]}'
 
 _SCENE_PLAN_MAX_TOKENS = 2048
 _DIALOGUE_MAX_TOKENS = 4096

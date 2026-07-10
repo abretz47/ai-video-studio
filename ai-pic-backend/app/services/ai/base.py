@@ -29,13 +29,13 @@ class AIServiceBase:
         self.logger = get_logger()
         self.logger.info("Initializing AI Service")
 
-        # 保持向后兼容的配置
+        # keep Xiang after Jian Rong configuration
         self.base_url = settings.AI_SERVICE_URL
         self.api_key = settings.AI_API_KEY
         self.openai_api_key = settings.OPENAI_API_KEY
         self.stability_api_key = settings.STABILITY_API_KEY
 
-        # 初始化多提供商AI服务管理器
+        # Chu Shi Hua multiple providerAIservice manager
         self.ai_manager = self._initialize_ai_manager()
         self.model_cache: dict[str, list[dict]] = {}
         self._warm_model_cache()
@@ -49,21 +49,21 @@ class AIServiceBase:
         self.story_agent = StoryLangGraphAgent(self) if LANGGRAPH_AVAILABLE else None
 
     def _initialize_ai_manager(self) -> Optional[AIServiceManager]:
-        """初始化AI服务管理器"""
+        """Chu Shi HuaAIservice manager"""
         if settings.AI_FORCE_MOCK:
             self.logger.warning("AI_FORCE_MOCK enabled; skip provider manager init")
             return None
 
         if not AI_MANAGER_AVAILABLE:
-            self.logger.warning("AI服务管理器不可用，使用fallback模式")
+            self.logger.warning("AIservice manager not allowed Yong, Shi Yongfallbackmode")
             return None
 
         try:
-            # 构建提供商配置
+            # build provider configuration
             providers = {}
             provider_weights = {}
 
-            # OpenAI配置
+            # OpenAIconfiguration
             if self.openai_api_key:
                 openai_base = settings.OPENAI_BASE_URL or "https://api.openai.com/v1"
                 providers["openai"] = ProviderConfig(
@@ -80,8 +80,8 @@ class AIServiceBase:
                     max_requests_per_minute=100,
                 )
 
-            # 其他提供商配置（支持双密钥认证）
-            # 可灵AI（快手）
+            # Qi Ta provider configuration(support Shuang key Ren Zheng)
+            # KlingAI(Kuai Shou)
             if settings.KELING_API_KEY and settings.KELING_SECRET_KEY:
                 providers["keling"] = ProviderConfig(
                     name="keling",
@@ -98,7 +98,7 @@ class AIServiceBase:
                     max_requests_per_minute=60,
                 )
 
-            # 即梦AI
+            # Ji MengAI
             if settings.JIMENG_API_KEY and settings.JIMENG_SECRET_KEY:
                 providers["jimeng"] = ProviderConfig(
                     name="jimeng",
@@ -115,7 +115,7 @@ class AIServiceBase:
                     max_requests_per_minute=60,
                 )
 
-            # DeepSeek（单密钥）
+            # DeepSeek(Dan key)
             if settings.DEEPSEEK_API_KEY:
                 providers["deepseek"] = ProviderConfig(
                     name="deepseek",
@@ -148,7 +148,7 @@ class AIServiceBase:
                     max_requests_per_minute=60,
                 )
 
-            # 火山引擎（Ark Seedream / 文本 & 图片）
+            # Volcengine Yin Qing(Ark Seedream/text & image)
             if settings.VOLCENGINE_API_KEY:
                 providers["volcengine"] = ProviderConfig(
                     name="volcengine",
@@ -164,7 +164,7 @@ class AIServiceBase:
                     max_requests_per_minute=50,
                 )
 
-            # Google Gemini / Vertex AI 文本模型
+            # Google Gemini/Vertex AI text model
             google_vertex_enabled = bool(
                 settings.GOOGLE_VERTEX_PROJECT_ID
                 and settings.GOOGLE_VERTEX_LOCATION
@@ -183,7 +183,7 @@ class AIServiceBase:
                 providers["google"] = ProviderConfig(
                     name="google",
                     api_key=settings.GOOGLE_API_KEY,
-                    # 默认使用 Generative Language API，可通过 GOOGLE_BASE_URL 覆盖
+                    # default Shi Yong Generative Language API, can through GOOGLE_BASE_URL Fu Gai
                     base_url=google_base,
                     video_base_url=settings.GOOGLE_VIDEO_BASE_URL,
                     vertex_project_id=settings.GOOGLE_VERTEX_PROJECT_ID,
@@ -203,12 +203,12 @@ class AIServiceBase:
                     max_requests_per_minute=60,
                 )
 
-            # 如果没有配置任何provider，返回None
+            # Ru Guo missing configuration anyprovider, returnNone
             if not providers:
-                print("警告: 没有配置任何AI服务提供商，将使用fallback模式")
+                print("Jing Gao: missing configuration anyAIservice provider, Shi Yongfallbackmode")
                 return None
 
-            # 创建AI服务配置
+            # createAIservice configuration
             config = AIServiceConfig(
                 providers=providers,
                 provider_weights=provider_weights,

@@ -19,5 +19,5 @@ class Image(SoftDeleteBusinessMixin, Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    # 关系
+    # relationship
     user = relationship("User", back_populates="images")

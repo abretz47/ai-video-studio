@@ -85,7 +85,7 @@ class VideoTaskPollingService:
         self, item: VideoGenerationTask, response: Optional[AIResponse]
     ) -> None:
         item.status = VideoGenerationTaskStatus.PROCESSING
-        item.error_message = response.error if response else "轮询失败"
+        item.error_message = response.error if response else "Lun Xun failed"
         self.db.commit()
 
     def _mark_processing(self, item: VideoGenerationTask) -> None:
@@ -105,9 +105,9 @@ class VideoTaskPollingService:
         error_message = error_override or (response.data or {}).get("error")
         if not error_message:
             error_message = (
-                "任务超时"
+                "Ren Wu Chao Shi"
                 if status == VideoGenerationTaskStatus.TIMEOUT
-                else "任务失败"
+                else "Ren Wu failed"
             )
         item.error_message = error_message
         self.db.commit()
@@ -129,7 +129,7 @@ class VideoTaskPollingService:
                 response,
                 now,
                 VideoGenerationTaskStatus.FAILED,
-                error_override="任务完成但未返回视频内容",
+                error_override="Ren Wu complete Dan not return video content",
             )
             return
 
@@ -213,6 +213,6 @@ class VideoTaskPollingService:
     def _mark_timeout(self, item: VideoGenerationTask, now: datetime) -> None:
         item.status = VideoGenerationTaskStatus.TIMEOUT
         item.completed_at = now
-        item.error_message = "任务超时"
+        item.error_message = "Ren Wu Chao Shi"
         self.db.commit()
         refresh_parent_task_status(self.db, self.repo, item.task_id)

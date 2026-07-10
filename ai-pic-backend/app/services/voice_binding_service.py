@@ -187,11 +187,11 @@ async def _agent_choose_voice_id(
     }
 
     prompt = (
-        "你是一个配音导演助手。请为给定角色从候选系统音色中选择最合适的 voice_id。\n"
-        "要求：\n"
-        "1) 只能从候选列表中选择 voice_id；\n"
-        "2) 优先匹配角色气质/年龄/性别（若信息不足则选择更通用的成人音色）；\n"
-        "3) 只返回严格 JSON。\n\n"
+        "you Shi a Pei Yin Dao Yan Zhu Shou.Qing as Gei Ding character Cong Hou Xuan system voice timbre in Xuan Ze Zui He Shi voice_id.\n"
+        "requirement: \n"
+        "1) Zhi Neng Cong Hou Xuan list in Xuan Ze voice_id; \n"
+        "2) priority Pi Pei character Qi Zhi/Nian Ling/Xing Bie(if Xin Xi insufficient then Xuan Ze Geng Tong Yong Cheng Ren voice timbre); \n"
+        "3) only return strict JSON.\n\n"
         f"角色名：{character_name}\n"
         f"角色描述：{character_description or ''}\n"
         f"候选音色（voice_id / voice_name）：\n"
@@ -204,7 +204,7 @@ async def _agent_choose_voice_id(
         temperature=0.0,
         stream=False,
         json_schema={"name": "voice_choice", "schema": schema},
-        system_prompt="只返回严格 JSON，且 voice_id 必须来自候选列表。",
+        system_prompt="only return strict JSON, Qie voice_id Bi Xu Lai Zi Hou Xuan list.",
     )
     meta = {
         "provider": resp.provider,
@@ -365,11 +365,11 @@ async def _agent_decide_derived_scope(
     }
 
     prompt = (
-        "你是剧本制作系统的角色资产助手。给定一个“衍生角色”（IP库中不存在），请判断其音色绑定作用域：\n"
-        "- scene：仅当前场景有效（一次性路人/店员）\n"
-        "- episode：当前集内多次出现\n"
-        "- story：跨多集反复出现（长期角色）\n\n"
-        "只返回严格 JSON。\n\n"
+        "you Shi script Zhi Zuo system character Zi Chan Zhu Shou.Gei Ding a"Yan Sheng character"(IPKu Zhong not Cun Zai), Qing determine Qi voice timbre Bang Ding Zuo Yong Yu: \n"
+        "- scene: only current scene You Xiao(Yi Ci Xing Lu Ren/clerk)\n"
+        "- episode: current Ji Nei Duo Ci Chu Xian\n"
+        "- story: Kua Duo Ji Fan Fu Chu Xian(Chang Qi character)\n\n"
+        "only return strict JSON.\n\n"
         f"角色名：{character_name}\n"
         f"该角色在本集出现次数：{occurrences_in_episode}\n"
         f"该角色在全故事中出现的集数：{episodes_in_story}\n"
@@ -382,7 +382,7 @@ async def _agent_decide_derived_scope(
         temperature=0.0,
         stream=False,
         json_schema={"name": "derived_scope", "schema": schema},
-        system_prompt="只返回严格 JSON，scope 必须为 scene/episode/story 之一。",
+        system_prompt="only return strict JSON, scope Bi Xu as scene/episode/story Zhi Yi.",
     )
     meta = {
         "provider": resp.provider,

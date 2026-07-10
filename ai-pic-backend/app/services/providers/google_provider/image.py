@@ -38,7 +38,7 @@ async def generate_image(
     if not api_key:
         return AIResponse(
             success=False,
-            error="GoogleProvider 未配置 API Key",
+            error="GoogleProvider API key is not configured",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.PORTRAIT_GENERATION,
@@ -52,7 +52,7 @@ async def generate_image(
     if client is None:
         return AIResponse(
             success=False,
-            error="Google 客户端未初始化",
+            error="Google client is not initialized",
             provider=provider_name,
             model=model_id,
             task_type=AITaskType.PORTRAIT_GENERATION,
@@ -120,7 +120,7 @@ async def generate_image(
         if not images:
             return AIResponse(
                 success=False,
-                error="GoogleProvider 图像生成响应为空",
+                error="GoogleProvider image generation response is empty",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.PORTRAIT_GENERATION,
@@ -164,7 +164,7 @@ async def image_to_image(
     if not api_key:
         return AIResponse(
             success=False,
-            error="GoogleProvider 未配置 API Key",
+            error="GoogleProvider API key is not configured",
             provider=provider_name,
             model=model or default_model,
             task_type=AITaskType.SCENE_GENERATION,
@@ -178,7 +178,7 @@ async def image_to_image(
     if client is None:
         return AIResponse(
             success=False,
-            error="Google 客户端未初始化",
+            error="Google client is not initialized",
             provider=provider_name,
             model=model_id,
             task_type=AITaskType.SCENE_GENERATION,
@@ -218,7 +218,7 @@ async def image_to_image(
             if not urls:
                 return AIResponse(
                     success=False,
-                    error="缺少参考图像",
+                    error="missing reference image",
                     provider=provider_name,
                     model=model_id,
                     task_type=AITaskType.SCENE_GENERATION,
@@ -269,7 +269,7 @@ async def image_to_image(
         if not images:
             return AIResponse(
                 success=False,
-                error="GoogleProvider 图生图响应为空",
+                error="GoogleProvider Tu Sheng Tu response Wei Kong",
                 provider=provider_name,
                 model=model_id,
                 task_type=AITaskType.SCENE_GENERATION,

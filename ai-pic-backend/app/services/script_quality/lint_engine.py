@@ -146,7 +146,7 @@ def _build_lint_result(
                     f"估算字数={estimated_words}（目标范围："
                     f"{opts.target_word_min or '-'}~{opts.target_word_max or '-'}）"
                 ),
-                suggestion="字数仅为估算；若时长/镜头密度不匹配，可调节 Beat 密度与对白长度。",
+                suggestion="word count Jin Wei Gu Suan; if duration/shot Mi Du not Pi Pei, can Tiao Jie Beat Mi Du and dialogue Chang Du.",
             )
         )
 

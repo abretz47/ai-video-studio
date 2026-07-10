@@ -148,8 +148,6 @@ def _failure_category(message: str, payload: dict[str, Any] | None = None) -> st
             "overdue balance",
             "insufficient balance",
             "quota",
-            "余额不足",
-            "欠费",
         )
     ):
         return "provider_billing_or_quota_failed"
@@ -172,10 +170,10 @@ def _failure_category(message: str, payload: dict[str, Any] | None = None) -> st
         "oss_url" in message
         or "image_generation" in message
         or "images/generate" in message
-        or "AI图像生成失败" in message
+        or "image generation failed" in message.lower()
     ):
         return "image_persistence_failed"
-    if "virtual-ips" in message or "虚拟IP" in message:
+    if "virtual-ips" in message or "virtual ip" in message.lower():
         return "virtual_ip_failed"
     if "tts" in message or "audio" in message:
         return "dialogue_audio_failed"

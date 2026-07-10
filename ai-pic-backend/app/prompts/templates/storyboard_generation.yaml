@@ -1,5 +1,5 @@
 name: storyboard_generation
-description: "分镜生成提示词模板"
+description: "storyboard generate prompt text template"
 category: storyboard
 version: "2.1"
 author: "AI Video Studio"
@@ -7,30 +7,30 @@ created_at: "2025-12-10"
 updated_at: "2026-01-19"
 
 variables:
-  frames_per_scene:
-    type: number
-    required: true
-    description: "每个场景的分镜数量"
-  max_frames:
-    type: number
-    required: false
-    description: "最大分镜数量"
-  context_text:
-    type: string
-    required: true
-    description: "剧本上下文摘要"
-  style_preferences:
-    type: list
-    required: false
-    description: "风格偏好"
-  additional_requirements:
-    type: string
-    required: false
-    description: "额外要求"
+ frames_per_scene:
+ type: number
+ required: true
+ description: "Mei Ge scene De storyboard count"
+ max_frames:
+ type: number
+ required: false
+ description: "Zui Da storyboard count"
+ context_text:
+ type: string
+ required: true
+ description: "script Shang Xia Wen Zhai Yao"
+ style_preferences:
+ type: list
+ required: false
+ description: "style preference"
+ additional_requirements:
+ type: string
+ required: false
+ description: "E Wai Yao Qiu"
 
 usage_examples:
-  - frames_per_scene: 3
-    max_frames: 18
-    context_text: "场景1: 夜色下的旧仓库..."
-    style_preferences: ["写实", "电影感"]
-    additional_requirements: "突出光影对比"
+ - frames_per_scene: 3
+ max_frames: 18
+ context_text: "scene1: Ye Se Xia De Jiu Cang Ku..."
+ style_preferences: ["Xie Shi", "Dian Ying Gan"]
+ additional_requirements: "Tu Chu Guang Ying Dui Bi"

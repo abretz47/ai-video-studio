@@ -97,7 +97,7 @@ async def generate_beat_contract_payload(
         prefer_provider=prefer_provider,
         max_tokens=_BEAT_CONTRACT_MAX_TOKENS,
         json_schema=_BEAT_CONTRACT_SCHEMA_PAYLOAD,
-        system_prompt="你是专业短剧结构编剧，请严格按 JSON 返回。",
+        system_prompt="you Shi professional short drama structure Bian Ju, Qing strict An JSON return.",
         stream=False,
         **deepseek_v4_pro_strict_json_kwargs(
             prefer_provider=prefer_provider,
@@ -198,8 +198,8 @@ async def _repair_payload(
     prefer_provider: str | None,
 ) -> tuple[dict[str, Any] | None, Any]:
     repair_prompt = (
-        "上一次输出无法解析为 JSON 或不符合要求，请修复。\n"
-        "要求：只返回严格 JSON（不要代码块/不要解释/不要额外文本）。\n"
+        "on Yi Ci output unable to parse as JSON or not Fu He Yao Qiu, Qing Xiu Fu.\n"
+        "requirement: only return strict JSON(Bu Yao Dai Ma Kuai/Bu Yao Jie Shi/Bu Yao extra text).\n"
         f"输出结构示例（字段必须齐全）：\n{_BEAT_CONTRACT_REPAIR_HINT}\n\n"
         f"raw_output:\n{raw_output}"
     )

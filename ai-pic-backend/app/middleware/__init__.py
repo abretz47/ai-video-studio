@@ -1,5 +1,5 @@
 """
-中间件模块
+Zhong Jian Jian module
 """
 
 from .migration_middleware import DatabaseHealthMiddleware, MigrationCheckMiddleware

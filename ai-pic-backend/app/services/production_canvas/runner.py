@@ -22,12 +22,12 @@ def _asset_title(selection: CanvasAssetSelection) -> str:
         return f"已选择 IP：{ip_names}；环境待确认"
     if env_names:
         return f"IP 待确认；已选择环境：{env_names}"
-    return "待确认 IP 和环境资产"
+    return "pending Que Ren IP and environment Zi Chan"
 
 
 def _asset_detail(selection: CanvasAssetSelection) -> str:
-    ip_names = _asset_names(selection.selected.virtual_ips) or "待选择 IP"
-    env_names = _asset_names(selection.selected.environments) or "待选择环境"
+    ip_names = _asset_names(selection.selected.virtual_ips) or "pending Xuan Ze IP"
+    env_names = _asset_names(selection.selected.environments) or "pending Xuan Ze environment"
     return f"复用现有 IP：{ip_names}；环境：{env_names}"
 
 
@@ -111,8 +111,8 @@ def _downstream_detail(
     skill_id: str,
 ) -> str:
     if not _required_inputs(request, selection, skill_id):
-        return "后台复用现有 API、service 或 worker；前端只展示执行结果。"
-    return "需要先补齐执行上下文，之后才会调用现有生成 API、service 或 worker。"
+        return "background Fu Yong existing API, service or worker; Qian Duan only Zhan Shi execute Jie Guo."
+    return "need first Bu Qi execute context, Zhi Hou Cai will call existing Sheng Cheng API, service or worker."
 
 
 def build_canvas_skill_results(
@@ -129,7 +129,7 @@ def build_canvas_skill_results(
                     skill=skill.id,
                     label=skill.label,
                     status="ready",
-                    title="已从聊天目标生成生产 brief",
+                    title="Cong Liao Tian target Sheng Cheng production brief",
                     detail=f"目标：{request.prompt}",
                     outputs={"prompt": request.prompt},
                     reuse_targets=skill.reuse_targets,

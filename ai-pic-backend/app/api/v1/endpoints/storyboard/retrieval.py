@@ -81,7 +81,7 @@ async def preview_storyboard_prompt(
     """
     script = db.query(Script).filter(Script.id == script_id).first()
     if not script:
-        raise HTTPException(status_code=404, detail="剧本不存在")
+        raise HTTPException(status_code=404, detail="Script does not exist")
 
     episode = script.episode
     story = episode.story if episode else None

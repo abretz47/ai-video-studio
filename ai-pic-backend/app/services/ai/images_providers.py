@@ -25,9 +25,9 @@ class ImageProviderMixin:
         style_spec: Any | None = None,
         aspect_ratio: str | None = None,
     ) -> Optional[str]:
-        """使用可灵AI生成图像"""
+        """Shi Yong KlingAISheng Cheng image"""
         if not self.ai_manager:
-            self.logger.warning("AI管理器未初始化，无法使用可灵AI")
+            self.logger.warning("AImanager not Chu Shi Hua, unable to Shi Yong KlingAI")
             return None
 
         try:
@@ -50,7 +50,7 @@ class ImageProviderMixin:
                 if images:
                     image_url = images[0]
                     self.logger.info(
-                        "可灵AI图像生成成功: %s...",
+                        "KlingAIimage Sheng Cheng successful: %s...",
                         (
                             image_url[:100]
                             if isinstance(image_url, str)
@@ -58,7 +58,7 @@ class ImageProviderMixin:
                         ),
                     )
                     return image_url
-                self.logger.error("可灵AI返回了空的图像列表")
+                self.logger.error("KlingAIreturn Kong image list")
                 return None
             self.logger.error(f"可灵AI图像生成失败: {response.error}")
             return None
@@ -76,7 +76,7 @@ class ImageProviderMixin:
         model: str | None = None,
         reference_images: list[str] | None = None,
     ) -> Optional[str]:
-        """使用 OpenAI 图像模型生成图像"""
+        """Shi Yong OpenAI image model Sheng Cheng image"""
         if not self.openai_api_key:
             return None
         base_url = settings.OPENAI_BASE_URL or "https://api.openai.com/v1"
@@ -146,7 +146,7 @@ class ImageProviderMixin:
                 image_result = self._first_openai_image_result(result)
                 if image_result and image_result.startswith("data:image"):
                     self.logger.info(
-                        "获取到OpenAI base64图像数据，长度: %s",
+                        "get toOpenAI base64image data, Chang Du: %s",
                         len(image_result),
                     )
                 elif image_result:
@@ -208,7 +208,7 @@ class ImageProviderMixin:
     async def _generate_with_stability(
         self, prompt: str, style: str, category: str
     ) -> Optional[str]:
-        """使用Stability AI生成图像"""
+        """Shi YongStability AISheng Cheng image"""
         if not self.stability_api_key:
             return None
 
@@ -232,9 +232,9 @@ class ImageProviderMixin:
                 )
                 response.raise_for_status()
                 result = response.json()
-                # Stability AI返回base64编码的图像
+                # Stability AIreturnbase64Bian Ma image
                 image_data = result["artifacts"][0]["base64"]
-                # 这里需要将base64转换为文件并保存
+                # here needbase64Zhuan Huan as file and save
                 return await self._save_base64_image(image_data, "stability")
         except Exception as exc:
             print(f"Stability AI生成失败: {exc}")
@@ -243,7 +243,7 @@ class ImageProviderMixin:
     async def _generate_with_custom_image_service(
         self, prompt: str, style: str, category: str
     ) -> Optional[str]:
-        """使用自定义AI服务生成图像"""
+        """Shi Yong Zi Ding YiAIservice Sheng Cheng image"""
         if not self.base_url or not self.api_key:
             return None
 
@@ -279,20 +279,20 @@ class ImageProviderMixin:
             return None
 
     async def _save_base64_image(self, base64_data: str, source: str) -> str:
-        """保存base64编码的图像"""
+        """savebase64Bian Ma image"""
         import os
 
-        # 解码base64数据
+        # Jie Mabase64data
         image_bytes = base64.b64decode(base64_data)
 
-        # 生成文件名
+        # Sheng Cheng Wen Jian Ming
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"ai_generated_{source}_{timestamp}.png"
         filepath = os.path.join(settings.UPLOAD_DIR, filename)
 
-        # 保存文件
+        # save file
         with open(filepath, "wb") as f:
             f.write(image_bytes)
 
-        # 返回相对路径
+        # return Xiang Dui Lu Jing
         return f"/uploads/{filename}"

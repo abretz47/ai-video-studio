@@ -1,7 +1,7 @@
 """
-Celery 应用配置
+Celery application configuration
 
-用于统一处理后台任务（故事/剧集/剧本生成等），由独立 worker 进程运行。
+Yong Yu unified process Hou Tai Ren Wu(story/episode/script Sheng Cheng Deng), You Du Li worker Jin Cheng run.
 """
 
 import sys
@@ -18,14 +18,14 @@ def _running_under_pytest() -> bool:
 
 
 def _task_always_eager() -> bool:
-    # pytest 和 lite 模式都走 eager，避免依赖外部 Redis/独立 worker。
+    # pytest and lite mode all Zou eager, avoid Yi Lai Wai Bu Redis/Du Li worker.
     return _running_under_pytest() or bool(
         getattr(settings, "CELERY_TASK_ALWAYS_EAGER", False)
     )
 
 
 def _get_broker_url() -> str:
-    # 默认复用 REDIS_URL，后续如需区分可扩展单独的 CELERY_BROKER_URL
+    # default Fu Yong REDIS_URL, subsequent Ru Xu Qu Fen can Kuo Zhan Dan Du CELERY_BROKER_URL
     if _task_always_eager():
         return "memory://"
     return getattr(settings, "REDIS_URL", "redis://localhost:6379/0")
@@ -67,9 +67,9 @@ celery_app.conf.update(
     task_eager_propagates=bool(getattr(settings, "CELERY_TASK_EAGER_PROPAGATES", True)),
 )
 
-# 确保在 Celery 应用初始化后注册所有任务
-# 任务定义位于 app.services.task_worker 等模块中，使用显式 name（如 "tasks.virtual_ip_image_generate"）
-# 通过导入该模块完成注册，避免 worker 启动时出现 KeyError。
+# Ensure all tasks are registered after Celery application initialization
+# Ren Wu Ding Yi Wei Yu app.services.task_worker Deng module in, Shi Yong Xian Shi name(for example "tasks.virtual_ip_image_generate")
+# through Dao Ru Gai module complete Zhu Ce, avoid worker Qi Dong when Chu Xian KeyError.
 for _task_module in (
     "app.services.task_worker",
     "app.services.task_worker_scene_grid",

@@ -87,13 +87,13 @@ class InfoGateValidator:
 
     # Common patterns that might indicate information leakage
     KNOWLEDGE_INDICATORS = [
-        r"我知道.*?是",  # "I know ... is"
-        r"我听说",  # "I heard"
-        r"原来.*?是",  # "So ... is"
-        r"其实.*?是",  # "Actually ... is"
-        r"你是.*?的",  # "You are ...'s"
-        r"他是.*?的",  # "He is ...'s"
-        r"她是.*?的",  # "She is ...'s"
+        r"I Zhi Dao.*?Shi",  # "I know ... is"
+        r"I Ting Shuo",  # "I heard"
+        r"Yuan Lai.*?Shi",  # "So ... is"
+        r"Qi Shi.*?Shi",  # "Actually ... is"
+        r"you Shi.*?",  # "You are ...'s"
+        r"Ta Shi.*?",  # "He is ...'s"
+        r"Ta Shi.*?",  # "She is ...'s"
     ]
 
     def __init__(self) -> None:
@@ -127,16 +127,16 @@ class InfoGateValidator:
         """
         keywords = []
         common_words = {
-            "的",
-            "是",
-            "在",
-            "和",
-            "了",
-            "有",
-            "与",
-            "为",
-            "被",
-            "把",
+            "",
+            "Shi",
+            "in",
+            "and",
+            "",
+            "has",
+            "and",
+            "as",
+            "",
+            "",
             "a",
             "the",
             "is",
@@ -221,7 +221,7 @@ class InfoGateValidator:
             else:
                 # Check who this info was revealed to
                 for recipient in item.revealed_to:
-                    if recipient == "观众" or recipient == "audience":
+                    if recipient == "Guan Zhong" or recipient == "audience":
                         context.audience_knowledge.add(info_key)
                     else:
                         if recipient not in context.character_knowledge:
@@ -354,12 +354,12 @@ class InfoGateValidator:
                 suggestion["suggested_actions"] = [
                     f"删除对白中对 '{v.referenced_info}' 的引用",
                     f"添加一个场景让 '{v.speaker}' 先获得这个信息",
-                    "修改对白使其模糊或间接引用",
+                    "Xiu Gai dialogue Shi Qi Mo Hu or Jian Jie Yin Yong",
                 ]
             elif v.violation_type == InfoGateViolationType.REFERENCES_FUTURE_EVENT:
                 suggestion["suggested_actions"] = [
-                    "删除对白中对未来事件的引用",
-                    "改为角色的猜测或预感（而非确定性陈述）",
+                    "delete dialogue in Dui Wei Lai Shi Jian Yin Yong",
+                    "change to character Cai Ce or Yu Gan(Er Fei Que Ding Xing Chen Shu)",
                 ]
 
             suggestions.append(suggestion)

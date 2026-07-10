@@ -77,7 +77,7 @@ def _build_generation_prompt(
 角色对白示例：
 {dialogues_text}
 
-外观线索：{appearance_hints_text or "无"}
+外观线索：{appearance_hints_text or "none"}
 
 场景设定：
 - 地点：{setting}
@@ -171,35 +171,35 @@ def _generate_with_heuristics(
 
     # Infer role type from name
     role_hints = {
-        "快递员": {
-            "personality": "热情、负责、有耐心",
-            "background": "快递公司员工，负责配送工作",
-            "appearance": "穿着快递制服，背着快递包",
+        "Kuai Di Yuan": {
+            "personality": "Re Qing, responsible for, has Nai Xin",
+            "background": "Kuai Di Gong Si Yuan Gong, responsible for Pei Song Gong Zuo",
+            "appearance": "Chuan Zhe Kuai Di Zhi Fu, Bei Zhe Kuai Di Bao",
         },
-        "医生": {
-            "personality": "专业、冷静、细心",
-            "background": "医疗工作者，负责诊疗工作",
-            "appearance": "穿着白大褂，戴着听诊器",
+        "Yi Sheng": {
+            "personality": "professional, calm, Xi Xin",
+            "background": "Yi Liao Gong Zuo Zhe, responsible for Zhen Liao Gong Zuo",
+            "appearance": "Chuan Zhe Bai Da Gua, Dai Zhe Ting Zhen Qi",
         },
-        "护士": {
-            "personality": "温柔、体贴、认真",
-            "background": "医疗护理工作者，协助医生工作",
-            "appearance": "穿着护士制服，戴着护士帽",
+        "Hu Shi": {
+            "personality": "Wen Rou, Ti Tie, Ren Zhen",
+            "background": "Yi Liao Hu Li Gong Zuo Zhe, Xie Zhu Yi Sheng Gong Zuo",
+            "appearance": "Chuan Zhe Hu Shi Zhi Fu, Dai Zhe Hu Shi Mao",
         },
-        "警察": {
-            "personality": "严肃、正义、果断",
-            "background": "执法人员，维护治安工作",
-            "appearance": "穿着警服，佩戴警徽",
+        "Jing Cha": {
+            "personality": "Yan Su, Zheng Yi, Guo Duan",
+            "background": "Zhi Fa Ren Yuan, Wei Hu Zhi An Gong Zuo",
+            "appearance": "Chuan Zhe Jing Fu, Pei Dai Jing Hui",
         },
-        "服务员": {
-            "personality": "热情、礼貌、周到",
-            "background": "服务行业从业者，负责接待工作",
-            "appearance": "穿着工作服，面带微笑",
+        "Fu Wu Yuan": {
+            "personality": "Re Qing, Li Mao, Zhou Dao",
+            "background": "Fu Wu Hang Ye Cong Ye Zhe, responsible for Jie Dai Gong Zuo",
+            "appearance": "Chuan Zhe Gong Zuo Fu, Mian Dai Wei Xiao",
         },
-        "司机": {
-            "personality": "稳重、熟练、负责",
-            "background": "驾驶工作者，负责运输工作",
-            "appearance": "穿着工作服或便装",
+        "Si Ji": {
+            "personality": "Wen Zhong, Shu Lian, responsible for",
+            "background": "Jia Shi Gong Zuo Zhe, responsible for Yun Shu Gong Zuo",
+            "appearance": "Chuan Zhe Gong Zuo Fu or Bian Zhuang",
         },
     }
 
@@ -228,7 +228,7 @@ def _generate_with_heuristics(
 
     # Generic fallback
     return {
-        "personality": "普通、友好、礼貌",
+        "personality": "Pu Tong, You Hao, Li Mao",
         "background": f"{char_name}，在剧情中扮演临时角色",
         "appearance_override": appearance,
     }
@@ -246,11 +246,11 @@ def _generate_with_heuristics_from_prompt(prompt: str) -> Dict[str, str]:
     # Extract character name from prompt
     import re
 
-    name_match = re.search(r"角色名称：(.+)", prompt)
-    char_name = name_match.group(1).strip() if name_match else "临时角色"
+    name_match = re.search(r"character name: (.+)", prompt)
+    char_name = name_match.group(1).strip() if name_match else "temporary character"
 
     # Extract appearance hints
-    appearance_match = re.search(r"外观线索：(.+)", prompt)
+    appearance_match = re.search(r"Wai Guan clue: (.+)", prompt)
     appearance = (
         appearance_match.group(1).strip()
         if appearance_match
@@ -259,7 +259,7 @@ def _generate_with_heuristics_from_prompt(prompt: str) -> Dict[str, str]:
 
     # Generic fallback
     return {
-        "personality": "友好、专业、认真",
+        "personality": "You Hao, professional, Ren Zhen",
         "background": f"{char_name}，在剧情中扮演临时角色",
         "appearance_override": appearance,
     }

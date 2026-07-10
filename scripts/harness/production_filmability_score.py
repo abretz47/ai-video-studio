@@ -5,19 +5,19 @@ from __future__ import annotations
 from typing import Any
 
 _UNFILMABLE_PHRASES = (
-    "意识到",
-    "明白",
-    "想到",
-    "感到",
-    "感觉到",
-    "内心",
-    "心里",
-    "情绪",
-    "崩溃",
-    "命运",
-    "关系变化",
-    "心理变化",
-    "产生变化",
+    "realizes",
+    "understands",
+    "thinks of",
+    "feels",
+    "senses",
+    "inner thoughts",
+    "in his/her heart",
+    "emotions",
+    "breakdown",
+    "fate",
+    "relationship changes",
+    "psychological change",
+    "change occurs",
 )
 
 

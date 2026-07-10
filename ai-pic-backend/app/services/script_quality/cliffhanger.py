@@ -99,15 +99,15 @@ async def check_cliffhanger_with_prompt(
             ScriptLintIssue(
                 severity="error",
                 rule_id="cliffhanger",
-                message="结尾未通过 LLM 悬念/卡点判断。",
+                message="Jie Wei not through LLM suspense/cliffhanger determine.",
                 suggestion=details["suggestion"]
-                or "最后一句/最后一个动作提出新问题或爆点揭示，避免收束。",
+                or "Zui Hou Yi Ju/Zui Hou a action Ti Chu Xin Wen Ti or Bao Dian reveal, avoid Shou Shu.",
             )
         )
     return (
         ScriptLintRuleResult(
             rule_id="cliffhanger",
-            title="悬念结尾（LLM 判断）",
+            title="suspense Jie Wei(LLM determine)",
             weight=1.5,
             score=score,
             passed=passed,
@@ -128,7 +128,7 @@ def _unavailable_result(
         return (
             ScriptLintRuleResult(
                 rule_id="cliffhanger",
-                title="悬念结尾（LLM 判断）",
+                title="suspense Jie Wei(LLM determine)",
                 weight=1.5,
                 score=0.85,
                 passed=True,
@@ -145,13 +145,13 @@ def _unavailable_result(
     issue = ScriptLintIssue(
         severity="error",
         rule_id="cliffhanger",
-        message="悬念结尾需要 LLM 判断，但当前不可用。",
-        suggestion="配置可用文本模型后重新运行质检或生成。",
+        message="suspense Jie Wei need LLM determine, Dan current not allowed Yong.",
+        suggestion="configuration available text model after retry run Zhi Jian or Sheng Cheng.",
     )
     return (
         ScriptLintRuleResult(
             rule_id="cliffhanger",
-            title="悬念结尾（LLM 判断）",
+            title="suspense Jie Wei(LLM determine)",
             weight=1.5,
             score=0.0,
             passed=False,
@@ -168,12 +168,12 @@ def _unavailable_result(
 
 def _has_strong_local_cliffhanger(tail: list[str]) -> bool:
     text = "".join(tail)
-    if "倒计时" not in text and "30秒" not in text:
+    if "countdown" not in text and "30 seconds" not in text:
         return False
-    unresolved_markers = ("真相", "下一个", "删除", "威胁", "开始")
+    unresolved_markers = ("truth", "below a", "delete", "threat", "Kai Shi")
     if not any(marker in text for marker in unresolved_markers):
         return False
-    return "？" in text or "?" in text or "短信" in text
+    return "？" in text or "?" in text or "text message" in text
 
 
 def _parse_response_data(data: Any) -> dict[str, Any] | None:

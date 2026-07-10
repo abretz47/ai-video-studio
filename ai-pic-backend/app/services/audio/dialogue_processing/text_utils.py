@@ -23,29 +23,29 @@ _SPEECH_ATTR_RE = re.compile(
     r"^\s*(?P<attr>.{1,80}?)(?P<sep>[:：]|\s+|“|\"|‘|'|「|『)(?P<text>.+)$"
 )
 _TRIVIAL_SPEECH_ATTR_RE = re.compile(
-    r"^(?:我|你|他|她|它|我们|你们|他们|她们|大家|众人|所有人)(?:们)?(?:说|说道|问|问道|答|答道)$"
+    r"^(?:I|you|Ta|Ta|Ta|Wo Men|Ni Men|Ta Men|Ta Men|Da Jia|Zhong Ren|Suo You Ren)(?:Men)?(?:Shuo|Shuo Dao|Wen|Wen Dao|Da|Da Dao)$"
 )
 
 _SPEECH_ATTR_SUFFIXES: tuple[str, ...] = tuple(
     sorted(
         {
-            "低声说",
-            "轻声说",
-            "小声说",
-            "大声说",
-            "笑着说",
-            "冷冷地说",
-            "嘀咕道",
-            "呢喃道",
-            "咆哮道",
-            "吼道",
-            "喊道",
-            "说道",
-            "问道",
-            "答道",
-            "说",
-            "问",
-            "答",
+            "Di Sheng Shuo",
+            "Qing Sheng Shuo",
+            "Xiao Sheng Shuo",
+            "Da Sheng Shuo",
+            "Xiao Zhe Shuo",
+            "Leng Leng Di Shuo",
+            "Di Gu Dao",
+            "Ni Nan Dao",
+            "Pao Xiao Dao",
+            "Hou Dao",
+            "Han Dao",
+            "Shuo Dao",
+            "Wen Dao",
+            "Da Dao",
+            "Shuo",
+            "Wen",
+            "Da",
         },
         key=len,
         reverse=True,
@@ -68,7 +68,7 @@ def looks_like_silence(text: str) -> bool:
     if _ONLY_PUNCT_OR_SPACE.match(cleaned):
         return True
     lowered = cleaned.lower()
-    if lowered in {"...", "……", "…", "（沉默）", "(silence)", "[silence]"}:
+    if lowered in {"...", "……", "…", "(Chen Mo)", "(silence)", "[silence]"}:
         return True
     return False
 
@@ -82,8 +82,8 @@ def sanitize_dialogue_content(
     Remove inline stage directions from dialogue text.
 
     Examples:
-    - "（叹气）你好" -> text="你好", action+="叹气"
-    - "叹了一口气，站起来说：你好" -> text="你好", action+="叹了一口气，站起来说"
+ - "(Tan Qi)Ni Hao" -> text="Ni Hao", action+="Tan Qi"
+ - "Tan Yi Kou Qi, Zhan Qi Lai Shuo: Ni Hao" -> text="Ni Hao", action+="Tan Yi Kou Qi, Zhan Qi Lai Shuo"
     """
 
     text = str(content or "").strip()

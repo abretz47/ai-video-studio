@@ -88,7 +88,7 @@ def build_storyboard_frames_from_audio_timeline(
                         text=None,
                         dialogue_action=None,
                         characters=characters_involved,
-                        description="（停顿）",
+                        description="(Ting Dun)",
                         duration_ms=duration_ms,
                         start_ms=start_ms,
                         end_ms=end_ms,
@@ -101,7 +101,7 @@ def build_storyboard_frames_from_audio_timeline(
             continue
 
         speaker = (
-            (beat.get("speaker_name") or "旁白") if beat_type == "dialogue" else None
+            (beat.get("speaker_name") or "narration") if beat_type == "dialogue" else None
         )
         dialogue_action = (
             beat.get("dialogue_action") if beat_type == "dialogue" else None
@@ -113,9 +113,9 @@ def build_storyboard_frames_from_audio_timeline(
         if beat_type == "dialogue":
             description = f"{speaker}: {text}".strip() if text else str(speaker)
         elif beat_type == "pause":
-            description = "（停顿）"
+            description = "(Ting Dun)"
         else:
-            description = text or "（动作）"
+            description = text or "(action)"
 
         frames.append(
             _annotate_frame_source(

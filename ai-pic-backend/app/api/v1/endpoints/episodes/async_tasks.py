@@ -27,8 +27,8 @@ async def generate_episodes_async(
     payload["generation_mode"] = "production"
     payload["production_mode"] = True
     task = Task(
-        title=f"生成剧集 - 故事{request.story_id}",
-        description="异步剧集生成",
+        title=f"Generate episode - story {request.story_id}",
+        description="Asynchronous episode generation",
         task_type=TaskType.EPISODE_GENERATION,
         prompt=f"Episode plan for story {request.story_id}",
         parameters=json.dumps(payload, ensure_ascii=False),

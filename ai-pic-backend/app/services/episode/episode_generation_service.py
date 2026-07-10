@@ -41,7 +41,7 @@ class EpisodeGenerationService:
         )
         story = StoryRepository(self.db).get_by_user(story_id, user_id=owner_id)
         if not story:
-            raise HTTPException(status_code=404, detail="故事不存在")
+            raise HTTPException(status_code=404, detail="Story not found")
         return story
 
     def _get_focus_characters(self, character_ids: List[int]) -> List[Dict[str, Any]]:
@@ -147,7 +147,7 @@ class EpisodeGenerationService:
                 detail=f"剧集质量校验失败: {exc}",
             ) from exc
         if not result:
-            raise HTTPException(status_code=500, detail="AI剧集生成失败")
+            raise HTTPException(status_code=500, detail="AIepisode Sheng Cheng failed")
         raw_step_outlines = None
         if isinstance(result, dict):
             raw_step_outlines = result.get("step_outlines") or result.get(
@@ -211,7 +211,7 @@ class EpisodeGenerationService:
                 agent_run=agent_run,
             )
         if not episodes_data:
-            raise HTTPException(status_code=500, detail="AI生成内容格式错误")
+            raise HTTPException(status_code=500, detail="AISheng Cheng content format error")
         result_payload = result if isinstance(result, dict) else {}
         created_episodes = persistence.create_episode_models(
             db=self.db,
