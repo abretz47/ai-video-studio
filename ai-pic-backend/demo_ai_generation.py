@@ -79,7 +79,7 @@ async def demo_virtual_ip_generation():
 
 async def demo_style_variations():
     """Demo image generation in different styles"""
-    print("\n🎨 风格变化演示")
+    print("\n🎨 Style variation demo")
     print("=" * 60)
 
     test_ip = {
@@ -92,7 +92,7 @@ async def demo_style_variations():
 
     for style in styles:
         for category in categories:
-            print(f"\n🔮 生成 {style} 风格的 {category}")
+            print(f"\n🔮 Generating {category} in {style} style")
 
             try:
                 result = await ai_service.generate_virtual_ip_image(
@@ -115,7 +115,7 @@ async def demo_style_variations():
 
 async def demo_prompt_optimization():
     """Demo prompt optimization"""
-    print("\n🔧 提示词优化演示")
+    print("\n🔧 Prompt optimization demo")
     print("=" * 60)
 
     test_cases = [
@@ -137,7 +137,7 @@ async def demo_prompt_optimization():
     ]
 
     for case in test_cases:
-        print(f"\n📝 测试: {case['name']}")
+        print(f"\n📝 Test: {case['name']}")
         print(f"   Original description: {case['description']}")
         print(f"   Expected effect: {case['expected']}")
 
@@ -179,7 +179,7 @@ def main():
         print("  - OPENAI_API_KEY")
         print("  - STABILITY_API_KEY")
         print("  - AI_SERVICE_URL + AI_API_KEY")
-        print("\n演示将继续，但可能无法成功生成图像")
+        print("\nThe demo will continue, but image generation may fail")
 
     # Ensure the upload directory exists
     os.makedirs("uploads", exist_ok=True)
@@ -191,7 +191,7 @@ def main():
 
     print("\n" + "=" * 60)
     print("🎉 Demo complete!")
-    print("\n💡 提示:")
+    print("\n💡 Tips:")
     print("- Generated images are saved in the uploads/ directory")
     print("- You can inspect the generated prompts to understand the optimization results")
     print("- Different AI services may produce different generation results")

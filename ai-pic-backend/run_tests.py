@@ -140,7 +140,7 @@ def run_coverage_tests():
     success = run_command(cmd, "Run tests and generate a coverage report")
 
     if success:
-        print("\n📊 覆盖率报告已生成:")
+        print("\n📊 Coverage report generated:")
         print("  - HTML report: htmlcov/index.html")
         print("  - XML report: coverage.xml")
         print("  - Terminal report: shown above")
@@ -205,7 +205,7 @@ def clean_test_artifacts():
 
 
 def main():
-    """主函数"""
+    """Main function"""
     parser = argparse.ArgumentParser(description="Test runner script")
     parser.add_argument(
         "command",
@@ -228,7 +228,7 @@ def main():
         ],
         help="Test type to run",
     )
-    parser.add_argument("--test", "-t", help="Run a specific test文件或函数")
+    parser.add_argument("--test", "-t", help="Run a specific test file or function")
     parser.add_argument("--no-setup", action="store_true", help="Skip environment setup")
 
     args = parser.parse_args()
@@ -272,10 +272,10 @@ def main():
         success = setup_test_environment()
 
     if success:
-        print("\n🎉 测试执行成功!")
+        print("\n🎉 Tests completed successfully!")
         sys.exit(0)
     else:
-        print("\n❌ 测试执行失败!")
+        print("\n❌ Test execution failed!")
         sys.exit(1)
 
 

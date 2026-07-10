@@ -72,7 +72,7 @@ def _rules() -> list[BackfillRule]:
             target=TaskType.EPISODE_GENERATION,
             condition=or_(
                 Task.title.like("Generate episode%"),
-                Task.title.like("重新Generate episode%"),
+                Task.title.like("Regenerate episode%"),
                 Task.prompt.like("Episode plan for story %"),
                 Task.prompt.like("Regenerate episode %"),
             ),

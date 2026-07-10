@@ -61,7 +61,7 @@ def generate_migration():
 
 def upgrade_database():
     """Apply migrations to the database"""
-    print("正在Apply migrations to the database...")
+    print("Applying migrations to the database...")
     if not run_command("alembic upgrade head"):
         print("Failed to apply migrations")
         return False
@@ -77,9 +77,9 @@ def downgrade_database():
         print("Operation cancelled")
         return False
 
-    print("正在Roll back migrations...")
+    print("Rolling back migrations...")
     if not run_command("alembic downgrade -1"):
-        print("Roll back migrations失败")
+        print("Failed to roll back migrations")
         return False
     print("Migration rollback complete")
     return True
@@ -118,7 +118,7 @@ def reset_database():
 
     # Reapply all migrations
     if not run_command("alembic upgrade head"):
-        print("重新Failed to apply migrations")
+        print("Failed to reapply migrations")
         return False
 
     print("Database reset complete")
@@ -155,7 +155,7 @@ def main():
     try:
         commands[command]()
     except KeyboardInterrupt:
-        print("\n操作被用户中断")
+        print("\nOperation interrupted by user")
     except Exception as e:
         print(f"Error while running command: {e}")
         sys.exit(1)

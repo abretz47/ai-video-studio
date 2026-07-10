@@ -84,7 +84,7 @@ class SimpleDiagnostic:
 
     async def test_environment_config(self):
         """Test environment config"""
-        print("\n🔍 检查Environment config...")
+        print("\n🔍 Checking environment config...")
 
         configs = {
             "OPENAI_API_KEY": self.openai_api_key,
@@ -240,10 +240,10 @@ class SimpleDiagnostic:
 
                         file_size = os.path.getsize(file_path)
                         details = (
-                            f"Image generation成功，文件: {filename}, 大小: {file_size} bytes"
+                            f"Image generated successfully, file: {filename}, size: {file_size} bytes"
                         )
 
-                        # Clean up测试文件
+                        # Clean up test file
                         try:
                             os.remove(file_path)
                         except:
@@ -267,7 +267,7 @@ class SimpleDiagnostic:
 
     async def run_all_tests(self):
         """Run all tests"""
-        print("🚀 开始AIImage generation诊断测试")
+        print("🚀 Starting AI image generation diagnostic tests")
         print("=" * 50)
 
         tests = [
@@ -304,11 +304,11 @@ class SimpleDiagnostic:
         print(f"Success rate: {success_rate:.1f}%")
 
         if self.errors:
-            print("\n❌ 发现的问题:")
+            print("\n❌ Issues found:")
             for error in self.errors:
                 print(f"  • {error}")
 
-            print("\n🔧 修复建议:")
+            print("\n🔧 Fix suggestions:")
             if any("OPENAI_API_KEY" in error for error in self.errors):
                 print("  • Configure the OPENAI_API_KEY environment variable")
                 print("  • Verify OpenAI account balance and API permissions")
@@ -317,7 +317,7 @@ class SimpleDiagnostic:
                 print("  • Check uploads directory permissions")
                 print("  • Ensure sufficient disk space")
         else:
-            print("\n🎉 所有测试通过！AIImage generation功能应该正常工作")
+            print("\n🎉 All tests passed! AI image generation should work normally")
 
         # Save report
         report = {
@@ -335,7 +335,7 @@ class SimpleDiagnostic:
         with open("simple_diagnostic_report.json", "w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
 
-        print("\n💾 详细报告已保存到: simple_diagnostic_report.json")
+        print("\n💾 Detailed report saved to: simple_diagnostic_report.json")
 
         return failed_tests == 0
 
@@ -346,10 +346,10 @@ async def main():
     success = await diagnostic.run_all_tests()
 
     if success:
-        print("\n🎉 所有测试通过！")
+        print("\n🎉 All tests passed!")
         exit(0)
     else:
-        print("\n❌ 部分测试失败，请查看上述报告")
+        print("\n❌ Some tests failed, please review the report above")
         exit(1)
 
 
@@ -357,8 +357,8 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("\n⏹️  测试被用户中断")
+        print("\n⏹️  Tests interrupted by user")
         exit(130)
     except Exception as e:
-        print(f"\n💥 测试异常: {e}")
+        print(f"\n💥 Test exception: {e}")
         exit(1)

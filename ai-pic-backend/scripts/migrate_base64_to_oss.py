@@ -254,7 +254,7 @@ class Base64ToOSSMigrator:
                     converted += 1
                     self.stats["converted"] += 1
                     logger.info(
-                        f"[{table_name}] ID={record_id}: converted {field_name} 中的图片"
+                        f"[{table_name}] ID={record_id}: converted images in {field_name}"
                     )
                 else:
                     failed += 1
@@ -559,7 +559,7 @@ def main():
         "--table",
         type=str,
         action="append",
-        help="Process only the specified table（可多次指定）",
+        help="Process only the specified table (can be specified multiple times)",
     )
     parser.add_argument(
         "--batch-size",

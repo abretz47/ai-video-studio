@@ -29,7 +29,7 @@ class PytestRunner:
             result = subprocess.run(cmd, cwd=self.project_root, check=False)
             return result.returncode == 0
         except KeyboardInterrupt:
-            print("\n⏹️  测试被用户中断")
+            print("\n⏹️  Tests interrupted by user")
             return False
         except Exception as e:
             print(f"❌ Command execution failed: {e}")
@@ -63,7 +63,7 @@ class PytestRunner:
     def run_external_tests(self):
         """Run external service tests"""
         cmd = ["python", "-m", "pytest", "-m", "external", "-v", "-s"]
-        return self.run_command(cmd, "Run external service tests（需要API密钥）")
+        return self.run_command(cmd, "Run external service tests (API key required)")
 
     def run_quick_tests(self):
         """Run quick tests (skip slow and external tests)"""
@@ -76,7 +76,7 @@ class PytestRunner:
         success = self.run_command(cmd, "Run coverage tests")
 
         if success:
-            print("\n📊 覆盖率报告已生成:")
+            print("\n📊 Coverage report generated:")
             print("  HTML report: htmlcov/index.html")
             print("  Open command: open htmlcov/index.html")
 
@@ -140,7 +140,7 @@ class PytestRunner:
 
 
 def main():
-    """主函数"""
+    """Main function"""
     parser = argparse.ArgumentParser(description="pytest test runner")
     parser.add_argument("--all", action="store_true", help="Run all tests")
     parser.add_argument("--unit", action="store_true", help="Run unit tests")
@@ -153,7 +153,7 @@ def main():
     parser.add_argument("--failed", action="store_true", help="Re-run failed tests")
     parser.add_argument("--info", action="store_true", help="Show test information")
     parser.add_argument("--check", action="store_true", help="Check test environment")
-    parser.add_argument("--test", type=str, help="Run a specific test文件或函数")
+    parser.add_argument("--test", type=str, help="Run a specific test file or function")
 
     args = parser.parse_args()
 
@@ -164,7 +164,7 @@ def main():
         print("🧪 pytest test runner")
         print("=" * 50)
         print("Use --help to view all options")
-        print("\n常用命令:")
+        print("\nCommon commands:")
         print("  --check      Check test environment")
         print("  --diagnostic Run diagnostic tests")
         print("  --quick      Run quick tests")
@@ -212,10 +212,10 @@ def main():
 
     # Show final result
     if success:
-        print("\n🎉 测试完成！")
+        print("\n🎉 Tests completed!")
         sys.exit(0)
     else:
-        print("\n❌ 测试失败")
+        print("\n❌ Tests failed")
         sys.exit(1)
 
 

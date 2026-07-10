@@ -37,7 +37,7 @@ try:
     from alembic.config import Config
 
     db_url = f"sqlite:///{db_path}"
-    print(f"\n测试数据库: {db_url}")
+    print(f"\nTest database: {db_url}")
 
     # Configure Alembic
     alembic_cfg = Config("alembic.ini")
@@ -75,7 +75,7 @@ try:
     if not tables_after:
         print("  No tables found")
 
-    # Check Alembic revision表
+    # Check the Alembic revision table
     with engine.connect() as conn:
         try:
             result = conn.execute(text("SELECT version_num FROM alembic_version"))

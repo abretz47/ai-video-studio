@@ -218,10 +218,10 @@ def main():
         success = reset_database()
 
     if success:
-        print("\n🎉 操作执行成功!")
+        print("\n🎉 Operation completed successfully!")
         sys.exit(0)
     else:
-        print("\n❌ 操作执行失败!")
+        print("\n❌ Operation failed!")
         sys.exit(1)
 
 

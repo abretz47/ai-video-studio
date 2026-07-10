@@ -149,7 +149,7 @@ def main():
 
         # Confirm whether to continue
         response = input(
-            "\n是否继续迁移数据到MySQL？这将清空现有MySQL表中的数据。(y/N): "
+            "\nContinue migrating data to MySQL? This will clear data from existing MySQL tables. (y/N): "
         )
         if response.lower() != "y":
             logger.info("Migration cancelled")

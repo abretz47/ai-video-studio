@@ -49,14 +49,14 @@ async def debug_keling_provider():
         print(f"   Number of available models: {len(provider.available_models)}")
 
         # Print available models
-        print("\n📋 可用模型:")
+        print("\n📋 Available models:")
         for model in provider.available_models:
             print(f"   - {model.model_id}: {model.name}")
             print(f"     Type: {model.model_type.value}")
             print(f"     Capabilities: {model.capabilities}")
 
         # Test image generation
-        print("\n🎨 测试图像生成...")
+        print("\n🎨 Testing image generation...")
 
         test_prompt = "A cute little girl, cartoon style, high quality"
 
@@ -71,7 +71,7 @@ async def debug_keling_provider():
             style="cartoon",
         )
 
-        print("\n📊 API响应:")
+        print("\n📊 API response:")
         print(f"   Success: {response.success}")
         print(f"   Error: {response.error}")
         print(f"   Provider: {response.provider}")
@@ -88,7 +88,7 @@ async def debug_keling_provider():
 
 async def debug_http_request():
     """Debug HTTP requests directly"""
-    print("\n🌐 直接测试HTTP请求")
+    print("\n🌐 Directly testing HTTP requests")
     print("=" * 50)
 
     if not settings.KELING_API_KEY:
@@ -104,7 +104,7 @@ async def debug_http_request():
         ]
 
         for url in test_urls:
-            print(f"\n🔗 测试URL: {url}")
+            print(f"\n🔗 Testing URL: {url}")
 
             try:
                 async with httpx.AsyncClient(timeout=30.0) as client:
@@ -148,7 +148,7 @@ async def debug_http_request():
 
 async def debug_ai_manager():
     """Debug AI manager"""
-    print("\n🤖 测试AI管理器")
+    print("\n🤖 Testing AI manager")
     print("=" * 50)
 
     try:
@@ -165,19 +165,19 @@ async def debug_ai_manager():
         # Get provider status
         status = ai_service.ai_manager.get_provider_status()
 
-        print("\n📊 提供商状态:")
+        print("\n📊 Provider status:")
         for name, provider_status in status.items():
             print(f"   {name}: {provider_status}")
 
         # Check the Keling provider
         if "keling" in status:
             keling_status = status["keling"]
-            print("\n🎯 可灵提供商详情:")
+            print("\n🎯 Keling provider details:")
             for key, value in keling_status.items():
                 print(f"   {key}: {value}")
 
         # Test image generation
-        print("\n🎨 通过AI管理器测试图像生成...")
+        print("\n🎨 Testing image generation through the AI manager...")
 
         response = await ai_service.ai_manager.generate_image(
             prompt="A test image",
@@ -220,7 +220,7 @@ async def main():
     await debug_http_request()
     await debug_ai_manager()
 
-    print("\n✨ 调试完成!")
+    print("\n✨ Debugging complete!")
 
 
 if __name__ == "__main__":
