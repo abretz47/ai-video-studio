@@ -34,9 +34,9 @@ export function AdminUserRow({
           </StatusPill>
         </div>
         <p className="mt-1 truncate text-xs text-gray-500">
-          {user.email} · 注册 {formatRelativeTime(user.created_at)}
+          {user.email}  · Registered {formatRelativeTime(user.created_at)}
           {user.last_login_at
-            ? ` · 最后登录 ${formatRelativeTime(user.last_login_at)}`
+            ? ` · Last Login ${formatRelativeTime(user.last_login_at)}`
             : ""}
         </p>
       </div>
@@ -48,7 +48,7 @@ export function AdminUserRow({
             disabled={processing}
             className={operatorButtonClass("secondary")}
           >
-            处理审批
+            Handle Approval
           </button>
         ) : null}
         {!user.email_verified && user.is_approved ? (
@@ -58,7 +58,7 @@ export function AdminUserRow({
             disabled={processing}
             className={operatorButtonClass("primary")}
           >
-            验证邮箱
+            Verify Email
           </button>
         ) : null}
         <button
@@ -66,7 +66,7 @@ export function AdminUserRow({
           onClick={onDetails}
           className={operatorButtonClass("ghost")}
         >
-          详情
+          Details
         </button>
       </div>
     </div>
@@ -87,7 +87,7 @@ export function AdminUserPagination({
   return (
     <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 text-xs text-gray-500">
       <span>
-        第 {page} / {pages} 页 · 共 {total} 个结果
+        Page {page} / {pages} · Total {total} results
       </span>
       <div className="flex gap-2">
         <button
@@ -96,7 +96,7 @@ export function AdminUserPagination({
           onClick={() => onPage(Math.max(1, page - 1))}
           className={operatorButtonClass("secondary")}
         >
-          上一页
+          Previous
         </button>
         <button
           type="button"
@@ -104,7 +104,7 @@ export function AdminUserPagination({
           onClick={() => onPage(Math.min(pages, page + 1))}
           className={operatorButtonClass("secondary")}
         >
-          下一页
+          Next
         </button>
       </div>
     </div>

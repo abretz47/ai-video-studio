@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { formatDateOnly, t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorSectionHeader,
@@ -38,8 +39,8 @@ export function StoryListSection({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="故事列表"
-        subtitle={`${stories.length} 个故事`}
+        title={t("stories.list.title", "Story list")}
+        subtitle={t("stories.list.count", "{count} stories").replace("{count}", String(stories.length))}
         action={
           <StoryFilters
             selectedGenre={selectedGenre}
@@ -52,7 +53,7 @@ export function StoryListSection({
 
       {loading ? (
         <div className="p-4">
-          <OperatorState title="加载故事列表..." />
+          <OperatorState title={t("stories.list.loading", "Loading story list...")} />
         </div>
       ) : stories.length === 0 ? (
         <StoryEmptyState onOpenGenerateForm={onOpenGenerateForm} />
@@ -88,9 +89,9 @@ function StoryFilters({
         value={selectedGenre}
         onChange={(event) => onSelectedGenreChange(event.target.value)}
         className={operatorSelectClass("w-32")}
-        aria-label="按类型筛选故事"
+        aria-label={t("stories.list.genreFilterAria", "Filter stories by genre")}
       >
-        <option value="">全部类型</option>
+        <option value="">{t("stories.list.allGenres", "All genres")}</option>
         {GENRES.map((genre) => (
           <option key={genre.value} value={genre.value}>
             {genre.label}
@@ -101,9 +102,9 @@ function StoryFilters({
         value={selectedStatus}
         onChange={(event) => onSelectedStatusChange(event.target.value)}
         className={operatorSelectClass("w-32")}
-        aria-label="按状态筛选故事"
+        aria-label={t("stories.list.statusFilterAria", "Filter stories by status")}
       >
-        <option value="">全部状态</option>
+        <option value="">{t("stories.list.allStatuses", "All statuses")}</option>
         {STATUSES.map((status) => (
           <option key={status.value} value={status.value}>
             {status.label}
@@ -122,15 +123,15 @@ function StoryEmptyState({
   return (
     <div className="p-4">
       <OperatorState
-        title="暂无故事"
-        detail="先从 IP 新建故事，再进入详情页生成剧集。"
+        title={t("stories.list.emptyTitle", "No stories yet")}
+        detail={t("stories.list.emptyDetail", "Create a story from an IP first, then generate episodes from the detail page.")}
         action={
           <button
             type="button"
             onClick={onOpenGenerateForm}
             className={operatorButtonClass("primary")}
           >
-            从 IP 新建
+            {t("stories.board.createFromIp", "Create from IP")}
           </button>
         }
       />
@@ -156,7 +157,7 @@ function StoryProjectCard({
             {story.title}
           </h3>
           <p className="mt-1 text-xs text-gray-500">
-            {story.genre || "未分类"}
+            {story.genre || t("stories.list.uncategorized", "Uncategorized")}
             {story.theme ? ` · ${story.theme}` : ""}
           </p>
         </div>
@@ -173,27 +174,27 @@ function StoryProjectCard({
 
       <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
         <span className="text-xs text-gray-500">
-          更新 {new Date(story.updated_at).toLocaleDateString("zh-CN")}
+          {t("common.updatedPrefix", "Updated")} {formatDateOnly(story.updated_at)}
         </span>
         <div className="flex gap-2">
           <Link
             href={`/stories/${storyKey}?generate=episodes#episode-generation`}
             className={operatorButtonClass("primary", "whitespace-nowrap")}
           >
-            生成剧集
+            {t("stories.list.generateEpisodes", "Generate episodes")}
           </Link>
           <Link
             href={`/stories/${storyKey}`}
             className={operatorButtonClass("ghost", "whitespace-nowrap")}
           >
-            详情
+            {t("common.details", "Details")}
           </Link>
           <button
             type="button"
             onClick={() => onDelete(storyKey)}
             className="h-8 whitespace-nowrap rounded-md px-2 text-xs font-medium text-red-600 hover:bg-red-50"
           >
-            删除
+            {t("common.delete", "Delete")}
           </button>
         </div>
       </div>
@@ -206,7 +207,7 @@ function StoryCharacterChips({ characters }: { characters: StoryCharacter[] }) {
     return (
       <div className="mt-4">
         <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-700">
-          暂未关联 IP
+          {t("stories.list.noLinkedIp", "No linked IP yet")}
         </span>
       </div>
     );

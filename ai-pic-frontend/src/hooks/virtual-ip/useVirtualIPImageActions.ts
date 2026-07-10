@@ -20,13 +20,13 @@ export function useVirtualIPImageActions({
 }: UseVirtualIPImageActionsOptions) {
   const handleDeleteImage = (imageId: number) => {
     showAlert({
-      title: "确认删除图片",
-      message: "确定删除这张图片吗？",
+      title: "Confirm Image Deletion",
+      message: "Delete this image?",
       variant: "warning",
-      confirmText: "删除",
+      confirmText: "Delete",
       onConfirm: async () => {
         if (!virtualIPId) {
-          showAlert({ message: "虚拟IP尚未加载", variant: "error" });
+          showAlert({ message: "Virtual IP has not loaded yet", variant: "error" });
           return;
         }
         try {
@@ -36,15 +36,15 @@ export function useVirtualIPImageActions({
           );
           if (response.success) {
             setImages((prev) => prev.filter((img) => img.id !== imageId));
-            showAlert({ message: "图片删除成功", variant: "success" });
+            showAlert({ message: "Image deleted successfully", variant: "success" });
           } else {
-            throw new Error(response.error || "删除图片失败");
+            throw new Error(response.error || "Failed to delete image");
           }
         } catch (error) {
           console.error("Delete image failed:", error);
           showAlert({
-            message: `删除图片失败：${
-              error instanceof Error ? error.message : "未知错误"
+            message: `Failed to delete image：${
+              error instanceof Error ? error.message : "Unknown error"
             }`,
             variant: "error",
           });
@@ -55,7 +55,7 @@ export function useVirtualIPImageActions({
 
   const handleSetDefault = async (imageId: number) => {
     if (!virtualIPId) {
-      showAlert({ message: "虚拟IP尚未加载", variant: "error" });
+      showAlert({ message: "Virtual IP has not loaded yet", variant: "error" });
       return;
     }
     try {
@@ -67,15 +67,15 @@ export function useVirtualIPImageActions({
         setImages((prev) =>
           prev.map((img) => ({ ...img, is_default: img.id === imageId })),
         );
-        showAlert({ message: "已设置为默认图片", variant: "success" });
+        showAlert({ message: "Set as default image", variant: "success" });
       } else {
-        throw new Error(response.error || "设置默认图片失败");
+        throw new Error(response.error || "Failed to set the default image");
       }
     } catch (error) {
       console.error("Set default image failed:", error);
       showAlert({
-        message: `设置默认图片失败：${
-          error instanceof Error ? error.message : "未知错误"
+        message: `Failed to set the default image：${
+          error instanceof Error ? error.message : "Unknown error"
         }`,
         variant: "error",
       });

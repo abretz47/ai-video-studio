@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { t } from "@/lib/i18n";
 import { formatTimelineLabel } from "./timelineScale";
 import { TimelineToolbarIcon } from "./TimelineToolbarIcon";
 
@@ -39,7 +40,7 @@ export function TimelineToolbar({
   zoom: number;
 }) {
   const timelineScopeLabel =
-    headerTitle?.replace(/时间轴$/, "").trim() || "全片";
+    headerTitle?.replace(/Timeline$|时间轴$/, "").trim() || t("timeline.fullFilm", "Full Film");
   const timelineWindowLabel = `${formatTimelineLabel(
     minStart,
   )} – ${formatTimelineLabel(maxEnd)}`;
@@ -48,20 +49,20 @@ export function TimelineToolbar({
     minStart === 0 ? formatTimelineLabel(totalMs) : timelineWindowLabel;
   const timelineSummaryLabel =
     primaryClipCount > 0
-      ? `${primaryClipCount} 段 · ${visibleRangeLabel}`
+      ? `${primaryClipCount} clips · ${visibleRangeLabel}`
       : visibleRangeLabel;
   const resetLabel =
     fitToWidth && fitMode === "readable-window"
-      ? "重置为可读时间轴视图"
+      ? "Reset to readable timeline view"
       : fitToWidth
-      ? "重置为全片适配视图"
-      : "重置为 1x 视图";
+      ? "Reset to full-film fit view"
+      : "Reset to 1x view";
   const resetText =
     fitToWidth && fitMode === "readable-window"
-      ? "可读时间轴"
+      ? "Readable Timeline"
       : fitToWidth
-      ? "适配全片"
-      : "重置视图";
+      ? "Fit Full Film"
+      : "Reset View";
   return (
     <div
       data-timeline-toolbar="compact"
@@ -80,13 +81,13 @@ export function TimelineToolbar({
             className={MODULE_LABEL_CLASS}
           >
             <span data-timeline-navigation-label="sr-only" className="sr-only">
-              时间轴导航
+              Timeline Navigation
             </span>
             <span
               data-timeline-header-kind-text="visible"
               className="text-[15px] font-extrabold"
             >
-              时间轴
+              Timeline
             </span>
             <span aria-hidden="true" className="h-3.5 w-px bg-slate-200" />
             <span
@@ -107,13 +108,13 @@ export function TimelineToolbar({
             className={MODULE_LABEL_CLASS}
           >
             <span data-timeline-navigation-label="sr-only" className="sr-only">
-              时间轴导航
+              Timeline Navigation
             </span>
             <span
               data-timeline-header-kind-text="visible"
               className="text-[15px] font-extrabold"
             >
-              时间轴
+              Timeline
             </span>
             <span aria-hidden="true" className="h-3.5 w-px bg-slate-200" />
             <span
@@ -121,9 +122,9 @@ export function TimelineToolbar({
               data-timeline-header-scope-text="visible"
               className="rounded-sm bg-slate-100 px-1.5 text-[11px] font-semibold text-slate-600"
             >
-              全片
+              Full Film
             </span>
-            <span className="sr-only">全片时间轴</span>
+            <span className="sr-only">Full Film Timeline</span>
           </span>
         )}
         <span
@@ -131,8 +132,8 @@ export function TimelineToolbar({
           className="inline-flex shrink-0 items-center rounded-md border border-blue-200 bg-white px-2 py-1 text-[11px] font-bold leading-4 tabular-nums text-blue-950 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.8)]"
         >
           <span className="sr-only">
-            时间轴窗口 {timelineWindowLabel}，时长 {durationLabel}
-            {primaryClipCount > 0 ? `，共 ${primaryClipCount} 段` : ""}
+            Timeline window {timelineWindowLabel}, duration {durationLabel}
+            {primaryClipCount > 0 ? `, total ${primaryClipCount} clips` : ""}
           </span>
           <span aria-hidden="true">{timelineSummaryLabel}</span>
         </span>
@@ -150,8 +151,8 @@ export function TimelineToolbar({
         >
           <summary
             data-timeline-view-summary="compact"
-            aria-label="视图缩放"
-            title="视图缩放"
+            aria-label="View Zoom"
+            title="View Zoom"
             className="inline-flex h-7 w-7 cursor-pointer list-none items-center justify-center rounded-md border border-transparent text-slate-600 hover:bg-white/80 hover:text-slate-950 marker:hidden [&::-webkit-details-marker]:hidden"
           >
             <TimelineToolbarIcon kind="view" />
@@ -161,10 +162,10 @@ export function TimelineToolbar({
             className="absolute right-0 top-full z-20 mt-1 hidden w-48 rounded-md border border-gray-200 bg-white px-2 py-2 shadow-lg group-open:block"
           >
             <label className="flex items-center gap-2 text-[11px] font-medium text-gray-600">
-              <span>缩放</span>
+              <span>Zoom</span>
               <input
                 type="range"
-                aria-label="视图缩放"
+                aria-label="View Zoom"
                 min={minZoom}
                 max={maxZoom}
                 step={0.01}

@@ -28,11 +28,11 @@ export function EpisodeContextPackPreview({
   return (
     <details className="mt-4 rounded border bg-gray-50 p-3">
       <summary className="cursor-pointer text-sm font-medium text-gray-800">
-        上下文预览（Context Pack）
+        Context Preview (Context Pack)
       </summary>
       <div className="mt-3 space-y-3">
         <p className="text-xs text-gray-500">
-          用于查看本次生成将注入的上下文（预览不调用模型）。
+          Preview the context that will be injected for this generation (no model call during preview).
         </p>
 
         <div className="flex flex-wrap items-center gap-4">
@@ -50,10 +50,10 @@ export function EpisodeContextPackPreview({
               checked={includeCharacterCards}
               onChange={(e) => setIncludeCharacterCards(e.target.checked)}
             />
-            角色卡
+            Character Cards
           </label>
           <label className="text-sm text-gray-700 flex items-center gap-2">
-            最近摘要
+            Recent Summary
             <input
               type="number"
               min={0}
@@ -66,7 +66,7 @@ export function EpisodeContextPackPreview({
               }
               className="w-20 px-2 py-1 border rounded bg-white"
             />
-            集
+           
           </label>
         </div>
 
@@ -77,7 +77,7 @@ export function EpisodeContextPackPreview({
             disabled={contextPackLoading}
             className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 disabled:opacity-60"
           >
-            {contextPackLoading ? "加载中..." : "预览上下文"}
+            {contextPackLoading ? "Loading..." : "Preview Context"}
           </button>
           {contextPackError ? (
             <span className="text-sm text-red-600">{contextPackError}</span>

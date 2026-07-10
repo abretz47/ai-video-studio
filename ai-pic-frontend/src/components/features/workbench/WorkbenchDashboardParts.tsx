@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import { StatusPill } from "@/components/shared";
 
 export function MetricCard({
@@ -31,7 +32,9 @@ export function ReadyCell({ ready }: { ready: boolean }) {
   return (
     <td className="px-4 py-4">
       <StatusPill tone={ready ? "green" : "gray"}>
-        {ready ? "已就绪" : "未开始"}
+        {ready
+          ? t("common.status.ready", "Ready")
+          : t("common.status.notStarted", "Not started")}
       </StatusPill>
     </td>
   );

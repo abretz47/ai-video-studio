@@ -137,7 +137,7 @@ export function Timeline({
       data-timeline-responsive-density={compact ? "compact" : "regular"}
       data-timeline-fit-to-width={fitToWidth ? "true" : "false"}
       data-timeline-scale-mode={fitMode}
-      aria-label="时间轴导航：片段时间轴定位区"
+      aria-label="Timeline Navigation: Clip Locator"
       className="relative w-full overflow-hidden rounded-lg border border-slate-300 border-l-8 border-l-blue-600 bg-white shadow-md shadow-blue-100/80 ring-1 ring-blue-100/80"
     >
       <TimelineToolbar

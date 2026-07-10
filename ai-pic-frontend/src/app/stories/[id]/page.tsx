@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { t } from "@/lib/i18n";
 import { AuthGuard, OperatorShell } from "@/components/shared";
 import { StoryProductionDetail } from "@/components/features/stories/StoryProductionDetail";
 
@@ -10,9 +11,13 @@ function StoryDetailPageContent() {
 
   return (
     <OperatorShell
-      title="故事生产"
-      subtitle="故事详情、剧集和生成准备"
-      breadcrumb={["IP 中心", "故事生产", storyKey]}
+      title={t("stories.detail.pageTitle", "Story Production")}
+      subtitle={t("stories.detail.pageSubtitle", "Story details, episodes, and generation preparation")}
+      breadcrumb={[
+        t("common.breadcrumb.ipCenter", "IP Center"),
+        t("stories.board.breadcrumb", "Story Production"),
+        storyKey,
+      ]}
     >
       <StoryProductionDetail storyKey={storyKey} />
     </OperatorShell>

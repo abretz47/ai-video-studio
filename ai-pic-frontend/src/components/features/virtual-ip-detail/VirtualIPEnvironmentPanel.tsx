@@ -50,7 +50,7 @@ export function VirtualIPEnvironmentPanel({
         setLinks(linksRes.data);
         onLinkedCountChange?.(linksRes.data.length);
       } else {
-        showAlert({ message: linksRes.error || "加载 IP 环境失败", variant: "error" });
+        showAlert({ message: linksRes.error || "Failed to load IP environments", variant: "error" });
       }
       setEnvironments(envRes.success && envRes.data ? envRes.data : []);
     } finally {
@@ -83,9 +83,9 @@ export function VirtualIPEnvironmentPanel({
       if (res.success && res.data) {
         refreshLinks([...links.filter((item) => item.environment_id !== environmentId), res.data]);
         setSelectedEnvId("");
-        showAlert({ message: "环境已接入 IP", variant: "success" });
+        showAlert({ message: "Environment linked to IP", variant: "success" });
       } else {
-        showAlert({ message: res.error || "关联环境失败", variant: "error" });
+        showAlert({ message: res.error || "Failed to link environment", variant: "error" });
       }
     } finally {
       setLinking(false);
@@ -102,7 +102,7 @@ export function VirtualIPEnvironmentPanel({
         category: quickCategory,
       });
       if (!created.success || !created.data) {
-        showAlert({ message: created.error || "创建环境失败", variant: "error" });
+        showAlert({ message: created.error || "Failed to create environment", variant: "error" });
         return;
       }
       const linked = await virtualIPAPI.linkVirtualIPEnvironment(ipKey, {
@@ -112,9 +112,9 @@ export function VirtualIPEnvironmentPanel({
         refreshLinks([linked.data, ...links]);
         setEnvironments((prev) => [created.data!, ...prev]);
         setQuickName("");
-        showAlert({ message: "环境已创建并接入 IP", variant: "success" });
+        showAlert({ message: "Environment created and linked to IP", variant: "success" });
       } else {
-        showAlert({ message: linked.error || "环境创建成功，关联失败", variant: "error" });
+        showAlert({ message: linked.error || "Environment created, but linking failed", variant: "error" });
       }
     } finally {
       setLinking(false);
@@ -125,22 +125,22 @@ export function VirtualIPEnvironmentPanel({
     const res = await virtualIPAPI.unlinkVirtualIPEnvironment(ipKey, link.environment_id);
     if (res.success) {
       refreshLinks(links.filter((item) => item.id !== link.id));
-      showAlert({ message: "已从 IP 移除环境关联", variant: "success" });
+      showAlert({ message: "Environment link removed from IP", variant: "success" });
     } else {
-      showAlert({ message: res.error || "移除关联失败", variant: "error" });
+      showAlert({ message: res.error || "Failed to remove link", variant: "error" });
     }
   };
 
   return (
     <OperatorPanel id="ip-environments">
       <OperatorSectionHeader
-        title="环境资产"
-        subtitle="接入当前 IP 的可复用场景、地点和背景图池"
-        action={<StatusPill tone={links.length ? "green" : "amber"}>{links.length} 个</StatusPill>}
+        title="Environment Assets"
+        subtitle="Reusable scenes, locations, and background image pools linked to this IP"
+        action={<StatusPill tone={links.length ? "green" : "amber"}>{links.length}</StatusPill>}
       />
       <div className="space-y-4 p-4">
         {loading ? (
-          <OperatorState title="加载 IP 环境资产..." />
+          <OperatorState title="Loading IP environment assets..." />
         ) : links.length ? (
           <div className="grid gap-3 md:grid-cols-2">
             {links.map((link) => (
@@ -151,11 +151,11 @@ export function VirtualIPEnvironmentPanel({
                       {link.environment.name}
                     </div>
                     <div className="mt-1 text-xs text-gray-500">
-                      {link.environment.category || "未分类"} · {link.usage_type}
+                      {link.environment.category || "Uncategorized"} · {link.usage_type}
                     </div>
                   </div>
                   <StatusPill tone={link.is_default ? "blue" : "gray"}>
-                    {link.is_default ? "默认" : "已接入"}
+                    {link.is_default ? "Default" : "Linked"}
                   </StatusPill>
                 </div>
                 {link.environment.description ? (
@@ -168,14 +168,14 @@ export function VirtualIPEnvironmentPanel({
                     href={`/environments/${link.environment.business_id || link.environment_id}`}
                     className={operatorButtonClass("secondary")}
                   >
-                    管理图片
+                    Manage Images
                   </Link>
                   <button
                     type="button"
                     onClick={() => void handleUnlink(link)}
                     className={operatorButtonClass("ghost")}
                   >
-                    移除关联
+                    Remove Link
                   </button>
                 </div>
               </div>
@@ -184,8 +184,8 @@ export function VirtualIPEnvironmentPanel({
         ) : (
           <OperatorState
             tone="amber"
-            title="环境待接入"
-            detail="关联环境后，故事、Timeline 和分镜会优先使用当前 IP 的环境池。"
+            title="No environment linked yet"
+            detail="After linking environments, stories, Timeline, and storyboard flows will prioritize this IP environment pool."
           />
         )}
 
@@ -196,7 +196,7 @@ export function VirtualIPEnvironmentPanel({
               onChange={(event) => setSelectedEnvId(event.target.value)}
               className={operatorSelectClass("min-w-0 flex-1")}
             >
-              <option value="">选择已有环境</option>
+              <option value="">Select an existing environment</option>
               {availableEnvironments.map((env) => (
                 <option key={env.id} value={env.id}>
                   {env.name}
@@ -209,14 +209,14 @@ export function VirtualIPEnvironmentPanel({
               onClick={() => void handleLinkExisting()}
               className={operatorButtonClass("primary")}
             >
-              接入
+              Link
             </button>
           </div>
           <div className="flex gap-2">
             <input
               value={quickName}
               onChange={(event) => setQuickName(event.target.value)}
-              placeholder="新环境名称"
+              placeholder="New Environment Name"
               className={operatorInputClass("min-w-0 flex-1")}
             />
             <select
@@ -224,9 +224,9 @@ export function VirtualIPEnvironmentPanel({
               onChange={(event) => setQuickCategory(event.target.value)}
               className={operatorSelectClass("w-24")}
             >
-              <option value="indoor">室内</option>
-              <option value="outdoor">室外</option>
-              <option value="other">其他</option>
+              <option value="indoor">Indoor</option>
+              <option value="outdoor">Outdoor</option>
+              <option value="other">Other</option>
             </select>
             <button
               type="button"
@@ -234,7 +234,7 @@ export function VirtualIPEnvironmentPanel({
               onClick={() => void handleQuickCreate()}
               className={operatorButtonClass("secondary")}
             >
-              创建并接入
+              Create and Link
             </button>
           </div>
         </div>

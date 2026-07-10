@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { t } from "@/lib/i18n";
 import { ImageToImageModal, useAlertModal } from "@/components/shared/modals";
 import {
   AIModelType,
@@ -30,7 +31,7 @@ export function EnvironmentVariantModal({
   const { showAlert } = useAlertModal();
   const [submitting, setSubmitting] = useState(false);
   const defaultPrompt = useMemo(
-    () => env?.description || env?.name || "基于该环境参考图生成一致风格的变体",
+    () => env?.description || env?.name || t("environments.variant.defaultPrompt", "Generate consistent style variants from this environment reference image"),
     [env],
   );
 
@@ -85,17 +86,17 @@ export function EnvironmentVariantModal({
       );
       if (res.success) {
         showAlert({
-          title: "已创建环境图变体任务",
-          message: "任务将在后台生成，完成后刷新即可看到新图片。",
+          title: t("environments.variant.successTitle", "Environment image variant task created"),
+          message: t("environments.variant.successMessage", "The task runs in the background. Refresh to see the new images when it finishes."),
           variant: "success",
         });
         onClose();
       } else {
-        showAlert({ message: res.error || "变体生成失败", variant: "error" });
+        showAlert({ message: res.error || t("environments.variant.failed", "Variant generation failed"), variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "变体生成失败", variant: "error" });
+      showAlert({ message: t("environments.variant.failed", "Variant generation failed"), variant: "error" });
     } finally {
       setSubmitting(false);
     }
@@ -107,9 +108,9 @@ export function EnvironmentVariantModal({
     <ImageToImageModal
       open={!!target}
       onClose={onClose}
-      title="环境图生图"
-      description="参考当前环境图，调整模型与参数后提交生成变体。"
-      referenceSections={[{ title: "参考图", images: [referenceImage] }]}
+      title={t("environments.variant.title", "Environment Image-to-Image")}
+      description={t("environments.variant.description", "Use the current environment image as reference, adjust the model and parameters, and submit a variant generation task.")}
+      referenceSections={[{ title: t("environments.variant.referenceImage", "Reference Image"), images: [referenceImage] }]}
       defaultSelected={[referenceImage]}
       defaultPrompt={defaultPrompt}
       defaultCount={1}

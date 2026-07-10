@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { t } from "@/lib/i18n";
 import { operatorButtonClass } from "@/components/shared";
 import type {
   ProductionCanvasEdge,
@@ -30,15 +31,15 @@ export function ProductionCanvasEdgeControls({
 
   return (
     <div className="border-t border-gray-100 pt-3">
-      <div className="text-xs font-semibold text-gray-700">连线编辑</div>
+      <div className="text-xs font-semibold text-gray-700">{t("canvas.edgeControls.title", "Edge Editing")}</div>
       <div className="mt-2 flex gap-2">
         <select
-          aria-label="连线目标"
+          aria-label={t("canvas.edgeControls.targetAria", "Edge target")}
           className="h-8 min-w-0 flex-1 rounded-md border border-gray-200 bg-white px-2 text-xs text-gray-800 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
           value={targetId}
           onChange={(event) => setTargetId(event.currentTarget.value)}
         >
-          <option value="">选择目标</option>
+          <option value="">{t("canvas.edgeControls.selectTarget", "Select target")}</option>
           {availableTargets.map((target) => (
             <option key={target.id} value={target.id}>
               {target.label}
@@ -54,7 +55,7 @@ export function ProductionCanvasEdgeControls({
             setTargetId("");
           }}
         >
-          添加连线
+          {t("canvas.edgeControls.addEdge", "Add Edge")}
         </button>
       </div>
       {outgoing.length ? (
@@ -69,7 +70,7 @@ export function ProductionCanvasEdgeControls({
                 className={operatorButtonClass("ghost", "h-7 w-full justify-start px-2")}
                 onClick={() => onRemoveEdge(edge.from, edge.to)}
               >
-                移除连线 {label}
+                {t("canvas.edgeControls.removeEdge", "Remove Edge")} {label}
               </button>
             );
           })}

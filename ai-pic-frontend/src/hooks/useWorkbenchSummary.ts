@@ -17,10 +17,10 @@ export function useWorkbenchSummary() {
         setSummary(response.data);
         setError(null);
       } else {
-        setError(response.error || "加载工作台失败");
+        setError(response.error || "Failed to load workbench");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "加载工作台失败");
+      setError(err instanceof Error ? err.message : "Failed to load workbench");
     } finally {
       setLoading(false);
     }

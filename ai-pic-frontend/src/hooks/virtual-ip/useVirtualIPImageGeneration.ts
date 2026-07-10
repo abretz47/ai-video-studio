@@ -125,7 +125,7 @@ export function useVirtualIPImageGeneration({
 
   const handleGenerateImage = async () => {
     if (!virtualIPId) {
-      showAlert({ message: "虚拟IP尚未加载", variant: "error" });
+      showAlert({ message: "Virtual IP has not loaded yet", variant: "error" });
       return;
     }
     try {
@@ -136,7 +136,7 @@ export function useVirtualIPImageGeneration({
         (availableModels.length > 0 ? availableModels[0].model_id : "");
 
       if (!modelToUse) {
-        showAlert({ message: "模型列表未加载，请重试", variant: "warning" });
+        showAlert({ message: "Model list not loaded. Please retry", variant: "warning" });
         return;
       }
 
@@ -170,21 +170,21 @@ export function useVirtualIPImageGeneration({
           reference_images: [],
         });
         showAlert({
-          title: "图片生成任务已创建",
+          title: "Image generation task created",
           message:
-            "任务已在后台运行，完成后会自动刷新图片列表。是否前往任务管理页？",
+            "The task is already running in the background. The image list will refresh automatically when it finishes. Go to the task page?",
           variant: "success",
-          confirmText: "前往任务",
+          confirmText: "Go to Tasks",
           onConfirm: () => router.push("/tasks"),
         });
       } else {
-        throw new Error(response.error || "AI 图片生成失败");
+        throw new Error(response.error || "AI image generation failed");
       }
     } catch (error) {
       console.error("AI image generation failed:", error);
       showAlert({
-        message: `AI 图片生成失败：${
-          error instanceof Error ? error.message : "未知错误"
+        message: `AI image generation failed: ${
+          error instanceof Error ? error.message : "Unknown error"
         }`,
         variant: "error",
       });

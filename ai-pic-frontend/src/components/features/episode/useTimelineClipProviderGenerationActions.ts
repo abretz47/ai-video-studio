@@ -76,12 +76,12 @@ export function useTimelineClipProviderGenerationActions({
       );
       if (!res.success || !res.data) {
         return reportError(
-          res.error || "提交片段分镜任务失败",
+          res.error || "Failed to submit clip storyboard task",
           setSubmitError,
           onNotify,
         );
       }
-      onNotify?.(`片段分镜任务已提交 #${res.data.task_id}，生成中…`, "success");
+      onNotify?.(`Clip storyboard task submitted #${res.data.task_id}，Generating…`, "success");
       onTaskQueued?.("storyboard", res.data.task_id);
     } finally {
       setGeneratingStoryboard(false);
@@ -110,12 +110,12 @@ export function useTimelineClipProviderGenerationActions({
       );
       if (!res.success || !res.data) {
         return reportError(
-          res.error || "提交首尾帧任务失败",
+          res.error || "Failed to submit start/end frames task",
           setSubmitError,
           onNotify,
         );
       }
-      onNotify?.(`首尾帧任务已提交 #${res.data.task_id}，生成中…`, "success");
+      onNotify?.(`Start/end frames task submitted #${res.data.task_id}，Generating…`, "success");
       onTaskQueued?.("keyframes", res.data.task_id);
     } finally {
       setGeneratingKeyframes(false);
@@ -138,7 +138,7 @@ function warnMissingContext(
   setSubmitError: (message: string) => void,
   onNotify?: (message: string, variant: NotifyVariant) => void,
 ) {
-  const message = "当前片段缺少稳定 Timeline 上下文";
+  const message = "The current clip lacks a stable Timeline context";
   setSubmitError(message);
   onNotify?.(message, "warning");
 }

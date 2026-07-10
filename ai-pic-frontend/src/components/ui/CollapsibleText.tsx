@@ -53,7 +53,7 @@ export function CollapsibleText({
           className="mt-2 text-sm text-blue-600 hover:text-blue-700"
           aria-expanded={expanded}
         >
-          {expanded ? "收起" : "展开"}
+          {expanded ? "Collapse" : "Expand"}
         </button>
       ) : null}
     </div>

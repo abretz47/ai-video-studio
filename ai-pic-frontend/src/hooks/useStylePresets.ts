@@ -40,13 +40,13 @@ export function useStylePresets(options: UseStylePresetsOptions = {}) {
     try {
       const response = fetcher ? await fetcher() : await styleAPI.listPresets();
       if (!response.success || !response.data) {
-        throw new Error(response.error || "获取风格预设失败");
+        throw new Error(response.error || "Failed to fetch style presets");
       }
       presetCache.set(effectiveKey, response.data);
       setState({ presets: response.data, loading: false, error: null });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "获取风格预设失败";
+        error instanceof Error ? error.message : "Failed to fetch style presets";
       setState((prev) => ({ ...prev, loading: false, error: message }));
     }
   }, [effectiveKey, enabled, fetcher]);

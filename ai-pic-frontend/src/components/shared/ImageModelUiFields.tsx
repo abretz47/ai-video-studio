@@ -80,7 +80,7 @@ export function ImageModelUiFields({
       {mergeSizeAndAspectRatio ? (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            画幅/尺寸
+            Aspect Ratio / Size
           </label>
           <select
             disabled={disabled}
@@ -116,7 +116,7 @@ export function ImageModelUiFields({
           {imageUi.sizeOptions.length > 0 ? (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                分辨率/尺寸
+                Resolution / Size
               </label>
               <select
                 disabled={disabled}
@@ -140,7 +140,7 @@ export function ImageModelUiFields({
           imageUi.aspectRatioOptions.length > 0 ? (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                画幅比例
+                Aspect Ratio
               </label>
               <select
                 disabled={disabled}

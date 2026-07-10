@@ -74,21 +74,21 @@ export function ReferenceImagePickerModal({
             onClick={onClose}
             className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-white"
           >
-            取消
+            Cancel
           </button>
           <button
             type="button"
             onClick={() => setDraftUrls([])}
             className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-white"
           >
-            清空
+            Clear
           </button>
           <button
             type="button"
             onClick={applyDraft}
             className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
           >
-            应用选择
+            Apply Selection
           </button>
         </>
       }
@@ -96,24 +96,24 @@ export function ReferenceImagePickerModal({
       <div className="sticky top-0 z-10 -mx-6 -mt-6 border-b border-slate-200 bg-white px-6 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
           <span className="font-medium text-slate-700">
-            已选 {selectedCount}/{allOptions.length}
+            Selected {selectedCount}/{allOptions.length}
           </span>
           <span className="flex items-center gap-3">
             <button
               type="button"
-              aria-label={`${title}全选`}
+              aria-label={`${title}Select All`}
               className="text-blue-600 hover:underline"
               onClick={() => setDraftUrls(allUrls)}
             >
-              全选
+              Select All
             </button>
             <button
               type="button"
-              aria-label={`${title}清空`}
+              aria-label={`${title} clear`}
               className="text-slate-500 hover:underline"
               onClick={() => setDraftUrls([])}
             >
-              清空
+              Clear
             </button>
           </span>
         </div>
@@ -170,7 +170,7 @@ export function ReferenceImagePickerModal({
           ))
         ) : (
           <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-8 text-center text-sm text-slate-500">
-            暂无可选图片
+            No images available
           </div>
         )}
       </div>

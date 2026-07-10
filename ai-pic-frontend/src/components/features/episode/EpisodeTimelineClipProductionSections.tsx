@@ -24,24 +24,24 @@ export function ClipProductionSummary({
   resolvedVideo?: TimelineResolvedVideoItem | null;
 }) {
   if (!item) {
-    return <div className="text-sm text-gray-500">请选择时间轴片段。</div>;
+    return <div className="text-sm text-gray-500">Please select a timeline clip.</div>;
   }
   const meta = timelineItemMeta(item);
   const videoStatus =
     timelineClipVideoStatusFromResolvedVideo(resolvedVideo ?? null) ??
     timelineClipVideoStatus(meta, selectedStoryboard);
   const videoStatusLabel = videoStatus.ready
-    ? `已关联 · ${videoStatus.source || "素材"}`
+    ? `Linked · ${videoStatus.source || "Asset"}`
     : videoStatus.reason === "generating"
-    ? "视频生成中"
-    : "缺少视频素材";
+    ? "Video generation in progress"
+    : "Missing video asset";
   const videoStatusShortLabel = videoStatus.ready
-    ? "已关联"
+    ? "Linked"
     : videoStatus.reason === "generating"
-    ? "生成中"
-    : "缺视频";
-  const compactClipLabel = item.displayLabel || item.label || "片段";
-  const reviewStatusLabel = getString(meta.status) || "待复核";
+    ? "Generating"
+    : "Missing video";
+  const compactClipLabel = item.displayLabel || item.label || "Clip";
+  const reviewStatusLabel = getString(meta.status) || "Pending review";
   return (
     <div
       data-clip-production-summary="true"
@@ -59,7 +59,7 @@ export function ClipProductionSummary({
             data-clip-type-badge-visibility="sr-only"
             className="sr-only"
           >
-            当前{track?.label || "片段"}
+            Current {track?.label || "Clip"}
           </span>
           <span
             data-clip-production-mobile-label="true"
@@ -83,7 +83,7 @@ export function ClipProductionSummary({
           />
           <span
             data-clip-production-meta="true"
-            title={`片段时间 ${formatTimelineMs(
+            title={`Clip time ${formatTimelineMs(
               item.startMs,
             )} - ${formatTimelineMs(item.endMs)} · ${reviewStatusLabel}`}
             className="flex min-w-0 shrink-0 items-center gap-x-2 text-[11px] text-gray-500 max-[760px]:sr-only"
@@ -110,7 +110,7 @@ export function ClipProductionSummary({
       </div>
       <ClipVideoPreview
         url={videoStatus.url || null}
-        label="播放选中片段视频"
+        label="Play selected clip video"
       />
     </div>
   );

@@ -15,7 +15,7 @@ import { useReferenceSelection } from "./image-to-image/useReferenceSelection";
 
 export function ImageToImageModal({
   open,
-  title = "图生图",
+  title = "Image-to-Image",
   description,
   referenceSections = [],
   defaultSelected = [],
@@ -45,7 +45,7 @@ export function ImageToImageModal({
   onSubmit,
 }: ImageToImageModalProps) {
   const submitLabel =
-    modelType === AIModelType.ImageToImage ? "提交图生图任务" : "提交生成任务";
+    modelType === AIModelType.ImageToImage ? "Submit Image-to-Image Task" : "Submit Generation Task";
   const {
     selectedModel,
     handleModelsLoaded,
@@ -162,7 +162,7 @@ export function ImageToImageModal({
             onClick={onClose}
             className="text-sm text-gray-500 hover:text-gray-700"
           >
-            关闭
+            Close
           </button>
         </div>
         <ImageToImageReferencePicker
@@ -209,7 +209,7 @@ export function ImageToImageModal({
         />
         {modalNotes.length > 0 ? (
           <GenerationAuditWarnings
-            title="模型提示"
+            title="Model Help"
             warnings={modalNotes}
             className="mt-4"
           />
@@ -235,7 +235,7 @@ export function ImageToImageModal({
             className="px-3 py-2 text-sm rounded border border-gray-300 text-gray-700 hover:bg-gray-50"
             disabled={submitting}
           >
-            取消
+            Cancel
           </button>
           <button
             type="button"
@@ -246,7 +246,7 @@ export function ImageToImageModal({
             }
             className="px-4 py-2 text-sm font-medium rounded bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50"
           >
-            {submitting ? "提交中..." : submitLabel}
+            {submitting ? "Submitting..." : submitLabel}
           </button>
         </div>
       </div>

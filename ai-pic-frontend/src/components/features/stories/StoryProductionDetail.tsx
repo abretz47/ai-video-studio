@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorInspector,
@@ -26,7 +27,6 @@ import {
   latestScript,
   storyDisplayText,
 } from "./StoryProductionModel";
-// prettier-ignore
 import { CharacterChip, ReadyCell, StoryEnvironmentCoverage } from "./StoryProductionDetailParts";
 import { useEpisodeGenerationAnchor } from "./useEpisodeGenerationAnchor";
 
@@ -72,11 +72,11 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
   const openEpisodeGeneration = useEpisodeGenerationAnchor(setGenOpen);
 
   if (loading) {
-    return <OperatorState title="加载故事详情..." />;
+    return <OperatorState title={t("stories.detail.loading", "Loading story details...")} />;
   }
 
   if (!story) {
-    return <OperatorState title="故事不存在或无权访问。" tone="red" />;
+    return <OperatorState title={t("stories.detail.notFound", "Story not found or access denied.")} tone="red" />;
   }
 
   const linkedCharacters = story.story_characters || story.characters || [];
@@ -99,9 +99,9 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
                   <span>{story.genre}</span>
                   {story.theme ? <span>{story.theme}</span> : null}
                   {story.duration_minutes ? (
-                    <span>{story.duration_minutes} 分钟</span>
+                    <span>{story.duration_minutes} {t("common.minutes", "minutes")}</span>
                   ) : null}
-                  <span>更新 {formatStoryTime(story.updated_at)}</span>
+                  <span>{t("common.updatedPrefix", "Updated")} {formatStoryTime(story.updated_at)}</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -113,10 +113,10 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
                     "whitespace-nowrap",
                   )}
                 >
-                  生成剧集
+                  {t("stories.list.generateEpisodes", "Generate episodes")}
                 </button>
                 <button className={operatorButtonClass("secondary")}>
-                  编辑故事
+                  {t("stories.detail.editStory", "Edit story")}
                 </button>
               </div>
             </div>
@@ -130,7 +130,7 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
                 ))
               ) : (
                 <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-700">
-                  暂未关联 IP
+                  {t("stories.list.noLinkedIp", "No linked IP yet")}
                 </span>
               )}
               <StoryEnvironmentCoverage links={storyEnvironmentLinks} />
@@ -167,10 +167,12 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
 
           <OperatorPanel>
             <OperatorSectionHeader
-              title="剧集生产状态"
+              title={t("stories.detail.episodeStatusTitle", "Episode production status")}
               action={
                 <span className="text-xs text-gray-500">
-                  {loadingScripts ? "剧本加载中" : `共 ${episodes.length} 集`}
+                  {loadingScripts
+                    ? t("stories.detail.scriptsLoading", "Scripts loading")
+                    : t("stories.detail.episodeCount", "{count} episodes total").replace("{count}", String(episodes.length))}
                 </span>
               }
             />
@@ -178,12 +180,12 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
               <table className={`${operatorTableClass} min-w-[760px]`}>
                 <thead className={operatorTableHeadClass}>
                   <tr>
-                    <th className="px-5 py-3 text-left font-medium">集数</th>
-                    <th className="px-4 py-3 text-left font-medium">标题</th>
-                    <th className="px-4 py-3 text-left font-medium">剧本</th>
-                    <th className="px-4 py-3 text-left font-medium">时间轴</th>
-                    <th className="px-4 py-3 text-left font-medium">分镜</th>
-                    <th className="px-5 py-3 text-right font-medium">操作</th>
+                    <th className="px-5 py-3 text-left font-medium">{t("stories.detail.table.episode", "Episode")}</th>
+                    <th className="px-4 py-3 text-left font-medium">{t("common.title", "Title")}</th>
+                    <th className="px-4 py-3 text-left font-medium">{t("common.script", "Script")}</th>
+                    <th className="px-4 py-3 text-left font-medium">{t("common.timeline", "Timeline")}</th>
+                    <th className="px-4 py-3 text-left font-medium">{t("common.storyboard", "Storyboard")}</th>
+                    <th className="px-5 py-3 text-right font-medium">{t("common.actions", "Actions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -200,7 +202,7 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
                     return (
                       <tr key={episode.id} className={operatorTableRowClass}>
                         <td className="px-5 py-4 font-medium">
-                          第{episode.episode_number}集
+                          {t("common.episodeWithNumber", "Episode {number}").replace("{number}", String(episode.episode_number))}
                         </td>
                         <td className="px-4 py-4">{episode.title}</td>
                         <ReadyCell ready={Boolean(script)} />
@@ -217,7 +219,7 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
                               "whitespace-nowrap",
                             )}
                           >
-                            进入时间轴
+                            {t("common.openTimeline", "Open timeline")}
                           </Link>
                         </td>
                       </tr>
@@ -230,8 +232,8 @@ export function StoryProductionDetail({ storyKey }: { storyKey: string }) {
         </OperatorMainCanvas>
       }
       inspector={
-        <OperatorInspector title="生产控制" subtitle="就绪检查和生产准备">
-          <h2 className="text-sm font-semibold">IP 生产准备</h2>
+        <OperatorInspector title={t("stories.detail.productionControl", "Production control")} subtitle={t("stories.detail.productionControlSubtitle", "Readiness checks and production preparation")}>
+          <h2 className="text-sm font-semibold">{t("stories.detail.ipProductionPrep", "IP production readiness")}</h2>
           <div className="mt-4">
             <StoryReadinessPanel
               readiness={readiness}

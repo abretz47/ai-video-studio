@@ -25,12 +25,12 @@ export function useNormalizedScenes(scriptId: number | null) {
         setNormalizedScenes(res.data);
       } else {
         setNormalizedScenes([]);
-        setError(res.error || "加载场景失败");
+        setError(res.error || "Failed to load scenes");
       }
     } catch (err) {
-      console.error("加载场景失败:", err);
+      console.error("Failed to load scenes:", err);
       setNormalizedScenes([]);
-      setError("加载场景失败");
+      setError("Failed to load scenes");
     } finally {
       setLoading(false);
     }

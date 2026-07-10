@@ -96,7 +96,7 @@ export function EpisodeTimelineClipProductionPanel({
     timelineClipVideoStatusFromResolvedVideo(resolvedVideo) ??
     timelineClipVideoStatus(timelineItemMeta(item), selectedStoryboard);
   const headerAction =
-    item && isVideoClip ? <span className="sr-only">片段分镜管理</span> : null;
+    item && isVideoClip ? <span className="sr-only">Clip storyboard management</span> : null;
 
   return (
     <section
@@ -120,7 +120,7 @@ export function EpisodeTimelineClipProductionPanel({
             data-clip-current-bar-layout="identity-chip"
             className="flex min-w-0 items-center gap-2 px-0 py-0 text-xs text-slate-700"
           >
-            <span className="sr-only">选中片段生产</span>
+            <span className="sr-only">Selected clip production</span>
             {headerAction}
             <div className="min-w-0 flex-1">
               <ClipProductionSummary

@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import sqlalchemy as sa
 from alembic import op
-from app.models.script import Script
-from sqlalchemy.orm import Session
 
 ROOT = Path(__file__).resolve().parents[2]
 import sys
@@ -19,7 +18,6 @@ if str(ROOT) not in sys.path:
 
 from scripts.prototype_story_structure_migration import (  # noqa: E402
     assemble_payload,
-    load_live_payloads,
 )
 
 # revision identifiers, used by Alembic.
@@ -174,26 +172,119 @@ def _materialize_payload(
         connection.execute(tables["shots"].insert().values(**insert_data))
 
 
+def _parse_json(value: Any) -> Any:
+    """Safely parse a JSON column value that may already be a Python object."""
+    if value is None:
+        return None
+    if isinstance(value, (dict, list)):
+        return value
+    try:
+        return json.loads(value)
+    except Exception:
+        return None
+
+
+def _load_payloads_raw(
+    connection, script_id: int
+) -> Tuple[Dict[str, Any], Dict[str, Any], Dict[str, Any]]:
+    """Load story/episode/script payloads using raw SQL.
+
+    Avoids the ORM Script/Episode/Story models which reference columns that are
+    added by later migrations (e.g. ``episode_business_id``, ``is_deleted``,
+    ``business_id``).  Only selects columns that exist at this migration step.
+    """
+    script_row = connection.execute(
+        sa.text(
+            "SELECT id, episode_id, title, content, scenes, dialogues,"
+            " stage_directions, storyboard_plan"
+            " FROM scripts WHERE id = :sid"
+        ),
+        {"sid": script_id},
+    ).fetchone()
+    if script_row is None:
+        raise ValueError(f"Script {script_id} not found")
+
+    episode_id = script_row[1]
+    episode_row = connection.execute(
+        sa.text(
+            "SELECT id, story_id, episode_number, title, summary,"
+            " duration_minutes, scene_count, plot_points"
+            " FROM episodes WHERE id = :eid"
+        ),
+        {"eid": episode_id},
+    ).fetchone()
+    if episode_row is None:
+        raise ValueError(f"Episode {episode_id} for script {script_id} not found")
+
+    story_id = episode_row[1]
+    story_row = connection.execute(
+        sa.text(
+            "SELECT id, title, genre, theme, target_audience,"
+            " world_building, premise, synopsis"
+            " FROM stories WHERE id = :sid"
+        ),
+        {"sid": story_id},
+    ).fetchone()
+    if story_row is None:
+        raise ValueError(f"Story {story_id} for script {script_id} not found")
+
+    story_payload: Dict[str, Any] = {
+        "id": story_row[0],
+        "title": story_row[1],
+        "genre": story_row[2],
+        "theme": story_row[3],
+        "target_audience": story_row[4],
+        "world_building": story_row[5],
+        "premise": story_row[6],
+        "synopsis": story_row[7],
+    }
+    episode_payload: Dict[str, Any] = {
+        "id": episode_row[0],
+        "story_id": episode_row[1],
+        "episode_number": episode_row[2],
+        "title": episode_row[3],
+        "summary": episode_row[4],
+        "duration_minutes": episode_row[5],
+        "scene_count": episode_row[6],
+        "plot_points": _parse_json(episode_row[7]) or [],
+    }
+    script_payload: Dict[str, Any] = {
+        "id": script_row[0],
+        "episode_id": script_row[1],
+        "title": script_row[2],
+        "content": script_row[3],
+        "scenes": _parse_json(script_row[4]) or [],
+        "dialogues": _parse_json(script_row[5]) or [],
+        "stage_directions": _parse_json(script_row[6]) or [],
+        "storyboard_plan": _parse_json(script_row[7]) or [],
+    }
+    return story_payload, episode_payload, script_payload
+
+
 def upgrade() -> None:
     bind = op.get_bind()
     if not _tables_available(bind):
         return
 
-    session = Session(bind=bind)
-    try:
-        scripts: List[Script] = session.query(Script).all()
-        for script in scripts:
-            if _has_normalized_rows(bind, script.id):
-                continue
-            story_payload, episode_payload, script_payload = load_live_payloads(
-                session, script.id
+    # Use raw SQL to get script IDs – avoids the ORM model which references
+    # columns (episode_business_id, is_deleted, business_id) that are added by
+    # later migrations and therefore do not exist in the DB at this point.
+    script_ids: List[int] = [
+        row[0] for row in bind.execute(sa.text("SELECT id FROM scripts"))
+    ]
+    for script_id in script_ids:
+        if _has_normalized_rows(bind, script_id):
+            continue
+        try:
+            story_payload, episode_payload, script_payload = _load_payloads_raw(
+                bind, script_id
             )
-            payload, _warnings = assemble_payload(
-                story_payload, episode_payload, script_payload
-            )
-            _materialize_payload(bind, payload)
-    finally:
-        session.close()
+        except ValueError:
+            continue
+        payload, _warnings = assemble_payload(
+            story_payload, episode_payload, script_payload
+        )
+        _materialize_payload(bind, payload)
 
 
 def downgrade() -> None:

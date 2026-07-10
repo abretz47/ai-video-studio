@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import type { Dispatch, SetStateAction } from "react";
 import type { VirtualIP } from "@/utils/api/types";
 import type { StoryGenerationForm } from "@/utils/storyOptions";
@@ -33,7 +34,7 @@ export function StorySettingSection({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            时间设定
+            {t("stories.setting.timeLabel", "Time setting")}
           </label>
           <input
             type="text"
@@ -44,14 +45,14 @@ export function StorySettingSection({
                 setting_time: e.target.value,
               }))
             }
-            placeholder="例如：现代、古代、未来"
+            placeholder={t("stories.setting.timePlaceholder", "For example: modern, historical, future")}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            默认画幅
+            {t("stories.setting.aspectRatioLabel", "Default aspect ratio")}
           </label>
           <select
             value={generateForm.default_aspect_ratio}
@@ -71,13 +72,13 @@ export function StorySettingSection({
             ))}
           </select>
           <p className="mt-1 text-xs text-gray-500">
-            默认用于分镜图像/视频，生成时可临时覆盖
+            {t("stories.setting.aspectRatioHelper", "Used by default for storyboard images and video, but can be overridden during generation.")}
           </p>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            地点设定
+            {t("stories.setting.locationLabel", "Location setting")}
           </label>
           <input
             type="text"
@@ -88,7 +89,7 @@ export function StorySettingSection({
                 setting_location: e.target.value,
               }))
             }
-            placeholder="例如：学校、城市、乡村"
+            placeholder={t("stories.setting.locationPlaceholder", "For example: school, city, countryside")}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -96,7 +97,7 @@ export function StorySettingSection({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          世界观设定
+          {t("stories.setting.worldBuildingLabel", "Worldbuilding")}
         </label>
         <textarea
           value={generateForm.world_building}
@@ -106,7 +107,7 @@ export function StorySettingSection({
               world_building: e.target.value,
             }))
           }
-          placeholder="描述故事的世界观和背景设定"
+          placeholder={t("stories.setting.worldBuildingPlaceholder", "Describe the world, setting, and background of the story")}
           rows={3}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -114,7 +115,7 @@ export function StorySettingSection({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          额外要求
+          {t("stories.setting.additionalRequirementsLabel", "Additional requirements")}
         </label>
         <textarea
           value={generateForm.additional_requirements}
@@ -124,7 +125,7 @@ export function StorySettingSection({
               additional_requirements: e.target.value,
             }))
           }
-          placeholder="其他特殊要求或偏好"
+          placeholder={t("stories.setting.additionalRequirementsPlaceholder", "Any other special requirements or preferences")}
           rows={2}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

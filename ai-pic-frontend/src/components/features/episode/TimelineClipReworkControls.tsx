@@ -15,9 +15,9 @@ const ACTION_OPTIONS: Array<{
   value: TimelineClipReworkAction;
   label: string;
 }> = [
-  { value: "re_dub", label: "重新配音" },
-  { value: "re_cut", label: "重新切分" },
-  { value: "re_render", label: "重新渲染" },
+  { value: "re_dub", label: "Re-dub" },
+  { value: "re_cut", label: "Re-cut" },
+  { value: "re_render", label: "Re-render" },
 ];
 
 const ROLE_OPTIONS: Record<TimelineClipReworkAction, string[]> = {
@@ -89,13 +89,13 @@ export function TimelineClipReworkControls({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!timelineId || !timelineVersion || !clipId) {
-      const message = "当前片段缺少稳定 Timeline 上下文";
+      const message = "The current clip lacks a stable Timeline context";
       setSubmitError(message);
       onNotify?.(message, "warning");
       return;
     }
     if (!parsedMediaAssetId) {
-      const message = "请输入有效的 media_asset_id";
+      const message = "Please enter a valid media_asset_id";
       setSubmitError(message);
       onNotify?.(message, "warning");
       return;
@@ -117,7 +117,7 @@ export function TimelineClipReworkControls({
         payload,
       );
       if (!res.success || !res.data) {
-        const message = res.error || "记录片段重做资产失败";
+        const message = res.error || "Failed to record clip rework asset";
         setSubmitError(message);
         onNotify?.(message, "error");
         return;
@@ -125,7 +125,7 @@ export function TimelineClipReworkControls({
       setMediaAssetId("");
       setReason("");
       await onRecorded?.();
-      onNotify?.("片段重做资产已记录", "success");
+      onNotify?.("Clip rework asset recorded", "success");
     } finally {
       setSubmitting(false);
     }
@@ -161,7 +161,7 @@ export function TimelineClipReworkControls({
             onChange={(event) => setAssetRole(event.target.value)}
             className={operatorSelectClass("w-full")}
           >
-            <option value="">默认角色</option>
+            <option value="">DefaultCharacter</option>
             {ROLE_OPTIONS[action].map((role) => (
               <option key={role} value={role}>
                 {assetRoleLabel(role)}
@@ -173,7 +173,7 @@ export function TimelineClipReworkControls({
           type="text"
           value={reason}
           onChange={(event) => setReason(event.target.value)}
-          placeholder="原因"
+          placeholder="Reason"
           className="rounded-md border border-gray-200 px-2 py-1.5 text-xs outline-none focus:border-gray-400"
         />
         {submitError ? (
@@ -184,7 +184,7 @@ export function TimelineClipReworkControls({
           disabled={!canSubmit}
           className={operatorButtonClass("secondary", "w-full")}
         >
-          {submitting ? "记录中..." : "记录重做资产"}
+          {submitting ? "Recording..." : "Record Rework Asset"}
         </button>
       </div>
     </form>
@@ -198,10 +198,10 @@ function parseMediaAssetId(value: string) {
 
 function assetRoleLabel(role: string) {
   const labels: Record<string, string> = {
-    source_audio: "源音频",
-    storyboard_video: "分镜视频",
-    generated_video: "生成视频",
-    render_output: "渲染输出",
+    source_audio: "Source Audio",
+    storyboard_video: "Storyboard Video",
+    generated_video: "Generated Video",
+    render_output: "Render Output",
   };
   return labels[role] || role;
 }

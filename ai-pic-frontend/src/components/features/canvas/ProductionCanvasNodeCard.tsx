@@ -1,4 +1,5 @@
 import type { PointerEvent as ReactPointerEvent } from "react";
+import { t } from "@/lib/i18n";
 import { StatusPill, operatorButtonClass } from "@/components/shared";
 import {
   productionCanvasStatusMeta,
@@ -70,7 +71,7 @@ export function CanvasNodeCard({
             "secondary",
             "absolute bottom-2 left-3 right-3 h-7 justify-center px-2 text-[11px]",
           )}
-          aria-label={`${executing ? "执行中" : "后台执行"} ${node.label}`}
+          aria-label={`${executing ? t("canvas.nodeCard.running", "Running") : t("canvas.nodeCard.background", "Run in Background")} ${node.label}`}
           disabled={executing}
           onClick={(event) => {
             event.preventDefault();
@@ -82,7 +83,7 @@ export function CanvasNodeCard({
             event.stopPropagation();
           }}
         >
-          {executing ? "执行中" : "后台执行"}
+          {executing ? t("canvas.nodeCard.running", "Running") : t("canvas.nodeCard.background", "Run in Background")}
         </button>
       ) : null}
     </div>

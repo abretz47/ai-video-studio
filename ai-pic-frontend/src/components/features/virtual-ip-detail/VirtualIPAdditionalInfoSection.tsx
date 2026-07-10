@@ -46,16 +46,16 @@ export function VirtualIPAdditionalInfoSection({
   return (
     <div className="space-y-5 border-b border-gray-100 p-5">
       <div>
-        <h3 className="text-sm font-semibold text-gray-950">补充信息</h3>
+        <h3 className="text-sm font-semibold text-gray-950">Additional Information</h3>
         <p className="text-sm text-gray-500">
-          补充人物小传、风格提示词与公开状态。
+          Add a biography, style prompt, and visibility settings.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
-            人物小传
+            Character Biography
           </label>
           {editing ? (
             <textarea
@@ -65,7 +65,7 @@ export function VirtualIPAdditionalInfoSection({
               }
               rows={4}
               className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              placeholder="补充角色的小传、经历或性格补充"
+              placeholder="Add the character biography, background, or personality details"
             />
           ) : hasBiography ? (
             <CollapsibleText
@@ -73,13 +73,13 @@ export function VirtualIPAdditionalInfoSection({
               collapsedLines={3}
             />
           ) : (
-            <p className="text-sm text-gray-400">未填写</p>
+            <p className="text-sm text-gray-400">Not filled in</p>
           )}
         </div>
 
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
-            风格提示词
+            Style Prompt
           </label>
           {editing ? (
             <textarea
@@ -89,7 +89,7 @@ export function VirtualIPAdditionalInfoSection({
               }
               rows={4}
               className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              placeholder="用于图像生成的风格描述"
+              placeholder="Style description used for image generation"
             />
           ) : hasStylePrompt ? (
             <CollapsibleText
@@ -97,14 +97,14 @@ export function VirtualIPAdditionalInfoSection({
               collapsedLines={3}
             />
           ) : (
-            <p className="text-sm text-gray-400">未填写</p>
+            <p className="text-sm text-gray-400">Not filled in</p>
           )}
         </div>
       </div>
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">
-          风格参考图
+          Style Reference Images
         </label>
         {editing ? (
           <textarea
@@ -117,7 +117,7 @@ export function VirtualIPAdditionalInfoSection({
             }
             rows={3}
             className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-            placeholder="每行一个参考图 URL"
+            placeholder="One reference image URL per line"
           />
         ) : hasStyleReferences ? (
           <div className="space-y-2">
@@ -134,15 +134,15 @@ export function VirtualIPAdditionalInfoSection({
             ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-400">未设置</p>
+          <p className="text-sm text-gray-400">Not set</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex items-center justify-between rounded-md border border-gray-200 px-4 py-3">
           <div>
-            <p className="text-sm font-medium text-gray-700">可用状态</p>
-            <p className="text-xs text-gray-500">停用后不可用于生成</p>
+            <p className="text-sm font-medium text-gray-700">Availability</p>
+            <p className="text-xs text-gray-500">Disabled items cannot be used for generation</p>
           </div>
           {editing ? (
             <label className="flex items-center gap-2 text-sm text-gray-700">
@@ -154,17 +154,17 @@ export function VirtualIPAdditionalInfoSection({
                 }
                 className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
-              {editForm.is_active ? "启用" : "停用"}
+              {editForm.is_active ? "Enabled" : "Disabled"}
             </label>
           ) : (
-            statusBadge(virtualIP.is_active, "启用", "停用")
+            statusBadge(virtualIP.is_active, "Enabled", "Disabled")
           )}
         </div>
 
         <div className="flex items-center justify-between rounded-md border border-gray-200 px-4 py-3">
           <div>
-            <p className="text-sm font-medium text-gray-700">公开状态</p>
-            <p className="text-xs text-gray-500">公开后可被他人查看</p>
+            <p className="text-sm font-medium text-gray-700">Visibility</p>
+            <p className="text-xs text-gray-500">Public items can be viewed by others</p>
           </div>
           {editing ? (
             <label className="flex items-center gap-2 text-sm text-gray-700">
@@ -176,10 +176,10 @@ export function VirtualIPAdditionalInfoSection({
                 }
                 className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
-              {editForm.is_public ? "公开" : "私有"}
+              {editForm.is_public ? "Public" : "Private"}
             </label>
           ) : (
-            statusBadge(virtualIP.is_public, "公开", "私有")
+            statusBadge(virtualIP.is_public, "Public", "Private")
           )}
         </div>
       </div>

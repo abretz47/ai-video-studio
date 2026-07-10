@@ -68,8 +68,8 @@ export function useStories({ showAlert }: UseStoriesOptions) {
         setVirtualIPs(virtualIPsResponse.data);
       }
     } catch (error) {
-      console.error("加载数据失败:", error);
-      showAlert({ message: "加载数据失败", variant: "error" });
+      console.error("Failed to load data:", error);
+      showAlert({ message: "Failed to load data", variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,7 @@ export function useStories({ showAlert }: UseStoriesOptions) {
   const handleGenerateStory = async () => {
     if (!generateForm.title || generateForm.character_ids.length === 0) {
       showAlert({
-        message: "请填写标题并选择至少一个角色",
+        message: "Please enter a title and select at least one character",
         variant: "warning",
       });
       return;
@@ -98,17 +98,17 @@ export function useStories({ showAlert }: UseStoriesOptions) {
             ?.task_id;
           showAlert({
             message: taskId
-              ? `已创建异步任务（ID: ${taskId}），可前往任务页查看进度`
-              : "已创建异步任务，可前往任务页查看进度",
+              ? `Async task created (ID: ${taskId}). You can view progress on the Tasks page`
+              : "Async task created. You can view progress on the Tasks page",
             variant: "info",
-            confirmText: "去任务页",
+            confirmText: "Go to Tasks",
             onConfirm: () => {
               router.push("/tasks");
             },
           });
         } else {
           showAlert({
-            message: `故事生成失败：${response.error || "未知错误"}`,
+            message: `Story generation failed: ${response.error || "Unknown error"}`,
             variant: "error",
           });
         }
@@ -116,10 +116,10 @@ export function useStories({ showAlert }: UseStoriesOptions) {
         const response = await storyAPI.generateStory(generateForm);
         if (response.success && response.data) {
           setStories((prev) => [response.data as Story, ...prev]);
-          showAlert({ message: "故事生成成功！", variant: "success" });
+          showAlert({ message: "Story generated successfully!", variant: "success" });
         } else {
           showAlert({
-            message: `故事生成失败：${response.error || "未知错误"}`,
+            message: `Story generation failed: ${response.error || "Unknown error"}`,
             variant: "error",
           });
         }
@@ -128,8 +128,8 @@ export function useStories({ showAlert }: UseStoriesOptions) {
       setGenerateForm(INITIAL_GENERATE_FORM);
       setPromptPreview("");
     } catch (error) {
-      console.error("故事生成失败:", error);
-      showAlert({ message: "故事生成失败", variant: "error" });
+      console.error("Story GenerationFailed:", error);
+      showAlert({ message: "Story GenerationFailed", variant: "error" });
     } finally {
       setGenerating(false);
     }
@@ -142,25 +142,25 @@ export function useStories({ showAlert }: UseStoriesOptions) {
         setStories((prev) =>
           prev.filter((story) => story.business_id !== storyBusinessId),
         );
-        showAlert({ message: "故事删除成功", variant: "success" });
+        showAlert({ message: "Story deleted successfully", variant: "success" });
       } else {
         showAlert({
-          message: `删除失败：${response.error || "未知错误"}`,
+          message: `Delete failed: ${response.error || "Unknown error"}`,
           variant: "error",
         });
       }
     } catch (error) {
-      console.error("删除故事失败:", error);
-      showAlert({ message: "删除故事失败", variant: "error" });
+      console.error("Failed to delete story:", error);
+      showAlert({ message: "Failed to delete story", variant: "error" });
     }
   };
 
   const handleDeleteStory = (storyBusinessId: string) => {
     showAlert({
-      title: "确认删除",
-      message: "确定要删除这个故事吗？",
+      title: "Confirm Deletion",
+      message: "Are you sure you want to delete this story?",
       variant: "warning",
-      confirmText: "删除",
+      confirmText: "Delete",
       onConfirm: () => {
         void performDeleteStory(storyBusinessId);
       },
@@ -180,19 +180,19 @@ export function useStories({ showAlert }: UseStoriesOptions) {
     try {
       if (!generateForm.title || generateForm.character_ids.length === 0) {
         setShowPromptPreview(true);
-        setPromptPreview("请填写标题并至少选择一个角色后再预览提示词");
+        setPromptPreview("Please enter a title and select at least one character before previewing the prompt");
         return;
       }
       setShowPromptPreview(true);
-      setPromptPreview("加载中...");
+      setPromptPreview("Loading...");
       const res = await storyAPI.previewStoryPrompt(generateForm);
       if (res.success && res.data) {
-        setPromptPreview(res.data.prompt ?? "（空内容）");
+        setPromptPreview(res.data.prompt ?? "(Empty)");
       } else {
-        setPromptPreview("生成提示词失败");
+        setPromptPreview("Failed to generate prompt");
       }
     } catch {
-      setPromptPreview("预览出错");
+      setPromptPreview("Preview failed");
     }
   };
 

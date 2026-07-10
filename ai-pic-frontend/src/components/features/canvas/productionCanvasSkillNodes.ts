@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import type {
   ProductionCanvasPlanNode,
   ProductionCanvasPlanResponse,
@@ -132,6 +133,6 @@ export function productionCanvasSkillResultToTaskNode(
     },
     reuseTargets: result.reuse_targets,
     actionHref: "/tasks",
-    actionLabel: "查看任务",
+    actionLabel: t("canvas.skillNodes.viewTasks", "View Tasks"),
   };
 }

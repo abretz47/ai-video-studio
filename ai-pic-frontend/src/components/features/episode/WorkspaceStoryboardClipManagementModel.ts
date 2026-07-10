@@ -55,8 +55,8 @@ export function buildStoryboardClipManagementItems(
     const videoStatusLabel = resolvedVideo
       ? resolvedVideoStatusLabel(resolvedVideo.status)
       : videoReady
-        ? "视频已生成"
-        : "视频待生成";
+        ? "Video Generated"
+        : "Video Pending";
 
     return {
       clipId,
@@ -65,7 +65,7 @@ export function buildStoryboardClipManagementItems(
       sceneLabel: scene ? `${scene.scene_number} · ${scene.slug_line}` : null,
       contextStatusLabel: context.label,
       contextStatusReady: context.ready,
-      storyboardStatusLabel: storyboardReady ? "分镜已生成" : "分镜待生成",
+      storyboardStatusLabel: storyboardReady ? "Storyboard Generated" : "Storyboard Pending",
       storyboardReady,
       keyframeStatusLabel: keyframes.label,
       keyframeReady: keyframes.ready,
@@ -77,9 +77,9 @@ export function buildStoryboardClipManagementItems(
 }
 
 function resolvedVideoStatusLabel(status: string) {
-  if (status === "ready") return "视频已生成";
-  if (status === "generating") return "视频生成中";
-  return "视频待生成";
+  if (status === "ready") return "Video Generated";
+  if (status === "generating") return "Video generation in progress";
+  return "Video Pending";
 }
 
 function timelineVideoClips(
@@ -113,6 +113,6 @@ function clipLabel(clip: TimelineClip, index: number) {
     getString(clip.text) ||
     getString(clip.speaker_name) ||
     getString(asRecord(clip.source_refs)?.plot) ||
-    `视频 ${index + 1}`
+    `Video ${index + 1}`
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { t } from "@/lib/i18n";
 import {
   EpisodeWorkspaceHeader,
   WorkspaceActiveTabContent,
@@ -113,7 +114,7 @@ function EpisodeWorkspacePageContent() {
   if (loading || (timelineSpecLoading && initialTab === "timeline")) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f5f6f8]">
-        <OperatorState title="加载剧集工作台..." />
+        <OperatorState title={t("episode.workspace.loading", "Loading episode workspace...")} />
       </div>
     );
   }
@@ -121,14 +122,18 @@ function EpisodeWorkspacePageContent() {
   if (!loading && !episode) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f5f6f8]">
-        <OperatorState title="剧集不存在" tone="red" />
+        <OperatorState title={t("episode.workspace.notFound", "Episode not found")} tone="red" />
       </div>
     );
   }
 
   return (
     <OperatorShell
-      breadcrumb={["IP 中心", "故事生产", `第${episode!.episode_number}集`]}
+      breadcrumb={[
+        t("common.breadcrumb.ipCenter", "IP Center"),
+        t("stories.board.breadcrumb", "Story Production"),
+        t("common.episodeWithNumber", "Episode {number}").replace("{number}", String(episode!.episode_number)),
+      ]}
       compactNavigation
       showGlobalSearch={false}
     >

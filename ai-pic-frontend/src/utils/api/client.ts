@@ -118,7 +118,7 @@ export async function httpClient<T = unknown>(
 
       return {
         success: false,
-        error: "登录已过期，请重新登录",
+        error: "Login expired. Please sign in again",
         trace,
       };
     }

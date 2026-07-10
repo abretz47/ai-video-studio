@@ -12,8 +12,8 @@ export function TimelineSelectedContext({
 }) {
   if (!item) return null;
 
-  const label = item.displayLabel || item.label || "片段";
-  const trackLabel = track?.label ? `${track.label}轨` : "当前片段";
+  const label = item.displayLabel || item.label || "Clip";
+  const trackLabel = track?.label ? `${track.label}Track` : "Current Clip";
   const preciseRange = `${formatTimelineLabel(
     item.startMs,
   )}-${formatTimelineLabel(item.endMs)}`;
@@ -28,7 +28,7 @@ export function TimelineSelectedContext({
       className="flex min-w-0 items-center gap-1 text-[11px] leading-4 text-slate-500 max-[560px]:sr-only"
       title={`${trackLabel} · ${label} · ${preciseRange}`}
     >
-      <span className="shrink-0 font-medium text-slate-600">当前</span>
+      <span className="shrink-0 font-medium text-slate-600">Current </span>
       <span className="min-w-0 truncate text-slate-600">{label}</span>
       <span className="shrink-0 text-slate-300">·</span>
       <span className="shrink-0 tabular-nums">{compactRange}</span>

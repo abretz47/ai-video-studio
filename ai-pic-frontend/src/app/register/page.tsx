@@ -25,10 +25,10 @@ const fields: Array<{
   autoComplete: string;
   placeholder: string;
 }> = [
-  { name: "username", label: "用户名", type: "text", autoComplete: "username", placeholder: "请输入用户名" },
-  { name: "email", label: "邮箱地址", type: "email", autoComplete: "email", placeholder: "请输入邮箱地址" },
-  { name: "password", label: "密码", type: "password", autoComplete: "new-password", placeholder: "至少 6 位" },
-  { name: "confirmPassword", label: "确认密码", type: "password", autoComplete: "new-password", placeholder: "请再次输入密码" },
+  { name: "username", label: "Username", type: "text", autoComplete: "username", placeholder: "Please enter a username" },
+  { name: "email", label: "Email Address", type: "email", autoComplete: "email", placeholder: "Please enter an email address" },
+  { name: "password", label: "Password", type: "password", autoComplete: "new-password", placeholder: "At least 6 characters" },
+  { name: "confirmPassword", label: "Confirm Password", type: "password", autoComplete: "new-password", placeholder: "Please enter the password again" },
 ];
 
 export default function Register() {
@@ -46,12 +46,12 @@ export default function Register() {
 
   const validateForm = () => {
     const next: Partial<Record<keyof RegisterForm, string>> = {};
-    if (!formData.username.trim()) next.username = "用户名不能为空";
-    if (!formData.email.trim()) next.email = "邮箱不能为空";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) next.email = "邮箱格式不正确";
-    if (formData.password.length < 6) next.password = "密码至少6位";
+    if (!formData.username.trim()) next.username = "Username cannot be empty";
+    if (!formData.email.trim()) next.email = "Email cannot be empty";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) next.email = "Invalid email format";
+    if (formData.password.length < 6) next.password = "Password must be at least 6 characters";
     if (formData.password !== formData.confirmPassword) {
-      next.confirmPassword = "两次密码不一致";
+      next.confirmPassword = "Passwords do not match";
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -70,13 +70,13 @@ export default function Register() {
         full_name: formData.username,
       });
       if (res.success) {
-        setServerSuccess("注册成功，即将跳转登录页");
+        setServerSuccess("Registration succeeded. Redirecting to the login page...");
         router.push("/login?registered=1");
       } else {
-        setServerError(res.message || "注册失败，请稍后重试");
+        setServerError(res.message || "Registration failed. Please try again later");
       }
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : "注册失败，请稍后重试");
+      setServerError(err instanceof Error ? err.message : "Registration failed. Please try again later");
     } finally {
       setIsLoading(false);
     }
@@ -90,11 +90,11 @@ export default function Register() {
 
   return (
     <OperatorAuthFrame
-      title="创建操作员账户"
-      subtitle="注册后进入统一 IP 中心工作台"
-      switchLabel="已有账户？"
+      title="Create Operator Account"
+      subtitle="After registering, enter the unified IP Center workspace"
+      switchLabel="Already have an account?"
       switchHref="/login"
-      switchText="登录"
+      switchText="Login"
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         {serverError ? <OperatorState title={serverError} tone="red" /> : null}
@@ -125,7 +125,7 @@ export default function Register() {
           disabled={isLoading}
           className={operatorButtonClass("primary", "w-full")}
         >
-          {isLoading ? "注册中..." : "注册"}
+          {isLoading ? "Registering..." : "Register"}
         </button>
       </form>
     </OperatorAuthFrame>

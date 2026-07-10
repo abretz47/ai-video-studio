@@ -32,7 +32,7 @@ export function useStoryEpisodeGeneration({
   const [useAsync, setUseAsync] = useState(true);
   const { notify } = useToast();
   const episodesTracker = useGenerationTaskTracker<"episodes">({
-    labels: { episodes: "剧集" },
+    labels: { episodes: "Episode" },
     onCompleted: () => onRefreshAfterSync(),
     onNotify: notify,
   });
@@ -72,13 +72,13 @@ export function useStoryEpisodeGeneration({
   );
 
   const handlePreviewPrompt = useCallback(async () => {
-    setPromptPreview("加载中...");
+    setPromptPreview("Loading...");
     const payload = buildEpisodePayload();
     const res = await episodeAPI.previewEpisodePrompt(payload);
     if (res.success && res.data) {
-      setPromptPreview(res.data.prompt ?? "（空内容）");
+      setPromptPreview(res.data.prompt ?? "(Empty)");
     } else {
-      setPromptPreview("生成提示词失败");
+      setPromptPreview("Failed to generate prompt");
     }
   }, [buildEpisodePayload]);
 
@@ -110,12 +110,12 @@ export function useStoryEpisodeGeneration({
         setContextPackPreview(JSON.stringify(res.data, null, 2));
       } else {
         setContextPackPreview("");
-        setContextPackError(res.error || "上下文预览失败");
+        setContextPackError(res.error || "Failed to preview context");
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       setContextPackPreview("");
-      setContextPackError(message || "上下文预览失败");
+      setContextPackError(message || "Failed to preview context");
     } finally {
       setContextPackLoading(false);
     }
@@ -132,13 +132,13 @@ export function useStoryEpisodeGeneration({
       const response = await episodeAPI.generateEpisodesAsync(payload);
       if (response.success && response.data) {
         notify(
-          `剧集生成任务已提交 #${response.data.task_id}，完成后自动刷新列表`,
+          `Episode generation task submitted #${response.data.task_id}. The list will refresh automatically when it completes.`,
           "info",
         );
         episodesTracker.track("episodes", response.data.task_id);
       } else {
         showAlert({
-          message: `生成失败：${response.error || "未知错误"}`,
+          message: `Generation failed: ${response.error || "Unknown error"}`,
           variant: "error",
         });
       }
@@ -148,10 +148,10 @@ export function useStoryEpisodeGeneration({
     const response = await episodeAPI.generateEpisodes(payload);
     if (response.success) {
       await onRefreshAfterSync();
-      showAlert({ message: "生成成功", variant: "success" });
+      showAlert({ message: "Generated successfully", variant: "success" });
     } else {
       showAlert({
-        message: `生成失败：${response.error || "未知错误"}`,
+        message: `Generation failed: ${response.error || "Unknown error"}`,
         variant: "error",
       });
     }

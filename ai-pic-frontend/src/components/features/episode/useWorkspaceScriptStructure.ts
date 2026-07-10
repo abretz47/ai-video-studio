@@ -52,7 +52,7 @@ export function useWorkspaceScriptStructure(script: Script | null) {
       } catch (error) {
         if (!cancelled) {
           console.error("Failed to load structured scenes", error);
-          setStructureError("加载结构化场景失败");
+          setStructureError("Failed to load structured scenes");
         }
       } finally {
         if (!cancelled) setStructureLoading(false);

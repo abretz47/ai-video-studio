@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorMainCanvas,
@@ -64,11 +65,15 @@ export default function VirtualIPDetail() {
   if (loading) {
     return (
       <OperatorShell
-        title="IP 详情"
-        subtitle="加载 IP 资产..."
-        breadcrumb={["IP 中心", "IP 项目", "加载中"]}
+        title={t("virtualIp.detail.pageTitle", "IP Details")}
+        subtitle={t("virtualIp.detail.loadingSubtitle", "Loading IP assets...")}
+        breadcrumb={[
+          t("common.breadcrumb.ipCenter", "IP Center"),
+          t("virtualIp.page.breadcrumb", "IP Projects"),
+          t("common.loading", "Loading")
+        ]}
       >
-        <OperatorState title="加载 IP 资产..." />
+        <OperatorState title={t("virtualIp.list.loading", "Loading IP assets...")} />
       </OperatorShell>
     );
   }
@@ -76,19 +81,22 @@ export default function VirtualIPDetail() {
   if (!virtualIP) {
     return (
       <OperatorShell
-        title="IP 详情"
-        subtitle="IP 资产是故事、剧集和生成任务的入口"
-        breadcrumb={["IP 中心", "IP 项目"]}
+        title={t("virtualIp.detail.pageTitle", "IP Details")}
+        subtitle={t("virtualIp.page.subtitle", "IP assets are the starting point for stories, episodes, and generation tasks")}
+        breadcrumb={[
+          t("common.breadcrumb.ipCenter", "IP Center"),
+          t("virtualIp.page.breadcrumb", "IP Projects")
+        ]}
       >
         <OperatorState
-          title="未找到 IP"
+          title={t("virtualIp.detail.notFound", "IP not found")}
           tone="red"
           action={
             <Link
               href="/virtual-ip"
               className={operatorButtonClass("secondary")}
             >
-              返回 IP 项目
+              {t("virtualIp.detail.backToProjects", "Back to IP projects")}
             </Link>
           }
         />
@@ -98,9 +106,13 @@ export default function VirtualIPDetail() {
 
   return (
     <OperatorShell
-      title="IP 详情"
-      subtitle="IP 资产是故事、剧集和生成任务的入口"
-      breadcrumb={["IP 中心", "IP 项目", virtualIP.name]}
+      title={t("virtualIp.detail.pageTitle", "IP Details")}
+      subtitle={t("virtualIp.page.subtitle", "IP assets are the starting point for stories, episodes, and generation tasks")}
+      breadcrumb={[
+        t("common.breadcrumb.ipCenter", "IP Center"),
+        t("virtualIp.page.breadcrumb", "IP Projects"),
+        virtualIP.name,
+      ]}
     >
       <div className="space-y-5">
         <VirtualIPProductionNotice />
@@ -111,44 +123,44 @@ export default function VirtualIPDetail() {
           main={
             <OperatorMainCanvas>
               <OperatorPanel>
-            <VirtualIPInfoSection
-              virtualIP={virtualIP}
-              editing={editing}
-              editForm={editForm}
-              setEditForm={setEditForm}
-              onSubmit={handleUpdateIP}
-              addTag={addTag}
-              removeTag={removeTag}
-              formId={editFormId}
-            />
-            <VirtualIPBackgroundStorySection
-              virtualIP={virtualIP}
-              editing={editing}
-              editForm={editForm}
-              setEditForm={setEditForm}
-            />
-            <VirtualIPAdditionalInfoSection
-              virtualIP={virtualIP}
-              editing={editing}
-              editForm={editForm}
-              setEditForm={setEditForm}
-            />
-            <VoiceSettingsPanel
-              editing={editing}
-              voiceEnums={voiceEnums}
-              voiceTypeFilter={voiceTypeFilter}
-              setVoiceTypeFilter={setVoiceTypeFilter}
-              voiceSettings={voiceSettings}
-              setVoiceSettings={setVoiceSettings}
-              voicePreviewText={voicePreviewText}
-              setVoicePreviewText={setVoicePreviewText}
-              voiceLoading={voiceLoading}
-              previewLoading={previewLoading}
-              previewAudioUrl={previewAudioUrl}
-              voiceOptions={voiceOptions}
-              onPreviewVoice={handlePreviewVoice}
-            />
-            <VirtualIPMetaStrip virtualIP={virtualIP} />
+                <VirtualIPInfoSection
+                  virtualIP={virtualIP}
+                  editing={editing}
+                  editForm={editForm}
+                  setEditForm={setEditForm}
+                  onSubmit={handleUpdateIP}
+                  addTag={addTag}
+                  removeTag={removeTag}
+                  formId={editFormId}
+                />
+                <VirtualIPBackgroundStorySection
+                  virtualIP={virtualIP}
+                  editing={editing}
+                  editForm={editForm}
+                  setEditForm={setEditForm}
+                />
+                <VirtualIPAdditionalInfoSection
+                  virtualIP={virtualIP}
+                  editing={editing}
+                  editForm={editForm}
+                  setEditForm={setEditForm}
+                />
+                <VoiceSettingsPanel
+                  editing={editing}
+                  voiceEnums={voiceEnums}
+                  voiceTypeFilter={voiceTypeFilter}
+                  setVoiceTypeFilter={setVoiceTypeFilter}
+                  voiceSettings={voiceSettings}
+                  setVoiceSettings={setVoiceSettings}
+                  voicePreviewText={voicePreviewText}
+                  setVoicePreviewText={setVoicePreviewText}
+                  voiceLoading={voiceLoading}
+                  previewLoading={previewLoading}
+                  previewAudioUrl={previewAudioUrl}
+                  voiceOptions={voiceOptions}
+                  onPreviewVoice={handlePreviewVoice}
+                />
+                <VirtualIPMetaStrip virtualIP={virtualIP} />
               </OperatorPanel>
               <div className="mt-5">
                 <VirtualIPEnvironmentPanel

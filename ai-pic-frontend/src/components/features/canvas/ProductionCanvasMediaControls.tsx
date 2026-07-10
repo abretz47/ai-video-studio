@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import type { ProductionCanvasNode } from "./productionCanvasModel";
 
 type MediaOutputValue = string | number | boolean | number[] | undefined;
@@ -28,7 +29,7 @@ function frameIndexesText(outputs: Record<string, unknown> | undefined) {
 
 function parseFrameIndexes(value: string) {
   const indexes = value
-    .split(",")
+    .split(",")}
     .map((item) => Number.parseInt(item.trim(), 10))
     .filter((item, index, all) => Number.isInteger(item) && item >= 0 && all.indexOf(item) === index);
   return indexes.length ? indexes : undefined;
@@ -82,67 +83,67 @@ export function ProductionCanvasMediaControls({
 
   return (
     <div className="border-t border-gray-100 pt-3">
-      <div className="text-xs font-semibold text-gray-700">媒体执行参数</div>
+      <div className="text-xs font-semibold text-gray-700">{t("canvas.media.title", "Media Execution Parameters")}</div>
       <div className="mt-2 grid gap-2">
         <TextField
-          label="媒体帧索引"
+          label={t("canvas.media.frameIndexes", "Media Frame Indexes")}
           value={frameIndexesText(outputs)}
           onChange={(value) => update({ frame_indexes: parseFrameIndexes(value) })}
         />
         <TextField
-          label="媒体模型"
+          label={t("canvas.media.model", "Media Model")}
           value={stringOutput(outputs, "model")}
           onChange={(value) => update({ model: value.trim() || undefined })}
         />
         {isImage ? (
           <>
             <TextField
-              label="图片画幅"
+              label={t("canvas.media.imageAspectRatio", "Image Aspect Ratio")}
               value={stringOutput(outputs, "aspect_ratio")}
               onChange={(value) => update({ aspect_ratio: value.trim() || undefined })}
             />
             <label className="flex items-center gap-2 text-xs text-gray-600">
               <input
-                aria-label="要求参考图"
+                aria-label={t("canvas.media.requireReferenceImages", "Require Reference Images")}
                 type="checkbox"
                 checked={boolOutput(outputs, "require_reference_images", true)}
                 onChange={(event) =>
                   update({ require_reference_images: event.currentTarget.checked })
                 }
               />
-              要求参考图
+              {t("canvas.media.requireReferenceImages", "Require Reference Images")}
             </label>
           </>
         ) : (
           <>
             <TextField
-              label="视频时长"
+              label={t("canvas.media.videoDuration", "Video Duration")}
               value={numberOutput(outputs, "duration")}
               onChange={(value) => update({ duration: parseNumber(value) })}
             />
             <TextField
-              label="视频 FPS"
+              label={t("canvas.media.videoFps", "Video FPS")}
               value={numberOutput(outputs, "fps")}
               onChange={(value) => update({ fps: parseNumber(value) })}
             />
             <TextField
-              label="视频分辨率"
+              label={t("canvas.media.videoResolution", "Video Resolution")}
               value={stringOutput(outputs, "resolution")}
               onChange={(value) => update({ resolution: value.trim() || undefined })}
             />
             <TextField
-              label="视频画幅"
+              label={t("canvas.media.videoAspectRatio", "Video Aspect Ratio")}
               value={stringOutput(outputs, "ratio")}
               onChange={(value) => update({ ratio: value.trim() || undefined })}
             />
             <label className="flex items-center gap-2 text-xs text-gray-600">
               <input
-                aria-label="固定镜头"
+                aria-label={t("canvas.media.fixedCamera", "Fixed Camera")}
                 type="checkbox"
                 checked={boolOutput(outputs, "camera_fixed", false)}
                 onChange={(event) => update({ camera_fixed: event.currentTarget.checked })}
               />
-              固定镜头
+              {t("canvas.media.fixedCamera", "Fixed Camera")}
             </label>
           </>
         )}

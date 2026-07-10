@@ -81,10 +81,10 @@ export function WorkspaceStoryboardTabContent({
     localTimelineSpec,
   );
   const storyboardStatus = frames.length
-    ? "已有占位"
+    ? "Placeholder ready"
     : hasStoryboard
-    ? "待补占位"
-    : "待生成占位";
+    ? "Placeholder missing"
+    : "Placeholder pending";
 
   return (
     <div className="space-y-4">
@@ -93,8 +93,8 @@ export function WorkspaceStoryboardTabContent({
         className="border-b border-slate-200 bg-white"
       >
         <OperatorSectionHeader
-          title="分镜辅助工作区"
-          subtitle="按视频片段汇总分镜、首尾帧和视频状态"
+          title="Storyboard Support Workspace"
+          subtitle="Summarize storyboard, start/end frames, and video status by video clip"
           action={
             <WorkspaceStoryboardActions
               selectedScriptId={selectedScriptId}
@@ -128,17 +128,17 @@ export function WorkspaceStoryboardTabContent({
           className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-slate-100 bg-slate-50/50 px-3 py-1.5 text-xs text-slate-600"
         >
           <SupportMetaItem
-            label="来源"
+            label="Source"
             value={storyboardTimelineSourceLabel(
               summary.timelineId,
               summary.timelineVersion,
               summary.generationSource,
             )}
           />
-          <SupportMetaItem label="分镜" value={storyboardStatus} />
+          <SupportMetaItem label="Storyboard" value={storyboardStatus} />
           <SupportMetaItem
-            label="素材"
-            value={`${summary.imageCount} 关键帧 · ${summary.videoCount} 视频`}
+            label="Asset"
+            value={`${summary.imageCount} Keyframe · ${summary.videoCount} Video`}
           />
         </div>
       </section>
@@ -154,8 +154,8 @@ export function WorkspaceStoryboardTabContent({
 
       <OperatorPanel>
         <OperatorSectionHeader
-          title="占位帧"
-          subtitle={`${summary.frameCount} 个时间轴对齐镜头`}
+          title="Placeholder Frames"
+          subtitle={`${summary.frameCount}Timelinetimeline-aligned shots`}
         />
         {frames.length ? (
           <div className="divide-y divide-gray-100">
@@ -172,8 +172,8 @@ export function WorkspaceStoryboardTabContent({
         ) : (
           <div className="p-4">
             <OperatorState
-              title="暂无分镜占位"
-              detail="当前剧本还没有可查看的时间轴占位帧。"
+              title="No storyboard placeholders yet"
+              detail="The current script has no timeline placeholder frames to review yet."
             />
           </div>
         )}
@@ -198,5 +198,5 @@ function storyboardTimelineSourceLabel(
 ) {
   return timelineId
     ? `Timeline ${timelineId} · v${timelineVersion ?? "?"}`
-    : generationSource ?? "当前剧本 beat";
+    : generationSource ?? "Current Script beat";
 }

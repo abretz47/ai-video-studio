@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import { StatusPill } from "@/components/shared";
 import type {
   StoryCharacter,
@@ -10,14 +11,16 @@ export function ReadyCell({ ready }: { ready: boolean }) {
   return (
     <td className="px-4 py-4">
       <StatusPill tone={ready ? "green" : "gray"}>
-        {ready ? "已就绪" : "未开始"}
+        {ready
+          ? t("common.status.ready", "Ready")
+          : t("common.status.notStarted", "Not started")}
       </StatusPill>
     </td>
   );
 }
 
 export function CharacterChip({ character }: { character: StoryCharacter }) {
-  const name = storyCharacterDisplayName(character, "未命名 IP");
+  const name = storyCharacterDisplayName(character, t("stories.detail.unnamedIp", "Unnamed IP"));
   return (
     <span className="rounded-md border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600">
       IP: {name}
@@ -27,7 +30,7 @@ export function CharacterChip({ character }: { character: StoryCharacter }) {
 
 export function storyCharacterDisplayName(
   character: StoryCharacter,
-  fallback = "未命名",
+  fallback = t("stories.detail.unnamed", "Unnamed"),
 ) {
   return (
     [
@@ -53,7 +56,7 @@ export function StoryEnvironmentCoverage({
   if (!items.length) {
     return (
       <span className="rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-700">
-        环境待接入
+        {t("stories.detail.environmentPending", "Environment assets pending")}
       </span>
     );
   }
@@ -61,14 +64,14 @@ export function StoryEnvironmentCoverage({
   return (
     <>
       <span className="rounded-md border border-green-200 bg-green-50 px-2 py-1 text-xs text-green-700">
-        环境资产 {items.length} 个
+        {t("stories.detail.environmentAssetsCount", "{count} environment assets").replace("{count}", String(items.length))}
       </span>
       {items.slice(0, 3).map((link) => (
         <span
           key={link.environment_id}
           className="rounded-md border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600"
         >
-          场景: {link.environment.name}
+          {t("stories.detail.sceneLabel", "Scene")}: {link.environment.name}
         </span>
       ))}
     </>

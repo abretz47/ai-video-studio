@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import {
   GenerationAuditWarnings,
   OperatorPanel,
@@ -30,7 +31,7 @@ export function EnvironmentDetailActions({
         onClick={onEdit}
         className={operatorButtonClass("primary")}
       >
-        编辑资料
+        {t("environments.parts.edit", "Edit Metadata")}
       </button>
     );
   }
@@ -42,7 +43,7 @@ export function EnvironmentDetailActions({
         onClick={onCancel}
         className={operatorButtonClass("secondary")}
       >
-        取消
+        {t("common.cancel", "Cancel")}
       </button>
       <button
         type="button"
@@ -50,7 +51,7 @@ export function EnvironmentDetailActions({
         disabled={saving}
         className={operatorButtonClass("primary")}
       >
-        {saving ? "保存中..." : "保存"}
+        {saving ? t("common.saving", "Saving...") : t("common.save", "Save")}
       </button>
     </div>
   );
@@ -60,8 +61,8 @@ export function EnvironmentProductionNotice() {
   return (
     <OperatorState
       tone="blue"
-      title="环境已接入 IP 中心"
-      detail="环境可作为 IP 资产池的一部分，并在剧集 Timeline 中绑定到具体场景。"
+      title={t("environments.parts.noticeTitle", "Environment Linked to IP Center")}
+      detail={t("environments.parts.noticeDetail", "Environments can live in the IP asset pool and be bound to specific scenes in an episode timeline.")}
     />
   );
 }
@@ -86,11 +87,11 @@ export function EnvironmentAuditPanels({
   return (
     <div className="space-y-3">
       <GenerationAuditWarnings
-        title="环境文生图提示"
+        title={t("environments.parts.textToImageWarnings", "Environment Text-to-Image Notes")}
         warnings={textToImageWarnings}
       />
       <GenerationAuditWarnings
-        title="环境图生图提示"
+        title={t("environments.parts.imageToImageWarnings", "Environment Image-to-Image Notes")}
         warnings={imageToImageWarnings}
       />
     </div>
@@ -110,32 +111,32 @@ export function EnvironmentReadinessPanel({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="关联与生成状态"
-        subtitle="IP 关联、图片池和生成任务"
+        title={t("environments.parts.readinessTitle", "Link & Generation Status")}
+        subtitle={t("environments.parts.readinessSubtitle", "IP links, image pool, and generation tasks")}
       />
       <div className="space-y-4 p-4">
         <div className="flex items-center justify-between gap-3 text-xs">
-          <span className="text-gray-500">IP 关联</span>
+          <span className="text-gray-500">{t("environments.parts.linkedIp", "IP Links")}</span>
           <StatusPill tone={linkedCount > 0 ? "green" : "amber"}>
-            {linkedCount > 0 ? `${linkedCount} 个 IP` : "未关联"}
+            {linkedCount > 0 ? t("environments.parts.linkedIpCount", "{count} linked IPs").replace("{count}", String(linkedCount)) : t("environments.parts.unlinked", "Unlinked")}
           </StatusPill>
         </div>
         <div className="flex items-center justify-between gap-3 text-xs">
-          <span className="text-gray-500">环境图片</span>
+          <span className="text-gray-500">{t("environments.parts.images", "Environment Images")}</span>
           <StatusPill tone={imageCount > 0 ? "green" : "gray"}>
-            {imageCount > 0 ? "ready" : "empty"}
+            {imageCount > 0 ? t("common.ready", "Ready") : t("common.empty", "Empty")}
           </StatusPill>
         </div>
         <div className="flex items-center justify-between gap-3 text-xs">
-          <span className="text-gray-500">生成入口</span>
-          <StatusPill tone="blue">available</StatusPill>
+          <span className="text-gray-500">{t("environments.parts.entry", "Generation Entry")}</span>
+          <StatusPill tone="blue">{t("common.available", "Available")}</StatusPill>
         </div>
         <button
           type="button"
           onClick={onBack}
           className={operatorButtonClass("secondary", "w-full")}
         >
-          返回环境列表
+          {t("environments.parts.backToList", "Back to Environment List")}
         </button>
       </div>
     </OperatorPanel>
@@ -145,15 +146,15 @@ export function EnvironmentReadinessPanel({
 export function EnvironmentNotFound({ onBack }: { onBack: () => void }) {
   return (
     <OperatorState
-      title="环境不存在或已删除"
-      detail="返回列表后可以重新选择环境资产。"
+      title={t("environments.parts.notFoundTitle", "Environment Not Found or Deleted")}
+      detail={t("environments.parts.notFoundDetail", "Go back to the list to choose another environment asset.")}
       action={
         <button
           type="button"
           onClick={onBack}
           className={operatorButtonClass("secondary")}
         >
-          返回列表
+          {t("common.backToList", "Back to List")}
         </button>
       }
     />

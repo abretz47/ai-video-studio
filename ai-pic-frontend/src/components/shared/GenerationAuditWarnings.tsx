@@ -24,7 +24,7 @@ function normalizeWarnings(input: unknown): string[] {
 }
 
 export function GenerationAuditWarnings({
-  title = "生成提示",
+  title = "Generation Hints",
   warnings,
   className,
 }: GenerationAuditWarningsProps) {

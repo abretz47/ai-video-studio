@@ -48,17 +48,17 @@ export function useReferenceSelection({
     const next: string[] = [...(imageGenUi.notes || [])];
     if (referenceSectionsLength > 0 && !allowMultipleRefs) {
       next.unshift(
-        "该模型不支持多参考图：将只使用 1 张参考图（其余选择会被替换/忽略）",
+        "This model does not support multiple reference images: only 1 reference image will be used (others will be replaced/ignored)",
       );
     }
     if (
       referenceSectionsLength > 0 &&
       maxRefs !== undefined &&
       maxRefs > 1 &&
-      !next.some((note) => note.includes(`${maxRefs} 张参考图`))
+      !next.some((note) => note.includes(`${maxRefs} imagesReference Image`))
     ) {
       next.unshift(
-        `该模型最多支持 ${maxRefs} 张参考图：超过上限会自动替换最早选择的参考图`,
+        `This model supports up to ${maxRefs} reference images: exceeding the limit automatically replaces the earliest selected reference image`,
       );
     }
     return next;

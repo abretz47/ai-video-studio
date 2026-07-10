@@ -9,20 +9,20 @@ import {
 
 export default function AdminSettingsPage() {
   return (
-    <OperatorAdminShell title="系统设置" subtitle="运行策略和系统配置">
+    <OperatorAdminShell title="System Settings" subtitle="Runtime policies and system configuration">
       <div className="space-y-6">
         <OperatorPanel>
-          <OperatorSectionHeader title="系统设置" subtitle="配置项占位和后续接入入口" />
+          <OperatorSectionHeader title="System Settings" subtitle="Configuration placeholders and future links" />
           <div className="p-4">
-            <OperatorState title="系统配置功能正在开发中" detail="当前页面保留为管理配置入口。" />
+            <OperatorState title="System configuration features are under development" detail="This screen is reserved as the admin configuration entry point." />
             <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                "用户注册设置",
-                "邮件通知配置",
-                "安全策略设置",
-                "系统日志配置",
-                "备份设置",
-                "性能监控",
+                "User Registration Settings",
+                "Email Notification Settings",
+                "Security Policy Settings",
+                "System Log Settings",
+                "Backup Settings",
+                "Performance Monitoring",
               ].map((setting) => (
                 <div
                   key={setting}
@@ -31,7 +31,7 @@ export default function AdminSettingsPage() {
                   <div className="text-sm font-medium text-gray-900">
                     {setting}
                   </div>
-                  <div className="mt-1 text-xs text-gray-500">待接入</div>
+                  <div className="mt-1 text-xs text-gray-500">Pending Link</div>
                 </div>
               ))}
             </div>

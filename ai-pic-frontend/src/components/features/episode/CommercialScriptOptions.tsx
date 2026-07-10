@@ -17,7 +17,7 @@ export function CommercialScriptOptions({
     <>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          正文模板
+          Body Template
         </label>
         <select
           value={generateForm.template_style ?? "commercial_vertical_drama"}
@@ -31,14 +31,14 @@ export function CommercialScriptOptions({
           }
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="commercial_vertical_drama">商用短剧正文</option>
-          <option value="structured_json">结构化分镜草稿</option>
+          <option value="commercial_vertical_drama">Commercial Short Drama Body</option>
+          <option value="structured_json">Structured Storyboard Draft</option>
         </select>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          目标字数/集
+          Target words per episode
         </label>
         <input
           type="number"
@@ -58,7 +58,7 @@ export function CommercialScriptOptions({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          质量阈值（{(generateForm.quality_threshold ?? 9).toFixed(1)}）
+          Quality threshold ({(generateForm.quality_threshold ?? 9).toFixed(1)})
         </label>
         <input
           type="range"

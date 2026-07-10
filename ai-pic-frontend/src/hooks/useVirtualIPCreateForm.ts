@@ -64,7 +64,7 @@ export function useVirtualIPCreateForm({
       e.preventDefault();
 
       if (!formState.name.trim()) {
-        showAlert({ message: "请填写虚拟IP名称", variant: "warning" });
+        showAlert({ message: "Please enter an IP name", variant: "warning" });
         return;
       }
 
@@ -98,29 +98,29 @@ export function useVirtualIPCreateForm({
               });
               if (!previewResponse.success) {
                 showAlert({
-                  message: `试听保存失败：${
-                    previewResponse.error || "未知错误"
+                  message: `Failed to save preview: ${
+                    previewResponse.error || "Unknown error"
                   }`,
                   variant: "warning",
                 });
               }
             } catch (previewError) {
-              console.error("试听保存失败:", previewError);
+              console.error("PreviewSaveFailed:", previewError);
               showAlert({
-                message: "试听保存失败，请稍后重试",
+                message: "Failed to save preview. Please try again later",
                 variant: "warning",
               });
             }
           }
         } else {
           showAlert({
-            message: `创建失败: ${response.error || "未知错误"}`,
+            message: `Creation failed: ${response.error || "Unknown error"}`,
             variant: "error",
           });
         }
       } catch (error) {
-        console.error("创建虚拟IP出错:", error);
-        showAlert({ message: "创建失败，请重试", variant: "error" });
+        console.error("Error creating virtual IP:", error);
+        showAlert({ message: "Creation failed. Please try again", variant: "error" });
       }
     },
     [formState, onCreated, resetForm, showAlert],
@@ -128,7 +128,7 @@ export function useVirtualIPCreateForm({
 
   const runGenerateAllAI = useCallback(async () => {
     if (!formState.name.trim()) {
-      showAlert({ message: "请先填写名称", variant: "warning" });
+      showAlert({ message: "Please enter a name first", variant: "warning" });
       return;
     }
 
@@ -139,7 +139,7 @@ export function useVirtualIPCreateForm({
       !formState.biography.trim()
     ) {
       showAlert({
-        message: "请在名称下方补充“整体介绍”（或先手动写一些内容）",
+        message: "Please add an overall introduction below the name (or write some content manually first)",
         variant: "warning",
       });
       return;
@@ -156,15 +156,15 @@ export function useVirtualIPCreateForm({
       setAiGenerating(true);
       try {
         const basicParts: string[] = [];
-        if (aiBrief.trim()) basicParts.push(`整体介绍：${aiBrief.trim()}`);
+        if (aiBrief.trim()) basicParts.push(`Overview: ${aiBrief.trim()}`);
         if (formState.description.trim())
-          basicParts.push(`角色描述：${formState.description.trim()}`);
+          basicParts.push(`Character description: ${formState.description.trim()}`);
         if (formState.background_story.trim())
-          basicParts.push(`背景故事：${formState.background_story.trim()}`);
+          basicParts.push(`Background story: ${formState.background_story.trim()}`);
         if (formState.biography.trim())
-          basicParts.push(`人物小传：${formState.biography.trim()}`);
+          basicParts.push(`Biography: ${formState.biography.trim()}`);
         if (formState.tags.length > 0)
-          basicParts.push(`标签：${formState.tags.join("、")}`);
+          basicParts.push(`Tags: ${formState.tags.join("、")}`);
         const basicInfo = basicParts.join("\n").trim() || undefined;
 
         const resp = await virtualIPAPI.generateAIContent({
@@ -175,7 +175,7 @@ export function useVirtualIPCreateForm({
         });
         if (!resp.success || !resp.data) {
           showAlert({
-            message: `AI生成失败: ${resp.error || "未知错误"}`,
+            message: `AI GeneratedFailed: ${resp.error || "Unknown error"}`,
             variant: "error",
           });
           return;
@@ -193,8 +193,8 @@ export function useVirtualIPCreateForm({
           tags: nextTags.length > 0 ? nextTags : prev.tags,
         }));
       } catch (err) {
-        console.error("AI一键生成失败:", err);
-        showAlert({ message: "AI生成失败，请重试", variant: "error" });
+        console.error("AI draft generation failed:", err);
+        showAlert({ message: "AI generation failed. Please try again", variant: "error" });
       } finally {
         setAiGenerating(false);
       }
@@ -206,11 +206,11 @@ export function useVirtualIPCreateForm({
     }
 
     showAlert({
-      title: "确认覆盖已填写内容",
+      title: "Confirm overwrite of existing content",
       message:
-        "AI一键生成将覆盖当前已填写的描述/背景故事/小传/风格提示词/标签，是否继续？",
+        "AI draft generation will overwrite the current description/background story/biography/style prompt/tags. Continue?",
       variant: "warning",
-      confirmText: "继续生成",
+      confirmText: "Continue",
       onConfirm: () => {
         void doGenerate();
       },

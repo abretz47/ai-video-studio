@@ -46,7 +46,7 @@ const applyTemplate = <T extends MarketingFormValues>(
 export function MarketingFields<T extends MarketingFormValues>({
   form,
   setForm,
-  title = "市场与节奏",
+  title = "Market and Pacing",
   idPrefix = "marketing",
 }: MarketingFieldsProps<T>) {
   const selectedTemplate = getTemplateById(form.pacing_template);
@@ -57,7 +57,7 @@ export function MarketingFields<T extends MarketingFormValues>({
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">
-            目标市场
+            Target Market
           </label>
           <select
             value={form.market_region || ""}
@@ -69,7 +69,7 @@ export function MarketingFields<T extends MarketingFormValues>({
             }
             className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
           >
-            <option value="">未指定</option>
+            <option value="">Unspecified</option>
             {MARKET_REGIONS.map((region) => (
               <option key={region.value} value={region.value}>
                 {region.label}
@@ -79,12 +79,12 @@ export function MarketingFields<T extends MarketingFormValues>({
           <p className="mt-1 text-[11px] text-slate-500">
             {MARKET_REGIONS.find(
               (region) => region.value === form.market_region,
-            )?.description || "选择目标市场后将自动触发本地化提示"}
+            )?.description || "Selecting a target market will automatically trigger localization hints"}
           </p>
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">
-            微类型
+            Micro Type
           </label>
           <input
             list={`${idPrefix}-micro-genre`}
@@ -95,7 +95,7 @@ export function MarketingFields<T extends MarketingFormValues>({
                 micro_genre: e.target.value,
               }))
             }
-            placeholder="例如：黑帮复仇 / 狼人命定伴侣"
+            placeholder="For example: gang revenge / fated werewolf mate"
             className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
           />
           <datalist id={`${idPrefix}-micro-genre`}>
@@ -104,12 +104,12 @@ export function MarketingFields<T extends MarketingFormValues>({
             ))}
           </datalist>
           <p className="mt-1 text-[11px] text-slate-500">
-            选择或输入更具体的题材标签
+            Select or enter more specific genre tags
           </p>
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1">
-            节奏模板
+            Pacing Template
           </label>
           <select
             value={form.pacing_template || ""}
@@ -131,7 +131,7 @@ export function MarketingFields<T extends MarketingFormValues>({
             }}
             className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
           >
-            <option value="">自定义</option>
+            <option value="">Custom</option>
             {PACING_TEMPLATES.map((template) => (
               <option key={template.id} value={template.id}>
                 {template.label}
@@ -139,7 +139,7 @@ export function MarketingFields<T extends MarketingFormValues>({
             ))}
           </select>
           <p className="mt-1 text-[11px] text-slate-500">
-            自动填充钩子计划、反转密度与投流素材建议
+            Automatically fill hook plans, reversal density, and campaign asset suggestions
           </p>
         </div>
       </div>
@@ -153,19 +153,19 @@ export function MarketingFields<T extends MarketingFormValues>({
             <div className="grid gap-2 md:grid-cols-3">
               <div>
                 <div className="text-[11px] uppercase text-slate-400">
-                  开场钩子
+                  Opening Hook
                 </div>
                 <div>{selectedTemplate.hookPlan.opening_hook || "—"}</div>
               </div>
               <div>
                 <div className="text-[11px] uppercase text-slate-400">
-                  情绪升级
+                  Emotional Escalation
                 </div>
                 <div>{selectedTemplate.hookPlan.escalation_plan || "—"}</div>
               </div>
               <div>
                 <div className="text-[11px] uppercase text-slate-400">
-                  释放节点
+                  Release Point
                 </div>
                 <div>{selectedTemplate.hookPlan.payoff_plan || "—"}</div>
               </div>
@@ -173,7 +173,7 @@ export function MarketingFields<T extends MarketingFormValues>({
             {selectedTemplate.twistDensity && (
               <div>
                 <span className="text-[11px] uppercase text-slate-400">
-                  反转密度
+                  Reversal Density
                 </span>
                 <span className="ml-2 text-slate-700">
                   {selectedTemplate.twistDensity}
@@ -190,7 +190,7 @@ export function MarketingFields<T extends MarketingFormValues>({
           </div>
         ) : (
           <div className="text-slate-500">
-            选择节奏模板后显示节奏与钩子说明。
+            Select a pacing template to show pacing and hook guidance.
           </div>
         )}
       </div>

@@ -20,10 +20,10 @@ export function TimelineRenderStatusHeader({
   error: string | null;
 }) {
   const readinessLabel = readiness.ready
-    ? `${readiness.videoClipCount} 个片段可渲染`
+    ? `${readiness.videoClipCount} clips ready to render`
     : readiness.videoClipCount
-    ? `待补 ${readiness.missingClips.length} 段`
-    : "无视频轨";
+    ? `Need ${readiness.missingClips.length} clips`
+    : "No video track";
   const readinessTextClass = readiness.ready
     ? "text-emerald-700"
     : "text-slate-500";
@@ -35,12 +35,12 @@ export function TimelineRenderStatusHeader({
     >
       <span
         data-timeline-render-label="final-output"
-        title="渲染/导出状态"
+        title="Render/Export Status"
         className="text-[11px] font-bold text-slate-900"
       >
-        成片
+        Final Cut
       </span>
-      <span className="sr-only">渲染/导出</span>
+      <span className="sr-only">Render/Export</span>
       <span
         data-timeline-render-readiness={readiness.ready ? "ready" : "blocked"}
         className={`inline-flex items-center gap-1 text-[11px] font-semibold ${readinessTextClass}`}
@@ -64,7 +64,7 @@ export function TimelineRenderStatusHeader({
         </span>
       ) : null}
       {loading ? (
-        <span className="text-xs text-gray-500">刷新中...</span>
+        <span className="text-xs text-gray-500">Refreshing...</span>
       ) : null}
       {error ? <span className="text-xs text-red-600">{error}</span> : null}
     </div>
@@ -96,7 +96,7 @@ export function TimelineRenderActionButtons({
         disabled={!canRender}
         className={operatorButtonClass("secondary")}
       >
-        渲染预览
+        Render Preview
       </button>
       <button
         type="button"
@@ -104,7 +104,7 @@ export function TimelineRenderActionButtons({
         disabled={!canRender}
         className={operatorButtonClass(finalButtonVariant)}
       >
-        导出成片
+        Export Final Cut
       </button>
       {latestJob?.status === "failed" ? (
         <button
@@ -115,7 +115,7 @@ export function TimelineRenderActionButtons({
           disabled={!readiness.ready || busy}
           className={operatorButtonClass("secondary")}
         >
-          重试
+          Retry
         </button>
       ) : null}
     </div>
@@ -140,16 +140,16 @@ export function MissingClipsDetails({
   return (
     <details className="mt-2 rounded-md border border-amber-100 bg-amber-50/50 px-2 py-1.5 text-xs">
       <summary className="cursor-pointer font-medium text-amber-800">
-        缺失片段清单（{missingClips.length}）
+        Missing Clips ({missingClips.length})
       </summary>
       <div className="mt-2 space-y-1">
         {generating.length > 0 ? (
           <div className="text-blue-700">
-            生成中片段（完成后自动可渲染）：{joinIds(generating)}
+            Generating clips (rendering will unlock automatically when completed): {joinIds(generating)}
           </div>
         ) : null}
         {missing.length > 0 ? (
-          <div className="text-amber-800">缺失片段：{joinIds(missing)}</div>
+          <div className="text-amber-800">Missing clips: {joinIds(missing)}</div>
         ) : null}
       </div>
     </details>
@@ -173,26 +173,26 @@ export function renderJobFailureText(
 ) {
   const code = getString(job.log?.code);
   if (code === "missing_clip_videos") {
-    return `缺少 ${missingClipCount} 个视频片段`;
+    return `Missing ${missingClipCount} video clips`;
   }
-  if (code === "no_video_clips") return "时间轴没有可渲染的视频轨";
-  if (code === "stale_timeline_version") return "时间轴版本已变化";
-  return code || "渲染失败";
+  if (code === "no_video_clips") return "The timeline has no renderable video track";
+  if (code === "stale_timeline_version") return "The timeline version has changed";
+  return code || "Rendering failed";
 }
 
 export function renderTypeLabel(value: string) {
-  if (value === "proxy") return "预览";
-  if (value === "final") return "成片";
-  if (value === "export") return "导出";
+  if (value === "proxy") return "Preview";
+  if (value === "final") return "Final Cut";
+  if (value === "export") return "Export";
   return value;
 }
 
 function renderStatusLabel(value: string) {
-  if (value === "queued") return "排队";
-  if (value === "running") return "渲染中";
-  if (value === "succeeded") return "完成";
-  if (value === "failed") return "失败";
-  if (value === "cancelled") return "已取消";
+  if (value === "queued") return "Queued";
+  if (value === "running") return "Rendering";
+  if (value === "succeeded") return "Completed";
+  if (value === "failed") return "Failed";
+  if (value === "cancelled") return "Cancelled";
   return value;
 }
 

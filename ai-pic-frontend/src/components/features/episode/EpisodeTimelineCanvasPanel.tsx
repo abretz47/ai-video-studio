@@ -66,7 +66,7 @@ export function EpisodeTimelineCanvasPanel({
       data-timeline-canvas-panel="primary"
       data-timeline-canvas-presence-frame="restored-visible-axis"
       data-timeline-selection-visibility="anchor"
-      aria-label="Timeline 全片时间轴定位区"
+      aria-label="Timeline full film locator"
       className="scroll-mt-16 space-y-2 rounded-xl bg-blue-50/35 p-1 shadow-[inset_0_0_0_1px_rgba(191,219,254,0.9)]"
     >
       <div className="space-y-2">
@@ -91,13 +91,13 @@ export function EpisodeTimelineCanvasPanel({
           endMs={tracks.length ? undefined : 10000}
           initialZoom={1}
           fitToWidth={true}
-          headerTitle="全片时间轴"
+          headerTitle="Full Film Timeline"
           headerAction={
             <button
               type="button"
               onClick={() => setSettingsOpen((value) => !value)}
-              aria-label="Timeline 生成设置"
-              title="Timeline 生成设置"
+              aria-label="Timeline Generation Settings"
+              title="Timeline Generation Settings"
               className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-transparent bg-transparent text-slate-600 transition-colors hover:bg-white/80 hover:text-slate-950 disabled:pointer-events-none disabled:opacity-50"
             >
               <TimelineSettingsIcon active={showSettings} />
@@ -107,7 +107,7 @@ export function EpisodeTimelineCanvasPanel({
       </div>
       {pipelineTask ? (
         <div className="rounded-md border border-gray-100 bg-white px-3 py-1.5">
-          <GenerationTaskStatusLine label="时间轴流水线" task={pipelineTask} />
+          <GenerationTaskStatusLine label="Timeline Pipeline" task={pipelineTask} />
         </div>
       ) : null}
     </section>
@@ -115,7 +115,7 @@ export function EpisodeTimelineCanvasPanel({
 }
 
 const EMPTY_TIMELINE_TRACKS: TimelineTrack[] = [
-  { id: "video", label: "视频", color: "#0f766e", items: [] },
+  { id: "video", label: "Video", color: "#0f766e", items: [] },
 ];
 
 function TimelineSettingsIcon({ active }: { active: boolean }) {
@@ -165,7 +165,7 @@ function TimelineGenerationSettings({
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-md border border-gray-100 bg-gray-50 px-3 py-2">
       <span className="text-xs font-semibold text-gray-600">
-        Timeline 生成设置
+        Timeline Generation Settings
       </span>
       <select
         value={timingModel}
@@ -173,7 +173,7 @@ function TimelineGenerationSettings({
         disabled={modelsLoading}
         className={operatorSelectClass("w-48")}
       >
-        <option value="">自动模型</option>
+        <option value="">Auto Model</option>
         {models.map((model) => {
           const providerScopedId =
             model.provider && model.id
@@ -194,7 +194,7 @@ function TimelineGenerationSettings({
           checked={useDurationControl}
           onChange={(event) => setUseDurationControl(event.target.checked)}
         />
-        时长精控
+        Duration Control
       </label>
       <button
         type="button"
@@ -202,7 +202,7 @@ function TimelineGenerationSettings({
         disabled={pipelineBusy || !selectedScriptId}
         className={operatorButtonClass("primary")}
       >
-        {pipelineBusy ? "生成中..." : "生成 Timeline"}
+        {pipelineBusy ? "Generating..." : "Generate Timeline"}
       </button>
     </div>
   );

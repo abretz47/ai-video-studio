@@ -48,7 +48,7 @@ export function buildEpisodeProductionState({
   resolvedVideos?: TimelineResolvedVideoListResponse | null;
 }): ProductionState {
   const scriptReady = Boolean(script) || workflowStatus.script === "ready";
-  const hasTimelineClipEntry = storyboardActionLabel === "进入片段分镜";
+  const hasTimelineClipEntry = storyboardActionLabel === "Open Clip Storyboard";
   const timelineReady =
     workflowStatus.timeline === "ready" && hasTimelineClipEntry;
   const clipVideoStatus = clipVideoStepStatus(
@@ -58,31 +58,31 @@ export function buildEpisodeProductionState({
   );
 
   const steps: ProductionStep[] = [
-    { key: "script", label: "剧本", status: scriptReady ? "ready" : "pending" },
+    { key: "script", label: "Script", status: scriptReady ? "ready" : "pending" },
     {
       key: "timeline",
-      label: "时间轴",
+      label: "Timeline",
       status: timelineReady ? "ready" : "pending",
     },
     {
       key: "clip-video",
-      label: "片段视频",
+      label: "Clip Video",
       status: clipVideoStatus,
     },
-    { key: "render-export", label: "渲染/导出", status: "pending" },
+    { key: "render-export", label: "Render/Export", status: "pending" },
   ];
 
   if (!scriptReady) {
     return {
       steps,
-      primaryAction: { kind: "generate-script", label: "生成剧本" },
+      primaryAction: { kind: "generate-script", label: "Generate Script" },
     };
   }
 
   if (!timelineReady) {
     return {
       steps,
-      primaryAction: { kind: "generate-timeline", label: "生成 Timeline" },
+      primaryAction: { kind: "generate-timeline", label: "Generate Timeline" },
     };
   }
 
@@ -90,31 +90,31 @@ export function buildEpisodeProductionState({
     if (resolvedVideos?.ready) {
       return {
         steps,
-        primaryAction: { kind: "open-timeline", label: "渲染/导出" },
+        primaryAction: { kind: "open-timeline", label: "Render/Export" },
       };
     }
     if (resolvedVideos && resolvedVideos.missing_clip_count > 0) {
       return {
         steps,
-        primaryAction: { kind: "open-clip", label: "处理缺失片段" },
+        primaryAction: { kind: "open-clip", label: "Handle Missing Clips" },
       };
     }
     return {
       steps,
-      primaryAction: { kind: "open-clip", label: "处理片段视频" },
+      primaryAction: { kind: "open-clip", label: "Handle Clip Video" },
     };
   }
 
   if (activeTab !== "timeline") {
     return {
       steps,
-      primaryAction: { kind: "open-timeline", label: "回到时间轴" },
+      primaryAction: { kind: "open-timeline", label: "Back to Timeline" },
     };
   }
 
   return {
     steps,
-    primaryAction: { kind: "open-storyboard", label: "查看分镜参考" },
+    primaryAction: { kind: "open-storyboard", label: "View Storyboard References" },
   };
 }
 
@@ -133,9 +133,9 @@ function clipVideoStepStatus(
 }
 
 export function productionStatusLabel(status: WorkflowStepStatus) {
-  if (status === "ready") return "已就绪";
-  if (status === "generating") return "生成中";
-  return "待处理";
+  if (status === "ready") return "Ready";
+  if (status === "generating") return "Generating";
+  return "Pending";
 }
 
 export function productionStatusTone(

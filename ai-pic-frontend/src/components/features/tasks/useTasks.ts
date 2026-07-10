@@ -39,7 +39,7 @@ export function useTasks() {
               const taskId =
                 typeof task.id === "number" ? task.id : Number(task.id);
               if (!Number.isInteger(taskId)) {
-                console.warn("跳过无效任务ID", task.id);
+                console.warn("Skipping invalid task ID", task.id);
                 return acc;
               }
               acc.push({ ...task, id: taskId });
@@ -57,11 +57,11 @@ export function useTasks() {
           }
           setFetchError(null);
         } else {
-          setFetchError(res.error || "获取任务列表失败");
+          setFetchError(res.error || "Failed to fetch task list");
         }
       } catch (error) {
         setFetchError(
-          error instanceof Error ? error.message : "获取任务列表失败",
+          error instanceof Error ? error.message : "Failed to fetch task list",
         );
       } finally {
         if (!options?.silent) {
@@ -92,13 +92,13 @@ export function useTasks() {
       try {
         const res = await taskAPI.startTask(taskId);
         if (!res.success) {
-          throw new Error(res.error || "启动任务失败");
+          throw new Error(res.error || "Failed to start task");
         }
         await loadTasks({ silent: true });
         return { success: true, message: res.data?.message };
       } catch (error) {
-        const message = error instanceof Error ? error.message : "启动任务失败";
-        console.error("启动任务失败:", error);
+        const message = error instanceof Error ? error.message : "Failed to start task";
+        console.error("Failed to start task:", error);
         return { success: false, message };
       } finally {
         setIsStartingId(null);
@@ -113,13 +113,13 @@ export function useTasks() {
       try {
         const res = await taskAPI.cancelTask(taskId);
         if (!res.success) {
-          throw new Error(res.error || "取消任务失败");
+          throw new Error(res.error || "Failed to cancel task");
         }
         await loadTasks({ silent: true });
         return { success: true };
       } catch (error) {
-        const message = error instanceof Error ? error.message : "取消任务失败";
-        console.error("取消任务失败:", error);
+        const message = error instanceof Error ? error.message : "Failed to cancel task";
+        console.error("Failed to cancel task:", error);
         return { success: false, message };
       } finally {
         setCancellingTaskId(null);
@@ -134,13 +134,13 @@ export function useTasks() {
       try {
         const res = await taskAPI.deleteTask(String(taskId));
         if (!res.success) {
-          throw new Error(res.error || "删除任务失败");
+          throw new Error(res.error || "Failed to delete task");
         }
         await loadTasks({ silent: true });
         return { success: true };
       } catch (error) {
-        const message = error instanceof Error ? error.message : "删除任务失败";
-        console.error("删除任务失败:", error);
+        const message = error instanceof Error ? error.message : "Failed to delete task";
+        console.error("Failed to delete task:", error);
         return { success: false, message };
       } finally {
         setDeletingTaskId(null);

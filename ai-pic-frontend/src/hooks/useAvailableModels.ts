@@ -57,7 +57,7 @@ export function useAvailableModels(options: UseAvailableModelsOptions = {}) {
         : await aiAPI.getAvailableModels({ type: modelType });
 
       if (!response.success || !response.data) {
-        throw new Error(response.error || "获取模型列表失败");
+        throw new Error(response.error || "Failed to fetch model list");
       }
 
       // Deduplicate models by model_id or id to prevent duplicates in dropdown
@@ -82,7 +82,7 @@ export function useAvailableModels(options: UseAvailableModelsOptions = {}) {
       });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "获取模型列表失败";
+        error instanceof Error ? error.message : "Failed to fetch model list";
       setState((prev) => ({ ...prev, loading: false, error: message }));
     }
   }, [effectiveKey, enabled, fetcher, modelType]);

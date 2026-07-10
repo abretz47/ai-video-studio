@@ -94,8 +94,8 @@ export function useStoryDetail({ storyKey, showAlert }: UseStoryDetailOptions) {
         setTimelinesByEpisode(timelinesMap);
       }
     } catch (e) {
-      console.error("加载故事详情失败", e);
-      showAlert({ message: "加载故事详情失败", variant: "error" });
+      console.error("Failed to load story details", e);
+      showAlert({ message: "Failed to load story details", variant: "error" });
     } finally {
       setLoading(false);
       setLoadingScripts(false);

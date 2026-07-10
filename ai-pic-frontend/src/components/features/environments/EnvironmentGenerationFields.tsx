@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { t } from "@/lib/i18n";
 import {
   GenerationProfileSelect,
   ImageGenAdvancedFields,
@@ -29,7 +30,7 @@ export function EnvironmentGenerationFields({
   generation,
   setGeneration,
   showToggle = true,
-  toggleLabel = "创建后自动生成参考图（可选模型参数）",
+  toggleLabel = t("environments.generation.toggleLabel", "Generate reference images automatically after creation (optional model params)"),
   withDivider = true,
   compact = false,
 }: EnvironmentGenerationFieldsProps) {
@@ -106,7 +107,7 @@ export function EnvironmentGenerationFields({
         <div className={bodyClass}>
           <div className={spanClass}>
             <label className="mb-1 block whitespace-nowrap text-xs font-medium text-gray-700">
-              {compact ? "提示词（可选）" : "补充提示词（可选）"}
+              {compact ? t("environments.generation.promptOptionalCompact", "Prompt (Optional)") : t("environments.generation.promptOptional", "Additional Prompt (Optional)")}
             </label>
             <textarea
               value={generation.prompt}
@@ -115,7 +116,7 @@ export function EnvironmentGenerationFields({
               className={operatorInputClass(
                 `h-auto w-full py-2 text-sm ${compact ? "min-h-16" : "min-h-20"}`,
               )}
-              placeholder="不填则使用环境名称/描述生成"
+              placeholder={t("environments.generation.promptPlaceholder", "If empty, the environment name/description will be used")}
             />
           </div>
           {supportsReferenceImages ? (
@@ -133,7 +134,7 @@ export function EnvironmentGenerationFields({
           ) : null}
           <div className="min-w-0">
             <MultiModelSelector
-              label="AI 模型"
+              label={t("environments.generation.aiModel", "AI Model")}
               value={generation.model ? [generation.model] : []}
               onChange={(ids) => updateField("model", ids[0] || "")}
               modelType={AIModelType.Image}
@@ -143,7 +144,7 @@ export function EnvironmentGenerationFields({
               autoSelectDefault
               helperText={
                 selectedModel?.capabilities?.join(", ") ||
-                "选择用于环境参考图生成的模型"
+                t("environments.generation.aiModelHelper", "Choose the model used for environment reference image generation")
               }
               className="space-y-1"
               onModelsLoaded={(models, defaultModel) => {
@@ -166,21 +167,21 @@ export function EnvironmentGenerationFields({
           </div>
           <div className="min-w-0">
             <label className="mb-1 block whitespace-nowrap text-xs font-medium text-gray-700">
-              生成风格
+              {t("environments.generation.style", "Generation Style")}
             </label>
             <select
               value={generation.style}
               onChange={(e) => updateField("style", e.target.value)}
               className={operatorSelectClass("w-full")}
             >
-              <option value="realistic">写实</option>
-              <option value="anime">二次元</option>
-              <option value="cartoon">卡通</option>
+              <option value="realistic">{t("environments.generation.styleRealistic", "Realistic")}</option>
+              <option value="anime">{t("environments.generation.styleAnime", "Anime")}</option>
+              <option value="cartoon">{t("environments.generation.styleCartoon", "Cartoon")}</option>
             </select>
           </div>
           <div className="min-w-0">
             <label className="mb-1 block whitespace-nowrap text-xs font-medium text-gray-700">
-              生成数量
+              {t("environments.generation.count", "Image Count")}
             </label>
             <select
               value={generation.count}
@@ -198,7 +199,7 @@ export function EnvironmentGenerationFields({
             >
               {countOptions.map((value) => (
                 <option key={value} value={value}>
-                  {value} 张
+                  {t("environments.generation.countOption", "{count} images").replace("{count}", String(value))}
                 </option>
               ))}
             </select>

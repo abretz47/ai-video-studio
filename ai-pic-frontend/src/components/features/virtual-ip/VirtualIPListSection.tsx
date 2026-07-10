@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { formatDateOnly, t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorSectionHeader,
@@ -39,22 +40,22 @@ export function VirtualIPListSection({
     <div className="space-y-5">
       <OperatorPanel>
         <OperatorSectionHeader
-          title="IP 资产筛选"
-          subtitle={`${virtualIPs.length} 个可用 IP 项目`}
+          title={t("virtualIp.list.filterTitle", "IP Asset Filters")}
+          subtitle={t("virtualIp.list.filterSubtitle", "{count} available IP projects").replace("{count}", String(virtualIPs.length))}
           action={
             <button
               type="button"
               onClick={onOpenCreate}
               className={operatorButtonClass("primary")}
             >
-              创建 IP
+              {t("virtualIp.common.create", "Create IP")}
             </button>
           }
         />
         <div className="space-y-3 p-4">
           <input
             type="text"
-            placeholder="搜索 IP 名称、标签、创作者"
+            placeholder={t("virtualIp.list.searchPlaceholder", "Search IP name, tags, or creator")}
             value={searchTerm}
             onChange={(event) => onSearchTermChange(event.target.value)}
             className={operatorInputClass("w-full md:w-80")}
@@ -81,18 +82,18 @@ export function VirtualIPListSection({
       </OperatorPanel>
 
       {loading ? (
-        <OperatorState title="加载 IP 资产..." />
+        <OperatorState title={t("virtualIp.list.loading", "Loading IP assets...")} />
       ) : virtualIPs.length === 0 ? (
         <OperatorState
-          title="暂无 IP 项目"
-          detail="先创建一个 IP，再从故事生产链路选择角色资产。"
+          title={t("virtualIp.list.emptyTitle", "No IP projects yet")}
+          detail={t("virtualIp.list.emptyDetail", "Create an IP first, then pick character assets from story production.")}
           action={
             <button
               type="button"
               onClick={onOpenCreate}
               className={operatorButtonClass("primary")}
             >
-              创建 IP
+              {t("virtualIp.common.create", "Create IP")}
             </button>
           }
         />
@@ -114,7 +115,7 @@ function IPProjectCard({
   ip: VirtualIP;
   onDelete: (bizId: string) => void;
 }) {
-  const createdAt = new Date(ip.created_at).toLocaleDateString("zh-CN");
+  const createdAt = formatDateOnly(ip.created_at);
   return (
     <article className="rounded-lg border border-gray-200 bg-white p-4">
       <div className="flex items-start justify-between gap-3">
@@ -134,14 +135,14 @@ function IPProjectCard({
             href={`/virtual-ip/${ip.business_id}`}
             className={operatorButtonClass("ghost")}
           >
-            详情
+            {t("common.details", "Details")}
           </Link>
           <button
             type="button"
             onClick={() => onDelete(ip.business_id)}
             className="h-8 rounded-md px-2 text-xs font-medium text-red-600 hover:bg-red-50 whitespace-nowrap"
           >
-            删除
+            {t("common.delete", "Delete")}
           </button>
         </div>
       </div>
@@ -151,18 +152,22 @@ function IPProjectCard({
           {ip.description}
         </p>
       ) : (
-        <p className="mt-4 text-sm text-gray-400">暂无 IP 简介</p>
+        <p className="mt-4 text-sm text-gray-400">{t("virtualIp.list.noIntro", "No IP summary yet")}</p>
       )}
 
       <TagList tags={ip.tags ?? []} />
 
       <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
-        <span>{ip.background_story ? "背景故事已补充" : "背景故事待补充"}</span>
+        <span>
+          {ip.background_story
+            ? t("virtualIp.list.backgroundReady", "Background story added")
+            : t("virtualIp.list.backgroundMissing", "Background story missing")}
+        </span>
         <Link
           href={`/virtual-ip/${ip.business_id}`}
           className="font-medium text-blue-600 hover:text-blue-700"
         >
-          查看详情
+          {t("virtualIp.list.viewDetails", "View details")}
         </Link>
       </div>
     </article>

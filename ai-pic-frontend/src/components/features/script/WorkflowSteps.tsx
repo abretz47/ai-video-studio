@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorSectionHeader,
@@ -20,23 +21,23 @@ export function WorkflowSteps({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="生产入口"
-        subtitle="文本、结构和分镜入口统一归档"
+        title={t("script.workflow.title", "Production Entry Points")}
+        subtitle={t("script.workflow.subtitle", "Text, structure, and storyboard entry points in one place")}
       />
       <div className="grid gap-3 p-4 md:grid-cols-3">
         <StepCard
-          label="场景文本详情"
-          detail="浏览对白与舞台指令。"
+          label={t("script.workflow.sceneText", "Scene text details")}
+          detail={t("script.workflow.sceneTextDetail", "Review dialogue and stage directions.")}
           onClick={onGoToSceneDetails}
         />
         <StepCard
-          label="结构化场景 / 镜头"
-          detail="调整节拍与镜头顺序。"
+          label={t("script.workflow.structuredScenes", "Structured scenes / shots")}
+          detail={t("script.workflow.structuredScenesDetail", "Adjust beats and shot ordering.")}
           onClick={onGoToSceneStructure}
         />
         <StepCard
-          label="时间轴主链"
-          detail="从时间轴进入分镜辅助与素材替换。"
+          label={t("script.workflow.timeline", "Timeline mainline")}
+          detail={t("script.workflow.timelineDetail", "Jump from the timeline into storyboard support and asset replacement.")}
           onClick={onGoToTimelineSupport}
         />
       </div>
@@ -62,7 +63,7 @@ function StepCard({
         onClick={onClick}
         className={operatorButtonClass("secondary", "mt-3")}
       >
-        打开
+        {t("common.open", "Open")}
       </button>
     </div>
   );

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AlertModalProvider } from "@/components/shared/modals";
 import { ToastProvider } from "@/components/shared/notifications";
+import { locale, t } from "@/lib/i18n";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI短剧制作工作流平台",
-  description: "AI驱动的虚拟IP短剧生产平台",
+  title: t("app.layout.title", "AI Video Studio"),
+  description: t(
+    "app.layout.description",
+    "AI-powered short drama production platform",
+  ),
 };
 
 export default function RootLayout({
@@ -25,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

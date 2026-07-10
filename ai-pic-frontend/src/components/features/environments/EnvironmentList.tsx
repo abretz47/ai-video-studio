@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDateOnly, t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorSectionHeader,
@@ -28,27 +29,27 @@ export function EnvironmentList({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="环境列表"
-        subtitle="按 IP 项目复用的场景资产池"
+        title={t("environments.list.title", "Environment List")}
+        subtitle={t("environments.list.subtitle", "Scene asset pool reused across IP projects")}
         action={
           <button
             type="button"
             onClick={onRefresh}
             className={operatorButtonClass("secondary")}
           >
-            刷新
+            {t("common.refresh", "Refresh")}
           </button>
         }
       />
       {loading ? (
         <div className="p-4">
-          <OperatorState title="加载环境资产..." />
+          <OperatorState title={t("environments.list.loading", "Loading environment assets...")} />
         </div>
       ) : list.length === 0 ? (
         <div className="p-4">
           <OperatorState
-            title="暂无环境资产"
-            detail="创建后可在详情内管理图片。"
+            title={t("environments.list.emptyTitle", "No environment assets yet")}
+            detail={t("environments.list.emptyDetail", "Create one to manage images from the detail view.")}
           />
         </div>
       ) : (
@@ -65,13 +66,13 @@ export function EnvironmentList({
                   </h3>
                   <p className="mt-1 text-xs text-gray-500">
                     {resolveCreatorLabel(env.creator)} ·{" "}
-                    {new Date(env.created_at).toLocaleDateString("zh-CN")}
+                    {formatDateOnly(env.created_at)}
                   </p>
                 </div>
                 <StatusPill tone={(env.linked_virtual_ip_count || 0) > 0 ? "green" : "amber"}>
                   {(env.linked_virtual_ip_count || 0) > 0
-                    ? `已接入 ${env.linked_virtual_ip_count} IP`
-                    : "未关联 IP"}
+                    ? t("environments.list.linkedIpCount", "{count} linked IPs").replace("{count}", String(env.linked_virtual_ip_count || 0))
+                    : t("environments.list.unlinked", "No linked IP")}
                 </StatusPill>
                 <div className="flex gap-2">
                   <button
@@ -82,20 +83,20 @@ export function EnvironmentList({
                       "whitespace-nowrap",
                     )}
                   >
-                    管理图片
+                    {t("environments.list.manageImages", "Manage Images")}
                   </button>
                   <button
                     type="button"
                     onClick={() => onDelete(env)}
                     className="h-8 rounded-md px-2 text-xs font-medium text-red-600 hover:bg-red-50 whitespace-nowrap"
                   >
-                    删除
+                    {t("common.delete", "Delete")}
                   </button>
                 </div>
               </div>
 
               <div className="mt-3 text-xs text-gray-500">
-                类别：{env.category || "未指定"}
+                {t("common.category", "Category")}: {env.category || t("common.unspecified", "Unspecified")}
               </div>
               {env.tags && env.tags.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">

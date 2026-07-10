@@ -8,7 +8,7 @@ import {
   type AvailableModelsResponse,
 } from "@/utils/api/types";
 
-// 简化的模型类型映射，兼容旧代码
+// Simplified model type mapping for legacy compatibility
 const LEGACY_TYPE_MAP: Record<string, string> = {
   text: AIModelType.Text,
   image: AIModelType.Image,
@@ -19,7 +19,7 @@ const LEGACY_TYPE_MAP: Record<string, string> = {
 interface MultiModelSelectorProps {
   value: string[];
   onChange: (value: string[]) => void;
-  modelType?: string; // 现在推荐传入 AIModelType 枚举值，但也兼容 'text'/'image' 等简写
+  modelType?: string; // Passing AIModelType enum values is recommended, but shorthand values like 'text'/'image' are also supported
   cacheKey?: string;
   label?: string;
   helperText?: string;
@@ -37,10 +37,10 @@ interface MultiModelSelectorProps {
 const providerLabel = (provider: string) => {
   const map: Record<string, string> = {
     openai: "OpenAI",
-    volcengine: "火山引擎",
+    volcengine: "Volcengine",
     deepseek: "DeepSeek",
-    keling: "可灵",
-    jimeng: "即梦",
+    keling: "Keling",
+    jimeng: "Jimeng",
     google: "Google",
     gpt: "GPT",
   };
@@ -52,7 +52,7 @@ const matchesModelType = (model: AIModel, targetType: string) => {
   const t = targetType.toLowerCase();
   const mtype = (model.type || "").toLowerCase();
   if (mtype === t) return true;
-  // 兼容 image <-> image_to_image
+  // Compatible with image <-> image_to_image
   if (t === AIModelType.Image.toLowerCase() || t === "image") {
     return ["image_to_image", "text_to_image"].includes(mtype);
   }
@@ -76,38 +76,38 @@ export function MultiModelSelector({
   filterModels,
   onModelsLoaded,
   allowAuto = true,
-  autoLabel = "自动（推荐）",
+  autoLabel = "Auto (Recommended)",
   autoSelectDefault = false,
   multiple = true,
   className,
   fetcher,
 }: MultiModelSelectorProps) {
-  // 解析实际的 filter type
+  // Resolve the actual filter type
   const actualModelType = LEGACY_TYPE_MAP[modelType] || modelType;
 
   const { models, defaultModel, loading, error, refresh } = useAvailableModels({
-    modelType: actualModelType, // 传给 hook 的也应该是转换后的标准类型
+    modelType: actualModelType, // The normalized standard type should also be passed to the hook
     cacheKey,
     enabled: !disabled,
     fetcher,
   });
   const [provider, setProvider] = useState<string>("all");
 
-  // 1. 过滤模型：先按 Type 再按自定义 filter
+  // 1. Filter models: first by type, then by custom filter
   const filteredModels = useMemo(() => {
     let result = models;
-    // 严格类型过滤
+    // Strict type filtering
     if (actualModelType) {
       result = result.filter((m) => matchesModelType(m, actualModelType));
     }
-    // 自定义过滤
+    // Custom filtering
     if (filterModels) {
       result = result.filter(filterModels);
     }
     return result;
   }, [models, actualModelType, filterModels]);
 
-  // 2. 分组逻辑
+  // 2. Grouping logic
   const grouped = useMemo<Record<string, AIModel[]>>(() => {
     const groupedModels: Record<string, AIModel[]> = {};
     filteredModels.forEach((model) => {
@@ -116,7 +116,7 @@ export function MultiModelSelector({
       groupedModels[provider].push(model);
     });
 
-    // 排序：OpenAI 优先，其他字母序
+    // Sort order: OpenAI first, others alphabetically
     const ordered: Record<string, AIModel[]> = {};
     const providers = Object.keys(groupedModels).sort((a, b) => {
       if (a === "openai") return -1;
@@ -138,17 +138,17 @@ export function MultiModelSelector({
     return Array.from(ps).sort();
   }, [filteredModels]);
 
-  // 3. 初始加载回调 & 默认选中逻辑
+  // 3. Initial load callback and default-selection logic
   useEffect(() => {
     if (!loading && models.length > 0) {
       onModelsLoaded?.(models, defaultModel);
 
-      // 当允许自动选择时，只在当前没有选中值的情况下选中默认模型
+      // When auto selection is allowed, pick the default model only if the current value is empty
       if (value.length === 0 && defaultModel && autoSelectDefault) {
         onChange([defaultModel]);
       }
     }
-    // 明确依赖 onChange/onModelsLoaded/value.length，避免闭包用旧值
+    // Depend explicitly on onChange/onModelsLoaded/value.length to avoid stale closures
   }, [
     loading,
     models,
@@ -203,7 +203,7 @@ export function MultiModelSelector({
       {helperText ? (
         <p className="text-xs text-gray-500 mb-1">{helperText}</p>
       ) : null}
-      {loading ? <p className="text-sm text-gray-500">模型加载中...</p> : null}
+      {loading ? <p className="text-sm text-gray-500">Loading models...</p> : null}
       {error ? (
         <div className="text-sm text-red-600 flex items-center gap-2">
           <span>{error}</span>
@@ -212,17 +212,17 @@ export function MultiModelSelector({
             className="text-blue-600 underline"
             onClick={() => refresh()}
           >
-            重试
+            Retry
           </button>
         </div>
       ) : null}
       {!loading && !error && Object.keys(grouped).length === 0 ? (
         <p className="text-sm text-gray-500">
-          暂无可用模型，请检查提供商配置或刷新。
+          No models are available. Check provider configuration or refresh.
         </p>
       ) : null}
 
-      {/* 单选模式：改为提供商 + 模型两级下拉，避免长列表溢出 */}
+      {/* Single-select mode: switch to provider + model two-level dropdowns to avoid long-list overflow */}
       {!multiple ? (
         <div className="space-y-2">
           <div className="grid gap-2 sm:grid-cols-2">
@@ -250,7 +250,7 @@ export function MultiModelSelector({
               disabled={disabled || loading || providers.length === 0}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">全部提供商</option>
+              <option value="all">All Providers</option>
               {providers.map((p) => (
                 <option key={p} value={p}>
                   {providerLabel(p)}
@@ -335,13 +335,13 @@ export function MultiModelSelector({
       {value.length > 0 ? (
         <div className="mt-3">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            已选模型
+            Selected Models
           </label>
           <div className="flex flex-wrap gap-2">
             {value.map((modelId) => {
               const model = filteredModels.find((m) => m.model_id === modelId);
               const provider =
-                model?.provider || modelId.split(":")[0] || "模型";
+                model?.provider || modelId.split(":")[0] || "Model";
               const labelText = model?.name || model?.id || modelId;
               return (
                 <span

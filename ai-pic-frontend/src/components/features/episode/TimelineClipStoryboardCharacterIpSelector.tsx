@@ -21,14 +21,14 @@ export function StoryboardCharacterIpSelector({
 }) {
   const options = uniqueCharactersByVirtualIp(characters);
   return (
-    <fieldset className="mt-3 grid gap-2" aria-label="绑定角色 IP">
+    <fieldset className="mt-3 grid gap-2" aria-label="Bind Character IP">
       <legend className="text-[11px] font-medium text-gray-700">
-        绑定角色 IP
+        Bind Character IP
       </legend>
       {loading ? (
-        <div className="text-[11px] text-gray-500">角色加载中...</div>
+        <div className="text-[11px] text-gray-500">CharacterLoading...</div>
       ) : error ? (
-        <div className="text-[11px] text-red-600">角色加载失败：{error}</div>
+        <div className="text-[11px] text-red-600">Failed to load characters: {error}</div>
       ) : options.length ? (
         <div className="grid gap-1.5">
           {options.map((character) => {
@@ -45,7 +45,7 @@ export function StoryboardCharacterIpSelector({
                   onChange={(event) =>
                     onToggle(virtualIpId, event.currentTarget.checked)
                   }
-                  aria-label={`绑定角色 IP ${label}`}
+                  aria-label={`Bind Character IP ${label}`}
                   className="h-3.5 w-3.5 flex-none rounded border-gray-300"
                 />
                 <span className="min-w-0 flex-1 truncate">{label}</span>
@@ -59,7 +59,7 @@ export function StoryboardCharacterIpSelector({
       ) : (
         <div className="grid gap-2">
           <div className="text-[11px] text-gray-500">
-            暂无角色 IP，请先在临时角色绑定 VirtualIP。
+            No character IPs available. Bind a virtual IP in Temporary Characterss first.
           </div>
           {onNavigateToCharacters ? (
             <button
@@ -67,7 +67,7 @@ export function StoryboardCharacterIpSelector({
               onClick={onNavigateToCharacters}
               className={operatorButtonClass("secondary", "w-fit text-xs")}
             >
-              去临时角色绑定 IP
+              Go bind IP in Temporary Characterss
             </button>
           ) : null}
         </div>

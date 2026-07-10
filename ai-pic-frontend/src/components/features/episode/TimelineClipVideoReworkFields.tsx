@@ -8,8 +8,8 @@ const VIDEO_ACTION_OPTIONS: Array<{
   value: TimelineClipVideoReworkAction;
   label: string;
 }> = [
-  { value: "re_cut", label: "重新切分" },
-  { value: "re_render", label: "重新渲染" },
+  { value: "re_cut", label: "Re-cut" },
+  { value: "re_render", label: "Re-render" },
 ];
 
 const RESOLUTION_OPTIONS = ["720p", "1080p"];
@@ -32,9 +32,9 @@ export function VideoActionSelect({
 }) {
   return (
     <label className={VIDEO_LABEL_CLASS}>
-      <span>重做动作</span>
+      <span>Rework Action</span>
       <select
-        aria-label="重做动作"
+        aria-label="Rework Action"
         value={value}
         onChange={(event) =>
           onChange(event.target.value as TimelineClipVideoReworkAction)
@@ -48,7 +48,7 @@ export function VideoActionSelect({
         ))}
       </select>
       <span className="text-[11px] text-gray-400">
-        两者都会重新生成片段视频，仅作为资产履历中的动作分类。
+        Both options regenerate the clip video and only differ as asset history categories.
       </span>
     </label>
   );
@@ -67,15 +67,15 @@ export function VideoModelSelect({
 }) {
   return (
     <label className={VIDEO_LABEL_CLASS}>
-      <span>视频模型</span>
+      <span>VideoModel</span>
       <select
-        aria-label="视频模型"
+        aria-label="VideoModel"
         value={value}
         disabled={videoModelsLoading}
         onChange={(event) => onChange(event.target.value)}
         className={operatorSelectClass("w-full")}
       >
-        <option value="">自动选择模型</option>
+        <option value="">Automatically select model</option>
         {(videoModels || []).map((option) => {
           const providerScopedId =
             option.provider && option.id
@@ -104,9 +104,9 @@ export function VideoResolutionSelect({
 }) {
   return (
     <label className={VIDEO_LABEL_CLASS}>
-      <span>分辨率</span>
+      <span>Resolution</span>
       <select
-        aria-label="分辨率"
+        aria-label="Resolution"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className={operatorSelectClass("w-full")}
@@ -130,14 +130,14 @@ export function VideoRatioSelect({
 }) {
   return (
     <label className={VIDEO_LABEL_CLASS}>
-      <span>画面比例</span>
+      <span>Frame Ratio</span>
       <select
-        aria-label="画面比例"
+        aria-label="Frame Ratio"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className={operatorSelectClass("w-full")}
       >
-        <option value="">自动</option>
+        <option value="">Auto</option>
         {RATIO_OPTIONS.map((option) => (
           <option key={option} value={option}>
             {option}

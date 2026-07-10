@@ -12,7 +12,7 @@ type ImagePreviewModalProps = {
 };
 
 /**
- * Lightweight image preview overlay used across grids (虚拟IP / 环境 / 分镜).
+ * Lightweight image preview overlay used across grids (Virtual IP / Environment / Storyboard).
  */
 export function ImagePreviewModal({
   open,
@@ -48,17 +48,17 @@ export function ImagePreviewModal({
     >
       <div className="relative max-h-[90vh] max-w-6xl w-full">
         <button
-          aria-label="关闭预览"
+          aria-label="ClosePreview"
           onClick={onClose}
           className="absolute right-2 top-2 z-10 rounded-full bg-black/60 px-3 py-1 text-sm text-white hover:bg-black/80"
         >
-          关闭
+          Close
         </button>
         <div className="overflow-hidden rounded-lg bg-gray-900 shadow-2xl">
           <div className="relative w-full" style={{ aspectRatio: "3 / 2" }}>
             <Image
               src={src}
-              alt={alt || "图片预览"}
+              alt={alt || "Image Preview"}
               fill
               className="object-contain"
               sizes="100vw"

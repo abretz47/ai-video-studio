@@ -12,12 +12,12 @@ export function PromptLayerSummary({
   const motion = motionTimelineLabel(layers);
   return (
     <div className="mt-3 rounded-md border border-gray-200 bg-gray-50 p-3 text-[11px] text-gray-600">
-      <div className="font-semibold text-gray-900">五层提示词</div>
+      <div className="font-semibold text-gray-900">Five-Layer Prompt</div>
       <div className="mt-2 grid gap-1 sm:grid-cols-2">
-        <PromptLayerValue label="方向" value={layers.directionAnchor} />
-        <PromptLayerValue label="参照" value={layers.aestheticReference} />
-        <PromptLayerValue label="构图" value={layers.compositionGeometry} />
-        <PromptLayerValue label="情绪" value={layers.emotionalLanding} />
+        <PromptLayerValue label="Direction" value={layers.directionAnchor} />
+        <PromptLayerValue label="Reference" value={layers.aestheticReference} />
+        <PromptLayerValue label="Composition" value={layers.compositionGeometry} />
+        <PromptLayerValue label="Emotion" value={layers.emotionalLanding} />
       </div>
       {motion ? <div className="mt-2 text-gray-700">{motion}</div> : null}
     </div>

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { t } from "@/lib/i18n";
 import {
   AuthGuard,
   OperatorPanel,
@@ -31,11 +32,11 @@ function EnvironmentsPageContent() {
       if (res.success && res.data) {
         setList(res.data);
       } else {
-        showAlert({ message: res.error || "加载环境失败", variant: "error" });
+        showAlert({ message: res.error || t("environments.page.loadFailed", "Failed to load environments"), variant: "error" });
       }
     } catch (e) {
       console.error(e);
-      showAlert({ message: "加载环境失败", variant: "error" });
+      showAlert({ message: t("environments.page.loadFailed", "Failed to load environments"), variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -47,22 +48,22 @@ function EnvironmentsPageContent() {
 
   const handleDelete = (env: Environment) => {
     showAlert({
-      title: "确认删除环境",
-      message: "删除后引用该环境的场景将失去关联，确定删除吗？",
+      title: t("environments.page.confirmDeleteTitle", "Confirm environment deletion"),
+      message: t("environments.page.confirmDeleteMessage", "Scenes that reference this environment will lose their link after deletion. Continue?") ,
       variant: "warning",
-      confirmText: "删除",
+      confirmText: t("common.delete", "Delete"),
       onConfirm: async () => {
         try {
           const res = await storyStructureAPI.deleteEnvironment(env.id);
           if (res.success) {
             setList((prev) => prev.filter((item) => item.id !== env.id));
-            showAlert({ message: "删除成功", variant: "success" });
+            showAlert({ message: t("common.deleteSuccess", "Deleted successfully"), variant: "success" });
           } else {
-            showAlert({ message: res.error || "删除失败", variant: "error" });
+            showAlert({ message: res.error || t("common.deleteFailed", "Delete failed"), variant: "error" });
           }
         } catch (e) {
           console.error(e);
-          showAlert({ message: "删除失败", variant: "error" });
+          showAlert({ message: t("common.deleteFailed", "Delete failed"), variant: "error" });
         }
       },
     });
@@ -70,27 +71,30 @@ function EnvironmentsPageContent() {
 
   return (
     <OperatorShell
-      title="环境资产"
-      subtitle="为 IP、故事和剧集场景维护可复用环境"
-      breadcrumb={["IP 中心", "环境资产"]}
+      title={t("environments.page.title", "Environment Assets")}
+      subtitle={t("environments.page.subtitle", "Maintain reusable environments for IPs, stories, and episode scenes")}
+      breadcrumb={[
+        t("common.breadcrumb.ipCenter", "IP Center"),
+        t("environments.page.breadcrumb", "Environment Assets"),
+      ]}
     >
       <OperatorPanel className="mb-5">
         <OperatorSectionHeader
-          title="环境资产"
-          subtitle="可直接接入 IP 环境池，也可在剧集时间轴绑定到场景"
+          title={t("environments.page.headerTitle", "Environment Assets")}
+          subtitle={t("environments.page.headerSubtitle", "Add directly to the IP environment pool or bind them to scenes from an episode timeline")}
           action={
             <div className="flex gap-2">
               <button
                 onClick={() => setShowCreateForm(true)}
                 className={operatorButtonClass("primary")}
               >
-                创建环境
+                {t("environments.page.create", "Create Environment")}
               </button>
               <button
                 onClick={() => void load()}
                 className={operatorButtonClass("secondary")}
               >
-                刷新
+                {t("common.refresh", "Refresh")}
               </button>
             </div>
           }

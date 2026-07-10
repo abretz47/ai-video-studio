@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import type { Script } from "@/utils/api/types";
 import {
   OperatorPanel,
@@ -77,17 +78,19 @@ export function ScriptTrafficTab({ script }: ScriptTrafficTabProps) {
   return (
     <div className="space-y-4">
       <OperatorPanel>
-        <OperatorSectionHeader title="投流评分" subtitle="市场、微类型和爽点评分" />
+        <OperatorSectionHeader title={t("script.traffic.scoreTitle", "Traffic Score")}
+          subtitle={t("script.traffic.scoreSubtitle", "Market, micro-genre, and hook scoring")} />
         <div className="grid gap-3 p-4 md:grid-cols-3">
-          <Metric label="市场/微类型" value={marketRegion || "未指定"} sub={microGenre || "未指定"} />
-          <Metric label="反转密度" value={twistDensity || "—"} />
-          <Metric label="总体评分" value={overallScore != null ? overallScore.toFixed(2) : "—"} />
+          <Metric label={t("script.traffic.marketGenre", "Market / Micro-genre")} value={marketRegion || t("common.unspecified", "Unspecified")} sub={microGenre || t("common.unspecified", "Unspecified")} />
+          <Metric label={t("script.traffic.twistDensity", "Twist density")} value={twistDensity || t("common.emptyDash", "—")} />
+          <Metric label={t("script.traffic.overallScore", "Overall score")} value={overallScore != null ? overallScore.toFixed(2) : t("common.emptyDash", "—")} />
         </div>
       </OperatorPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <OperatorPanel>
-          <OperatorSectionHeader title="评分明细" subtitle="维度分和优势" />
+          <OperatorSectionHeader title={t("script.traffic.breakdownTitle", "Score Breakdown")}
+            subtitle={t("script.traffic.breakdownSubtitle", "Dimension scores and strengths")} />
           <div className="space-y-3 p-4">
             {dimensionScores ? (
               Object.entries(dimensionScores).map(([key, value]) => (
@@ -97,42 +100,45 @@ export function ScriptTrafficTab({ script }: ScriptTrafficTabProps) {
                 </div>
               ))
             ) : (
-              <OperatorState title="暂无评分明细" />
+              <OperatorState title={t("script.traffic.noBreakdown", "No score breakdown yet")} />
             )}
-            <TextList title="优势" items={strengths} />
+            <TextList title={t("script.traffic.strengths", "Strengths")} items={strengths} />
           </div>
         </OperatorPanel>
         <OperatorPanel>
-          <OperatorSectionHeader title="风险提示" subtitle="风险和修订建议" />
+          <OperatorSectionHeader title={t("script.traffic.riskTitle", "Risk Notes")}
+            subtitle={t("script.traffic.riskSubtitle", "Risks and revision suggestions")} />
           <div className="space-y-3 p-4">
-            <TextList title="风险" items={risks} empty="暂无风险提示" />
-            <TextList title="修订建议" items={rewriteGuidance} />
+            <TextList title={t("script.traffic.risks", "Risks")} items={risks} empty={t("script.traffic.noRiskNotes", "No risk notes")}/>
+            <TextList title={t("script.traffic.rewriteGuidance", "Revision Guidance")} items={rewriteGuidance} />
           </div>
         </OperatorPanel>
       </div>
 
       <OperatorPanel>
-        <OperatorSectionHeader title="Hook/节奏规划" subtitle="生成参数和额外元数据" />
+        <OperatorSectionHeader title={t("script.traffic.hookPlanTitle", "Hook / Pacing Plan")}
+          subtitle={t("script.traffic.hookPlanSubtitle", "Generation params and extra metadata")} />
         <div className="grid gap-3 p-4 md:grid-cols-3">
-          <Metric label="开场钩子" value={hookPlan?.opening_hook || hookPlanText || "—"} />
-          <Metric label="情绪升级" value={hookPlan?.escalation_plan || "—"} />
-          <Metric label="释放节点" value={hookPlan?.payoff_plan || "—"} />
+          <Metric label={t("script.traffic.openingHook", "Opening hook")} value={hookPlan?.opening_hook || hookPlanText || t("common.emptyDash", "—")} />
+          <Metric label={t("script.traffic.escalation", "Escalation")} value={hookPlan?.escalation_plan || t("common.emptyDash", "—")} />
+          <Metric label={t("script.traffic.payoff", "Payoff")} value={hookPlan?.payoff_plan || t("common.emptyDash", "—")} />
         </div>
         <div className="space-y-3 px-4 pb-4">
           <TextList
-            title="关键反转"
+            title={t("script.traffic.keyReversals", "Key Reversals")}
             items={(hookPlan?.key_reversals || []).map((beat) =>
               `${beat.description}${beat.timing ? ` (${beat.timing})` : ""}`,
             )}
           />
-          <TextList title="悬念/卡点" items={cliffhangerPlan} />
+          <TextList title={t("script.traffic.cliffhangerPlan", "Cliffhangers")}
+            items={cliffhangerPlan} />
         </div>
       </OperatorPanel>
 
       <OperatorPanel>
         <OperatorSectionHeader
-          title="投流素材清单"
-          subtitle={`共 ${adSnippets.length} 条`}
+          title={t("script.traffic.assetListTitle", "Traffic Asset List")}
+          subtitle={t("script.traffic.assetCount", "{count} items").replace("{count}", String(adSnippets.length))}
           action={
             <button
               type="button"
@@ -140,30 +146,30 @@ export function ScriptTrafficTab({ script }: ScriptTrafficTabProps) {
               disabled={adSnippets.length === 0}
               className={operatorButtonClass("secondary")}
             >
-              导出 CSV
+              {t("script.traffic.exportCsv", "Export CSV")}
             </button>
           }
         />
         {adSnippets.length === 0 ? (
-          <div className="p-4"><OperatorState title="暂无投流素材数据" /></div>
+          <div className="p-4"><OperatorState title={t("script.traffic.noAssets", "No traffic asset data yet")} /></div>
         ) : (
           <div className="overflow-x-auto p-4">
             <table className={operatorTableClass}>
               <thead className={operatorTableHeadClass}>
                 <tr>
-                  <th className="px-3 py-2 text-left">时长</th>
-                  <th className="px-3 py-2 text-left">核心钩子</th>
-                  <th className="px-3 py-2 text-left">画面摘要</th>
+                  <th className="px-3 py-2 text-left">{t("common.duration", "Duration")}</th>
+                  <th className="px-3 py-2 text-left">{t("script.traffic.coreHook", "Core Hook")}</th>
+                  <th className="px-3 py-2 text-left">{t("script.traffic.visualSummary", "Visual Summary")}</th>
                   <th className="px-3 py-2 text-left">CTA</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {adSnippets.map((snippet, idx) => (
                   <tr key={idx} className={operatorTableRowClass}>
-                    <td className="px-3 py-2">{snippet.duration_seconds || "—"}s</td>
+                    <td className="px-3 py-2">{snippet.duration_seconds || t("common.emptyDash", "—")}s</td>
                     <td className="px-3 py-2">{snippet.hook}</td>
-                    <td className="px-3 py-2">{snippet.visual_summary || "—"}</td>
-                    <td className="px-3 py-2">{snippet.call_to_action || "—"}</td>
+                    <td className="px-3 py-2">{snippet.visual_summary || t("common.emptyDash", "—")}</td>
+                    <td className="px-3 py-2">{snippet.call_to_action || t("common.emptyDash", "—")}</td>
                   </tr>
                 ))}
               </tbody>

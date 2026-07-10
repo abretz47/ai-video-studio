@@ -37,17 +37,17 @@ export function WorkspaceOverviewTabContent({
   return (
     <div className="space-y-4">
       <OperatorPanel>
-        <OperatorSectionHeader title="剧集概要" subtitle="基础信息和生成摘要" />
+        <OperatorSectionHeader title="Episode Overview" subtitle="Basic information and generation summary" />
         <div className="space-y-4 p-4">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Metric label="集数" value={`第 ${episode.episode_number} 集`} />
-            <Metric label="时长" value={`${episode.duration_minutes || "—"} 分钟`} />
-            <Metric label="场景数" value={`${sceneCount || "—"} 个`} />
+            <Metric label="Episode" value={`Episode ${episode.episode_number}`} />
+            <Metric label="Duration" value={`${episode.duration_minutes || "—"} minutes`} />
+            <Metric label="Scene Count" value={`${sceneCount || "—"}`} />
             <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
-              <div className="text-xs text-gray-500">状态</div>
+              <div className="text-xs text-gray-500">Status</div>
               <div className="mt-2">
                 <StatusPill tone={episode.status === "published" ? "green" : "amber"}>
-                  {episode.status === "published" ? "已发布" : episode.status || "草稿"}
+                  {episode.status === "published" ? "Published" : episode.status || "Draft"}
                 </StatusPill>
               </div>
             </div>
@@ -61,30 +61,30 @@ export function WorkspaceOverviewTabContent({
       </OperatorPanel>
 
       <OperatorPanel>
-        <OperatorSectionHeader title="剧情要点" subtitle="plot points / conflicts" />
+        <OperatorSectionHeader title="Story Beats" subtitle="plot points / conflicts" />
         <div className="grid gap-4 p-4 lg:grid-cols-2">
           <ListBlock
-            title="剧情要点"
+            title="Story Beats"
             items={plotPoints.map((point) =>
               point.timing ? `${point.timing}: ${point.description || ""}` : point.description || "",
             )}
-            empty="暂无剧情要点"
+            empty="No story beats yet"
           />
           <ListBlock
-            title="冲突点"
+            title="Conflict Points"
             items={conflicts.map((conflict) =>
               conflict.intensity
                 ? `${conflict.intensity}: ${conflict.description || ""}`
                 : conflict.description || "",
             )}
-            empty="暂无冲突点"
+            empty="No conflict points yet"
           />
         </div>
       </OperatorPanel>
 
       {Object.keys(characterArcs).length || episode.tags?.length ? (
         <OperatorPanel>
-          <OperatorSectionHeader title="角色与标签" subtitle="角色弧线、标签和元数据" />
+          <OperatorSectionHeader title="Characters and Tags" subtitle="Character arcs, tags, and metadata" />
           <div className="space-y-4 p-4">
             {Object.entries(characterArcs).map(([character, arc]) => (
               <div key={character} className="rounded-md border border-gray-200 bg-gray-50 p-3">

@@ -25,7 +25,7 @@ export function useSelectedScriptDetailHydration(
           );
         }
       } catch (error) {
-        console.error("加载剧本详情失败:", error);
+        console.error("Failed to load script details:", error);
       }
     };
     void loadSelectedScriptDetail();

@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import type { Script } from "@/utils/api/types";
 import type {
   ScriptScene,
@@ -24,12 +25,15 @@ export function ScriptOverviewTab({
   directions,
 }: ScriptOverviewTabProps) {
   return (
-    <Section title="剧本概览" description="剧本内容与核心要素速览">
+    <Section
+      title={t("script.overview.title", "Script Overview")}
+      description={t("script.overview.description", "Quick view of the script and its core elements")}
+    >
       <div className="grid grid-cols-1 gap-4 p-4 lg:grid-cols-2">
         <div>
-          <h3 className="text-sm font-semibold text-gray-700">剧本文本节选</h3>
+          <h3 className="text-sm font-semibold text-gray-700">{t("script.overview.excerpt", "Script Text Excerpt")}</h3>
           <div className="mt-2 max-h-72 overflow-auto rounded-md border border-gray-200 bg-gray-50 p-3 text-xs leading-6 text-gray-700">
-            {(script.content || "暂无内容")
+            {(script.content || t("script.overview.noContent", "No content yet"))
               .split("\n")
               .slice(0, 120)
               .map((line, idx) => (
@@ -42,11 +46,11 @@ export function ScriptOverviewTab({
         <div className="space-y-4">
           <div>
             <h3 className="text-sm font-semibold text-gray-700">
-              场景摘要（{scenes.length}）
+              {t("script.overview.sceneSummary", "Scene Summary ({count})").replace("{count}", String(scenes.length))}
             </h3>
             <div className="mt-2 max-h-60 space-y-2 overflow-auto">
               {scenes.length === 0 && (
-                <p className="text-sm text-gray-500">暂无结构化场景</p>
+                <p className="text-sm text-gray-500">{t("script.overview.noStructuredScenes", "No structured scenes yet")}</p>
               )}
               {scenes.slice(0, 6).map((scene, idx) => (
                 <div
@@ -55,7 +59,7 @@ export function ScriptOverviewTab({
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-medium">
-                      场景 {toSceneNumber(scene.scene_number) ?? idx + 1}
+                      {t("common.sceneWithNumber", `Scene ${toSceneNumber(scene.scene_number) ?? idx + 1}`).replace("{number}", String(toSceneNumber(scene.scene_number) ?? idx + 1))}
                     </span>
                     {scene.location && (
                       <span className="text-xs text-gray-500">
@@ -64,7 +68,7 @@ export function ScriptOverviewTab({
                     )}
                   </div>
                   <p className="mt-1 text-xs text-gray-500">
-                    {formatText(scene.description, "暂无描述", 140)}
+                    {formatText(scene.description, t("common.noDescription", "No description"), 140)}
                   </p>
                 </div>
               ))}
@@ -73,7 +77,7 @@ export function ScriptOverviewTab({
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
               <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                对白
+                {t("script.overview.dialogue", "Dialogue")}
               </h4>
               <p className="mt-1 text-lg font-semibold text-gray-900">
                 {dialogues.length}
@@ -82,13 +86,13 @@ export function ScriptOverviewTab({
                 <p key={idx} className="mt-1 text-xs text-gray-500">
                   {typeof dialogue === "string"
                     ? dialogue
-                    : formatText(dialogue.content, "暂无台词", 80)}
+                    : formatText(dialogue.content, t("script.overview.noDialogue", "No lines yet"), 80)}
                 </p>
               ))}
             </div>
             <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
               <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                舞台指令
+                {t("script.overview.stageDirections", "Stage Directions")}
               </h4>
               <p className="mt-1 text-lg font-semibold text-gray-900">
                 {directions.length}
@@ -97,7 +101,7 @@ export function ScriptOverviewTab({
                 <p key={idx} className="mt-1 text-xs text-gray-500">
                   {typeof direction === "string"
                     ? direction
-                    : formatText(direction.content, "暂无内容", 80)}
+                    : formatText(direction.content, t("script.overview.noContent", "No content yet"), 80)}
                 </p>
               ))}
             </div>

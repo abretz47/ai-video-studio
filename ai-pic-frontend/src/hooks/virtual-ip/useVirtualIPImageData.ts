@@ -56,7 +56,7 @@ export function useVirtualIPImageData({
           if (ipResponse.success && ipResponse.data) {
             ip = ipResponse.data;
           } else {
-            showAlert({ message: "加载虚拟IP失败", variant: "error" });
+            showAlert({ message: "Failed to load virtual IP", variant: "error" });
             setImages([]);
             setCategories([]);
             return;
@@ -83,7 +83,7 @@ export function useVirtualIPImageData({
         );
       } catch (error) {
         console.error("Failed to load data:", error);
-        showAlert({ message: "加载数据失败", variant: "error" });
+        showAlert({ message: "Failed to load data", variant: "error" });
         setImages([]);
         setCategories([]);
       } finally {

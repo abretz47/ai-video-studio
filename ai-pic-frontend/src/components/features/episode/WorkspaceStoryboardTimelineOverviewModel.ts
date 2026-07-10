@@ -39,11 +39,11 @@ export function buildStoryboardTimelineOverview(
     const durationMs: number | null =
       audioDurationMs(selectedAudioTimeline) ?? maxBeatEndMs(beats);
     return {
-      timelineLabel: beats.length ? "音频时间轴" : "Timeline 待生成",
+      timelineLabel: beats.length ? "Audio Timeline" : "Timeline pending generation",
       status: null,
       durationLabel:
-        durationMs != null ? formatDurationMs(durationMs) : "未定时",
-      trackSummary: `${beats.length ? 1 : 0} 轨 · ${beats.length} clips`,
+        durationMs != null ? formatDurationMs(durationMs) : "Unscheduled",
+      trackSummary: `${beats.length ? 1 : 0}  tracks · ${beats.length} clips`,
       trackCount: beats.length ? 1 : 0,
       clipCount: beats.length,
       dialogueClipCount: beats.length,
@@ -70,8 +70,8 @@ export function buildStoryboardTimelineOverview(
   return {
     timelineLabel: `Timeline ${selectedTimelineSpec.id} · v${selectedTimelineSpec.version}`,
     status: getString(selectedTimelineSpec.status) ?? null,
-    durationLabel: durationMs != null ? formatDurationMs(durationMs) : "未定时",
-    trackSummary: `${tracks.length} 轨 · ${clipCount} clips`,
+    durationLabel: durationMs != null ? formatDurationMs(durationMs) : "Unscheduled",
+    trackSummary: `${tracks.length}  tracks · ${clipCount} clips`,
     trackCount: tracks.length,
     clipCount,
     dialogueClipCount: countTrackClips(tracks, "dialogue"),

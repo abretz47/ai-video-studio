@@ -19,7 +19,7 @@ export function buildCharacterImageOptions(
   const displayName =
     cleanText(character.display_name) ||
     cleanText(character.character_name) ||
-    "角色";
+    "Character";
   return dedupeReferenceImageOptions(
     (character.resolved_images || []).flatMap((item, index) => {
       const record = asRecord(item);
@@ -44,10 +44,10 @@ export function buildCharacterImageOptions(
 
 export function buildVirtualIPImageOptions(
   virtualIp: unknown,
-  displayName = "角色",
+  displayName = "Character",
 ) {
   const record = asRecord(virtualIp);
-  const name = cleanText(displayName) || cleanText(record?.name) || "角色";
+  const name = cleanText(displayName) || cleanText(record?.name) || "Character";
   const images = Array.isArray(record?.images) ? record.images : [];
   const styleReferenceImages = Array.isArray(record?.style_reference_images)
     ? record.style_reference_images
@@ -69,9 +69,9 @@ export function buildVirtualIPImageOptions(
         label: suffix ? `${name} ${suffix}` : `${name} ${index + 1}`,
       };
     }),
-    ...buildSingleReferenceOption(record?.default_avatar_url, `${name} 默认头像`),
+    ...buildSingleReferenceOption(record?.default_avatar_url, `${name} Default Avatar`),
     ...styleReferenceImages.flatMap((url, index) =>
-      buildSingleReferenceOption(url, `${name} 风格参考 ${index + 1}`),
+      buildSingleReferenceOption(url, `${name} Style Reference ${index + 1}`),
     ),
   ]);
 }
@@ -83,7 +83,7 @@ export function buildEnvironmentImageOptions(environment?: Environment | null) {
       if (!cleaned) return [];
       return {
         url: cleaned,
-        label: `${environment?.name || "环境"} ${index + 1}`,
+        label: `${environment?.name || "Environment"} ${index + 1}`,
       };
     }),
   );

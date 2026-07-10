@@ -14,12 +14,12 @@ import { adminAPI } from "@/utils/api/endpoints";
 import type { UserStatsResponse } from "@/utils/api/types";
 
 const statItems = (stats: UserStatsResponse) => [
-  { label: "总用户数", value: stats.total_users, href: "/admin/users" },
-  { label: "活跃用户", value: stats.active_users, href: "/admin/users?status=approved" },
-  { label: "待审批", value: stats.pending_approval, href: "/admin/users?status=pending", tone: "amber" as const },
-  { label: "暂停用户", value: stats.suspended_users, href: "/admin/users?status=suspended", tone: "red" as const },
-  { label: "管理员", value: stats.admin_users, href: "/admin/users?role=admin", tone: "blue" as const },
-  { label: "最近注册", value: stats.recent_registrations, tone: "green" as const },
+  { label: "Total Users", value: stats.total_users, href: "/admin/users" },
+  { label: "ActiveUser", value: stats.active_users, href: "/admin/users?status=approved" },
+  { label: "Pending approval", value: stats.pending_approval, href: "/admin/users?status=pending", tone: "amber" as const },
+  { label: "Pause User", value: stats.suspended_users, href: "/admin/users?status=suspended", tone: "red" as const },
+  { label: "Admin", value: stats.admin_users, href: "/admin/users?role=admin", tone: "blue" as const },
+  { label: "Recent Registrations", value: stats.recent_registrations, tone: "green" as const },
 ];
 
 export default function AdminStatsPage() {
@@ -33,10 +33,10 @@ export default function AdminStatsPage() {
     try {
       const response = await adminAPI.getUserStats();
       if (response.success && response.data) setStats(response.data);
-      else setError(response.error || "获取统计数据失败");
+      else setError(response.error || "Failed to fetch statistics");
     } catch (err) {
-      console.error("加载统计数据失败:", err);
-      setError("网络错误，请稍后重试");
+      console.error("Failed to load statistics:", err);
+      setError("Network error. Please try again later");
     } finally {
       setLoading(false);
     }
@@ -47,23 +47,23 @@ export default function AdminStatsPage() {
   }, []);
 
   return (
-    <OperatorAdminShell title="统计数据" subtitle="用户和审批运行概览">
+    <OperatorAdminShell title="Statistics" subtitle="User and approval operations overview">
       <div className="space-y-4">
         <OperatorPanel>
           <OperatorSectionHeader
-            title="用户统计"
-            subtitle="账号、审批和权限分布"
+            title="User Statistics"
+            subtitle="Account, approval, and permission distribution"
             action={
               <button
                 type="button"
                 onClick={() => void loadStats()}
                 className={operatorButtonClass("secondary")}
               >
-                刷新
+                Refresh
               </button>
             }
           />
-          {loading ? <div className="p-4"><OperatorState title="加载统计数据..." /></div> : null}
+          {loading ? <div className="p-4"><OperatorState title="Loading statistics..." /></div> : null}
           {error ? <div className="p-4"><OperatorState title={error} tone="red" /></div> : null}
           {stats ? (
             <div className="grid gap-3 p-4 md:grid-cols-3">
@@ -92,11 +92,11 @@ export default function AdminStatsPage() {
         </OperatorPanel>
         {stats ? (
           <OperatorPanel>
-            <OperatorSectionHeader title="快速操作" subtitle="从统计跳转到用户处理面" />
+            <OperatorSectionHeader title="Quick Actions" subtitle="Jump from statistics to user processing" />
             <div className="grid gap-3 p-4 md:grid-cols-3">
-              <QuickLink href="/admin/users?status=pending" label="处理待审批" detail={`${stats.pending_approval} 个待处理`} />
-              <QuickLink href="/admin/users" label="管理用户" detail="查看全部账号" />
-              <QuickLink href="/admin/users?role=admin" label="管理员权限" detail={`${stats.admin_users} 个管理员账号`} />
+              <QuickLink href="/admin/users?status=pending" label="Handle Pending Approval" detail={`${stats.pending_approval}Pending`} />
+              <QuickLink href="/admin/users" label="Manage Users" detail="View all accounts" />
+              <QuickLink href="/admin/users?role=admin" label="Admin Permissions" detail={`${stats.admin_users}Admin Accounts`} />
             </div>
           </OperatorPanel>
         ) : null}

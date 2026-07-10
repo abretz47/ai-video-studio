@@ -50,19 +50,19 @@ export function TasksPage() {
   const handleCancel = (id: APITask["id"]) => {
     const taskId = toTaskId(id);
     if (!taskId) {
-      showAlert({ message: "任务编号无效，无法取消任务", variant: "warning" });
+      showAlert({ message: "Invalid task ID; cannot cancel task", variant: "warning" });
       return;
     }
     showAlert({
-      title: "取消任务",
-      message: `确认取消任务 #${taskId}？已在执行的任务会尽力终止。`,
+      title: "CancelTask",
+      message: `Confirm cancel task #${taskId}? Running tasks will be stopped if possible.`,
       variant: "warning",
-      confirmText: "确认取消",
+      confirmText: "Confirm Cancel",
       onConfirm: () => {
         void cancelTask(taskId).then((res) => {
           if (!res.success) {
             showAlert({
-              message: res.message || "取消任务失败",
+              message: res.message || "Failed to cancel task",
               variant: "error",
             });
           }
@@ -74,36 +74,36 @@ export function TasksPage() {
   const handleStart = async (id: APITask["id"]) => {
     const taskId = toTaskId(id);
     if (!taskId) {
-      showAlert({ message: "任务编号无效，无法启动任务", variant: "warning" });
+      showAlert({ message: "Invalid task ID; cannot start task", variant: "warning" });
       return;
     }
     const res = await startTask(taskId);
     if (res.success) {
       showAlert({
-        message: res.message || "任务已开始执行",
+        message: res.message || "Task started",
         variant: "success",
       });
     } else {
-      showAlert({ message: res.message || "启动任务失败", variant: "error" });
+      showAlert({ message: res.message || "Failed to start task", variant: "error" });
     }
   };
 
   const handleDelete = (id: APITask["id"]) => {
     const taskId = toTaskId(id);
     if (!taskId) {
-      showAlert({ message: "任务编号无效，无法删除", variant: "warning" });
+      showAlert({ message: "Invalid task ID; cannot delete task", variant: "warning" });
       return;
     }
     showAlert({
-      title: "确认删除任务",
-      message: "确定删除该任务吗？",
+      title: "Confirm DeletionTask",
+      message: "Delete this task?",
       variant: "warning",
-      confirmText: "删除",
+      confirmText: "Delete",
       onConfirm: async () => {
         const res = await deleteTask(taskId);
         if (!res.success) {
           showAlert({
-            message: res.message || "删除任务失败",
+            message: res.message || "Failed to delete task",
             variant: "error",
           });
         }
@@ -113,15 +113,15 @@ export function TasksPage() {
 
   return (
     <OperatorShell
-      title="任务"
-      subtitle="生成队列、失败重试和审计信息"
-      breadcrumb={["IP 中心", "任务"]}
+      title="Task"
+      subtitle="Generation queue, failed retries, and audit details"
+      breadcrumb={["IP Center", "Task"]}
     >
       <div className="space-y-4">
         <OperatorPanel>
           <OperatorSectionHeader
-            title="任务队列"
-            subtitle={`共 ${total} 个任务，当前第 ${page} / ${totalPages || 1} 页`}
+            title="Task Queue"
+            subtitle={`Total ${total}Task，Current Page ${page} / ${totalPages || 1}`}
             action={
           <TasksToolbar
             poll={poll}
@@ -142,7 +142,7 @@ export function TasksPage() {
           ) : null}
           {loading ? (
             <div className="p-4">
-              <OperatorState title="加载任务列表..." />
+              <OperatorState title="Loading task list..." />
             </div>
           ) : null}
           <TasksList

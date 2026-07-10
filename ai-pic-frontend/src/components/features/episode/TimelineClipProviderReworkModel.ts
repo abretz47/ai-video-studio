@@ -145,11 +145,11 @@ export function timelineClipStartEndFrameStatus(item: TimelineItem | null) {
     hasAssetLocator(meta.end_frame_asset_ref) ||
     Boolean(getString(meta.end_frame_url));
   if (startReady && endReady) {
-    return { startReady, endReady, label: "首尾帧已生成" };
+    return { startReady, endReady, label: "Start/end frames generated" };
   }
-  if (startReady) return { startReady, endReady, label: "已有首帧" };
-  if (endReady) return { startReady, endReady, label: "已有尾帧" };
-  return { startReady, endReady, label: "首尾帧待生成" };
+  if (startReady) return { startReady, endReady, label: "Start frame exists" };
+  if (endReady) return { startReady, endReady, label: "End frame exists" };
+  return { startReady, endReady, label: "Start/end frames pending" };
 }
 
 export function hasTimelineClipReferenceImages({
