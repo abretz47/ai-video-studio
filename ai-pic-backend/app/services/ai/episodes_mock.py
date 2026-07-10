@@ -13,42 +13,42 @@ class EpisodeMockMixin:
         await asyncio.sleep(1)  # 模拟处理时间
 
         episodes = []
-        story_title = story.get("title", "未命名故事")
+        story_title = story.get("title", "Untitled Story")
 
         for i in range(episode_count):
             episode_num = i + 1
             episodes.append(
                 {
                     "episode_number": episode_num,
-                    "title": f"第{episode_num}集" if episode_num > 1 else "初始篇章",
-                    "summary": f"这是{story_title}第{episode_num}集的内容概要。本集将继续推进故事发展，展现角色成长。",
+                    "title": f"Episode {episode_num}" if episode_num > 1 else "Opening Chapter",
+                    "summary": f"This is the episode summary for {story_title} Episode {episode_num}. This episode continues to advance the story and showcase character development.",
                     "plot_points": [
-                        {"description": f"第{episode_num}集开场情节", "timing": "开场"},
-                        {"description": f"第{episode_num}集发展情节", "timing": "中段"},
-                        {"description": f"第{episode_num}集结尾情节", "timing": "结尾"},
+                        {"description": f"Episode {episode_num} opening plot", "timing": "opening"},
+                        {"description": f"Episode {episode_num} development plot", "timing": "midpoint"},
+                        {"description": f"Episode {episode_num} closing plot", "timing": "ending"},
                     ],
-                    "character_arcs": {"protagonist": f"第{episode_num}集的角色发展"},
+                    "character_arcs": {"protagonist": f"Episode {episode_num} character development"},
                     "conflicts": [
                         {
-                            "description": f"第{episode_num}集的主要冲突",
+                            "description": f"Episode {episode_num} main conflict",
                             "intensity": "medium",
                         }
                     ],
-                    "scene_count": 4 + (episode_num % 3),  # 4-6个场景
+                    "scene_count": 4 + (episode_num % 3),  # 4-6 scenes
                     "scenes": [
                         {
                             "scene_number": 1,
-                            "slug_line": f"INT. 主要场景 {episode_num} - DAY",
-                            "location": "主要地点",
+                            "slug_line": f"INT. MAIN LOCATION {episode_num} - DAY",
+                            "location": "main location",
                             "time_of_day": "day",
-                            "summary": "开场铺垫，呈现本集冲突或目标",
+                            "summary": "Opening setup, presenting the episode conflict or goal",
                         },
                         {
                             "scene_number": 2,
-                            "slug_line": f"EXT. 发展场景 {episode_num} - DUSK",
-                            "location": "次要地点",
+                            "slug_line": f"EXT. DEVELOPMENT SCENE {episode_num} - DUSK",
+                            "location": "secondary location",
                             "time_of_day": "dusk",
-                            "summary": "推进矛盾或关系，加深角色动机",
+                            "summary": "Advancing conflicts or relationships, deepening character motivations",
                         },
                     ],
                 }
@@ -58,7 +58,7 @@ class EpisodeMockMixin:
 
         return {
             "content": content,
-            "prompt": "模拟剧集生成提示词",
+            "prompt": "Mock episode generation prompt",
             "generation_method": "mock_service",
             "template_used": "mock_template",
             "provider_used": "mock",

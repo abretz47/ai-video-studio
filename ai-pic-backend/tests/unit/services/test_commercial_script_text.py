@@ -47,9 +47,9 @@ def test_build_script_text_uses_commercial_vertical_format():
         target_chars_per_episode=1300,
     )
 
-    assert text.startswith("第1集")
+    assert text.startswith("Episode 1")
     assert "1-1 内. 客厅 - 夜" in text
-    assert "人物： 林雪、陈默" in text
+    assert "Characters: 林雪, 陈默" in text
     assert "▲【音效】砰！门被踹开" in text
     assert "林雪(冷笑)：账本在这，你还要装吗？" in text
     assert "▲【特写】账本最后一页露出陌生签名。" in text

@@ -59,14 +59,14 @@ def _stage_line(direction: Dict[str, Any]) -> str:
         or ""
     ).strip()
     if not content:
-        content = "镜头压近人物反应。"
+        content = "Camera closes in on the character's reaction."
     if content.startswith("▲"):
         return content
     return f"▲{content}"
 
 
 def _dialogue_line(dialogue: Dict[str, Any]) -> str:
-    speaker = _clean_speaker(str(dialogue.get("character") or "旁白")) or "旁白"
+    speaker = _clean_speaker(str(dialogue.get("character") or "Narrator")) or "Narrator"
     content = str(
         dialogue.get("content") or dialogue.get("line") or dialogue.get("text") or ""
     ).strip()
