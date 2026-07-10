@@ -98,14 +98,14 @@ class EpisodeMockScriptMixin:
                 )
                 slug_line = item.get("slug_line") or f"INT. {location} - {time_of_day}"
                 description = (
-                    item.get("summary") or item.get("description") or f"场景 {idx}"
+                    item.get("summary") or item.get("description") or f"scene {idx}"
                 )
                 story_beat = item.get("story_beat") or item.get("timing") or "beat"
             else:
                 location = default_locations[(idx - 1) % len(default_locations)]
                 time_of_day = default_times[(idx - 1) % len(default_times)]
                 slug_line = f"INT. {location.upper()} - {time_of_day}"
-                description = item.get("description") or f"故事在第{idx}个阶段推进。"
+                description = item.get("description") or f"story Zai Di{idx}Ge Jie Duan Tui Jin。"
                 story_beat = item.get("timing") or "beat"
 
             scenes.append(
@@ -130,14 +130,14 @@ class EpisodeMockScriptMixin:
             stage_directions.append(
                 {
                     "scene_number": idx,
-                    "content": f"镜头捕捉角色与场景，突出：{description}",
+                    "content": f"Jing Tou Bu Zhuo character Yu scene，Tu Chu：{description}",
                     "camera_suggestion": "medium shot",
                     "lighting": "Zi Ran Guang",
                 }
             )
 
             section_lines = [
-                f"场景 {idx}: {location} - {time_of_day}",
+                f"scene {idx}: {location} - {time_of_day}",
                 description,
                 "",
             ]
@@ -147,7 +147,7 @@ class EpisodeMockScriptMixin:
             script_sections.append("\n".join(section_lines))
 
         if additional_requirements:
-            script_sections.append(f"\n【制作要求】{additional_requirements}")
+            script_sections.append(f"\n【Zhi Zuo Yao Qiu】{additional_requirements}")
 
         if template_style == "commercial_vertical_drama":
             script_text = build_script_text(

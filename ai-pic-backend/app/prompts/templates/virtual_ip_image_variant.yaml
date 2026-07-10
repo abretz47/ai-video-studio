@@ -16,7 +16,7 @@ variables:
  variant_prompt:
  type: string
  required: true
- description: "Bian Ti/Bian Hua Zhi Ling(Li Ru back view Zhao, Quan Shen Zhao, Bu Tong Guang Xian etc.)"
+ description: "Bian Ti/Bian Hua Zhi Ling(Li Ru back view Zhao, full-body shot, Bu Tong Guang Xian etc.)"
  min_length: 1
 
  character_description:
@@ -53,7 +53,7 @@ variables:
 
 usage_examples:
  - character_name: "Mia"
- variant_prompt: "back-view shot, Quan Shen Zhao, keep Tong Yi Ren Wu Te Zheng"
+ variant_prompt: "back-view shot, full-body shot, keep consistent character features"
  character_description: "22 years oldfemale, Yin Se Duan Fa, Jing Zhi Wu Guan, Qi Zhi Qing Leng, Hei Se Gao Ling Mao Yi"
  style: "realistic"
  category: "portrait"

@@ -387,13 +387,13 @@ class JimengProvider(BaseProvider):
                 elif task_status == "failed":
                     err_msg = data.get("error", "Ji Meng Ren Wu execute failed")
                     logger.warning("Ji Meng Ren Wu %s failed: %s", task_id, err_msg)
-                    raise RuntimeError(f"即梦任务失败: {err_msg}")
+                    raise RuntimeError(f"Ji Meng task failed: {err_msg}")
                 elif task_status in ["pending", "running"]:
                     await asyncio.sleep(delay)
                     continue
                 else:
                     logger.warning("Ji Meng Ren Wu %s unknown status: %s", task_id, task_status)
-                    raise RuntimeError(f"即梦任务未知状态: {task_status}")
+                    raise RuntimeError(f"Ji Meng task unknown status: {task_status}")
 
             except RuntimeError:
                 raise
@@ -408,8 +408,8 @@ class JimengProvider(BaseProvider):
                 await asyncio.sleep(delay)
 
         raise RuntimeError(
-            f"即梦任务 {task_id} 轮询超时 ({max_attempts * delay}s)"
-            + (f", 最后错误: {last_error}" if last_error else "")
+            f"Ji Meng task {task_id} Lun Xun Chao Shi ({max_attempts * delay}s)"
+            + (f", Zui Hou error: {last_error}" if last_error else "")
         )
 
     async def get_styles(self) -> AIResponse:

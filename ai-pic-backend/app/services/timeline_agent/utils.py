@@ -351,15 +351,15 @@ def format_dialogue_for_prompt(contexts: list[DialogueContext]) -> str:
     for ctx in contexts:
         emotion_str = ctx.emotion or "none Biao Zhu"
         action_str = f"（{ctx.action}）" if ctx.action else ""
-        prev_str = f"前一句情绪: {ctx.prev_emotion}" if ctx.prev_emotion else ""
+        prev_str = f"Qian Yi Ju Qing Xu: {ctx.prev_emotion}" if ctx.prev_emotion else ""
 
         # Include actual duration if available (from TTS generation)
         duration_ms = ctx.actual_duration_ms or ctx.estimated_duration_ms
-        duration_str = f"  - 语音时长: {duration_ms}ms" if duration_ms else ""
+        duration_str = f"  - Yu Yin Shi Zhang: {duration_ms}ms" if duration_ms else ""
         if duration_ms:
             total_duration_ms += duration_ms
 
-        meta_parts = [f"  - 情绪: {emotion_str}"]
+        meta_parts = [f"  - Qing Xu: {emotion_str}"]
         if prev_str:
             meta_parts.append(f"  - {prev_str}")
         if duration_str:
@@ -373,7 +373,7 @@ def format_dialogue_for_prompt(contexts: list[DialogueContext]) -> str:
     # Add total dialogue duration summary if we have duration info
     if total_duration_ms > 0:
         lines.append(
-            f"\n**对白总时长**: {total_duration_ms}ms ({total_duration_ms / 1000:.1f}秒)"
+            f"\n**dialogue Zong Shi Zhang**: {total_duration_ms}ms ({total_duration_ms / 1000:.1f}Miao)"
         )
 
     return "\n".join(filter(None, lines))

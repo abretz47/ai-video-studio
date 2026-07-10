@@ -29,7 +29,7 @@ def resolve_character_resources(
             "voice_config": None,
             "images": [],
             "appearance_prompt": None,
-            "display_name": character.character_name or f"临时角色{character.id}",
+            "display_name": character.character_name or f"Lin Shi character{character.id}",
         }
 
     # Voice config: use override if present, else VirtualIP default
@@ -66,7 +66,7 @@ def resolve_character_resources(
 
     # Display name: priority order
     display_name = (
-        character.character_name or virtual_ip.name or f"临时角色{character.id}"
+        character.character_name or virtual_ip.name or f"Lin Shi character{character.id}"
     )
 
     return {
@@ -95,7 +95,7 @@ def get_character_display_name(character: EpisodeCharacter, db: Session) -> str:
     if virtual_ip and virtual_ip.name:
         return virtual_ip.name
 
-    return f"临时角色{character.id}"
+    return f"Lin Shi character{character.id}"
 
 
 def get_episode_characters(

@@ -185,7 +185,7 @@ class StoryOutlineMixin:
                             "contract_version": "story_contract_v1",
                         }
                 except Exception as exc:
-                    self.logger.warning(f"AI服务管理器故事生成失败，尝试回退: {exc}")
+                    self.logger.warning(f"AIFu Wu Guan Li Qi story generation failed，Chang Shi Hui Tui: {exc}")
 
             # fallback: Shi Yong text Sheng Cheng service Lian(Zui Zhong will fallback to mock); if user Xian Shi Zhi Ding provider/model, then directly failed, avoid"Che Dan"content Luo Ku.
             if production_mode:
@@ -232,6 +232,6 @@ class StoryOutlineMixin:
                     "usage": {},
                 }
         except Exception as exc:
-            print(f"故事概要生成失败: {exc}")
+            print(f"story Gai Yao generation failed: {exc}")
 
         return None

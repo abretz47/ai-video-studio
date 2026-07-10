@@ -16,14 +16,14 @@ def friendly_task_title(
     if story and story.title:
         story_label = str(story.title)
     elif story:
-        story_label = f"故事{story.id}"
+        story_label = f"story{story.id}"
 
     episode_label = ""
     if episode:
         ep_num = (
-            f"第{episode.episode_number}集"
+            f"Di{episode.episode_number}Ji"
             if episode.episode_number is not None
-            else f"剧集{episode.id}"
+            else f"episode{episode.id}"
         )
         ep_title = f" {episode.title}" if episode.title else ""
         episode_label = f"{ep_num}{ep_title}"
@@ -36,5 +36,5 @@ def friendly_task_title(
     elif episode_label:
         parts.append(episode_label)
     else:
-        parts.append(f"剧本{script.id}")
+        parts.append(f"script{script.id}")
     return " - ".join(parts)

@@ -144,7 +144,7 @@ class EpisodeGenerationService:
         except NarrativeQualityGateError as exc:
             raise HTTPException(
                 status_code=500,
-                detail=f"剧集质量校验失败: {exc}",
+                detail=f"episode Zhi Liang Xiao Yan failed: {exc}",
             ) from exc
         if not result:
             raise HTTPException(status_code=500, detail="AIepisode Sheng Cheng failed")
@@ -192,7 +192,7 @@ class EpisodeGenerationService:
             except NarrativeQualityGateError as exc:
                 raise HTTPException(
                     status_code=500,
-                    detail=f"剧集质量校验失败: {exc}",
+                    detail=f"episode Zhi Liang Xiao Yan failed: {exc}",
                 ) from exc
             normalized = result.get("normalized") if isinstance(result, dict) else None
             episodes_data = normalized.get("episodes", []) if normalized else []

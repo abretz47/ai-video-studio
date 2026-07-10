@@ -6,6 +6,6 @@ from app.api.v1.endpoints.stories.async_tasks import _story_generation_error_mes
 
 
 def test_story_generation_error_message_uses_http_exception_detail() -> None:
- exc = HTTPException(status_code=500, detail="AIstory generate failed")
+    exc = HTTPException(status_code=500, detail="AIstory generate failed")
 
- assert _story_generation_error_message(exc) == "AIstory generate failed"
+    assert _story_generation_error_message(exc) == "AIstory generate failed"

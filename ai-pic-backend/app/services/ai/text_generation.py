@@ -28,7 +28,7 @@ class TextGenerationMixin:
                 if result:
                     return result
             except Exception as exc:
-                print(f"服务 {service.__name__} 失败: {exc}")
+                print(f"Fu Wu {service.__name__} failed: {exc}")
                 continue
 
         return None
@@ -82,7 +82,7 @@ class TextGenerationMixin:
                 result = response.json()
                 return result["choices"][0]["message"]["content"]
         except Exception as exc:
-            print(f"OpenAI GPT生成失败: {exc}")
+            print(f"OpenAI GPTgeneration failed: {exc}")
             return None
 
     async def _generate_with_custom_service(
@@ -115,7 +115,7 @@ class TextGenerationMixin:
                 result = response.json()
                 return result.get("text")
         except Exception as exc:
-            print(f"自定义文本生成服务失败: {exc}")
+            print(f"Zi Ding Yi Wen Ben generate Fu Wu failed: {exc}")
             return None
 
     async def _generate_with_mock_service(
@@ -149,34 +149,34 @@ class TextGenerationMixin:
             }"""
         if task_type == "episode_generation":
             return """{
-                "episodes": [
-                    {
-                        "episode_number": 1,
+ "episodes": [
+ {
+ "episode_number": 1,
  "title": "Xin Kai Shi",
  "summary": "Jie ShaoMain characterand background setting",
-                        "plot_points": [
- {"description": "角色出场", "timing": "开场"},
- {"description": "背景介绍", "timing": "前10分钟"},
- {"description": "冲突铺垫", "timing": "中段"}
-                        ],
- "character_arcs": {"protagonist": "初始状态展示"},
-                        "conflicts": [
- {"description": "内心困扰的初步展现", "intensity": "low"}
-                        ],
-                        "scene_count": 5
-                    }
-                ]
-            }"""
+ "plot_points": [
+ {"description": "character Chu Chang", "timing": "Kai Chang"},
+ {"description": "background Jie Shao", "timing": "before10minutes"},
+ {"description": "conflict foreshadowing", "timing": "middle section"}
+ ],
+ "character_arcs": {"protagonist": "Chu Shi status Zhan Shi"},
+ "conflicts": [
+ {"description": "inner thoughts Kun Rao Chu Bu Zhan Xian", "intensity": "low"}
+ ],
+ "scene_count": 5
+ }
+ ]
+ }"""
         if task_type == "script_generation":
             return """{
  "content": "FADE IN:\\n\\nINT. Ke Ting - day\\n\\nZhu Ren Gong Zuo Zai Sha Fa on, thoughtful Zhe Shen Me...\\n\\nZhu Ren Gong\\n(Zi Yan Zi Yu)\\nJin Tian You Shi Xin Yi Tian Ne.\\n\\nFADE OUT.",
-                "scenes": [
- {"scene_number": 1, "location": "客厅", "time": "日", "description": "主人公独自思考"}
-                ],
-                "dialogues": [
- {"character": "主人公", "content": "今天又是新的一天呢.", "emotion": "thoughtful"}
-                ],
+ "scenes": [
+ {"scene_number": 1, "location": "Ke Ting", "time": "day", "description": "Zhu Ren Gong Du Zi thoughtful"}
+ ],
+ "dialogues": [
+ {"character": "Zhu Ren Gong", "content": "Jin Tian You Shi Xin Yi Tian Ne.", "emotion": "thoughtful"}
+ ],
  "stage_directions": ["Zhu Ren Gong Zuo Zai Sha Fa on, thoughtful Zhe Shen Me"]
-            }"""
+ }"""
 
         return "Zhe Shi a mockAISheng Cheng content, Yong Yu Ce Shi and Yan Shi Mu Di."

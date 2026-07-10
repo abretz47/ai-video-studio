@@ -94,7 +94,7 @@ def process_script_quality_task(
         if task is not None:
             task.status = TaskStatus.FAILED
             task.error_message = str(exc)
-            task.description = f"剧本质检失败：{exc}"
+            task.description = f"script Zhi Jian failed：{exc}"
             db.commit()
     finally:
         db.close()

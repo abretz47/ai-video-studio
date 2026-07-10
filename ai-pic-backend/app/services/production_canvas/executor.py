@@ -55,7 +55,7 @@ def _execute_script_generation(
         db,
         user,
         script_request,
-        title=f"生产画布执行 Script Skill - 剧集{request.episode_id}",
+        title=f"Sheng Chan Hua Bu Zhi Xing Script Skill - episode{request.episode_id}",
         description="Production canvas script.generate skill dispatch",
         prompt=request.prompt,
         target_business_id=request.run_id,
@@ -91,7 +91,7 @@ def _execute_storyboard_generation(
         db,
         user,
         script,
-        title=f"生产画布执行 Storyboard Skill - 剧本{script.id}",
+        title=f"Sheng Chan Hua Bu Zhi Xing Storyboard Skill - script{script.id}",
         description="Production canvas storyboard.plan skill dispatch",
         prompt=request.prompt,
         target_business_id=request.run_id,
@@ -127,7 +127,7 @@ def _execute_timeline_pipeline(
         db,
         user,
         script,
-        title=f"生产画布执行 Timeline Skill - 剧本{script.id}",
+        title=f"Sheng Chan Hua Bu Zhi Xing Timeline Skill - script{script.id}",
         description="Production canvas timeline.assemble skill dispatch",
         prompt=request.prompt,
         target_business_id=request.run_id,
@@ -203,7 +203,7 @@ def execute_canvas_skill(
 
     return blocked_result(
         request,
-        title=f"{request.skill} 暂未接入自动执行",
+        title=f"{request.skill} Zan Wei Jie Ru Zi Dong Zhi Xing",
         detail="current Skill Yi Deng Ji background Fu Yong target, Dan Hai missing Jie Ru clear Ren Wu Pai Fa Qi.",
         required_inputs=["dispatcher"],
     )

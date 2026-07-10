@@ -187,7 +187,7 @@ def _content_restriction_issues(
             issues.append(
                 {
                     "issue_type": "prohibited_content",
-                    "message": f"包含限制内容: {restriction}",
+                    "message": f"Bao Han Xian Zhi Nei Rong: {restriction}",
                 }
             )
     return issues
@@ -206,7 +206,7 @@ def validate_story_outline_quality(
             {
                 "issue_type": "pacing_issue",
                 "severity": "error",
-                "message": f"节奏评分较低 ({pacing['overall_score']:.0%})",
+                "message": f"Jie Zou Ping Fen Jiao Di ({pacing['overall_score']:.0%})",
                 "details": pacing,
             }
         )
@@ -215,7 +215,7 @@ def validate_story_outline_quality(
             {
                 "issue_type": "weak_hook",
                 "severity": "error",
-                "message": f"开场吸引力不足 (评分: {hook:.0%})",
+                "message": f"Kai Chang Xi Yin Li Bu Zu (Ping Fen: {hook:.0%})",
             }
         )
     issues.extend(_content_restriction_issues(parsed, content_restrictions))

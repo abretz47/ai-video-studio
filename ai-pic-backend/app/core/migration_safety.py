@@ -63,20 +63,20 @@ class DataIntegrityChecker:
                                     "table": table_name,
                                     "foreign_key": fk["name"],
                                     "violation_count": count,
-                                    "description": f"表 {table_name} 有 {count} 行违反外键约束 {fk['name']}",
+                                    "description": f"Biao {table_name} You {count} Xing Wei Fan Wai Jian Yue Shu {fk['name']}",
                                 }
                                 result["violations"].append(violation)
                                 result["valid"] = False
 
                         except Exception as e:
                             logger.warning(
-                                f"检查外键约束失败 {table_name}.{fk['name']}: {e}"
+                                f"Jian Cha Wai Jian Yue Shu failed {table_name}.{fk['name']}: {e}"
                             )
 
         except Exception as e:
             result["valid"] = False
             result["error"] = str(e)
-            logger.error(f"引用完整性检查失败: {e}")
+            logger.error(f"Yin Yong Wan Zheng Xing Jian Cha failed: {e}")
 
         return result
 
@@ -116,18 +116,18 @@ class DataIntegrityChecker:
                                         "column": column["name"],
                                         "type": "null_in_not_null_column",
                                         "count": null_count,
-                                        "description": f"非空列 {table_name}.{column['name']} 包含 {null_count} 个NULL值",
+                                        "description": f"Fei Kong Lie {table_name}.{column['name']} Bao Han {null_count} GeNULLZhi",
                                     }
                                     result["inconsistencies"].append(inconsistency)
                                     result["valid"] = False
 
                     except Exception as e:
-                        logger.warning(f"检查表 {table_name} 一致性失败: {e}")
+                        logger.warning(f"Jian Cha Biao {table_name} Yi Zhi Xing failed: {e}")
 
         except Exception as e:
             result["valid"] = False
             result["error"] = str(e)
-            logger.error(f"数据一致性检查失败: {e}")
+            logger.error(f"Shu Ju Yi Zhi Xing Jian Cha failed: {e}")
 
         return result
 
@@ -164,7 +164,7 @@ class DataIntegrityChecker:
                         }
 
                     except Exception as e:
-                        logger.warning(f"生成表 {table_name} 指纹失败: {e}")
+                        logger.warning(f"generate Biao {table_name} Zhi Wen failed: {e}")
                         fingerprint_data[table_name] = {"error": str(e)}
 
             # Sheng ChengMD5Ha Xi
@@ -172,7 +172,7 @@ class DataIntegrityChecker:
             return hashlib.md5(fingerprint_str.encode()).hexdigest()
 
         except Exception as e:
-            logger.error(f"生成数据指纹失败: {e}")
+            logger.error(f"generate Shu Ju Zhi Wen failed: {e}")
             return f"error_{datetime.now().timestamp()}"
 
 
@@ -220,12 +220,12 @@ class MigrationRollbackManager:
                 with open(rollback_file, "w", encoding="utf-8") as f:
                     json.dump(rollback_info, f, indent=2, ensure_ascii=False)
 
-            logger.info(f"回滚点创建成功: {rollback_id}")
+            logger.info(f"Hui Gun Dian Chuang Jian Cheng Gong: {rollback_id}")
             return rollback_id
 
         except Exception as e:
-            logger.error(f"创建回滚点失败: {e}")
-            raise MigrationSafetyError(f"创建回滚点失败: {e}")
+            logger.error(f"Chuang Jian Hui Gun Dian failed: {e}")
+            raise MigrationSafetyError(f"Chuang Jian Hui Gun Dian failed: {e}")
 
     def _capture_schema_snapshot(self) -> Dict[str, Any]:
         """Bu Huo database Jia Gou Kuai Zhao"""
@@ -276,7 +276,7 @@ class MigrationRollbackManager:
             return schema_snapshot
 
         except Exception as e:
-            logger.error(f"捕获架构快照失败: {e}")
+            logger.error(f"Bu Huo Jia Gou Kuai Zhao failed: {e}")
             return {"error": str(e)}
 
     def _create_data_backup(self, rollback_id: str) -> Optional[str]:
@@ -315,14 +315,14 @@ class MigrationRollbackManager:
                 )
 
             if result.returncode == 0:
-                logger.info(f"数据备份成功: {backup_path}")
+                logger.info(f"Shu Ju Bei Fen Cheng Gong: {backup_path}")
                 return str(backup_file)
             else:
-                logger.error(f"数据备份失败: {result.stderr}")
+                logger.error(f"Shu Ju Bei Fen failed: {result.stderr}")
                 return None
 
         except Exception as e:
-            logger.error(f"创建数据备份失败: {e}")
+            logger.error(f"Chuang Jian Shu Ju Bei Fen failed: {e}")
             return None
 
     def list_rollback_points(self) -> List[Dict[str, Any]]:
@@ -342,13 +342,13 @@ class MigrationRollbackManager:
                     rollback_points.append(rollback_info)
 
                 except Exception as e:
-                    logger.warning(f"读取回滚点文件失败 {rollback_file}: {e}")
+                    logger.warning(f"Du Qu Hui Gun Dian file failed {rollback_file}: {e}")
 
             # An create time Pai Xu
             rollback_points.sort(key=lambda x: x.get("created_at", ""), reverse=True)
 
         except Exception as e:
-            logger.error(f"列出回滚点失败: {e}")
+            logger.error(f"Lie Chu Hui Gun Dian failed: {e}")
 
         return rollback_points
 
@@ -377,16 +377,16 @@ class MigrationRollbackManager:
                                 backup_path.unlink()
 
                         cleaned_count += 1
-                        logger.info(f"删除过期回滚点: {rollback_info['rollback_id']}")
+                        logger.info(f"Shan Chu Guo Qi Hui Gun Dian: {rollback_info['rollback_id']}")
 
                 except Exception as e:
-                    logger.warning(f"清理回滚点失败 {rollback_file}: {e}")
+                    logger.warning(f"Qing Li Hui Gun Dian failed {rollback_file}: {e}")
 
-            logger.info(f"清理完成，删除了 {cleaned_count} 个过期回滚点")
+            logger.info(f"Qing Li Wan Cheng，Shan Chu Le {cleaned_count} Ge Guo Qi Hui Gun Dian")
             return cleaned_count
 
         except Exception as e:
-            logger.error(f"清理回滚点失败: {e}")
+            logger.error(f"Qing Li Hui Gun Dian failed: {e}")
             return 0
 
 
@@ -414,7 +414,7 @@ class MigrationValidator:
             if not integrity_result["valid"]:
                 result["safe_to_migrate"] = False
                 for violation in integrity_result["violations"]:
-                    result["errors"].append(f"外键约束违反: {violation['description']}")
+                    result["errors"].append(f"Wai Jian Yue Shu Wei Fan: {violation['description']}")
 
             # Check data consistency
             consistency_result = self.integrity_checker.check_data_consistency()
@@ -424,7 +424,7 @@ class MigrationValidator:
                 result["safe_to_migrate"] = False
                 for inconsistency in consistency_result["inconsistencies"]:
                     result["errors"].append(
-                        f"数据不一致: {inconsistency['description']}"
+                        f"Shu Ju Bu Yi Zhi: {inconsistency['description']}"
                     )
 
             # check Ci Pan Kong Jian(Ru Guo Ke Neng)
@@ -435,7 +435,7 @@ class MigrationValidator:
                 free_gb = free // (1024**3)
 
                 if free_gb < 1:  # Shao Yu1GB
-                    result["warnings"].append(f"磁盘空间不足: 仅剩 {free_gb}GB")
+                    result["warnings"].append(f"Ci Pan Kong Jian Bu Zu: Jin Sheng {free_gb}GB")
 
                 result["checks"]["disk_space"] = free_gb
 
@@ -453,18 +453,18 @@ class MigrationValidator:
 
                         if locked_tables:
                             result["warnings"].append(
-                                f"发现 {len(locked_tables)} 个锁定的表"
+                                f"Fa Xian {len(locked_tables)} Ge Suo Ding De Biao"
                             )
 
                         result["checks"]["table_locks"] = len(locked_tables) == 0
 
                 except Exception as e:
-                    result["warnings"].append(f"无法检查表锁定状态: {e}")
+                    result["warnings"].append(f"Wu Fa Jian Cha Biao Suo Ding status: {e}")
 
         except Exception as e:
             result["safe_to_migrate"] = False
-            result["errors"].append(f"迁移前检查失败: {e}")
-            logger.error(f"迁移前检查失败: {e}")
+            result["errors"].append(f"Qian Yi Qian Jian Cha failed: {e}")
+            logger.error(f"Qian Yi Qian Jian Cha failed: {e}")
 
         return result
 
@@ -486,7 +486,7 @@ class MigrationValidator:
                 result["migration_successful"] = False
                 for violation in integrity_result["violations"]:
                     result["errors"].append(
-                        f"迁移后外键约束违反: {violation['description']}"
+                        f"Qian Yi Hou Wai Jian Yue Shu Wei Fan: {violation['description']}"
                     )
 
             # Check data consistency
@@ -496,7 +496,7 @@ class MigrationValidator:
             if not consistency_result["valid"]:
                 for inconsistency in consistency_result["inconsistencies"]:
                     result["warnings"].append(
-                        f"迁移后数据不一致: {inconsistency['description']}"
+                        f"Qian Yi Hou Shu Ju Bu Yi Zhi: {inconsistency['description']}"
                     )
 
             # Bi Jiao data Zhi Wen
@@ -515,8 +515,8 @@ class MigrationValidator:
 
         except Exception as e:
             result["migration_successful"] = False
-            result["errors"].append(f"迁移后检查失败: {e}")
-            logger.error(f"迁移后检查失败: {e}")
+            result["errors"].append(f"Qian Yi Hou Jian Cha failed: {e}")
+            logger.error(f"Qian Yi Hou Jian Cha failed: {e}")
 
         return result
 

@@ -101,7 +101,7 @@ def process_episode_generation_result(
         raise RuntimeError("AISheng Cheng content format error")
     if len(episodes_data) < episode_count:
         raise RuntimeError(
-            f"AI生成剧集数量不足：期望 {episode_count} 集，实际 {len(episodes_data)} 集"
+            f"AIgenerate episode Shu Liang Bu Zu：Qi Wang {episode_count} Ji，Shi Ji {len(episodes_data)} Ji"
         )
 
     for idx, ep_data in enumerate(episodes_data[:episode_count], start=1):

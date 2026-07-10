@@ -101,10 +101,10 @@ async def try_fill_pending_scenes_after_react(
     base_prompt = (
         base_prompt
         + "\n\n## Zhong Yao: only Bu Quan Yi Xia scene\n"
-        + f"你只能生成这些 scene_number 的对白与舞台指示：{pending_scene_numbers}\n"
-        + "Ying Xing requirement: Mei Ge scene Zhi Shao 2 Ju dialogue, scene_number Bi Xu as Zheng Shu Qie Zhun Que.\n"
-        + "Yan Jin output Bian Ju/Zhu Shou Yuan Yu Yan(for example"hereCan…"), Yan Jin Kua scene Chong Fu template line.\n"
-        + "Bu Yao output Qi Ta scene content.\n"
+        + f"you may only generate dialogue and stage directions for these scene_number values: {pending_scene_numbers}\n"
+        + "Hard requirement: each scene must contain at least 2 lines of dialogue, and scene_number must be an accurate integer.\n"
+        + 'Do not output screenwriter/assistant meta-language (for example "you can use this here"), and do not repeat template lines across scenes.\n'
+        + "Do not output content for any other scene.\n"
     )
 
     constraints_text = build_word_count_constraints(
@@ -205,7 +205,7 @@ async def try_fill_pending_scenes_after_react(
             prompt = (
                 base_prompt
                 + "\n\n## REACT Bo Hui\n"
-                + "you output Bian Ju/Zhu Shou Yuan Yu Yan(for example"hereCan…").Qing Quan Bu Gai Xie as Xi Nei line, Bu Yao Bao Liu Yuan Yu Yan.\n"
+                + 'Do not output screenwriter/assistant meta-language (for example "you can use this here"). Rewrite everything as in-scene dialogue and do not keep meta-language.\n'
             )
             continue
 
@@ -236,7 +236,7 @@ async def try_fill_pending_scenes_after_react(
                         float(budget.min_duration_seconds) * WORDS_PER_SECOND
                     )
                     too_short.append(
-                        f"{scene_no}(当前≈{est_seconds:.1f}s，至少≈{budget.min_duration_seconds}s；字符数≥{min_chars}，建议再+{max(need, 20)}字)"
+                        f"{scene_no}(Dang Qian≈{est_seconds:.1f}s，at least≈{budget.min_duration_seconds}s；Zi Fu Shu≥{min_chars}，Jian Yi Zai+{max(need, 20)}Zi)"
                     )
                 elif budget.max_duration_seconds and est_seconds > float(
                     budget.max_duration_seconds
@@ -246,7 +246,7 @@ async def try_fill_pending_scenes_after_react(
                         * WORDS_PER_SECOND
                     )
                     too_long.append(
-                        f"{scene_no}(当前≈{est_seconds:.1f}s，最多≈{budget.max_duration_seconds}s；建议删减≈{max(over, 20)}字)"
+                        f"{scene_no}(Dang Qian≈{est_seconds:.1f}s，Zui Duo≈{budget.max_duration_seconds}s；Jian Yi Shan Jian≈{max(over, 20)}Zi)"
                     )
 
             if not too_short and not too_long:
@@ -270,7 +270,7 @@ async def try_fill_pending_scenes_after_react(
         prompt = (
             base_prompt
             + "\n\n## REACT Bo Hui\n"
-            + f"以下场景对白条数仍不足 2 句：{missing}；当前计数：{per_scene_counts}\n"
+            + f"Yi Xia scene dialogue Tiao Shu Reng Bu Zu 2 Ju：{missing}；Dang Qian Ji Shu：{per_scene_counts}\n"
             + "Qing Jin Zhen Dui Zhe Xie scene Bu Zu to 2-3 Ju dialogue.\n"
         )
 

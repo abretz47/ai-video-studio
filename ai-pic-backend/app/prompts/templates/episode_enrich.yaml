@@ -105,7 +105,7 @@ prompt: |
  "slug_line": "INT. location - TIME",
  "location": "location",
  "time_of_day": "day/night",
- "summary": "Chang Jing Miao Shu",
+ "summary": "scene description",
  "estimated_duration_seconds": 30,
  "is_new": false
  },

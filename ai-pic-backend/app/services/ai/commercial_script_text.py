@@ -19,7 +19,7 @@ def build_commercial_vertical_text(
     title: Optional[str],
 ) -> str:
     ordered_scenes = scenes or [{"scene_number": 1, "summary": title or "conflict eruption"}]
-    lines: List[str] = [f"第{episode_number}集"]
+    lines: List[str] = [f"Di{episode_number}Ji"]
     if not _first_lines_have_hook(lines + [_scene_summary(ordered_scenes[0])]):
         lines.append("▲[sound effect]Peng!frame directly Qie Ru conflict Xian Chang, Suo You Ren Meng Di Kan Xiang Zhu Jue.")
     dialogues_by_scene = _group_by_scene(dialogues)
@@ -73,7 +73,7 @@ def build_commercial_vertical_text(
     if not _has_cliffhanger(lines):
         final_speaker = _last_dialogue_speaker(dialogues) or "narration"
         lines.append("▲[close-up]shot Ting inKey clueon, all Sheng Yin Tu Ran Ya Di.")
-        lines.append(f"{final_speaker}(压低声)：你真以为，这就是全部真相？")
+        lines.append(f"{final_speaker}(Ya Di Sheng)：Ni Zhen Yi Wei，Zhe Jiu Shi Quan Bu Zhen Xiang？")
     return "\n".join(lines)
 
 

@@ -91,18 +91,18 @@ def final_validation_node(state: Dict[str, Any]) -> Dict[str, Any]:
     # Sheng Cheng validation log
     if is_within_tolerance:
         reasoning.append(
-            f"最终验证通过: 总时长 {total_actual:.1f}s / {total_target}s "
-            f"({ratio:.1%}), 在 ±{TOLERANCE_PERCENT:.0f}% 容差内"
+            f"Zui Zhong Yan Zheng Tong Guo: Zong Shi Zhang {total_actual:.1f}s / {total_target}s "
+            f"({ratio:.1%}), Zai ±{TOLERANCE_PERCENT:.0f}% Rong Cha Nei"
         )
     else:
         direction = "Guo Chang" if ratio > 1 else "Guo Duan"
         reasoning.append(
-            f"最终验证失败: 总时长 {total_actual:.1f}s / {total_target}s "
+            f"Zui Zhong Yan Zheng failed: Zong Shi Zhang {total_actual:.1f}s / {total_target}s "
             f"({ratio:.1%}), {direction} {abs(deviation_percent):.1f}%, "
-            f"超出 ±{TOLERANCE_PERCENT:.0f}% 容差"
+            f"Chao Chu ±{TOLERANCE_PERCENT:.0f}% Rong Cha"
         )
         errors.append(
-            f"Episode {episode_id} 总时长验证失败: "
+            f"Episode {episode_id} Zong Shi Zhang Yan Zheng failed: "
             f"{direction} {abs(deviation_percent):.1f}%"
         )
 

@@ -41,7 +41,7 @@ def build_story_tone(script: Any) -> str:
         if getattr(story, "world_building", None):
             bits.append(_trim(story.world_building, 60))
     if episode is not None and getattr(episode, "title", None):
-        bits.append(f"第{getattr(episode, 'episode_number', '?')}集 {episode.title}")
+        bits.append(f"Di{getattr(episode, 'episode_number', '?')}Ji {episode.title}")
     return _trim("，".join(bit for bit in bits if bit), STORY_TONE_CHAR_LIMIT)
 
 
@@ -125,7 +125,7 @@ def build_scene_characters(
         vip = ref_ctx.vip_map.get(cid)
         if vip is None:
             continue
-        name = getattr(vip, "name", None) or f"角色{cid}"
+        name = getattr(vip, "name", None) or f"character{cid}"
         appearance = _trim(
             getattr(vip, "description", None) or getattr(vip, "style_prompt", None),
             APPEARANCE_CHAR_LIMIT,

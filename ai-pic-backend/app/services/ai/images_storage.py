@@ -92,7 +92,7 @@ class ImageStorageMixin:
                 if attempt < 2:
                     await asyncio.sleep(1.5 * (attempt + 1))
 
-        raise RuntimeError(f"图像处理失败: {last_error}")
+        raise RuntimeError(f"image Chu Li failed: {last_error}")
 
     async def _upload_local_image_to_oss(
         self,
@@ -110,7 +110,7 @@ class ImageStorageMixin:
             with open(local_file_path, "rb") as f:
                 file_content = f.read()
         except Exception as exc:  # pragma: no cover - IO guard
-            raise RuntimeError(f"读取本地图像失败: {exc}") from exc
+            raise RuntimeError(f"Du Qu Ben Di image failed: {exc}") from exc
 
         filename = os.path.basename(local_file_path)
 
@@ -134,7 +134,7 @@ class ImageStorageMixin:
             oss_service_override=service,
         )
         if not oss_result or not oss_result.get("success"):
-            raise RuntimeError(f"OSS 上传失败: {oss_result}")
+            raise RuntimeError(f"OSS Shang Chuan failed: {oss_result}")
         return oss_result
 
     async def _persist_local_image(
@@ -177,7 +177,7 @@ class ImageStorageMixin:
                         prefix,
                     )
                 elif require_upload:
-                    raise RuntimeError(f"OSS 上传失败: {oss_result}")
+                    raise RuntimeError(f"OSS Shang Chuan failed: {oss_result}")
                 else:
                     self.logger.warning(
                         "OSS Shang Chuan not return availableURL, Shi Yong local path | filename=%s result=%s",

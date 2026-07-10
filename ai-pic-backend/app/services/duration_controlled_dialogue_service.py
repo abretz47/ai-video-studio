@@ -61,7 +61,7 @@ async def generate_dialogue_with_duration_control(
     scenes_data = [_scene_to_dict(s) for s in scenes]
 
     logger.info(
-        f"{LOG_PREFIX}: 开始时长精控流程",
+        f"{LOG_PREFIX}: Kai Shi Shi Zhang Jing Kong Liu Cheng",
         extra={
             "phase": "start",
             "episode_id": episode.id,
@@ -94,7 +94,7 @@ async def generate_dialogue_with_duration_control(
 
     if not scene_budgets:
         logger.error(
-            f"{LOG_PREFIX}: 预算分配失败",
+            f"{LOG_PREFIX}: Yu Suan Fen Pei failed",
             extra={
                 "phase": "budget_allocation",
                 "episode_id": episode.id,
@@ -114,7 +114,7 @@ async def generate_dialogue_with_duration_control(
         for b in scene_budgets
     ]
     logger.info(
-        f"{LOG_PREFIX}: 预算分配完成",
+        f"{LOG_PREFIX}: Yu Suan Fen Pei Wan Cheng",
         extra={
             "phase": "budget_allocation",
             "episode_id": episode.id,
@@ -175,7 +175,7 @@ async def generate_dialogue_with_duration_control(
 
     # Zui Zhong log
     logger.info(
-        f"{LOG_PREFIX}: 流程完成",
+        f"{LOG_PREFIX}: Liu Cheng Wan Cheng",
         extra={
             "phase": "complete",
             "episode_id": episode.id,
@@ -201,7 +201,7 @@ async def generate_dialogue_with_duration_control(
     if progress_callback:
         status = "through" if success else "not through"
         progress_callback(
-            f"完成: {status} (时长比 {duration_ratio:.1%}, " f"耗时 {total_time:.1f}s)"
+            f"Wan Cheng: {status} (Shi Zhang Bi {duration_ratio:.1%}, " f"Hao Shi {total_time:.1f}s)"
         )
 
     return {

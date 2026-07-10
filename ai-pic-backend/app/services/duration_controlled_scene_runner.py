@@ -40,7 +40,7 @@ async def generate_scene_audio_with_budgets(
     budget_map = {budget.scene_number: budget for budget in scene_budgets}
 
     if progress_callback:
-        progress_callback(f"Phase 2/3: 生成 {len(scenes)} 个场景对白音轨...")
+        progress_callback(f"Phase 2/3: generate {len(scenes)} Ge scene dialogue Yin Gui...")
 
     phase_start = time.time()
     generation_results: list[dict[str, Any]] = []
@@ -62,11 +62,11 @@ async def generate_scene_audio_with_budgets(
 
         if progress_callback:
             progress_callback(
-                f"场景 {idx}/{len(scenes)}: 生成中 (目标 {target_duration:.0f}s)"
+                f"scene {idx}/{len(scenes)}: generate Zhong (Mu Biao {target_duration:.0f}s)"
             )
 
         logger.info(
-            f"{log_prefix}: 开始生成场景 {scene_number}",
+            f"{log_prefix}: Kai Shi generate scene {scene_number}",
             extra={
                 "phase": "scene_generation",
                 "episode_id": episode.id,
@@ -115,7 +115,7 @@ async def generate_scene_audio_with_budgets(
             scene_timings.append(scene_duration_ms)
 
             logger.info(
-                f"{log_prefix}: 场景 {scene_number} 生成完成",
+                f"{log_prefix}: scene {scene_number} generate Wan Cheng",
                 extra={
                     "phase": "scene_generation",
                     "episode_id": episode.id,
@@ -130,14 +130,14 @@ async def generate_scene_audio_with_budgets(
 
             if progress_callback:
                 progress_callback(
-                    f"场景 {idx}/{len(scenes)}: 完成 "
-                    f"({actual_duration:.1f}s, 偏差 {deviation_pct:+.0f}%)"
+                    f"scene {idx}/{len(scenes)}: Wan Cheng "
+                    f"({actual_duration:.1f}s, Pian Cha {deviation_pct:+.0f}%)"
                 )
 
         except Exception as exc:
             scene_duration_ms = int((time.time() - scene_start) * 1000)
             logger.exception(
-                f"{log_prefix}: 场景 {scene_number} 生成失败",
+                f"{log_prefix}: scene {scene_number} generation failed",
                 extra={
                     "phase": "scene_generation",
                     "episode_id": episode.id,
@@ -156,7 +156,7 @@ async def generate_scene_audio_with_budgets(
                 }
             )
             if progress_callback:
-                progress_callback(f"场景 {idx}/{len(scenes)}: 失败 - {str(exc)[:50]}")
+                progress_callback(f"scene {idx}/{len(scenes)}: failed - {str(exc)[:50]}")
 
     return {
         "generation_results": generation_results,

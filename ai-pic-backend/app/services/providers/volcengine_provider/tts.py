@@ -102,13 +102,13 @@ async def poll_tts_status(
                     }
                 elif audio_info.get("status") == "failed":
                     err_msg = audio_info.get("message", "TTSRen Wu execute failed")
-                    raise RuntimeError(f"火山引擎TTS任务失败: {err_msg}")
+                    raise RuntimeError(f"Huo Shan Yin QingTTStask failed: {err_msg}")
                 else:
                     await asyncio.sleep(delay)
                     continue
             else:
-                err_msg = data.get("message", f"错误码: {data.get('code')}")
-                raise RuntimeError(f"火山引擎TTS查询失败: {err_msg}")
+                err_msg = data.get("message", f"error Ma: {data.get('code')}")
+                raise RuntimeError(f"Huo Shan Yin QingTTSCha Xun failed: {err_msg}")
 
         except RuntimeError:
             raise
@@ -123,8 +123,8 @@ async def poll_tts_status(
             await asyncio.sleep(delay)
 
     raise RuntimeError(
-        f"火山引擎TTS任务 {task_id} 轮询超时 ({max_attempts * delay}s)"
-        + (f", 最后错误: {last_error}" if last_error else "")
+        f"Huo Shan Yin QingTTStask {task_id} Lun Xun Chao Shi ({max_attempts * delay}s)"
+        + (f", Zui Hou error: {last_error}" if last_error else "")
     )
 
 
@@ -178,7 +178,7 @@ async def text_to_speech(
             error_msg = data.get("message", "Unknown error")
             return AIResponse(
                 success=False,
-                error=f"火山引擎TTS错误: {error_msg}",
+                error=f"Huo Shan Yin QingTTSerror: {error_msg}",
                 provider=provider_name,
                 model=model,
                 task_type=AITaskType.VOICE_GENERATION,

@@ -30,7 +30,7 @@ variables:
  type: string
  required: false
  description: "Micro-genre / subgenre"
- examples: ["Ba Zong Fu Chou", "Lang Ren Lian Ai", "Hei Bang Fu Chou"]
+ examples: ["CEO revenge", "werewolf romance", "gang revenge"]
 
  theme:
  type: string
@@ -59,7 +59,7 @@ variables:
  type: string
  required: false
  description: "Time setting"
- examples: ["modern", "ancient", "future", "Republic-era China", "80the 1980s"]
+ examples: ["modern", "ancient", "future", "Republic-era China", "1980s"]
 
  setting_location:
  type: string

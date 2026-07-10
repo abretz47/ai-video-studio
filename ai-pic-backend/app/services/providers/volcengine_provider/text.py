@@ -136,7 +136,7 @@ async def generate_text(
         if data.get("error"):
             return AIResponse(
                 success=False,
-                error=f"火山引擎API错误: {data['error'].get('message', 'Unknown error')}",
+                error=f"Huo Shan Yin QingAPIerror: {data['error'].get('message', 'Unknown error')}",
                 provider=provider_name,
                 model=model,
                 task_type=AITaskType.STORY_GENERATION,

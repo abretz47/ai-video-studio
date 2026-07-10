@@ -153,30 +153,30 @@ def build_episode_generation_prompt(
                 f"{char.get('description', 'none description')}\n"
             )
     return f"""
-你是一名专业的剧本创作AI助手。请根据以下故事概要生成 {episode_count} 集的剧集规划。
+Ni Shi Yi Ming Zhuan Ye De script Chuang ZuoAIZhu Shou。Qing Gen Ju Yi Xia story Gai Yao generate {episode_count} Ji De episode Gui Hua。
 
-故事概要:
-标题: {story.get('title', '')}
-类型: {story.get('genre', '')}
-目标市场: {story.get('market_region', '')}
-微类型: {story.get('micro_genre', '')}
-主题: {story.get('theme', '')}
-简介: {story.get('synopsis', '')}
-主要冲突: {story.get('main_conflict', '')}
-结局: {story.get('resolution', '')}
-爽点规划: {story.get('hook_plan', '')}
-反转密度: {story.get('twist_density', '')}
-悬念卡点: {story.get('cliffhanger_plan', '')}
-投流素材: {story.get('ad_snippets', '')}
+story Gai Yao:
+Biao Ti: {story.get('title', '')}
+Lei Xing: {story.get('genre', '')}
+Mu Biao Shi Chang: {story.get('market_region', '')}
+Wei Lei Xing: {story.get('micro_genre', '')}
+Zhu Ti: {story.get('theme', '')}
+Jian Jie: {story.get('synopsis', '')}
+Zhu Yao Chong Tu: {story.get('main_conflict', '')}
+Jie Ju: {story.get('resolution', '')}
+Shuang Dian Gui Hua: {story.get('hook_plan', '')}
+Fan Zhuan Mi Du: {story.get('twist_density', '')}
+Xuan Nian Ka Dian: {story.get('cliffhanger_plan', '')}
+Tou Liu Su Cai: {story.get('ad_snippets', '')}
 
 {characters_desc}
 
-要求:
-1. 每集时长约 {episode_duration} 分钟
-2. 剧情复杂度: {plot_complexity}
-3. 节奏: {pacing}
-4. 其他要求: {additional_requirements or 'none'}
-5. 风格偏好: {', '.join(style_preferences) if style_preferences else 'none'}
+Yao Qiu:
+1. Mei Ji Shi Zhang Yue {episode_duration} Fen Zhong
+2. Ju Qing Fu Za Du: {plot_complexity}
+3. Jie Zou: {pacing}
+4. Qi Ta Yao Qiu: {additional_requirements or 'none'}
+5. Feng Ge Pian Hao: {', '.join(style_preferences) if style_preferences else 'none'}
 
-请为每一集提供标题、概要、主要剧情点、角色发展和冲突。
+Qing Wei Mei Yi Ji Ti Gong Biao Ti、Gai Yao、Zhu Yao Ju Qing Dian、character Fa Zhan He Chong Tu。
 """

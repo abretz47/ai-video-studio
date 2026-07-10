@@ -200,7 +200,7 @@ async def _repair_payload(
     repair_prompt = (
         "on Yi Ci output unable to parse as JSON or not Fu He Yao Qiu, Qing Xiu Fu.\n"
         "requirement: only return strict JSON(Bu Yao Dai Ma Kuai/Bu Yao Jie Shi/Bu Yao extra text).\n"
-        f"输出结构示例（字段必须齐全）：\n{_BEAT_CONTRACT_REPAIR_HINT}\n\n"
+        f"Shu Chu Jie Gou Shi Li（field Bi Xu Qi Quan）：\n{_BEAT_CONTRACT_REPAIR_HINT}\n\n"
         f"raw_output:\n{raw_output}"
     )
     repair_resp = await ai_manager.generate_text(

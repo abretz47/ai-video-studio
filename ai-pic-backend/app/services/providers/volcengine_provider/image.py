@@ -144,7 +144,7 @@ async def generate_image(
             if data.get("error"):
                 return AIResponse(
                     success=False,
-                    error=f"火山引擎文生图错误: {data['error'].get('message', 'Unknown error')}",
+                    error=f"Huo Shan Yin Qing Wen Sheng Tu error: {data['error'].get('message', 'Unknown error')}",
                     provider=provider_name,
                     model=ark_model,
                     task_type=AITaskType.SCENE_GENERATION,
@@ -307,7 +307,7 @@ async def image_to_image(
             if data.get("error"):
                 return AIResponse(
                     success=False,
-                    error=f"火山引擎图生图错误: {data['error'].get('message', 'Unknown error')}",
+                    error=f"Huo Shan Yin Qing Tu Sheng Tu error: {data['error'].get('message', 'Unknown error')}",
                     provider=provider_name,
                     model=model or ark_model,
                     task_type=AITaskType.SCENE_GENERATION,

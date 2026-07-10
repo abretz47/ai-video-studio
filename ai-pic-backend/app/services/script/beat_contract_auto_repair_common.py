@@ -45,8 +45,8 @@ def preferred_character(beats: list[dict[str, Any]]) -> str | None:
 
 def progression_event(protagonist: str, order: int) -> str:
     return (
-        f"{protagonist}将原始文件放到投影左侧，屏幕标红被改数字。",
-        f"{protagonist}指向会议纪要时间戳，助理调出修改日志。",
+        f"{protagonist}Jiang Yuan Shi file Fang Dao Tou Ying Zuo Ce，Ping Mu Biao Hong Bei Gai Shu Zi。",
+        f"{protagonist}Zhi Xiang Hui Yi Ji Yao timestamp，Zhu Li Diao Chu Xiu Gai log。",
         "customer in Tou Ying before Ting Zhu action, Cuan Gai Zhe Di Tou An Mie phone screen.",
         "phone recording Bo Xing Tiao Dong, Cuan Gai Zhe Di Sheng Cheng Ren Cong Yin Xiang Chuan Chu.",
     )[(order - 1) % 4]
@@ -54,7 +54,7 @@ def progression_event(protagonist: str, order: int) -> str:
 
 def progression_action(protagonist: str, order: int) -> str:
     return (
-        f"{protagonist}把两份数据页并排推到客户面前。",
+        f"{protagonist}Ba Liang Fen Shu Ju Ye Bing Pai Tui Dao Ke Hu Mian Qian。",
         "Zhu Li Xiu Gai log Chuang Kou Tuo to Tou Ying Zhong Yang.",
         "customer Na Qi Bi in Wen Ti Shu Zi Pang Hua Quan.",
         "Cuan Gai Zhe Hou Tui Ban Bu, phone Tong Zhi Lan Lu Chu delete Ti Xing.",

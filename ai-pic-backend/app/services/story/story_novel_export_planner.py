@@ -20,7 +20,7 @@ def plan_intro_from_plan(
     question_title = (
         plan.get("question_title")
         if isinstance(plan.get("question_title"), str)
-        else f"如何评价《{story_title}》这个故事？"
+        else f"Ru He Ping Jia《{story_title}》Zhe Ge story？"
     )
     question_detail = (
         plan.get("question_detail")
@@ -95,7 +95,7 @@ def _normalize_plan_chapters(
             ).strip()
 
         if not title:
-            title = f"更新 {idx}"
+            title = f"Geng Xin {idx}"
         if not cliffhanger_hint:
             cliffhanger_hint = "below Yi Zhang Chu Xian Yi Wai Zhuan Zhe, Ju Shi Zhou Ran escalate."
 
@@ -209,7 +209,7 @@ def _fallback_zhihu_plan(
                 cliffhanger_hint = str(plot_points[-1] or "").strip()
 
         if not chapter_title:
-            chapter_title = f"更新 {idx}"
+            chapter_title = f"Geng Xin {idx}"
         if not chapter_goal:
             chapter_goal = "advance Zhu Xian conflict and Mai below Xin Yin Guo."
         if not cliffhanger_hint:
@@ -294,7 +294,7 @@ async def generate_zhihu_chapter_beats(
         fallback.extend(
             [
                 (
-                    f"承接上一章卡点：{previous_cliffhanger}（继续现场，交代卡点之后发生了什么）"
+                    f"Cheng Jie Shang Yi Zhang Ka Dian：{previous_cliffhanger}（Ji Xu Xian Chang，Jiao Dai Ka Dian Zhi Hou Fa Sheng Le Shen Me）"
                     if previous_cliffhanger
                     else "Yong a specific scene quick Ru Xi, Pao Chu Ben Zhang conflict."
                 ),
@@ -308,6 +308,6 @@ async def generate_zhihu_chapter_beats(
     elif previous_cliffhanger:
         # Ensure the opening beat always responds to the cliffhanger even when partial beats exist.
         fallback[0] = (
-            f"承接上一章卡点：{previous_cliffhanger}（继续现场，交代卡点之后发生了什么）"
+            f"Cheng Jie Shang Yi Zhang Ka Dian：{previous_cliffhanger}（Ji Xu Xian Chang，Jiao Dai Ka Dian Zhi Hou Fa Sheng Le Shen Me）"
         )
     return fallback[:9]

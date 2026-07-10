@@ -6,210 +6,210 @@ from app.models.task import Task, TaskStatus, TaskType
 from app.models.story_structure import Environment
 from app.models.user import User
 from app.models.video_generation_task import (
- VideoGenerationTask,
- VideoGenerationTaskStatus,
+    VideoGenerationTask,
+    VideoGenerationTaskStatus,
 )
 from app.models.virtual_ip import VirtualIP
 from app.schemas.production_canvas import (
- ProductionCanvasPlanRequest,
- ProductionCanvasSavedEdge,
- ProductionCanvasSavedNode,
- ProductionCanvasSavedState,
- ProductionCanvasSkillExecuteRequest,
- ProductionCanvasViewport,
+    ProductionCanvasPlanRequest,
+    ProductionCanvasSavedEdge,
+    ProductionCanvasSavedNode,
+    ProductionCanvasSavedState,
+    ProductionCanvasSkillExecuteRequest,
+    ProductionCanvasViewport,
 )
 from app.services.production_canvas.executor import execute_canvas_skill
 from app.services.production_canvas.run_persistence import (
- attach_canvas_run,
- persist_canvas_skill_run,
- save_canvas_state,
+    attach_canvas_run,
+    persist_canvas_skill_run,
+    save_canvas_state,
 )
 from app.services.production_canvas.skill_planner import build_canvas_skill_plan
 
 
 def _user(db, username: str) -> User:
- user = User(
- username=username,
- email=f"{username}@example.com",
- hashed_password="x",
- is_active=True,
- is_approved=True,
- email_verified=True,
-)
- db.add(user)
- db.commit()
- db.refresh(user)
- return user
+    user = User(
+        username=username,
+        email=f"{username}@example.com",
+        hashed_password="x",
+        is_active=True,
+        is_approved=True,
+        email_verified=True,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
 
 
 def test_canvas_brief_and_asset_skills_execute_without_dispatcher_gap(db_session):
- user = _user(db_session, "canvas_immediate_skill_owner")
- virtual_ip = VirtualIP(
- user_id=user.id,
- name="Lin Mei",
- tags=["light comedy"],
- is_active=True,
-)
- environment = Environment(
- user_id=user.id,
- name="co-working area",
- category="indoor",
- tags=["office"],
-)
- db_session.add_all([virtual_ip, environment])
- db_session.commit()
- db_session.refresh(virtual_ip)
- db_session.refresh(environment)
+    user = _user(db_session, "canvas_immediate_skill_owner")
+    virtual_ip = VirtualIP(
+        user_id=user.id,
+        name="Lin Mei",
+        tags=["light comedy"],
+        is_active=True,
+    )
+    environment = Environment(
+        user_id=user.id,
+        name="co-working area",
+        category="indoor",
+        tags=["office"],
+    )
+    db_session.add_all([virtual_ip, environment])
+    db_session.commit()
+    db_session.refresh(virtual_ip)
+    db_session.refresh(environment)
 
- brief = execute_canvas_skill(
- db_session,
- user,
- ProductionCanvasSkillExecuteRequest(
- prompt="based on Lin Mei Zuo Di 4 Ji, office light comedy",
- skill="brief.compose",
- run_id="canvas-run-immediate",
-),
-)
- assets = execute_canvas_skill(
- db_session,
- user,
- ProductionCanvasSkillExecuteRequest(
- prompt="based on Lin Mei Zuo Di 4 Ji, office light comedy",
- skill="asset.select",
- virtual_ip_id=virtual_ip.id,
- environment_id=environment.id,
- run_id="canvas-run-immediate",
-),
-)
+    brief = execute_canvas_skill(
+        db_session,
+        user,
+        ProductionCanvasSkillExecuteRequest(
+            prompt="based on Lin Mei Zuo Di 4 Ji，office light comedy",
+            skill="brief.compose",
+            run_id="canvas-run-immediate",
+        ),
+    )
+    assets = execute_canvas_skill(
+        db_session,
+        user,
+        ProductionCanvasSkillExecuteRequest(
+            prompt="based on Lin Mei Zuo Di 4 Ji，office light comedy",
+            skill="asset.select",
+            virtual_ip_id=virtual_ip.id,
+            environment_id=environment.id,
+            run_id="canvas-run-immediate",
+        ),
+    )
 
- assert brief.skill_result.status == "ready"
- assert brief.skill_result.outputs["prompt"] == "based on Lin Mei Zuo Di 4 Ji, office light comedy"
- assert "dispatcher" not in brief.skill_result.outputs.get("required_inputs", [])
- assert assets.skill_result.status == "review"
- assert assets.skill_result.outputs["virtual_ip_ids"] == [virtual_ip.id]
- assert assets.skill_result.outputs["environment_ids"] == [environment.id]
- assert "dispatcher" not in assets.skill_result.outputs.get("required_inputs", [])
+    assert brief.skill_result.status == "ready"
+    assert brief.skill_result.outputs["prompt"] == "based on Lin Mei Zuo Di 4 Ji，office light comedy"
+    assert "dispatcher" not in brief.skill_result.outputs.get("required_inputs", [])
+    assert assets.skill_result.status == "review"
+    assert assets.skill_result.outputs["virtual_ip_ids"] == [virtual_ip.id]
+    assert assets.skill_result.outputs["environment_ids"] == [environment.id]
+    assert "dispatcher" not in assets.skill_result.outputs.get("required_inputs", [])
 
 
 def test_canvas_report_summarizes_run_state_without_task_context(db_session):
- user = _user(db_session, "canvas_report_run_owner")
- request = ProductionCanvasPlanRequest(prompt="Hui Zong Hua Bu Zhi Xing evidence")
- plan = build_canvas_skill_plan(db_session, user, request)
- task = persist_canvas_skill_run(db_session, user, request, plan)
- run = attach_canvas_run(plan, task)
- media_task = Task(
- title="Hua Bu video generate",
- task_type=TaskType.VIDEO_GENERATION,
- status=TaskStatus.COMPLETED,
- parameters=json.dumps(
- {"model": "minimax:video-01", "frame_indexes": [1]},
- ensure_ascii=False,
-),
- target_business_id=run.run_id,
- result_file_path="/tmp/canvas-video.mp4",
- user_id=user.id,
-)
- db_session.add(media_task)
- db_session.commit()
- db_session.refresh(media_task)
- provider_task = VideoGenerationTask(
- task_id=media_task.id,
- script_id=None,
- frame_index=1,
- user_id=user.id,
- provider="minimax",
- provider_task_id="provider-video-1",
- model="video-01",
- model_type="image_to_video",
- result=json.dumps(
- {
- "provider_used": "minimax",
- "model_used": "video-01",
- "usage": {"credits": 2},
- "cost": {"currency": "CNY", "amount": 1.2},
- },
- ensure_ascii=False,
-),
- generation_metadata={"provider": "minimax", "model": "video-01"},
- status=VideoGenerationTaskStatus.SUCCEEDED,
-)
- db_session.add(provider_task)
- db_session.commit()
- db_session.refresh(provider_task)
- save_canvas_state(
- db_session,
- user,
- run.run_id or "",
- ProductionCanvasSavedState(
- nodes=[
- ProductionCanvasSavedNode(
- id="skill-script",
- label="Script Skill",
- title="Yi Ti Jiao script Ren Wu",
- status="running",
- x=100,
- y=120,
- width=220,
- kind="skill_result",
- skill="script.generate",
- outputs={
- "dispatched_task_id": media_task.id,
- "task_status": "completed",
- },
-),
- ProductionCanvasSavedNode(
- id="note-1",
- label="Bian Qian",
- title="Xu Yao Ren Gong confirm camera style",
- status="review",
- x=360,
- y=160,
- width=190,
- kind="note",
-),
- ],
- viewport=ProductionCanvasViewport(x=0, y=0, zoom=1),
- selected_node_id="note-1",
- edges=[ProductionCanvasSavedEdge(from_node="skill-script", to_node="note-1")],
-),
-)
+    user = _user(db_session, "canvas_report_run_owner")
+    request = ProductionCanvasPlanRequest(prompt="Hui Zong Hua Bu Zhi Xing Zheng Ju")
+    plan = build_canvas_skill_plan(db_session, user, request)
+    task = persist_canvas_skill_run(db_session, user, request, plan)
+    run = attach_canvas_run(plan, task)
+    media_task = Task(
+        title="Hua Bu video generate",
+        task_type=TaskType.VIDEO_GENERATION,
+        status=TaskStatus.COMPLETED,
+        parameters=json.dumps(
+            {"model": "minimax:video-01", "frame_indexes": [1]},
+            ensure_ascii=False,
+        ),
+        target_business_id=run.run_id,
+        result_file_path="/tmp/canvas-video.mp4",
+        user_id=user.id,
+    )
+    db_session.add(media_task)
+    db_session.commit()
+    db_session.refresh(media_task)
+    provider_task = VideoGenerationTask(
+        task_id=media_task.id,
+        script_id=None,
+        frame_index=1,
+        user_id=user.id,
+        provider="minimax",
+        provider_task_id="provider-video-1",
+        model="video-01",
+        model_type="image_to_video",
+        result=json.dumps(
+            {
+                "provider_used": "minimax",
+                "model_used": "video-01",
+                "usage": {"credits": 2},
+                "cost": {"currency": "CNY", "amount": 1.2},
+            },
+            ensure_ascii=False,
+        ),
+        generation_metadata={"provider": "minimax", "model": "video-01"},
+        status=VideoGenerationTaskStatus.SUCCEEDED,
+    )
+    db_session.add(provider_task)
+    db_session.commit()
+    db_session.refresh(provider_task)
+    save_canvas_state(
+        db_session,
+        user,
+        run.run_id or "",
+        ProductionCanvasSavedState(
+            nodes=[
+                ProductionCanvasSavedNode(
+                    id="skill-script",
+                    label="Script Skill",
+                    title="already Ti Jiao script Ren Wu",
+                    status="running",
+                    x=100,
+                    y=120,
+                    width=220,
+                    kind="skill_result",
+                    skill="script.generate",
+                    outputs={
+                        "dispatched_task_id": media_task.id,
+                        "task_status": "completed",
+                    },
+                ),
+                ProductionCanvasSavedNode(
+                    id="note-1",
+                    label="Bian Qian",
+                    title="Xu Yao Ren Gong confirm camera style",
+                    status="review",
+                    x=360,
+                    y=160,
+                    width=190,
+                    kind="note",
+                ),
+            ],
+            viewport=ProductionCanvasViewport(x=0, y=0, zoom=1),
+            selected_node_id="note-1",
+            edges=[ProductionCanvasSavedEdge(from_node="skill-script", to_node="note-1")],
+        ),
+    )
 
- summary = execute_canvas_skill(
- db_session,
- user,
- ProductionCanvasSkillExecuteRequest(
- prompt="Hui Zong Hua Bu Zhi Xing evidence",
- skill="report.summarize",
- run_id=run.run_id,
-),
-)
+    summary = execute_canvas_skill(
+        db_session,
+        user,
+        ProductionCanvasSkillExecuteRequest(
+            prompt="Hui Zong Hua Bu Zhi Xing Zheng Ju",
+            skill="report.summarize",
+            run_id=run.run_id,
+        ),
+    )
 
- assert summary.skill_result.status == "review"
- assert summary.task_id == task.id
- assert summary.skill_result.outputs["report_source"] == "production_canvas_run"
- assert summary.skill_result.outputs["node_count"] == 2
- assert summary.skill_result.outputs["edge_count"] == 1
- assert summary.skill_result.outputs["status_counts"] == {"running": 1, "review": 1}
- assert summary.skill_result.outputs["execution_task_ids"] == [media_task.id]
- assert summary.skill_result.outputs["provider_counts"] == {"minimax": 1}
- assert summary.skill_result.outputs["model_counts"] == {"video-01": 1}
- assert summary.skill_result.outputs["usage_totals"] == {"credits": 2}
- lineage = summary.skill_result.outputs["task_lineage"][0]
- assert lineage["task_id"] == media_task.id
- assert lineage["task_type"] == "video_generation"
- assert lineage["task_status"] == "completed"
- assert lineage["requested_model"] == "minimax:video-01"
- assert lineage["requested_provider"] == "minimax"
- assert lineage["frame_indexes"] == [1]
- assert lineage["result_file_path"] == "/tmp/canvas-video.mp4"
- provider_lineage = lineage["provider_tasks"][0]
- assert provider_lineage["video_generation_task_id"] == provider_task.id
- assert provider_lineage["provider"] == "minimax"
- assert provider_lineage["provider_task_id"] == "provider-video-1"
- assert provider_lineage["model"] == "video-01"
- assert provider_lineage["model_type"] == "image_to_video"
- assert provider_lineage["status"] == "succeeded"
- assert provider_lineage["frame_index"] == 1
- assert provider_lineage["usage"] == {"credits": 2}
- assert provider_lineage["cost"] == {"currency": "CNY", "amount": 1.2}
- assert summary.skill_result.outputs["selected_node_id"] == "note-1"
+    assert summary.skill_result.status == "review"
+    assert summary.task_id == task.id
+    assert summary.skill_result.outputs["report_source"] == "production_canvas_run"
+    assert summary.skill_result.outputs["node_count"] == 2
+    assert summary.skill_result.outputs["edge_count"] == 1
+    assert summary.skill_result.outputs["status_counts"] == {"running": 1, "review": 1}
+    assert summary.skill_result.outputs["execution_task_ids"] == [media_task.id]
+    assert summary.skill_result.outputs["provider_counts"] == {"minimax": 1}
+    assert summary.skill_result.outputs["model_counts"] == {"video-01": 1}
+    assert summary.skill_result.outputs["usage_totals"] == {"credits": 2}
+    lineage = summary.skill_result.outputs["task_lineage"][0]
+    assert lineage["task_id"] == media_task.id
+    assert lineage["task_type"] == "video_generation"
+    assert lineage["task_status"] == "completed"
+    assert lineage["requested_model"] == "minimax:video-01"
+    assert lineage["requested_provider"] == "minimax"
+    assert lineage["frame_indexes"] == [1]
+    assert lineage["result_file_path"] == "/tmp/canvas-video.mp4"
+    provider_lineage = lineage["provider_tasks"][0]
+    assert provider_lineage["video_generation_task_id"] == provider_task.id
+    assert provider_lineage["provider"] == "minimax"
+    assert provider_lineage["provider_task_id"] == "provider-video-1"
+    assert provider_lineage["model"] == "video-01"
+    assert provider_lineage["model_type"] == "image_to_video"
+    assert provider_lineage["status"] == "succeeded"
+    assert provider_lineage["frame_index"] == 1
+    assert provider_lineage["usage"] == {"credits": 2}
+    assert provider_lineage["cost"] == {"currency": "CNY", "amount": 1.2}
+    assert summary.skill_result.outputs["selected_node_id"] == "note-1"

@@ -78,4 +78,4 @@ def next_script_version(old_version: str | None) -> str:
 
 
 def base_script_title(script: Script, episode: Episode) -> str:
-    return re.sub(r"\s*\(v[\d.]+\)$", "", script.title or f"剧本 - {episode.title}")
+    return re.sub(r"\s*\(v[\d.]+\)$", "", script.title or f"script - {episode.title}")

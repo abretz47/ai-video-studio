@@ -1,5 +1,5 @@
 name: script_dialogues_short_drama
-description: "script dialogue Yu Wu Tai Zhi Shi generate prompt text template(short drama: Gao Chong Tu/Gao Shuang Dian/Qiang Ka Dian)"
+description: "script dialogue Yu stage directions generate prompt text template(short drama: Gao Chong Tu/Gao Shuang Dian/Qiang Ka Dian)"
 category: script
 version: "1.0"
 author: "AI Video Studio"

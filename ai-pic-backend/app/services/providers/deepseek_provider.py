@@ -127,12 +127,12 @@ class DeepSeekProvider(BaseProvider):
         **kwargs,
     ) -> AIResponse:
         """Generate code with DeepSeek V4 Pro."""
-        system_prompt = f"""你是一个专业的{language}程序员。请根据用户的要求生成高质量的代码。
-代码应该：
-1. 遵循最佳实践
-2. 包含必要的注释
-3. 具有良好的可读性
-4. 处理边界情况和错误"""
+        system_prompt = f"""Ni Shi Yi Ge Zhuan Ye De{language}Cheng Xu Yuan。Qing Gen Ju user De Yao Qiu generate high quality De Dai Ma。
+Dai Ma Ying Gai：
+1. Zun Xun Zui Jia Shi Jian
+2. Bao Han Bi Yao De Zhu Shi
+3. Ju You Liang Hao De Ke Du Xing
+4. Chu Li Bian Jie Qing Kuang He error"""
         return await self.generate_text(
             prompt=prompt,
             model=model,

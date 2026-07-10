@@ -308,4 +308,4 @@ class BaseProvider(ABC):
                     detail = f"{detail} | response={response_text[:1000]}"
         except Exception:
             pass
-        return f"{self.name} 错误: {detail}"
+        return f"{self.name} error: {detail}"

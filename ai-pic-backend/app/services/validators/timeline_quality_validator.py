@@ -192,7 +192,7 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.LANGUAGE_MISMATCH,
                     severity=TimelineQualitySeverity.INFO,
-                    message=f"检测到语言 ({result.detected_language}) 与预期 ({expected_language}) 不符",
+                    message=f"Jian Ce Dao Yu Yan ({result.detected_language}) Yu Yu Qi ({expected_language}) Bu Fu",
                     details={
                         "detected": result.detected_language,
                         "expected": expected_language,
@@ -334,7 +334,7 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.RHYTHM_TOO_SLOW,
                     severity=TimelineQualitySeverity.WARNING,
-                    message=f"整体节奏偏慢 ({actual_wps:.1f} 字/秒 < {slow_threshold:.1f})",
+                    message=f"Zheng Ti Jie Zou Pian Man ({actual_wps:.1f} Zi/Miao < {slow_threshold:.1f})",
                     details={
                         "actual_wps": actual_wps,
                         "expected_range": [wps_config["slow"], wps_config["fast"]],
@@ -350,7 +350,7 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.RHYTHM_TOO_FAST,
                     severity=TimelineQualitySeverity.WARNING,
-                    message=f"整体节奏偏快 ({actual_wps:.1f} 字/秒 > {fast_threshold:.1f})",
+                    message=f"Zheng Ti Jie Zou Pian Kuai ({actual_wps:.1f} Zi/Miao > {fast_threshold:.1f})",
                     details={
                         "actual_wps": actual_wps,
                         "expected_range": [wps_config["slow"], wps_config["fast"]],
@@ -551,7 +551,7 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.MISSING_DRAMATIC_PAUSE,
                     severity=TimelineQualitySeverity.INFO,
-                    message=f"有 {len(missing_pauses)} 处关键节点缺少戏剧停顿",
+                    message=f"You {len(missing_pauses)} Chu Guan Jian Jie Dian missing Xi Ju Ting Dun",
                     details={
                         "missing_at": [
                             {"beat_index": idx, "category": cat}
@@ -580,7 +580,7 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.EXCESSIVE_PAUSE,
                     severity=TimelineQualitySeverity.WARNING,
-                    message=f"有 {len(long_pauses)} 处停顿时间过长 (>{self.MAX_DRAMATIC_PAUSE_MS}ms)",
+                    message=f"You {len(long_pauses)} Chu Ting Dun Shi Jian Guo Zhang (>{self.MAX_DRAMATIC_PAUSE_MS}ms)",
                     details={
                         "long_pauses": [
                             {"beat_index": idx, "duration_ms": dur}
@@ -612,7 +612,7 @@ class TimelineQualityValidator:
                 TimelineQualityIssue(
                     issue_type=TimelineQualityIssueType.DURATION_ESTIMATE_DRIFT,
                     severity=TimelineQualitySeverity.WARNING,
-                    message=f"实际时长与预期偏差 {drift_percent:.0f}%",
+                    message=f"Shi Ji Shi Zhang Yu Yu Qi Pian Cha {drift_percent:.0f}%",
                     details={
                         "actual_ms": actual_ms,
                         "target_ms": target_ms,

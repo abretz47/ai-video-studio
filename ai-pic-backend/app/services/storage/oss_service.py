@@ -72,5 +72,5 @@ class OSSService(OSSUploadMixin, OSSAdminMixin, OSSBackupMixin):
 try:
     oss_service = OSSService()
 except ValueError as e:
-    print(f"OSS服务初始化失败: {e}")
+    print(f"OSSFu Wu Chu Shi Hua failed: {e}")
     oss_service = None

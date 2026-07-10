@@ -85,8 +85,8 @@ async def generate_episode_with_continuity_react(
                 "duration_too_short" if cur_secs < tgt_secs else "duration_too_long"
             )
             await progress(
-                f"生成第{ep_num}集：REACT驳回（{rejection_reason}，"
-                f"{cur_secs}秒 vs 目标{tgt_secs}秒），第{react_attempt}次尝试"
+                f"generate Di{ep_num}Ji：REACTBo Hui（{rejection_reason}，"
+                f"{cur_secs}Miao vs Mu Biao{tgt_secs}Miao），Di{react_attempt}Ci Chang Shi"
             )
             reasoning.append(
                 f"episode_react_reject_{ep_num}_attempt{react_attempt - 1}_"
@@ -112,7 +112,7 @@ async def generate_episode_with_continuity_react(
             )
         elif is_regeneration and episode_obj and last_rejection_reason == "continuity":
             await progress(
-                f"生成第{ep_num}集：一致性审校驳回，尝试修订（第{react_attempt}次）"
+                f"generate Di{ep_num}Ji：Yi Zhi Xing Shen Xiao Bo Hui，Chang Shi Xiu Ding（Di{react_attempt}Ci）"
             )
             reasoning.append(
                 f"episode_react_reject_{ep_num}_attempt{react_attempt - 1}_continuity"
@@ -131,7 +131,7 @@ async def generate_episode_with_continuity_react(
                 },
             )
         else:
-            await progress(f"生成第{ep_num}集：调用模型")
+            await progress(f"generate Di{ep_num}Ji：Diao Yong Mo Xing")
             prompt = prompt_manager.render_prompt(
                 PromptTemplate.EPISODE_FROM_OUTLINE.value,
                 {
@@ -179,13 +179,13 @@ async def generate_episode_with_continuity_react(
 
         if not episode_obj:
             fallback_used = True
-            await progress(f"生成第{ep_num}集：模型输出无效，使用大纲兜底")
+            await progress(f"generate Di{ep_num}Ji：Mo Xing Shu Chu Wu Xiao，Shi Yong Da Gang Dou Di")
             episode_obj = stub_episode_from_outline(outline)
             reasoning.append(f"episode_parse_failed_{ep_num}")
             break
 
         episode_obj.setdefault("episode_number", outline.get("episode_number"))
-        await progress(f"生成第{ep_num}集：校验中")
+        await progress(f"generate Di{ep_num}Ji：Xiao Yan Zhong")
 
         try:
             EpisodePlanItem.model_validate(episode_obj)
@@ -210,7 +210,7 @@ async def generate_episode_with_continuity_react(
                 reasoning.append(
                     f"episode_duration_ok_{ep_num}_attempt{react_attempt}_{cur_secs}s"
                 )
-                await progress(f"生成第{ep_num}集：时长验证通过（{cur_secs}秒）")
+                await progress(f"generate Di{ep_num}Ji：Shi Zhang Yan Zheng Tong Guo（{cur_secs}Miao）")
             else:
                 reasoning.append(
                     f"episode_duration_bad_{ep_num}_attempt{react_attempt}_{cur_secs}s"
@@ -221,12 +221,12 @@ async def generate_episode_with_continuity_react(
                         f"episode_duration_accepted_after_max_attempts_{ep_num}_{cur_secs}s"
                     )
                     await progress(
-                        f"生成第{ep_num}集：达到最大重试次数，接受当前时长（{cur_secs}秒）"
+                        f"generate Di{ep_num}Ji：Da Dao Zui Da Zhong Shi Ci Shu，Jie Shou Dang Qian Shi Zhang（{cur_secs}Miao）"
                     )
                     break
                 continue
 
-        await progress(f"生成第{ep_num}集：一致性审校中")
+        await progress(f"generate Di{ep_num}Ji：Yi Zhi Xing Shen Xiao Zhong")
         audit_result, _audit_resp = await run_episode_continuity_audit(
             ai_manager=ai_manager,
             story=story,
@@ -243,7 +243,7 @@ async def generate_episode_with_continuity_react(
             last_audit_issues = [issue.model_dump() for issue in audit_result.issues]
             reasoning.append(f"episode_continuity_fail_{ep_num}_attempt{react_attempt}")
 
-            await progress(f"生成第{ep_num}集：尝试修订一致性问题")
+            await progress(f"generate Di{ep_num}Ji：Chang Shi Xiu Ding Yi Zhi Xing Wen Ti")
             rewrite_payload, _rewrite_resp = await run_episode_rewrite_with_audit(
                 ai_manager=ai_manager,
                 story=story,

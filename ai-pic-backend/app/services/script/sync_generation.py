@@ -146,7 +146,7 @@ async def generate_script_sync(
     except NarrativeQualityGateError as exc:
         raise HTTPException(
             status_code=500,
-            detail=f"剧本质量校验失败: {exc}",
+            detail=f"script Zhi Liang Xiao Yan failed: {exc}",
         ) from exc
 
     if agent_run:
@@ -193,7 +193,7 @@ def _persist_generated_script(
 
     db_script = Script(
         episode_id=request.episode_id,
-        title=f"{episode_title} - 剧本",
+        title=f"{episode_title} - script",
         content=script_content,
         scenes=ai_content.get("scenes", []),
         dialogues=ai_content.get("dialogues", []),

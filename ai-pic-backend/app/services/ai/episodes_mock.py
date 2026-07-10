@@ -20,17 +20,17 @@ class EpisodeMockMixin:
             episodes.append(
                 {
                     "episode_number": episode_num,
-                    "title": f"第{episode_num}集" if episode_num > 1 else "Chu Shi Pian Zhang",
-                    "summary": f"这是{story_title}第{episode_num}集的内容概要。本集将继续推进故事发展，展现角色成长。",
+                    "title": f"Di{episode_num}Ji" if episode_num > 1 else "Chu Shi Pian Zhang",
+                    "summary": f"Zhe Shi{story_title}Di{episode_num}Ji De Nei Rong Gai Yao。Ben Ji Jiang Ji Xu Tui Jin story Fa Zhan，Zhan Xian character Cheng Zhang。",
                     "plot_points": [
-                        {"description": f"第{episode_num}集开场情节", "timing": "Kai Chang"},
-                        {"description": f"第{episode_num}集发展情节", "timing": "Zhong Duan"},
-                        {"description": f"第{episode_num}集结尾情节", "timing": "Jie Wei"},
+                        {"description": f"Di{episode_num}Ji Kai Chang Qing Jie", "timing": "Kai Chang"},
+                        {"description": f"Di{episode_num}Ji Fa Zhan Qing Jie", "timing": "Zhong Duan"},
+                        {"description": f"Di{episode_num}Ji Jie Wei Qing Jie", "timing": "Jie Wei"},
                     ],
-                    "character_arcs": {"protagonist": f"第{episode_num}集的角色发展"},
+                    "character_arcs": {"protagonist": f"Di{episode_num}Ji De character Fa Zhan"},
                     "conflicts": [
                         {
-                            "description": f"第{episode_num}集的主要冲突",
+                            "description": f"Di{episode_num}Ji De Zhu Yao Chong Tu",
                             "intensity": "medium",
                         }
                     ],
@@ -38,14 +38,14 @@ class EpisodeMockMixin:
                     "scenes": [
                         {
                             "scene_number": 1,
-                            "slug_line": f"INT. 主要场景 {episode_num} - DAY",
+                            "slug_line": f"INT. Zhu Yao scene {episode_num} - DAY",
                             "location": "Zhu Yao Di Dian",
                             "time_of_day": "day",
                             "summary": "Kai ChangForeshadowing, Cheng Xian Ben Ji conflict or target",
                         },
                         {
                             "scene_number": 2,
-                            "slug_line": f"EXT. 发展场景 {episode_num} - DUSK",
+                            "slug_line": f"EXT. Fa Zhan scene {episode_num} - DUSK",
                             "location": "Ci Yao Di Dian",
                             "time_of_day": "dusk",
                             "summary": "advanceConflictor relationship, Jia Shen character Dong Ji",

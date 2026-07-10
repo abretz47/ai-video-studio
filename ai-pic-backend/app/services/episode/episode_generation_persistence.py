@@ -96,7 +96,7 @@ def create_episode_models(
         db_episode = Episode(
             story_id=request.story_id,
             episode_number=episode_number,
-            title=episode_data.get("title", f"第{episode_number}集"),
+            title=episode_data.get("title", f"Di{episode_number}Ji"),
             summary=episode_data.get("summary"),
             plot_points=episode_data.get("plot_points"),
             character_arcs=episode_data.get("character_arcs"),

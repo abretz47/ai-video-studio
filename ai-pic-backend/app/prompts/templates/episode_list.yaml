@@ -1,5 +1,5 @@
 name: episode_list
-description: "episode Da Gang Fen Ji planning prompt text template"
+description: "episode outline Fen Ji planning prompt text template"
 category: episode
 version: "1.0"
 author: "AI Video Studio"
@@ -52,7 +52,7 @@ usage_examples:
  - story:
  title: "Du Shi Lian Qu"
  genre: "romance"
- synopsis: "Liang Ren Zai Kuai Jie Zou city Zhong Xiang Yu Xiang Zhi"
+ synopsis: "Liang Ren Zai Kuai Pacing city Zhong Xiang Yu Xiang Zhi"
  main_conflict: "Shi Ye Yu romance De Jue Ze"
  episode_count: 12
  episode_duration: 20

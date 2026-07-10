@@ -40,7 +40,7 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
     # check Shi Fou has Shi Ji when Zhang data
     if budget.actual_duration_seconds is None:
         logger.warning(
-            f"validate_duration_node: 场景 {budget.scene_number} 无实际时长数据"
+            f"validate_duration_node: scene {budget.scene_number} Wu Shi Ji Shi Zhang Shu Ju"
         )
         return {}
 
@@ -49,7 +49,7 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
     ratio = budget.duration_ratio()
 
     logger.info(
-        f"validate_duration_node: 场景 {budget.scene_number} 验证结果",
+        f"validate_duration_node: scene {budget.scene_number} Yan Zheng Jie Guo",
         extra={
             "scene_number": budget.scene_number,
             "target_duration": budget.target_duration_seconds,
@@ -69,7 +69,7 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
         budget.adjustment_hint = None
 
         reasoning.append(
-            f"场景 {budget.scene_number} 验证通过: "
+            f"scene {budget.scene_number} Yan Zheng Tong Guo: "
             f"{budget.actual_duration_seconds:.1f}s / "
             f"{budget.target_duration_seconds}s ({ratio:.0%})"
         )
@@ -79,11 +79,11 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
             # reach maximum retry Ci Shu, Qiang Zhi Jie Shou
             budget.status = SceneStatus.COMMITTED
             reasoning.append(
-                f"场景 {budget.scene_number} 达到最大重试次数 ({MAX_RETRY_ATTEMPTS})，"
-                f"强制接受: {budget.actual_duration_seconds:.1f}s / "
+                f"scene {budget.scene_number} Da Dao Zui Da Zhong Shi Ci Shu ({MAX_RETRY_ATTEMPTS})，"
+                f"Qiang Zhi Jie Shou: {budget.actual_duration_seconds:.1f}s / "
                 f"{budget.target_duration_seconds}s ({ratio:.0%})"
             )
-            logger.warning(f"场景 {budget.scene_number} 达到最大重试次数，强制接受")
+            logger.warning(f"scene {budget.scene_number} Da Dao Zui Da Zhong Shi Ci Shu，Qiang Zhi Jie Shou")
         else:
             # Sheng Cheng adjust suggestion
             actual_ms = int(budget.actual_duration_seconds * 1000)
@@ -100,10 +100,10 @@ def validate_duration_node(state: Dict[str, Any]) -> Dict[str, Any]:
             budget.adjustment_hint = hint
 
             reasoning.append(
-                f"场景 {budget.scene_number} 验证失败 ({reason}): "
+                f"scene {budget.scene_number} Yan Zheng failed ({reason}): "
                 f"{budget.actual_duration_seconds:.1f}s / "
                 f"{budget.target_duration_seconds}s ({ratio:.0%})，"
-                f"将进行第 {budget.attempt_count + 1} 次重试"
+                f"Jiang Jin Xing Di {budget.attempt_count + 1} Ci Zhong Shi"
             )
 
     return {

@@ -434,14 +434,14 @@ class TimelineReactAgent(ReactAgentBase[TimingPlan]):
         summary = scene_context.get("summary") or ""
 
         scene_description = (
-            f"- 场景: {slug_line}"
+            f"- scene: {slug_line}"
             if slug_line
-            else f"- 地点: {location}, 时间: {time_of_day}"
+            else f"- Di Dian: {location}, Shi Jian: {time_of_day}"
         )
         summary_line = (
-            f"- 场景描述: {summary[:100]}..."
+            f"- scene Miao Shu: {summary[:100]}..."
             if summary and len(summary) > 100
-            else (f"- 场景描述: {summary}" if summary else "")
+            else (f"- scene Miao Shu: {summary}" if summary else "")
         )
 
         # Build duration constraint section
@@ -453,39 +453,39 @@ class TimelineReactAgent(ReactAgentBase[TimingPlan]):
 
             duration_info = ""
             if has_actual_durations and total_dialogue_ms > 0:
-                duration_info = f"""- **对白总时长**: {total_dialogue_ms}ms ({total_dialogue_ms / 1000:.1f}秒) [已由TTS生成]
-- **可用于停顿的时间**: 约 {available_gap_ms}ms ({available_gap_ms / 1000:.1f}秒)
-- **平均每句后停顿**: 约 {avg_gap_per_dialogue}ms"""
+                duration_info = f"""- **dialogue Zong Shi Zhang**: {total_dialogue_ms}ms ({total_dialogue_ms / 1000:.1f}Miao) [Yi YouTTSgenerate]
+- **Ke Yong Yu Ting Dun De Shi Jian**: Yue {available_gap_ms}ms ({available_gap_ms / 1000:.1f}Miao)
+- **Ping Jun Mei Ju Hou Ting Dun**: Yue {avg_gap_per_dialogue}ms"""
 
             duration_constraint = f"""
-## 时长约束
-- **目标场景时长**: {target_duration_seconds} 秒 ({target_ms} 毫秒)
+## Shi Zhang Yue Shu
+- **Mu Biao scene Shi Zhang**: {target_duration_seconds} Miao ({target_ms} Hao Miao)
 {duration_info}
-- 停顿时长需要合理分配，使得整体场景接近目标时长
+- Ting Dun Shi Zhang Xu Yao He Li Fen Pei，Shi De Zheng Ti scene Jie Jin Mu Biao Shi Zhang
 """
 
-        return f"""## 场景信息
-- 场景编号: {scene_context.get('scene_number', 1)}
+        return f"""## scene Xin Xi
+- scene Bian Hao: {scene_context.get('scene_number', 1)}
 {scene_description}
 {summary_line}
-- 整体情绪: {scene_context.get('mood') or 'not Biao Zhu'}
-- 冲突程度: {scene_context.get('conflict_level', 'medium')}
-- 节奏类型: {scene_context.get('pacing', 'medium')}
-- 角色数量: {scene_context.get('character_count', 1)}
-- 对白数量: {scene_context.get('dialogue_count', 0)}
+- Zheng Ti Qing Xu: {scene_context.get('mood') or 'not Biao Zhu'}
+- Chong Tu Cheng Du: {scene_context.get('conflict_level', 'medium')}
+- Jie Zou Lei Xing: {scene_context.get('pacing', 'medium')}
+- character Shu Liang: {scene_context.get('character_count', 1)}
+- dialogue Shu Liang: {scene_context.get('dialogue_count', 0)}
 {duration_constraint}
-## 对白序列
+## dialogue Xu Lie
 {formatted}
 
-## 任务
-分析每句对白之后应该有多长的停顿（毫秒），考虑：
-1. 情绪过渡（愤怒→平静需要更长停顿让观众消化）
-2. 戏剧张力（高冲突场景需要更短停顿保持紧张感）
-3. 语义完整性（句号后比逗号停顿更长）
-4. 角色切换（不同角色之间需要呼吸空间）
-5. 场景氛围（夜晚场景可能需要更长的呼吸空间）
+## task
+Fen Xi Mei Ju dialogue Zhi Hou Ying Gai You Duo Zhang De Ting Dun（Hao Miao），Kao Lv：
+1. Qing Xu Guo Du（Fen Nu→Ping Jing Xu Yao Geng Zhang Ting Dun Rang Guan Zhong Xiao Hua）
+2. Xi Ju Zhang Li（Gao Chong Tu scene Xu Yao Geng Duan Ting Dun Bao Chi Jin Zhang Gan）
+3. Yu Yi Wan Zheng Xing（Ju Hao Hou Bi Dou Hao Ting Dun Geng Zhang）
+4. character Qie Huan（Bu Tong character Zhi Jian Xu Yao Hu Xi Kong Jian）
+5. scene Fen Wei（Ye Wan scene Ke Neng Xu Yao Geng Zhang De Hu Xi Kong Jian）
 
-输出 JSON 格式的 timing_decisions。"""
+Shu Chu JSON format De timing_decisions。"""
 
     def _build_repair_prompt(
         self,

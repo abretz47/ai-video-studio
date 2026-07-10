@@ -159,7 +159,7 @@ class ImageGenerationMixin:
                 final_prompt = f"{final_prompt.rstrip()}\n\n{style_prompt}"
             prompt_sha256 = sha256_text(final_prompt)
 
-            self.logger.info(f"生成图像提示词: {final_prompt[:200]}...")
+            self.logger.info(f"generate image Ti Shi Ci: {final_prompt[:200]}...")
             self.logger.info(
                 "Shi Yong model: %s (provider_hint=%s), style: %s, Lei Bie: %s",
                 pure_model,
@@ -199,7 +199,7 @@ class ImageGenerationMixin:
                     generation_method = f"ai_{provider_used}"
                     model_used = response.model or model_used
                 else:
-                    self.logger.error(f"AI管理器图像生成失败: {response.error}")
+                    self.logger.error(f"AIGuan Li Qi image generation failed: {response.error}")
                     image_url = None
             else:
                 # default Shi Yong OpenAI image model(keep Xiang after Jian Rong)
@@ -250,7 +250,7 @@ class ImageGenerationMixin:
                         require_upload=bool(oss_service),
                     )
                 except Exception as exc:
-                    self.logger.error(f"图像保存/上传失败: {exc}")
+                    self.logger.error(f"image Bao Cun/Shang Chuan failed: {exc}")
                     return None
 
                 final_image_url = stored.get("oss_url") or stored.get("relative_path")
@@ -291,6 +291,6 @@ class ImageGenerationMixin:
                 }
 
         except Exception as exc:
-            print(f"图像生成失败: {exc}")
+            print(f"image generation failed: {exc}")
 
         return None

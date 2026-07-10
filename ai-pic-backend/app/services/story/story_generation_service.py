@@ -36,7 +36,7 @@ class StoryGenerationService:
                 user_id=user_id,
             )
             if not virtual_ip:
-                raise HTTPException(status_code=404, detail=f"虚拟IP {char_id} 不存在")
+                raise HTTPException(status_code=404, detail=f"Xu NiIP {char_id} not found")
 
             characters.append(
                 {

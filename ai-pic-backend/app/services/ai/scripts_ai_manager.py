@@ -65,7 +65,7 @@ class ScriptManagerMixin:
             repair_prompt = (
                 "on Yi Ci output unable to parse as JSON or not Fu He Yao Qiu, Qing Xiu Fu.\n"
                 "requirement: only return strict JSON(Bu Yao Dai Ma Kuai/Bu Yao Jie Shi/Bu Yao extra text).\n"
-                f"输出结构示例（字段必须齐全）：\n{format_hint}\n\n"
+                f"Shu Chu Jie Gou Shi Li（field Bi Xu Qi Quan）：\n{format_hint}\n\n"
                 f"raw_output:\n{raw_output}"
             )
             repair_resp = await self.ai_manager.generate_text(
@@ -119,8 +119,8 @@ class ScriptManagerMixin:
             if len(scenes) > _MAX_DIALOGUE_SCENES:
                 scene_plan_additional_requirements = (
                     f"{scene_plan_additional_requirements}\n\n"
-                    f"重要：当前 episode.scenes 数量为 {len(scenes)}，过多会导致对白 JSON 过长。"
-                    f"请重新规划并压缩场景数量，不超过 {_MAX_DIALOGUE_SCENES} 个。"
+                    f"Zhong Yao：Dang Qian episode.scenes Shu Liang Wei {len(scenes)}，Guo Duo Hui Dao Zhi dialogue JSON Guo Zhang。"
+                    f"Qing Zhong Xin Gui Hua Bing Ya Suo scene Shu Liang，Bu Chao Guo {_MAX_DIALOGUE_SCENES} Ge。"
                 ).strip()
 
             scene_plan_prompt = prompt_manager.render_prompt(

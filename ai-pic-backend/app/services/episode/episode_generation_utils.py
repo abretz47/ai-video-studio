@@ -133,7 +133,7 @@ def build_stub_episodes_from_outlines(
         if not logline:
             continue
         ep_number = outline.get("episode_number") or idx
-        title = outline.get("title") or f"第{ep_number}集"
+        title = outline.get("title") or f"Di{ep_number}Ji"
         episodes.append(
             {
                 "episode_number": ep_number,
@@ -176,7 +176,7 @@ def build_step_outline_rows(
                     beat_title=beat.get("beat_title") or f"Beat {beat_idx}",
                     beat_summary=beat.get("beat_summary")
                     or beat.get("description")
-                    or f"情节点 {beat_idx}",
+                    or f"Qing Jie Dian {beat_idx}",
                     dramatic_question=beat.get("dramatic_question"),
                     characters_involved=beat.get("characters_involved"),
                     location_hint=beat.get("location_hint"),

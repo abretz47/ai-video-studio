@@ -22,7 +22,7 @@ def check_visual_language(
                     ScriptLintIssue(
                         severity=rule.severity,  # type: ignore[arg-type]
                         rule_id="visual_language",
-                        message=f"疑似不可拍表述：包含「{rule.phrase}」",
+                        message=f"Yi Shi Bu Ke Pai Biao Shu：Bao Han「{rule.phrase}」",
                         line=ln_no,
                         excerpt=ln[:160],
                         suggestion=rule.suggestion,

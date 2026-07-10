@@ -6,29 +6,29 @@ from tests.unit.services.script.test_beat_contract_normalizer import _valid_cont
 
 @pytest.mark.unit
 def test_quality_gate_requires_scene_question_and_turn():
- payload = _valid_contract()
- payload["scenes"][0]["conflict"]["question"] = " "
- payload["scenes"][0]["conflict"]["turn"] = "Chu Xian Zhuan Zhe"
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    payload["scenes"][0]["conflict"]["question"] = "   "
+    payload["scenes"][0]["conflict"]["turn"] = "Chu Xian Zhuan Zhe"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "scene_conflict_question" in failed
- assert "scene_conflict_turn" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_conflict_question" in failed
+    assert "scene_conflict_turn" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_abstract_scene_stakes_and_opposition():
- payload = _valid_contract()
- payload["scenes"][0]["conflict"]["stakes"] = "Xiao Ji Ya Li Yue Lai Yue Da."
- payload["scenes"][0]["conflict"]["opposition"] = "Hun Luan Ju Mian Zu Zhi Xiao Ji continue Cha."
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    payload["scenes"][0]["conflict"]["stakes"] = "Xiao Ji Ya Li Yue Lai Yue Da。"
+    payload["scenes"][0]["conflict"]["opposition"] = "Hun Luan Ju Mian Zu Zhi Xiao Ji continue Cha。"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "scene_conflict_stakes" in failed
- assert "scene_conflict_opposition" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_conflict_stakes" in failed
+    assert "scene_conflict_opposition" in failed

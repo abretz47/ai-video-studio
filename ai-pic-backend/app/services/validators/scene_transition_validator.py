@@ -212,7 +212,7 @@ class SceneTransitionValidator:
             return TransitionIssue(
                 issue_type=TransitionIssueType.TIME_DISCONTINUITY,
                 severity=TransitionSeverity.WARNING,
-                message=f"时间跳跃不连贯：从 {from_time}({from_scene.time_of_day}) 到 {to_time}({to_scene.time_of_day})",
+                message=f"Shi Jian Tiao Yue Bu Lian Guan：Cong {from_time}({from_scene.time_of_day}) Dao {to_time}({to_scene.time_of_day})",
                 from_scene=from_scene.scene_number,
                 to_scene=to_scene.scene_number,
                 fix_suggestion="Tian Jia Guo Du scene or time Biao Ji note time Liu Shi(for example'Shu Xiao Shi after', 'Di Er Tian')",
@@ -254,7 +254,7 @@ class SceneTransitionValidator:
             return TransitionIssue(
                 issue_type=TransitionIssueType.GEOGRAPHIC_IMPOSSIBILITY,
                 severity=TransitionSeverity.WARNING,
-                message=f"跨城市转场：从 {from_city} 到 {to_city}，请确认时间合理性",
+                message=f"Kua Cheng Shi Zhuan Chang：Cong {from_city} Dao {to_city}，Qing Que Ren Shi Jian He Li Xing",
                 from_scene=from_scene.scene_number,
                 to_scene=to_scene.scene_number,
                 from_location=from_scene.location,
@@ -272,12 +272,12 @@ class SceneTransitionValidator:
                 return TransitionIssue(
                     issue_type=TransitionIssueType.GEOGRAPHIC_IMPOSSIBILITY,
                     severity=TransitionSeverity.ERROR,
-                    message=f"地理不可能：从 {from_city} 到 {to_city} 需要约 {travel_time} 小时，但时间未变化",
+                    message=f"Di Li Bu Ke Neng：Cong {from_city} Dao {to_city} Xu Yao Yue {travel_time} Xiao Shi，Dan Shi Jian Wei Bian Hua",
                     from_scene=from_scene.scene_number,
                     to_scene=to_scene.scene_number,
                     from_location=from_scene.location,
                     to_location=to_scene.location,
-                    fix_suggestion=f"修改到达场景的时间为 {travel_time} 小时后，或添加旅途过渡",
+                    fix_suggestion=f"Xiu Gai Dao Da scene De Shi Jian Wei {travel_time} Xiao Shi Hou，Huo Tian Jia Lv Tu Guo Du",
                 )
 
         return None
@@ -343,11 +343,11 @@ class SceneTransitionValidator:
                                 TransitionIssue(
                                     issue_type=TransitionIssueType.CHARACTER_STATE_VIOLATION,
                                     severity=TransitionSeverity.ERROR,
-                                    message=f"角色状态冲突：{char} 在上一场景处于 '{prev_state}' 状态，但在本场景执行了 '{action}'",
+                                    message=f"character status Chong Tu：{char} Zai Shang Yi scene Chu Yu '{prev_state}' status，Dan Zai Ben scene Zhi Xing Le '{action}'",
                                     from_scene=from_scene.scene_number,
                                     to_scene=to_scene.scene_number,
                                     affected_characters=[char],
-                                    fix_suggestion=f"添加 {char} 恢复/状态变化的说明，或修改动作",
+                                    fix_suggestion=f"Tian Jia {char} Hui Fu/status Bian Hua De Shuo Ming，Huo Xiu Gai Dong Zuo",
                                 )
                             )
 

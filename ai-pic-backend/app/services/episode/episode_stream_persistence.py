@@ -56,7 +56,7 @@ def persist_episode_record(
     progress_fn,
 ) -> tuple[Episode | None, bool]:
     episode_number = episode_data.get("episode_number") or fallback_number
-    progress_fn(f"生成第{episode_number}集：校验中")
+    progress_fn(f"generate Di{episode_number}Ji：Xiao Yan Zhong")
     existing = find_episode_by_story_number(
         db,
         story_id=story.id,
@@ -68,13 +68,13 @@ def persist_episode_record(
     try:
         EpisodePlanItem.model_validate(episode_data)
     except ValidationError as exc:
-        progress_fn(f"生成第{episode_number}集：schema校验失败")
+        progress_fn(f"generate Di{episode_number}Ji：schemaXiao Yan failed")
         raise RuntimeError(
-            f"生成第{episode_number}集失败：输出不符合 EpisodePlanItem schema"
+            f"generate Di{episode_number}Ji failed：Shu Chu Bu Fu He EpisodePlanItem schema"
         ) from exc
     if not is_episode_payload_valid(episode_data):
-        progress_fn(f"生成第{episode_number}集：内容校验失败")
-        raise RuntimeError(f"生成第{episode_number}集失败：输出不符合最小内容约束")
+        progress_fn(f"generate Di{episode_number}Ji：Nei Rong Xiao Yan failed")
+        raise RuntimeError(f"generate Di{episode_number}Ji failed：Shu Chu Bu Fu He Zui Xiao Nei Rong Yue Shu")
 
     hook_plan_payload, ad_snippets_payload = _marketing_payloads(request)
     marketing_defaults = merge_marketing_meta(
@@ -101,7 +101,7 @@ def persist_episode_record(
     db_episode = Episode(
         story_id=story.id,
         episode_number=episode_number,
-        title=episode_data.get("title", f"第{episode_number}集"),
+        title=episode_data.get("title", f"Di{episode_number}Ji"),
         summary=episode_data.get("summary"),
         plot_points=episode_data.get("plot_points"),
         character_arcs=episode_data.get("character_arcs"),
@@ -131,5 +131,5 @@ def persist_episode_record(
     db.add(db_episode)
     db.commit()
     db.refresh(db_episode)
-    progress_fn(f"生成第{episode_number}集：已落库")
+    progress_fn(f"generate Di{episode_number}Ji：Yi Luo Ku")
     return db_episode, True

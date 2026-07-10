@@ -26,5 +26,5 @@ variables:
 
 usage_examples:
  - schema: "{...EpisodePlanModel schema...}"
- original_prompt: "generate 10 Ji urban Zhi Chang episode Da Gang"
+ original_prompt: "generate 10 Ji urban workplace episode outline"
  original_output: '{"episodes": []}'

@@ -267,14 +267,14 @@ class InfoGateValidator:
                                 InfoGateViolation(
                                     violation_type=InfoGateViolationType.REFERENCES_FUTURE_EVENT,
                                     severity=InfoGateSeverity.ERROR,
-                                    message=f"角色 '{speaker}' 提及了尚未发生的事件/信息",
+                                    message=f"character '{speaker}' Ti Ji Le Shang Wei Fa Sheng De Shi Jian/Xin Xi",
                                     speaker=speaker,
                                     dialogue_text=dialogue_text,
                                     referenced_info=item.info_content,
                                     episode_number=context.current_episode,
                                     scene_number=context.current_scene,
-                                    fix_suggestion=f"删除或修改对白中关于 '{keyword}' 的引用，"
-                                    f"该信息将在第 {item.revealed_at_episode} 集揭示",
+                                    fix_suggestion=f"Shan Chu Huo Xiu Gai dialogue Zhong Guan Yu '{keyword}' De Yin Yong，"
+                                    f"Gai Xin Xi Jiang Zai Di {item.revealed_at_episode} Ji Jie Shi",
                                 )
                             )
                         else:
@@ -282,14 +282,14 @@ class InfoGateValidator:
                                 InfoGateViolation(
                                     violation_type=InfoGateViolationType.CHARACTER_KNOWS_TOO_MUCH,
                                     severity=InfoGateSeverity.ERROR,
-                                    message=f"角色 '{speaker}' 不应知道此信息",
+                                    message=f"character '{speaker}' Bu Ying Zhi Dao Ci Xin Xi",
                                     speaker=speaker,
                                     dialogue_text=dialogue_text,
                                     referenced_info=item.info_content,
                                     episode_number=context.current_episode,
                                     scene_number=context.current_scene,
-                                    fix_suggestion=f"'{speaker}' 在当前时间点不知道 '{item.info_content}'，"
-                                    f"该信息仅揭示给: {', '.join(item.revealed_to)}",
+                                    fix_suggestion=f"'{speaker}' Zai Dang Qian Shi Jian Dian Bu Zhi Dao '{item.info_content}'，"
+                                    f"Gai Xin Xi Jin Jie Shi Gei: {', '.join(item.revealed_to)}",
                                 )
                             )
 
@@ -352,8 +352,8 @@ class InfoGateValidator:
 
             if v.violation_type == InfoGateViolationType.CHARACTER_KNOWS_TOO_MUCH:
                 suggestion["suggested_actions"] = [
-                    f"删除对白中对 '{v.referenced_info}' 的引用",
-                    f"添加一个场景让 '{v.speaker}' 先获得这个信息",
+                    f"Shan Chu dialogue Zhong Dui '{v.referenced_info}' De Yin Yong",
+                    f"Tian Jia Yi Ge scene Rang '{v.speaker}' Xian Huo De Zhe Ge Xin Xi",
                     "Xiu Gai dialogue Shi Qi Mo Hu or Jian Jie Yin Yong",
                 ]
             elif v.violation_type == InfoGateViolationType.REFERENCES_FUTURE_EVENT:

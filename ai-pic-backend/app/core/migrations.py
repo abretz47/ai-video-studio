@@ -43,7 +43,7 @@ class MigrationManager:
         alembic_ini_path = project_root / "alembic.ini"
 
         if not alembic_ini_path.exists():
-            raise MigrationError(f"找不到alembic.ini文件: {alembic_ini_path}")
+            raise MigrationError(f"Zhao Bu Daoalembic.inifile: {alembic_ini_path}")
 
         config = Config(str(alembic_ini_path))
         config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
@@ -57,7 +57,7 @@ class MigrationManager:
                 context = MigrationContext.configure(conn)
                 return context.get_current_revision()
         except Exception as e:
-            logger.error(f"获取当前版本失败: {e}")
+            logger.error(f"Huo Qu Dang Qian Ban Ben failed: {e}")
             return None
 
     def get_head_revision(self) -> Optional[str]:
@@ -65,7 +65,7 @@ class MigrationManager:
         try:
             return self.script_dir.get_current_head()
         except Exception as e:
-            logger.error(f"获取最新版本失败: {e}")
+            logger.error(f"Huo Qu Zui Xin Ban Ben failed: {e}")
             return None
 
     def get_migration_history(self) -> List[Dict[str, Any]]:
@@ -84,7 +84,7 @@ class MigrationManager:
                     }
                 )
         except Exception as e:
-            logger.error(f"获取迁移历史失败: {e}")
+            logger.error(f"Huo Qu Qian Yi Li Shi failed: {e}")
 
         return history
 
@@ -127,7 +127,7 @@ class MigrationManager:
                 if revision.revision != current:
                     pending.append(revision.revision)
         except Exception as e:
-            logger.error(f"获取待应用迁移失败: {e}")
+            logger.error(f"Huo Qu Dai Ying Yong Qian Yi failed: {e}")
 
         return pending
 
@@ -143,45 +143,45 @@ class MigrationManager:
                 autogenerate=autogenerate,
             )
 
-            logger.info(f"迁移文件创建成功: {message}")
+            logger.info(f"Qian Yi file Chuang Jian Cheng Gong: {message}")
             return self.get_head_revision()
 
         except Exception as e:
-            logger.error(f"创建迁移失败: {e}")
-            raise MigrationError(f"创建迁移失败: {e}")
+            logger.error(f"Chuang Jian Qian Yi failed: {e}")
+            raise MigrationError(f"Chuang Jian Qian Yi failed: {e}")
 
     def upgrade(self, revision: str = "head") -> bool:
         """escalate database"""
         try:
-            logger.info(f"开始升级数据库到版本: {revision}")
+            logger.info(f"Kai Shi Sheng Ji Shu Ju Ku Dao Ban Ben: {revision}")
             command.upgrade(self.config, revision)
             logger.info("database escalate successful")
             return True
         except Exception as e:
-            logger.error(f"数据库升级失败: {e}")
-            raise MigrationError(f"数据库升级失败: {e}")
+            logger.error(f"Shu Ju Ku Sheng Ji failed: {e}")
+            raise MigrationError(f"Shu Ju Ku Sheng Ji failed: {e}")
 
     def downgrade(self, revision: str) -> bool:
         """Jiang Ji database"""
         try:
-            logger.info(f"开始降级数据库到版本: {revision}")
+            logger.info(f"Kai Shi Jiang Ji Shu Ju Ku Dao Ban Ben: {revision}")
             command.downgrade(self.config, revision)
             logger.info("database Jiang Ji successful")
             return True
         except Exception as e:
-            logger.error(f"数据库降级失败: {e}")
-            raise MigrationError(f"数据库降级失败: {e}")
+            logger.error(f"Shu Ju Ku Jiang Ji failed: {e}")
+            raise MigrationError(f"Shu Ju Ku Jiang Ji failed: {e}")
 
     def stamp(self, revision: str) -> bool:
         """Biao Ji database version(not run migration)"""
         try:
-            logger.info(f"标记数据库版本: {revision}")
+            logger.info(f"Biao Ji Shu Ju Ku Ban Ben: {revision}")
             command.stamp(self.config, revision)
             logger.info("version Biao Ji successful")
             return True
         except Exception as e:
-            logger.error(f"版本标记失败: {e}")
-            raise MigrationError(f"版本标记失败: {e}")
+            logger.error(f"Ban Ben Biao Ji failed: {e}")
+            raise MigrationError(f"Ban Ben Biao Ji failed: {e}")
 
     def validate_migrations(self) -> Dict[str, Any]:
         """validation migration file Wan Zheng Xing"""
@@ -202,23 +202,23 @@ class MigrationManager:
                         # check Bi Xu function
                         if not hasattr(module, "upgrade"):
                             validation_result["errors"].append(
-                                f"迁移 {revision.revision} 缺少 upgrade 函数"
+                                f"Qian Yi {revision.revision} missing upgrade Han Shu"
                             )
                             validation_result["valid"] = False
 
                         if not hasattr(module, "downgrade"):
                             validation_result["warnings"].append(
-                                f"迁移 {revision.revision} 缺少 downgrade 函数"
+                                f"Qian Yi {revision.revision} missing downgrade Han Shu"
                             )
 
                 except Exception as e:
                     validation_result["errors"].append(
-                        f"迁移 {revision.revision} 语法错误: {e}"
+                        f"Qian Yi {revision.revision} Yu Fa error: {e}"
                     )
                     validation_result["valid"] = False
 
         except Exception as e:
-            validation_result["errors"].append(f"验证过程失败: {e}")
+            validation_result["errors"].append(f"Yan Zheng Guo Cheng failed: {e}")
             validation_result["valid"] = False
 
         return validation_result
@@ -264,14 +264,14 @@ class MigrationManager:
                 )
 
             if result.returncode == 0:
-                logger.info(f"数据库备份成功: {backup_path}")
+                logger.info(f"Shu Ju Ku Bei Fen Cheng Gong: {backup_path}")
                 return str(backup_path)
             else:
-                logger.error(f"数据库备份失败: {result.stderr}")
+                logger.error(f"Shu Ju Ku Bei Fen failed: {result.stderr}")
                 return None
 
         except Exception as e:
-            logger.error(f"备份过程失败: {e}")
+            logger.error(f"Bei Fen Guo Cheng failed: {e}")
             return None
 
     def get_schema_diff(self) -> Dict[str, Any]:
@@ -290,7 +290,7 @@ class MigrationManager:
                 }
 
         except Exception as e:
-            logger.error(f"获取模式差异失败: {e}")
+            logger.error(f"Huo Qu Mo Shi Cha Yi failed: {e}")
             return {"has_changes": False, "error": str(e)}
 
 
@@ -359,7 +359,7 @@ if __name__ == "__main__":
         )
 
         seed_file.write_text(template, encoding="utf-8")
-        logger.info(f"种子文件创建成功: {seed_file}")
+        logger.info(f"Zhong Zi file Chuang Jian Cheng Gong: {seed_file}")
         return seed_file
 
     def run_seed(self, seed_name: str) -> bool:
@@ -367,7 +367,7 @@ if __name__ == "__main__":
         try:
             seed_files = list(self.seeds_dir.glob(f"*{seed_name}.py"))
             if not seed_files:
-                raise ValueError(f"找不到种子文件: {seed_name}")
+                raise ValueError(f"Zhao Bu Dao Zhong Zi file: {seed_name}")
 
             seed_file = seed_files[0]
 
@@ -379,15 +379,15 @@ if __name__ == "__main__":
 
                 if hasattr(module, "seed_data"):
                     module.seed_data()
-                    logger.info(f"种子 {seed_name} 执行成功")
+                    logger.info(f"Zhong Zi {seed_name} Zhi Xing Cheng Gong")
                     return True
                 else:
-                    raise ValueError(f"种子文件 {seed_file} 缺少 seed_data 函数")
+                    raise ValueError(f"Zhong Zi file {seed_file} missing seed_data Han Shu")
             else:
-                raise ValueError(f"无法加载种子文件: {seed_file}")
+                raise ValueError(f"Wu Fa Jia Zai Zhong Zi file: {seed_file}")
 
         except Exception as e:
-            logger.error(f"种子执行失败: {e}")
+            logger.error(f"Zhong Zi Zhi Xing failed: {e}")
             raise
 
     def run_all_seeds(self) -> int:
@@ -401,10 +401,10 @@ if __name__ == "__main__":
                 self.run_seed(seed_name)
                 success_count += 1
             except Exception as e:
-                logger.error(f"种子 {seed_file.name} 执行失败: {e}")
+                logger.error(f"Zhong Zi {seed_file.name} Zhi Xing failed: {e}")
                 continue
 
-        logger.info(f"成功执行 {success_count}/{len(seed_files)} 个种子")
+        logger.info(f"Cheng Gong Zhi Xing {success_count}/{len(seed_files)} Ge Zhong Zi")
         return success_count
 
 

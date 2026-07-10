@@ -28,7 +28,7 @@ def create_generated_script(
     result = generated["result"]
     script = Script(
         episode_id=request_dict.get("episode_id"),
-        title=f"{episode.title} - 剧本",
+        title=f"{episode.title} - script",
         content=script_content,
         scenes=generated.get("scenes") or [],
         dialogues=generated.get("dialogues") or [],

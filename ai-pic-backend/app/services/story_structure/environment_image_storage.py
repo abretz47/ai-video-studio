@@ -61,7 +61,7 @@ async def persist_environment_images(
 
     if not saved:
         detail = errors[0] if errors else "Wei Zhao Dao available Chi Jiu Hua Jie Guo"
-        raise RuntimeError(f"环境图像持久化失败: {detail}")
+        raise RuntimeError(f"Huan Jing image Chi Jiu Hua failed: {detail}")
 
     refs = env.reference_images or []
     refs.extend(saved)

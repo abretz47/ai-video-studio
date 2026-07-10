@@ -12,7 +12,7 @@ try:
     AI_MANAGER_AVAILABLE = True
 except ImportError as exc:
     logger = get_logger()
-    logger.warning(f"AI服务管理器导入失败，将使用fallback模式: {exc}")
+    logger.warning(f"AIFu Wu Guan Li Qi Dao Ru failed，Jiang Shi YongfallbackMo Shi: {exc}")
     AIServiceManager = None
     AIServiceConfig = None
     ProviderWeight = None

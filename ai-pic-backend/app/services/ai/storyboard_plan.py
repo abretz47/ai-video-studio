@@ -140,7 +140,7 @@ class StoryboardPlanMixin:
                     "usage": response.usage,
                 }
         except Exception as exc:
-            print(f"分镜规划生成失败: {exc}")
+            print(f"Fen Jing Gui Hua generation failed: {exc}")
         return None
 
     async def generate_storyboard_from_plan_for_scene(
@@ -217,5 +217,5 @@ class StoryboardPlanMixin:
                     fr["scene_number"] = scene_plan.scene_number
                 return frames
         except Exception as exc:
-            print(f"基于规划生成分镜失败: {exc}")
+            print(f"Ji Yu Gui Hua generate Fen Jing failed: {exc}")
         return None

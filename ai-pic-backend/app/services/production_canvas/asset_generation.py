@@ -110,7 +110,7 @@ def execute_virtual_ip_image_generation(
         "prompt_template": build_prompt_template_audit("virtual_ip_image"),
     }
     task = Task(
-        title=f"生产画布执行 Virtual IP Image - {virtual_ip.name}",
+        title=f"Sheng Chan Hua Bu Zhi Xing Virtual IP Image - {virtual_ip.name}",
         description="Production canvas virtual_ip.image skill dispatch",
         task_type=TaskType.VIRTUAL_IP_IMAGE_GENERATION,
         prompt=f"VirtualIP image gen for {virtual_ip.name}",
@@ -167,7 +167,7 @@ def execute_environment_image_generation(
         request=image_request,
     )
     task = Task(
-        title=f"生产画布执行 Environment Image - 环境{environment.id}",
+        title=f"Sheng Chan Hua Bu Zhi Xing Environment Image - Huan Jing{environment.id}",
         description="Production canvas environment.image skill dispatch",
         task_type=TaskType.ENVIRONMENT_IMAGE_GENERATION,
         prompt=compose_environment_prompt(environment, image_request.prompt),

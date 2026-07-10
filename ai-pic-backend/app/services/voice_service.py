@@ -173,7 +173,7 @@ class MinimaxVoiceProvider:
     def _validate_voice_type(self, voice_type: str) -> str:
         allowed = {item["value"] for item in VOICE_TYPE_OPTIONS}
         if voice_type not in allowed:
-            raise ValueError(f"不支持的 voice_type: {voice_type}")
+            raise ValueError(f"Bu Zhi Chi De voice_type: {voice_type}")
         return voice_type
 
     async def list_voices(

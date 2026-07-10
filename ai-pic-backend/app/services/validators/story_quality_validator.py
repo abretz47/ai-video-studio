@@ -304,7 +304,7 @@ class StoryQualityValidator:
                 StoryQualityIssue(
                     issue_type=StoryQualityIssueType.STRUCTURE_IMBALANCE,
                     severity=StoryQualitySeverity.WARNING,
-                    message=f"三幕结构比例不均衡：{three_act.imbalance_details}",
+                    message=f"San Mu Jie Gou Bi Li Bu Jun Heng：{three_act.imbalance_details}",
                     details={
                         "act1_ratio": three_act.act1_ratio,
                         "act2_ratio": three_act.act2_ratio,
@@ -327,7 +327,7 @@ class StoryQualityValidator:
                 StoryQualityIssue(
                     issue_type=StoryQualityIssueType.PACING_ISSUE,
                     severity=StoryQualitySeverity.WARNING,
-                    message=f"节奏评分较低 ({pacing.overall_score:.0%})",
+                    message=f"Jie Zou Ping Fen Jiao Di ({pacing.overall_score:.0%})",
                     details={
                         "opening": pacing.opening_score,
                         "buildup": pacing.buildup_score,
@@ -346,7 +346,7 @@ class StoryQualityValidator:
                 StoryQualityIssue(
                     issue_type=StoryQualityIssueType.WEAK_HOOK,
                     severity=StoryQualitySeverity.WARNING,
-                    message=f"开场吸引力不足 (评分: {hook_score:.0%})",
+                    message=f"Kai Chang Xi Yin Li Bu Zu (Ping Fen: {hook_score:.0%})",
                     suggestions=[
                         "Yi conflict, suspense or Yi Wai Shi Jian Kai Chang",
                         "in before Ji Ju Hua in Jian Li Jin Zhang Gan",
@@ -364,7 +364,7 @@ class StoryQualityValidator:
                     StoryQualityIssue(
                         issue_type=StoryQualityIssueType.WEAK_CLIFFHANGER,
                         severity=StoryQualitySeverity.INFO,
-                        message=f"剧集结尾悬念感不足 (评分: {cliffhanger_score:.0%})",
+                        message=f"episode Jie Wei Xuan Nian Gan Bu Zu (Ping Fen: {cliffhanger_score:.0%})",
                         suggestions=[
                             "Mei Ji Jie Wei Liu Xia not resolve Wen Ti",
                             "in Guan Jian Shi Ke Jie Shu scene",
@@ -434,11 +434,11 @@ class StoryQualityValidator:
         if not is_balanced:
             parts = []
             if not act1_ok:
-                parts.append(f"第一幕 {act1_ratio:.0%} (理想 {self.ACT1_IDEAL:.0%})")
+                parts.append(f"Di Yi Mu {act1_ratio:.0%} (Li Xiang {self.ACT1_IDEAL:.0%})")
             if not act2_ok:
-                parts.append(f"第二幕 {act2_ratio:.0%} (理想 {self.ACT2_IDEAL:.0%})")
+                parts.append(f"Di Er Mu {act2_ratio:.0%} (Li Xiang {self.ACT2_IDEAL:.0%})")
             if not act3_ok:
-                parts.append(f"第三幕 {act3_ratio:.0%} (理想 {self.ACT3_IDEAL:.0%})")
+                parts.append(f"Di San Mu {act3_ratio:.0%} (Li Xiang {self.ACT3_IDEAL:.0%})")
             imbalance_details = "，".join(parts)
 
         return ThreeActAnalysis(
@@ -660,7 +660,7 @@ class StoryQualityValidator:
                                 StoryQualityIssue(
                                     issue_type=StoryQualityIssueType.WORLDBUILDING_INCONSISTENCY,
                                     severity=StoryQualitySeverity.WARNING,
-                                    message=f"世界观矛盾：古代设定中出现现代科技 '{t}'",
+                                    message=f"Shi Jie Guan Mao Dun：Gu Dai She Ding Zhong Chu Xian Xian Dai Ke Ji '{t}'",
                                     suggestions=[
                                         "Yi Chu not Fu He Shi Dai setting Yuan Su",
                                         "adjust Shi Dai setting",
@@ -713,7 +713,7 @@ class StoryQualityValidator:
                         StoryQualityIssue(
                             issue_type=StoryQualityIssueType.PROHIBITED_CONTENT,
                             severity=StoryQualitySeverity.WARNING,
-                            message=f"内容包含受限关键词: {restriction}",
+                            message=f"Nei Rong Bao Han Shou Xian Guan Jian Ci: {restriction}",
                             suggestions=["check and Xiu Gai related content"],
                         )
                     )

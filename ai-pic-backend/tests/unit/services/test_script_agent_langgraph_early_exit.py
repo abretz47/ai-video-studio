@@ -9,229 +9,229 @@ from app.services.duration_orchestrator.state import SceneBudget
 
 @pytest.mark.asyncio
 async def test_script_agent_avoids_extra_llm_calls_when_scene_plan_fails():
- from app.services.script_agent import LANGGRAPH_AVAILABLE, ScriptLangGraphAgent
+    from app.services.script_agent import LANGGRAPH_AVAILABLE, ScriptLangGraphAgent
 
- if not LANGGRAPH_AVAILABLE:
- pytest.skip("langgraph not available")
+    if not LANGGRAPH_AVAILABLE:
+        pytest.skip("langgraph not available")
 
- calls = 0
+    calls = 0
 
- async def _generate_text(**_: object):
- nonlocal calls
- calls += 1
- if calls > 1:
- raise AssertionError("unexpected extra LLM call after scene plan failure")
- return SimpleNamespace(
- success=False,
- data={},
- provider="test",
- model="test",
- usage=None,
-)
+    async def _generate_text(**_: object):
+        nonlocal calls
+        calls += 1
+        if calls > 1:
+            raise AssertionError("unexpected extra LLM call after scene plan failure")
+        return SimpleNamespace(
+            success=False,
+            data={},
+            provider="test",
+            model="test",
+            usage=None,
+        )
 
- service = SimpleNamespace(ai_manager=SimpleNamespace(generate_text=_generate_text))
- agent = ScriptLangGraphAgent(service)
+    service = SimpleNamespace(ai_manager=SimpleNamespace(generate_text=_generate_text))
+    agent = ScriptLangGraphAgent(service)
 
- with patch(
- "app.services.script_agent.prompt_manager.render_prompt", return_value="prompt"
-):
- result = await agent.generate(
- episode={"id": 1, "title": "ep"},
- story={"id": 1, "title": "story", "characters": []},
- format_type="short_video",
- language="zh",
- dialogue_style="natural",
- scene_detail_level="detailed",
- additional_requirements=None,
- style_preferences=None,
- model=None,
- prefer_provider=None,
- temperature=0.7,
-)
+    with patch(
+        "app.services.script_agent.prompt_manager.render_prompt", return_value="prompt"
+    ):
+        result = await agent.generate(
+            episode={"id": 1, "title": "ep"},
+            story={"id": 1, "title": "story", "characters": []},
+            format_type="short_video",
+            language="zh",
+            dialogue_style="natural",
+            scene_detail_level="detailed",
+            additional_requirements=None,
+            style_preferences=None,
+            model=None,
+            prefer_provider=None,
+            temperature=0.7,
+        )
 
- assert result is None
- assert calls == 1
+    assert result is None
+    assert calls == 1
 
 
 @pytest.mark.asyncio
 async def test_script_agent_clears_react_retry_flag_after_successful_retry():
- from app.services.script_agent import LANGGRAPH_AVAILABLE, ScriptLangGraphAgent
+    from app.services.script_agent import LANGGRAPH_AVAILABLE, ScriptLangGraphAgent
 
- if not LANGGRAPH_AVAILABLE:
- pytest.skip("langgraph not available")
+    if not LANGGRAPH_AVAILABLE:
+        pytest.skip("langgraph not available")
 
- calls: list[str] = []
- valid_dialogues = [
- {
- "scene_number": 1,
- "character": "A",
- "content": "Wo Men Xian Zai Jiu Ba Fang An Ding Xia Lai, Xian Jie Jue Yan Qian De issue, Zai Ba Hou Mian De Feng Xian Zhu Ge Chai Kai handle.",
- },
- {
- "scene_number": 1,
- "character": "A",
- "content": "you Bu Yong Zai Rao Wan Zi, Zhi Jie Gao Su Wo real Ka Zhu De Shi Yu Suan, Ren Shou, Hai Shi Dui Jie Guo Mei You Xin Xin.",
- },
- ]
- beat_contract = {
- "contract_version": "script-beat-v1",
- "title": "ep",
- "logline": "A must settle the plan before the risk leaks.",
- "scenes": [
- {
- "scene_number": 1,
- "slug_line": "INT. OFFICE - DAY",
- "location": "office",
- "time_of_day": "day",
- "estimated_duration_seconds": 15,
- "dramatic_role": "hook",
- "conflict": {
- "question": "Can A force the truth out?",
- "stakes": "The plan fails if the risk stays hidden.",
- "opposition": "A vague budget blocker.",
- "turn": "The blocker admits there is no confidence.",
- },
- "beats": [
- {
- "order_index": 1,
- "beat_type": "hook",
- "dramatic_purpose": "Open on the unresolved plan.",
- "visible_event": "A pins the proposal on the wall.",
- "action_lines": [{"content": "A points at the red risk row."}],
- "dialogue_lines": [valid_dialogues[0]],
- "duration_seconds": 5,
- "hook_tag": "risk_row",
- },
- {
- "order_index": 2,
- "beat_type": "conflict",
- "dramatic_purpose": "Push through evasive answers.",
- "visible_event": "The other chair stays empty.",
- "action_lines": [{"content": "A closes the laptop."}],
- "dialogue_lines": [valid_dialogues[1]],
- "duration_seconds": 5,
- },
- {
- "order_index": 3,
- "beat_type": "cliffhanger",
- "dramatic_purpose": "Leave the plan exposed.",
- "visible_event": "A hidden message lights up.",
- "action_lines": [{"content": "A sees the warning on screen."}],
- "dialogue_lines": [{"character": "A", "content": "Shui Fa De?"}],
- "duration_seconds": 5,
- "cliffhanger_tag": "hidden_message",
- },
- ],
- }
- ],
- }
+    calls: list[str] = []
+    valid_dialogues = [
+        {
+            "scene_number": 1,
+            "character": "A",
+            "content": "Wo Men Xian Zai Jiu Fang An Ding Xia Lai，Xian Jie Jue Yan Qian issue，Zai Hou Mian Feng Xian Zhu Ge Chai Kai handle。",
+        },
+        {
+            "scene_number": 1,
+            "character": "A",
+            "content": "Ni Bu Yong Zai Rao Wan Zi，Zhi Jie Gao Su Wo real Ka Zhu is Yu Suan、Ren Shou，Hai Shi Dui Jie Guo Mei You Xin Xin。",
+        },
+    ]
+    beat_contract = {
+        "contract_version": "script-beat-v1",
+        "title": "ep",
+        "logline": "A must settle the plan before the risk leaks.",
+        "scenes": [
+            {
+                "scene_number": 1,
+                "slug_line": "INT. OFFICE - DAY",
+                "location": "office",
+                "time_of_day": "day",
+                "estimated_duration_seconds": 15,
+                "dramatic_role": "hook",
+                "conflict": {
+                    "question": "Can A force the truth out?",
+                    "stakes": "The plan fails if the risk stays hidden.",
+                    "opposition": "A vague budget blocker.",
+                    "turn": "The blocker admits there is no confidence.",
+                },
+                "beats": [
+                    {
+                        "order_index": 1,
+                        "beat_type": "hook",
+                        "dramatic_purpose": "Open on the unresolved plan.",
+                        "visible_event": "A pins the proposal on the wall.",
+                        "action_lines": [{"content": "A points at the red risk row."}],
+                        "dialogue_lines": [valid_dialogues[0]],
+                        "duration_seconds": 5,
+                        "hook_tag": "risk_row",
+                    },
+                    {
+                        "order_index": 2,
+                        "beat_type": "conflict",
+                        "dramatic_purpose": "Push through evasive answers.",
+                        "visible_event": "The other chair stays empty.",
+                        "action_lines": [{"content": "A closes the laptop."}],
+                        "dialogue_lines": [valid_dialogues[1]],
+                        "duration_seconds": 5,
+                    },
+                    {
+                        "order_index": 3,
+                        "beat_type": "cliffhanger",
+                        "dramatic_purpose": "Leave the plan exposed.",
+                        "visible_event": "A hidden message lights up.",
+                        "action_lines": [{"content": "A sees the warning on screen."}],
+                        "dialogue_lines": [{"character": "A", "content": "who Fa？"}],
+                        "duration_seconds": 5,
+                        "cliffhanger_tag": "hidden_message",
+                    },
+                ],
+            }
+        ],
+    }
 
- async def _generate_text(**kwargs: object):
- schema = kwargs.get("json_schema")
- name = schema.get("name") if isinstance(schema, dict) else ""
- calls.append(str(name))
- if name == "script_scenes":
- return SimpleNamespace(
- success=True,
- data={
- "scenes": [
- {
- "scene_number": 1,
- "slug_line": "INT. OFFICE - DAY",
- "location": "office",
- "time_of_day": "day",
- "summary": "A confronts the plan.",
- }
- ]
- },
- provider="test",
- model="test",
- usage=None,
-)
- if name == "script_beat_contract":
- return SimpleNamespace(
- success=True,
- data=beat_contract,
- provider="test",
- model="test",
- usage=None,
-)
- if name == "script_dialogues" and calls.count("script_dialogues") == 1:
- return SimpleNamespace(
- success=True,
- data={
- "dialogues": [
- {
- "scene_number": 1,
- "character": "A",
- "content": "Tai Duan Le.",
- }
- ],
- "stage_directions": [],
- },
- provider="test",
- model="test",
- usage=None,
-)
- if name == "script_dialogues":
- return SimpleNamespace(
- success=True,
- data={"dialogues": valid_dialogues, "stage_directions": []},
- provider="test",
- model="test",
- usage=None,
-)
- if name == "script_review":
- return SimpleNamespace(
- success=True,
- data={
- "dialogues": valid_dialogues,
- "stage_directions": [],
- "corrections": [],
- },
- provider="test",
- model="test",
- usage=None,
-)
- raise AssertionError(f"unexpected LLM call: {name}")
+    async def _generate_text(**kwargs: object):
+        schema = kwargs.get("json_schema")
+        name = schema.get("name") if isinstance(schema, dict) else ""
+        calls.append(str(name))
+        if name == "script_scenes":
+            return SimpleNamespace(
+                success=True,
+                data={
+                    "scenes": [
+                        {
+                            "scene_number": 1,
+                            "slug_line": "INT. OFFICE - DAY",
+                            "location": "office",
+                            "time_of_day": "day",
+                            "summary": "A confronts the plan.",
+                        }
+                    ]
+                },
+                provider="test",
+                model="test",
+                usage=None,
+            )
+        if name == "script_beat_contract":
+            return SimpleNamespace(
+                success=True,
+                data=beat_contract,
+                provider="test",
+                model="test",
+                usage=None,
+            )
+        if name == "script_dialogues" and calls.count("script_dialogues") == 1:
+            return SimpleNamespace(
+                success=True,
+                data={
+                    "dialogues": [
+                        {
+                            "scene_number": 1,
+                            "character": "A",
+                            "content": "Tai Duan。",
+                        }
+                    ],
+                    "stage_directions": [],
+                },
+                provider="test",
+                model="test",
+                usage=None,
+            )
+        if name == "script_dialogues":
+            return SimpleNamespace(
+                success=True,
+                data={"dialogues": valid_dialogues, "stage_directions": []},
+                provider="test",
+                model="test",
+                usage=None,
+            )
+        if name == "script_review":
+            return SimpleNamespace(
+                success=True,
+                data={
+                    "dialogues": valid_dialogues,
+                    "stage_directions": [],
+                    "corrections": [],
+                },
+                provider="test",
+                model="test",
+                usage=None,
+            )
+        raise AssertionError(f"unexpected LLM call: {name}")
 
- service = SimpleNamespace(ai_manager=SimpleNamespace(generate_text=_generate_text))
- agent = ScriptLangGraphAgent(service)
- budget = SceneBudget(
- scene_number=1,
- scene_index=0,
- target_duration_seconds=6,
- target_word_count=28,
- min_duration_seconds=1,
- max_duration_seconds=120,
-)
+    service = SimpleNamespace(ai_manager=SimpleNamespace(generate_text=_generate_text))
+    agent = ScriptLangGraphAgent(service)
+    budget = SceneBudget(
+        scene_number=1,
+        scene_index=0,
+        target_duration_seconds=6,
+        target_word_count=28,
+        min_duration_seconds=1,
+        max_duration_seconds=120,
+    )
 
- with patch(
- "app.services.script_agent.prompt_manager.render_prompt", return_value="prompt"
-):
- result = await agent.generate(
- episode={"id": 1, "title": "ep", "episode_number": 1},
- story={"id": 1, "title": "story", "character_profiles": [{"name": "A"}]},
- format_type="short_video",
- language="zh",
- dialogue_style="natural",
- scene_detail_level="detailed",
- additional_requirements=None,
- style_preferences=None,
- model=None,
- prefer_provider=None,
- temperature=0.7,
- scene_budgets=[budget],
- duration_minutes=0,
-)
+    with patch(
+        "app.services.script_agent.prompt_manager.render_prompt", return_value="prompt"
+    ):
+        result = await agent.generate(
+            episode={"id": 1, "title": "ep", "episode_number": 1},
+            story={"id": 1, "title": "story", "character_profiles": [{"name": "A"}]},
+            format_type="short_video",
+            language="zh",
+            dialogue_style="natural",
+            scene_detail_level="detailed",
+            additional_requirements=None,
+            style_preferences=None,
+            model=None,
+            prefer_provider=None,
+            temperature=0.7,
+            scene_budgets=[budget],
+            duration_minutes=0,
+        )
 
- assert result is not None
- assert calls == [
- "script_scenes",
- "script_beat_contract",
- ]
- assert result["content"]["structured_script_contract"]["contract_version"] == (
- "script-beat-v1"
-)
- assert result["character_validation_passed"] is True
- assert "No story characters to validate against" not in result["character_warnings"]
+    assert result is not None
+    assert calls == [
+        "script_scenes",
+        "script_beat_contract",
+    ]
+    assert result["content"]["structured_script_contract"]["contract_version"] == (
+        "script-beat-v1"
+    )
+    assert result["character_validation_passed"] is True
+    assert "No story characters to validate against" not in result["character_warnings"]

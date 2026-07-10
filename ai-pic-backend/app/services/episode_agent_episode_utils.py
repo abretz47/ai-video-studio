@@ -96,7 +96,7 @@ def _fallback_scenes_from_logline(
     scenes: list[dict[str, Any]] = []
     plot_points: list[dict[str, Any]] = []
     for idx, (beat_title, summary) in enumerate(DEFAULT_FALLBACK_SCENES, start=1):
-        scene_summary = f"{summary} 核心情境：{logline}"
+        scene_summary = f"{summary} He Xin Qing Jing：{logline}"
         scenes.append(
             {
                 "scene_number": idx,
@@ -119,7 +119,7 @@ def _fallback_scenes_from_logline(
 def stub_episode_from_outline(outline: Dict[str, Any]) -> Dict[str, Any]:
     ep_num = outline.get("episode_number") or 1
     logline = (outline.get("logline") or "").strip() or "Ben Ji Chu Xian key Zhuan Zhe."
-    title = outline.get("title") or f"第{ep_num}集"
+    title = outline.get("title") or f"Di{ep_num}Ji"
 
     plot_points: list[dict[str, Any]] = []
     scenes: list[dict[str, Any]] = []

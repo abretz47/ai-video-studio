@@ -143,7 +143,7 @@ def _build_lint_result(
                 severity="info" if word_range_ok else "warn",
                 rule_id="word_count",
                 message=(
-                    f"估算字数={estimated_words}（目标范围："
+                    f"Gu Suan Zi Shu={estimated_words}（Mu Biao Fan Wei："
                     f"{opts.target_word_min or '-'}~{opts.target_word_max or '-'}）"
                 ),
                 suggestion="word count Jin Wei Gu Suan; if duration/shot Mi Du not Pi Pei, can Tiao Jie Beat Mi Du and dialogue Chang Du.",

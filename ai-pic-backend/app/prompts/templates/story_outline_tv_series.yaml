@@ -1,5 +1,5 @@
 name: story_outline_tv_series
-description: "Story outline generation prompt template(Dian Shi Ju/Wang Ju)"
+description: "Story outline generation prompt template(TV Ju/Wang Ju)"
 category: story
 version: "1.0"
 author: "AI Video Studio"
@@ -30,7 +30,7 @@ variables:
  type: string
  required: false
  description: "Micro-genre / subgenre"
- examples: ["Ba Zong Fu Chou", "Lang Ren Lian Ai", "Hei Bang Fu Chou"]
+ examples: ["Ba Zong Fu Chou", "werewolf romance", "gang revenge"]
 
  theme:
  type: string

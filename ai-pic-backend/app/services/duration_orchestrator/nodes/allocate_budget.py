@@ -64,12 +64,12 @@ def allocate_budget_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # Sheng Cheng Fen Pei summary
     summary = format_budget_summary(budgets)
-    logger.info(f"allocate_budget_node: 分配完成\n{summary}")
+    logger.info(f"allocate_budget_node: Fen Pei Wan Cheng\n{summary}")
 
     reasoning = state.get("reasoning", [])
     reasoning.append(
-        f"预算分配完成: {len(budgets)} 个场景，"
-        f"总目标 {total_allocated}s，"
+        f"Yu Suan Fen Pei Wan Cheng: {len(budgets)} Ge scene，"
+        f"Zong Mu Biao {total_allocated}s，"
         f"buffer {buffer_seconds}s"
     )
 

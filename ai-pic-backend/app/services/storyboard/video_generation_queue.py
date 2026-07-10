@@ -62,7 +62,7 @@ def queue_storyboard_video_generation_task(
         "use_end_frame": False,
     }
     task = Task(
-        title=f"分镜视频候选生成 - 剧本{script.id}",
+        title=f"Fen Jing video Hou Xuan generate - script{script.id}",
         description="Production canvas video.candidates skill dispatch",
         task_type=TaskType.VIDEO_GENERATION,
         prompt=f"Storyboard video generation for script {script.id}",

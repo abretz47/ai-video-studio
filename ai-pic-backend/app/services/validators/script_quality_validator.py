@@ -357,7 +357,7 @@ class ScriptQualityValidator:
                     ScriptQualityIssue(
                         issue_type=ScriptQualityIssueType.EXCESSIVE_EXPOSITION,
                         severity=ScriptQualitySeverity.WARNING,
-                        message=f"场景 {scene_num} 存在过多解说性对白 ({len(exp_indices)} 处)",
+                        message=f"scene {scene_num} Cun Zai Guo Duo Jie Shuo Xing dialogue ({len(exp_indices)} Chu)",
                         scene_number=scene_num,
                         details={"exposition_indices": exp_indices},
                         suggestions=[
@@ -397,7 +397,7 @@ class ScriptQualityValidator:
                 ScriptQualityIssue(
                     issue_type=ScriptQualityIssueType.TALKING_HEADS,
                     severity=ScriptQualitySeverity.WARNING,
-                    message=f"对白与动作比例失衡 ({ratio:.1f}:1)，存在'说话头'风险",
+                    message=f"dialogue Yu Dong Zuo Bi Li Shi Heng ({ratio:.1f}:1)，Cun Zai'Shuo Hua Tou'Feng Xian",
                     details={"ratio": ratio},
                     suggestions=[
                         "increase character action Miao Xie",
@@ -411,7 +411,7 @@ class ScriptQualityValidator:
                 ScriptQualityIssue(
                     issue_type=ScriptQualityIssueType.TALKING_HEADS,
                     severity=ScriptQualitySeverity.INFO,
-                    message=f"动作描写较多，对白较少 ({ratio:.1f}:1)",
+                    message=f"Dong Zuo Miao Xie Jiao Duo，dialogue Jiao Shao ({ratio:.1f}:1)",
                     details={"ratio": ratio},
                     suggestions=["Que Bao key Qing Gan through dialogue Chuan Da"],
                 )
@@ -475,7 +475,7 @@ class ScriptQualityValidator:
                     ScriptQualityIssue(
                         issue_type=ScriptQualityIssueType.EMOTIONAL_ARC_FLAT,
                         severity=ScriptQualitySeverity.INFO,
-                        message=f"场景 {arc.scene_number} 情绪变化单一",
+                        message=f"scene {arc.scene_number} Qing Xu Bian Hua Dan Yi",
                         scene_number=arc.scene_number,
                         details={
                             "emotion": arc.entry_emotion,
@@ -496,7 +496,7 @@ class ScriptQualityValidator:
                         ScriptQualityIssue(
                             issue_type=ScriptQualityIssueType.EMOTIONAL_ARC_JUMP,
                             severity=ScriptQualitySeverity.WARNING,
-                            message=f"场景 {arc.scene_number} 情绪跳跃过大: {arc.entry_emotion} → {arc.exit_emotion}",
+                            message=f"scene {arc.scene_number} Qing Xu Tiao Yue Guo Da: {arc.entry_emotion} → {arc.exit_emotion}",
                             scene_number=arc.scene_number,
                             details={
                                 "entry": arc.entry_emotion,
@@ -600,7 +600,7 @@ class ScriptQualityValidator:
                     ScriptQualityIssue(
                         issue_type=ScriptQualityIssueType.REPETITIVE_DIALOGUE,
                         severity=ScriptQualitySeverity.WARNING,
-                        message=f"对白模式重复 {len(indices)} 次: '{pattern[:15]}...'",
+                        message=f"dialogue Mo Shi Zhong Fu {len(indices)} Ci: '{pattern[:15]}...'",
                         details={
                             "pattern": pattern,
                             "occurrences": len(indices),

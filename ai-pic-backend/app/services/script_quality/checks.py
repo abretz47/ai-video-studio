@@ -177,7 +177,7 @@ def check_hook_3s(
                 severity="error",
                 rule_id="hook_3s",
                 message="before Wu Xing not Jian Ce to Qiang Gou Zi(conflict/Jing Hu/Ming Ling/Ju Xiang).",
-                suggestion="Yong"Zhi Wen/Er Guang/Shuai Bei/alarm"Deng Qiang Shi Jian Kai Chang, Jin Zhi Han Xuan.",
+                suggestion='Open with a strong event such as fingerprints, an earpiece light, a slammed cup, or an alarm; avoid slow exposition.',
             )
         )
     return (
@@ -207,7 +207,7 @@ def check_dialogue_length(
                 ScriptLintIssue(
                     severity="warn",
                     rule_id="dialogue_length",
-                    message=f"台词过长（>{options.max_dialogue_chars} 字）：{length} 字",
+                    message=f"Tai Ci Guo Zhang（>{options.max_dialogue_chars} Zi）：{length} Zi",
                     line=ln_no,
                     excerpt=ln[:120],
                     suggestion="Chai Cheng short sentence/Da Duan/Qiang Bai, or change to action Biao Da.",
@@ -220,7 +220,7 @@ def check_dialogue_length(
     return (
         ScriptLintRuleResult(
             rule_id="dialogue_length",
-            title=f"台词长度（≤{options.max_dialogue_chars}字）",
+            title=f"Tai Ci Zhang Du（≤{options.max_dialogue_chars}Zi）",
             weight=2.0,
             score=score_dialogue,
             passed=len(too_long) == 0,

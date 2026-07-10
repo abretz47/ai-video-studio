@@ -128,7 +128,7 @@ async def _call_provider_text_to_speech(
         )
     return AIResponse(
         success=False,
-        error=f"提供商 {provider_name} 不支持语音合成",
+        error=f"Ti Gong Shang {provider_name} Bu Zhi Chi Yu Yin He Cheng",
         provider=provider_name,
         model=model or "unknown",
         task_type=AITaskType.VOICE_GENERATION,

@@ -53,7 +53,7 @@ QUALITY_ENHANCERS = {
  ],
  },
  "text": {
- "creativity": ["Chuang Yi", "Yuan Chuang", "interesting"],
+ "creativity": ["creative", "original", "interesting"],
  "quality": ["professional", "excellent", "engaging"],
  "structure": ["well-structured", "clear logic", "well-organized"],
  },
@@ -78,7 +78,7 @@ TEMPLATE_EXAMPLES = {
  "description": "a lively and lovely young woman",
  "age": "22 years old",
  "gender": "female",
- "personality_traits": ["Huo Po", "Hao Qi", "Le Guan"],
+ "personality_traits": ["lively", "curious", "optimistic"],
  "style_preference": "modern fashion",
  "target_audience": "young adults",
  },
@@ -99,7 +99,7 @@ TEMPLATE_EXAMPLES = {
  },
  PromptTemplate.IMAGE_GENERATION: {
  "character_name": "Mia",
- "character_description": "22 years oldHuo Po Nv Hai",
+ "character_description": "lively 22-year-old girl",
  "style": "realistic",
  "category": "portrait",
  },

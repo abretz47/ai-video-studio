@@ -11,95 +11,95 @@ from billiard.exceptions import SoftTimeLimitExceeded
 
 @pytest.mark.unit
 def test_episode_generate_task_has_episode_specific_time_limit():
- assert episode_generate_task.soft_time_limit >= 3600
- assert episode_generate_task.time_limit > episode_generate_task.soft_time_limit
+    assert episode_generate_task.soft_time_limit >= 3600
+    assert episode_generate_task.time_limit > episode_generate_task.soft_time_limit
 
 
 @pytest.mark.unit
 def test_episode_async_keeps_streamed_episode_on_soft_timeout(db_session, monkeypatch):
- user = User(
- username="episode-timeout-user",
- email="episode-timeout@example.com",
- hashed_password="x",
- is_active=True,
- is_approved=True,
- email_verified=True,
-)
- db_session.add(user)
- db_session.commit()
- db_session.refresh(user)
+    user = User(
+        username="episode-timeout-user",
+        email="episode-timeout@example.com",
+        hashed_password="x",
+        is_active=True,
+        is_approved=True,
+        email_verified=True,
+    )
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
 
- story = Story(title="Timeout Story", genre="drama", user_id=user.id)
- db_session.add(story)
- db_session.commit()
- db_session.refresh(story)
+    story = Story(title="Timeout Story", genre="drama", user_id=user.id)
+    db_session.add(story)
+    db_session.commit()
+    db_session.refresh(story)
 
- task = Task(
- title=f"Sheng Cheng Ju Ji - story{story.id}",
- description="Yi Bu episode generate",
- task_type=TaskType.EPISODE_GENERATION,
- prompt=f"Episode plan for story {story.id}",
- parameters=json.dumps({"story_id": story.id, "episode_count": 2}),
- user_id=user.id,
-)
- db_session.add(task)
- db_session.commit()
- db_session.refresh(task)
+    task = Task(
+        title=f"generate episode - story{story.id}",
+        description="Yi Bu episode generate",
+        task_type=TaskType.EPISODE_GENERATION,
+        prompt=f"Episode plan for story {story.id}",
+        parameters=json.dumps({"story_id": story.id, "episode_count": 2}),
+        user_id=user.id,
+    )
+    db_session.add(task)
+    db_session.commit()
+    db_session.refresh(task)
 
- streamed_episode = {
- "episode_number": 1,
- "title": "Di Yi Ji",
- "summary": "Protagonist discover key crisis.",
- "plot_points": [{"description": "Fa Xian Wei Ji", "timing": "opening"}],
- "character_arcs": None,
- "conflicts": [{"description": "Wei Ji Bi Jin", "intensity": "high"}],
- "scene_count": 2,
- "scenes": [
- {"scene_number": 1, "summary": "Wei Ji Fu Xian"},
- {"scene_number": 2, "summary": "Protagonist Jue Ding Xing Dong"},
- ],
- }
+    streamed_episode = {
+        "episode_number": 1,
+        "title": "Di Yi Ji",
+        "summary": "protagonist discover key crisis。",
+        "plot_points": [{"description": "discover crisis", "timing": "opening"}],
+        "character_arcs": None,
+        "conflicts": [{"description": "crisis Bi Jin", "intensity": "high"}],
+        "scene_count": 2,
+        "scenes": [
+            {"scene_number": 1, "summary": "crisis Fu Xian"},
+            {"scene_number": 2, "summary": "protagonist Jue Ding Xing Dong"},
+        ],
+    }
 
- class _StubAIService:
- logger = episode_task_processor.ai_service.logger
+    class _StubAIService:
+        logger = episode_task_processor.ai_service.logger
 
- async def generate_episodes(self, **kwargs):
- callbacks = kwargs.get("callbacks")
- if callbacks and callbacks.on_episode:
- callbacks.on_episode(
- streamed_episode,
- {
- "prompt": "episode prompt",
- "provider": "stub-provider",
- "model": "stub-model",
- "usage": {"total_tokens": 12},
- "outline": {"episode_number": 1},
- "fallback_from_outline": False,
- "react_attempts": 1,
- "duration_accepted": True,
- },
-)
- raise SoftTimeLimitExceeded()
+        async def generate_episodes(self, **kwargs):
+            callbacks = kwargs.get("callbacks")
+            if callbacks and callbacks.on_episode:
+                callbacks.on_episode(
+                    streamed_episode,
+                    {
+                        "prompt": "episode prompt",
+                        "provider": "stub-provider",
+                        "model": "stub-model",
+                        "usage": {"total_tokens": 12},
+                        "outline": {"episode_number": 1},
+                        "fallback_from_outline": False,
+                        "react_attempts": 1,
+                        "duration_accepted": True,
+                    },
+                )
+            raise SoftTimeLimitExceeded()
 
- stub_service = _StubAIService()
- monkeypatch.setattr(episode_task_processor, "ai_service", stub_service)
+    stub_service = _StubAIService()
+    monkeypatch.setattr(episode_task_processor, "ai_service", stub_service)
 
- episode_task_processor.run_episode_generation_task(
- db_session,
- task.id,
- {"story_id": story.id, "episode_count": 2, "episode_duration": 10},
- user.id,
-)
+    episode_task_processor.run_episode_generation_task(
+        db_session,
+        task.id,
+        {"story_id": story.id, "episode_count": 2, "episode_duration": 10},
+        user.id,
+    )
 
- persisted = (
- db_session.query(Episode)
-.filter(Episode.story_id == story.id, Episode.episode_number == 1)
-.one_or_none()
-)
- assert persisted is not None
- assert persisted.is_deleted is False
- assert persisted.title == "Di Yi Ji"
+    persisted = (
+        db_session.query(Episode)
+        .filter(Episode.story_id == story.id, Episode.episode_number == 1)
+        .one_or_none()
+    )
+    assert persisted is not None
+    assert persisted.is_deleted is False
+    assert persisted.title == "Di Yi Ji"
 
- db_session.refresh(task)
- assert task.status == TaskStatus.FAILED
- assert "SoftTimeLimitExceeded" in (task.error_message or "")
+    db_session.refresh(task)
+    assert task.status == TaskStatus.FAILED
+    assert "SoftTimeLimitExceeded" in (task.error_message or "")

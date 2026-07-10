@@ -114,7 +114,7 @@ def queue_storyboard_image_generation(
         "require_reference_images": require_reference_images,
     }
     task = Task(
-        title=f"分镜画面生成 - 剧本{script_id}",
+        title=f"Fen Jing Hua Mian generate - script{script_id}",
         description="storyboard Sheng Cheng after automatic frame Ren Wu, Shi Yong scene/character reference Tu Sheng Cheng Shou Wei Zhen",
         task_type=TaskType.STORYBOARD_IMAGE_GENERATION,
         prompt=f"Storyboard image generation for script {script_id}",
@@ -180,11 +180,11 @@ def storyboard_image_queue_progress_message(
     skipped = len(result.skipped_frame_indexes)
     if result.child_task_id:
         return (
-            f"{prefix}：分镜画面任务已创建 "
+            f"{prefix}：Fen Jing Hua Mian task Yi Chuang Jian "
             f"task_id={result.child_task_id} queued={queued} skipped={skipped}"
         )
     return (
-        f"{prefix}：分镜画面任务已跳过 "
+        f"{prefix}：Fen Jing Hua Mian task Yi Tiao Guo "
         f"reason={result.reason or 'no_eligible_frames'} skipped={skipped}"
     )
 

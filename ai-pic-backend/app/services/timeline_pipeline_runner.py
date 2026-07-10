@@ -136,7 +136,7 @@ async def _run_duration_controlled_dialogue(
     progress_callback: ProgressCallback | None,
 ) -> None:
     if progress_callback:
-        progress_callback(f"时长精控模式 - 编排 {len(scenes)} 个场景…")
+        progress_callback(f"Shi Zhang Jing Kong Mo Shi - Bian Pai {len(scenes)} Ge scene…")
 
     result = await generate_dialogue_with_duration_control(
         db,
@@ -155,13 +155,13 @@ async def _run_duration_controlled_dialogue(
         if final_validation and not final_validation.get("passed"):
             ratio = final_validation.get("duration_ratio", 0)
             if progress_callback:
-                progress_callback(f"时长验证未通过 {ratio:.1%}（允许±10%）")
+                progress_callback(f"Shi Zhang Yan Zheng Wei Tong Guo {ratio:.1%}（Yun Xu±10%）")
             return
         raise RuntimeError(f"Duration Orchestrator failed: {'; '.join(errors)}")
 
     ratio = result.get("statistics", {}).get("duration_ratio", 0)
     if progress_callback:
-        progress_callback(f"时长精控完成 {ratio:.1%}")
+        progress_callback(f"Shi Zhang Jing Kong Wan Cheng {ratio:.1%}")
 
 
 async def _run_legacy_scene_dialogue_audio(
@@ -192,11 +192,11 @@ async def _run_legacy_scene_dialogue_audio(
             if beat_count > 0:
                 skipped += 1
                 if progress_callback:
-                    progress_callback(f"对白音轨 {idx}/{total}（跳过 {skipped}）")
+                    progress_callback(f"dialogue Yin Gui {idx}/{total}（Tiao Guo {skipped}）")
                 continue
 
         if progress_callback:
-            progress_callback(f"对白音轨 {idx}/{total}（跳过 {skipped}）")
+            progress_callback(f"dialogue Yin Gui {idx}/{total}（Tiao Guo {skipped}）")
 
         scene_target = getattr(scene, "estimated_duration_seconds", None)
         if scene_target is None:

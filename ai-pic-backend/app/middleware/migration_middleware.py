@@ -86,12 +86,12 @@ class MigrationCheckMiddleware(BaseHTTPMiddleware):
                 logger.warning("database not Cun Zai or unable to connection")
             elif not self._migration_status.get("is_up_to_date"):
                 pending_count = self._migration_status.get("pending_count", 0)
-                logger.warning(f"数据库需要升级，有 {pending_count} 个待应用的迁移")
+                logger.warning(f"Shu Ju Ku Xu Yao Sheng Ji，You {pending_count} Ge Dai Ying Yong De Qian Yi")
             else:
                 logger.info("database migration status Zheng Chang")
 
         except Exception as e:
-            logger.error(f"检查迁移状态失败: {e}")
+            logger.error(f"Jian Cha Qian Yi status failed: {e}")
             self._migration_status = {
                 "error": str(e),
                 "database_exists": False,
@@ -155,5 +155,5 @@ class DatabaseHealthMiddleware(BaseHTTPMiddleware):
                 logger.warning("database Jian Kang Jian Cha failed")
 
         except Exception as e:
-            logger.error(f"数据库健康检查异常: {e}")
+            logger.error(f"Shu Ju Ku Jian Kang Jian Cha Yi Chang: {e}")
             self._database_healthy = False

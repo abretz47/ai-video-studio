@@ -31,7 +31,7 @@ async def generate_video(db, task_id: int, payload: Dict[str, Any]) -> None:
         raise RuntimeError("Script not found")
     grid = load_scene_grids(db, script_id).get(str(scene_number))
     if not isinstance(grid, dict) or not grid.get("image_url"):
-        raise RuntimeError(f"场景 {scene_number} 尚未生成宫格分镜图")
+        raise RuntimeError(f"scene {scene_number} Shang Wei generate Gong Ge Fen Jing Tu")
 
     cells = [cell for cell in grid.get("cells") or [] if isinstance(cell, dict)]
     durations = [float(cell.get("duration") or 0) or 1.2 for cell in cells] or [1.2]

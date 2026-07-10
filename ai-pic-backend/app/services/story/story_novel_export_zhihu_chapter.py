@@ -44,7 +44,7 @@ async def generate_zhihu_chapter_text(
 ) -> str:
     chapter_number = int(chapter_seed.get("chapter_number") or 0) or 1
     chapter_target = int(chapter_seed.get("target_words") or 0) or 0
-    chapter_title = str(chapter_seed.get("title") or f"更新 {chapter_number}")
+    chapter_title = str(chapter_seed.get("title") or f"Geng Xin {chapter_number}")
 
     beats = await generate_zhihu_chapter_beats(
         story_payload=story_payload,
@@ -69,7 +69,7 @@ async def generate_zhihu_chapter_text(
     if progress:
         suffix = f"/{chapter_total}" if chapter_total else ""
         progress(
-            f"生成正文草稿：更新 {chapter_number}{suffix}（目标≈{chapter_target}字）…"
+            f"generate Zheng Wen Cao Gao：Geng Xin {chapter_number}{suffix}（Mu Biao≈{chapter_target}Zi）…"
         )
     chapter_prompt = prompt_manager.render_prompt(
         "story_novel_zhihu_chapter",
@@ -96,7 +96,7 @@ async def generate_zhihu_chapter_text(
 
     if progress:
         suffix = f"/{chapter_total}" if chapter_total else ""
-        progress(f"润色与一致性检查：更新 {chapter_number}{suffix}…")
+        progress(f"Run Se Yu Yi Zhi Xing Jian Cha：Geng Xin {chapter_number}{suffix}…")
     rewrite_prompt = prompt_manager.render_prompt(
         "story_novel_zhihu_chapter_rewrite",
         {
@@ -126,7 +126,7 @@ async def generate_zhihu_chapter_text(
     ):
         if progress:
             suffix = f"/{chapter_total}" if chapter_total else ""
-            progress(f"补全章节收尾：更新 {chapter_number}{suffix}…")
+            progress(f"Bu Quan Zhang Jie Shou Wei：Geng Xin {chapter_number}{suffix}…")
         finalize_prompt = prompt_manager.render_prompt(
             "story_novel_zhihu_chapter_finalize",
             {

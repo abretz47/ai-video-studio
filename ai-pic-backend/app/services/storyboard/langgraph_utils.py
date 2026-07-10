@@ -33,7 +33,7 @@ def sanitize_outline(
         outline["composition"] = composition
         changed = True
     if not outline.get("intent"):
-        outline["intent"] = f"强调{movement}镜头表现" if movement else "Tu Chu Xu Shi Jie Zou"
+        outline["intent"] = f"Qiang Diao{movement}Jing Tou Biao Xian" if movement else "Tu Chu Xu Shi Jie Zou"
         changed = True
     return outline, changed
 
@@ -58,7 +58,7 @@ def normalize_plan_outlines(plan: Dict[str, Any]) -> Tuple[Dict[str, Any], List[
                 frame["shot_type"] = shot
                 frame["camera_movement"] = move
                 frame["composition"] = comp
-                frame["intent"] = frame.get("intent") or f"镜头强调{move}"
+                frame["intent"] = frame.get("intent") or f"Jing Tou Qiang Diao{move}"
                 combos.add((shot, move, frame["intent"]))
                 fixes.append(f"scene {scene_no} frame {idx} varied")
                 continue

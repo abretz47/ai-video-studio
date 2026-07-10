@@ -4,60 +4,60 @@ from app.core.config import settings
 
 @pytest.fixture
 def skip_if_no_openai():
- if not getattr(settings, "OPENAI_API_KEY", None):
- pytest.skip("Xu YaoOPENAI_API_KEYHuan Jing Bian Liang")
+    if not getattr(settings, "OPENAI_API_KEY", None):
+        pytest.skip("Xu YaoOPENAI_API_KEYHuan Jing Bian Liang")
 
 
 @pytest.fixture
 def skip_if_no_oss():
- required_oss_configs = [
- "ALIYUN_ACCESS_KEY_ID",
- "ALIYUN_ACCESS_KEY_SECRET",
- "ALIYUN_OSS_ENDPOINT",
- "ALIYUN_OSS_BUCKET",
- ]
+    required_oss_configs = [
+        "ALIYUN_ACCESS_KEY_ID",
+        "ALIYUN_ACCESS_KEY_SECRET",
+        "ALIYUN_OSS_ENDPOINT",
+        "ALIYUN_OSS_BUCKET",
+    ]
 
- missing_configs = [
- config for config in required_oss_configs if not getattr(settings, config, None)
- ]
- if missing_configs:
- pytest.skip(f"Xu YaoOSSconfiguration: {', '.join(missing_configs)}")
+    missing_configs = [
+        config for config in required_oss_configs if not getattr(settings, config, None)
+    ]
+    if missing_configs:
+        pytest.skip(f"Xu YaoOSSconfiguration: {', '.join(missing_configs)}")
 
 
 def pytest_collection_modifyitems(config, items):
- run_external = str(getattr(settings, "RUN_EXTERNAL_TESTS", "") or "").strip().lower()
- run_external_enabled = run_external in {"1", "true", "yes", "on"}
- skip_external = pytest.mark.skip(
- reason="external tests disabled (set RUN_EXTERNAL_TESTS=1 to enable)"
-)
+    run_external = str(getattr(settings, "RUN_EXTERNAL_TESTS", "") or "").strip().lower()
+    run_external_enabled = run_external in {"1", "true", "yes", "on"}
+    skip_external = pytest.mark.skip(
+        reason="external tests disabled (set RUN_EXTERNAL_TESTS=1 to enable)"
+    )
 
- for item in items:
- if "test_diagnostic" in item.nodeid:
- item.add_marker(pytest.mark.diagnostic)
- if "test_openai" in item.nodeid or "openai" in item.nodeid:
- item.add_marker(pytest.mark.openai)
- item.add_marker(pytest.mark.external)
- if "test_oss" in item.nodeid or "oss" in item.nodeid:
- item.add_marker(pytest.mark.oss)
- item.add_marker(pytest.mark.external)
- if "test_database" in item.nodeid or "database" in item.nodeid:
- item.add_marker(pytest.mark.database)
- if "integration" in item.nodeid:
- item.add_marker(pytest.mark.integration)
- elif "unit" in item.nodeid:
- item.add_marker(pytest.mark.unit)
- if "e2e" in item.nodeid or "end_to_end" in item.nodeid:
- item.add_marker(pytest.mark.e2e)
- item.add_marker(pytest.mark.slow)
+    for item in items:
+        if "test_diagnostic" in item.nodeid:
+            item.add_marker(pytest.mark.diagnostic)
+        if "test_openai" in item.nodeid or "openai" in item.nodeid:
+            item.add_marker(pytest.mark.openai)
+            item.add_marker(pytest.mark.external)
+        if "test_oss" in item.nodeid or "oss" in item.nodeid:
+            item.add_marker(pytest.mark.oss)
+            item.add_marker(pytest.mark.external)
+        if "test_database" in item.nodeid or "database" in item.nodeid:
+            item.add_marker(pytest.mark.database)
+        if "integration" in item.nodeid:
+            item.add_marker(pytest.mark.integration)
+        elif "unit" in item.nodeid:
+            item.add_marker(pytest.mark.unit)
+        if "e2e" in item.nodeid or "end_to_end" in item.nodeid:
+            item.add_marker(pytest.mark.e2e)
+            item.add_marker(pytest.mark.slow)
 
- if not run_external_enabled and "external" in item.keywords:
- item.add_marker(skip_external)
+        if not run_external_enabled and "external" in item.keywords:
+            item.add_marker(skip_external)
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
- if exitstatus == 0:
- terminalreporter.write_line(
- "\n🎉 Suo You Ce Shi Tong Guo!AIimage generate system run normal.", green=True
-)
- else:
- terminalreporter.write_line("\n❌ Bu Fen test failed, please check Shang Shu Cuo Wu Xin Xi.", red=True)
+    if exitstatus == 0:
+        terminalreporter.write_line(
+            "\n🎉 Suo You Ce Shi Tong Guo！AIimage generate system run normal。", green=True
+        )
+    else:
+        terminalreporter.write_line("\n❌ Bu Fen test failed，please check Shang Shu Cuo Wu Xin Xi。", red=True)

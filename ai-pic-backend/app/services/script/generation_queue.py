@@ -40,7 +40,7 @@ def queue_script_generation_task(
 ) -> Task:
     params = build_script_generation_task_params(request)
     task = Task(
-        title=title or f"生成剧本 - 剧集{request.episode_id}",
+        title=title or f"generate script - episode{request.episode_id}",
         description=description,
         task_type=TaskType.SCRIPT_GENERATION,
         prompt=prompt or f"Script for episode {request.episode_id}",

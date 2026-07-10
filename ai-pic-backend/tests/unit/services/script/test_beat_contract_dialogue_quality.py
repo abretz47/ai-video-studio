@@ -6,28 +6,28 @@ from tests.unit.services.script.test_beat_contract_normalizer import _valid_cont
 
 @pytest.mark.unit
 def test_quality_gate_rejects_repeated_dialogue_lines():
- payload = _valid_contract()
- for beat in payload["scenes"][0]["beats"]:
- for line in beat["dialogue_lines"]:
- line["content"] = "evidence Zai Zhe Li."
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    for beat in payload["scenes"][0]["beats"]:
+        for line in beat["dialogue_lines"]:
+            line["content"] = "Zheng Ju in Zhe Li。"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "dialogue_progression_repetition" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "dialogue_progression_repetition" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_long_dialogue_line():
- payload = _valid_contract()
- line = payload["scenes"][0]["beats"][0]["dialogue_lines"][0]
- line["content"] = "Zhe Tiao Xian Suo Bi Xu Ma Shang Jiao Gei Shen Ji Yuan He Dui signature"
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    line = payload["scenes"][0]["beats"][0]["dialogue_lines"][0]
+    line["content"] = "this Tiao Xian Suo Bi Xu Ma Shang Jiao Gei Shen Ji Yuan He Dui signature"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "dialogue_line_length" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "dialogue_line_length" in failed

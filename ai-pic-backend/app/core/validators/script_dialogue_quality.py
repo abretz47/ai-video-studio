@@ -95,7 +95,7 @@ def validate_scene_dialogues(
         issues.append(
             SceneDialogueIssue(
                 code="too_few_lines",
-                message=f"对白条数不足（至少 {min_lines} 句）",
+                message=f"dialogue Tiao Shu Bu Zu（at least {min_lines} Ju）",
             )
         )
 
@@ -109,7 +109,7 @@ def validate_scene_dialogues(
             issues.append(
                 SceneDialogueIssue(
                     code="writer_note",
-                    message="Jian Ce to Yi Si Bian Ju/Zhu Shou Yuan Yu Yan(for example"hereCan…"), need Gai Xie as Xi Nei line",
+                    message='Detected writer/assistant meta-language (for example "you can use this here"); rewrite it as in-scene dialogue.',
                 )
             )
             break

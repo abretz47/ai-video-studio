@@ -31,7 +31,7 @@ class ImageProviderMixin:
             return None
 
         try:
-            self.logger.info(f"使用可灵AI生成图像: {model}")
+            self.logger.info(f"Shi Yong Ke LingAIgenerate image: {model}")
 
             response = await self.ai_manager.generate_image(
                 prompt=prompt,
@@ -60,11 +60,11 @@ class ImageProviderMixin:
                     return image_url
                 self.logger.error("KlingAIreturn Kong image list")
                 return None
-            self.logger.error(f"可灵AI图像生成失败: {response.error}")
+            self.logger.error(f"Ke LingAIimage generation failed: {response.error}")
             return None
 
         except Exception as exc:
-            self.logger.error(f"可灵AI图像生成异常: {exc}")
+            self.logger.error(f"Ke LingAIimage generate Yi Chang: {exc}")
             return None
 
     async def _generate_with_openai_dalle(
@@ -150,16 +150,16 @@ class ImageProviderMixin:
                         len(image_result),
                     )
                 elif image_result:
-                    self.logger.info(f"获取到OpenAI图像URL: {image_result[:100]}...")
+                    self.logger.info(f"Huo Qu DaoOpenAIimageURL: {image_result[:100]}...")
                 return image_result
         except Exception as exc:
-            self.logger.error(f"OpenAI图像生成失败: {exc}")
+            self.logger.error(f"OpenAIimage generation failed: {exc}")
             if hasattr(exc, "response"):
                 try:
                     error_detail = exc.response.json()
-                    self.logger.error(f"OpenAI API错误详情: {error_detail}")
+                    self.logger.error(f"OpenAI APIerror Xiang Qing: {error_detail}")
                 except Exception:
-                    self.logger.error(f"OpenAI API响应: {exc.response.text}")
+                    self.logger.error(f"OpenAI APIXiang Ying: {exc.response.text}")
             return None
 
     async def _build_openai_edit_files(
@@ -237,7 +237,7 @@ class ImageProviderMixin:
                 # here needbase64Zhuan Huan as file and save
                 return await self._save_base64_image(image_data, "stability")
         except Exception as exc:
-            print(f"Stability AI生成失败: {exc}")
+            print(f"Stability AIgeneration failed: {exc}")
             return None
 
     async def _generate_with_custom_image_service(
@@ -275,7 +275,7 @@ class ImageProviderMixin:
                 result = response.json()
                 return result.get("image_url")
         except Exception as exc:
-            print(f"自定义AI服务生成失败: {exc}")
+            print(f"Zi Ding YiAIFu Wu generation failed: {exc}")
             return None
 
     async def _save_base64_image(self, base64_data: str, source: str) -> str:

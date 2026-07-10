@@ -85,7 +85,7 @@ async def _generate_sheet(
         if to_int(frame.get("scene_number")) == scene_number
     ]
     if not frames:
-        raise RuntimeError(f"场景 {scene_number} 没有分镜帧，请先生成分镜")
+        raise RuntimeError(f"scene {scene_number} Mei You Fen Jing Zhen，Qing Xian generate Fen Jing")
 
     ref_ctx = load_ref_context(db, script, script_id)
     ref_images, refs_used = resolve_reference_images(

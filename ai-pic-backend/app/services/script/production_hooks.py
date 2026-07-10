@@ -118,26 +118,18 @@ def _commercial_score_contract() -> str:
         "dialogue_lines and action_lines.\n"
         "- character Bian Shi Du: Zhu Jue Mei Chang Zhi Shao 2 Ci Ju Ming Chu Chang, 1 Ge Wen Ding Xing Wei tag, "
         "1 Ju can Fu Yong Duan dialogue; Pei Jue/Fan Pai Bi Xu Xie Qing Ke Jian Dong Ji and Dang Chang Xuan Ze, "
-        "Jin Zhi only Xie"Zhu Li/Cuan Gai Zhe/Tuan Dui Cheng Yuan"Er not Jiao Dai Xing Wei tag.\n"
+        'Do not write only "assistant/tamperer/team member" without any actionable identifying tag.\n'
         "- Luo Ji Yi Zhi Xing: Mei Ge Zhi Kong Bi Xu has Ke Jian evidence Lian: Xin Xi Lai Yuan -> Xian Chang validation -> "
         "customer/contract/permission/file Hou Guo; recording, log, text message, contract, Original fileDi Yi Ci Chu Xian when"
         "Bi Xu Xie Qing Shi Shui Na Chu, Cong Na Li Lai, screen on Chu Xian Shen Me.\n"
         "- Xian Yi Ren/Fan Pai Dong Ji: cannot Zhu Jue Yi Wen Jiu Cheng Ren; Bi Xu first Kang Ju, Shi Tu Li Kai, "
         "delete file or Shuai Guo, and through Zhuan Zhang Ji Lu, Shang Ji text message, Ji Xiao threat, Zhai Wu or contract Li Yi"
         "Lu Chu specific Dong Ji.\n"
-        "- Zhu Li/Pei Jue feature: Zhu Li Bi Xu has Ju Ming action tag and not allowed Ti Dai Gong Xian, for example Lan Zhu Xian Yi Ren, "
-        "Diao Chu cloud log, lock delete time Chuo, customer countdown Ti Xing Gei Zhu Jue; cannot only Shuo"Ma Shang Cha".\n"
-        "- Si Xia Dui Zhi He Li Xing: Zou Lang/Ban Gong Shi Dui Zhi Bi Xu has Wai Bu Ya Li, for example customer60seconds after Li Chang, "
-        "contract Ji Jiang Zuo Fei, file Zheng Zai delete, Zhu Li Du Zhu Chu Kou or permission Ji Jiang Shi Xiao; "
-        "recording/evidence get cannot Kao Qiao He.\n"
-        "- none clear Pei Jue Ming Shi Bi Xu Zhu Dong Ming Ming and Wen Ding Shi Yong: customer Zhang Zong, Zhu Li Xiao Chen, "
-        "Cuan Gai Zhe Chen Mo/Li Ming Deng; Jin Zhi in body text or dialogue Li only Xie"customer/Zhu Li/Cuan Gai Zhe".\n"
-        "- Zhi Chang data/contract Ti Cai Bi Xu Shi Yong Qiang Qiao Duan: customer Zhang Zong Gei Chu60seconds Che Dan countdown, "
-        "Zhu Li Xiao Chen Suo Zhu cloud log and Lan Zhu Xian Yi Ren, Cuan Gai Zhe Chen Mo Xian Qiang phone/Shan file/Shuai Guo, "
-        "Sui Hou Zhuan Zhang text message or Shang Ji threat text message Bao Lu Dong Ji; Zhu Jue Gu Ding Duan dialogue available"Shu Zi Bu Hui Sa Huang, Kan time Chuo".\n"
-        "- Di Er Chang Bi Xu Ju Bei Guang Gao Qie Pian Qiang Du: Chen Mo Shou Zhi Ting in delete Que Ren Jian, Xiao Chen Dang Zhu Chu Kou, "
-        "Zhang Zong Dian Hua countdown only Sheng15seconds, APDuo Hui phone or An below Qu Xiao delete; Chen Mo Dong Ji Bi Xu in frame on Chu Xian, "
-        "for example text message"Gai Wan Gei you20Wan, not Zuo Jiu Cai you"or Yin Hang to Zhang Ti Xing, cannot only Shuo"Shang Ji Rang I Zuo".\n"
+        "- Supporting and secondary characters need clear action tags rather than vague placeholders, such as blocking a suspect, pulling up cloud logs, locking a delete timestamp, or warning the protagonist about a countdown.\n"
+        "- Corridor or office confrontations need external pressure, such as a client countdown, a contract about to expire, a file being deleted, a blocked exit, or a permission window about to close; evidence cannot appear by coincidence.\n"
+        '- Every named supporting role should be explicitly named and used consistently; do not use generic labels like "customer", "assistant", or "tamperer" without identification.\n'
+        '- Workplace data and contract stories should use high-intensity beats: a 60-second cancellation countdown, locked cloud logs, a phone grab, file deletion, or a threat message that reveals motive; the protagonist should also get reusable lines such as "Numbers do not lie, check the timestamp."\n'
+        '- The second scene must keep ad-clip intensity: finger hovering over delete confirmation, someone blocking the exit, a 15-second phone countdown, or a cancel-delete button; the motive must also appear on screen through concrete messages such as "Finish it and I will give you 200,000."\n'
         "- Su Cai can Jian Xing: body text Bi Xu Nei Zhi 15s, 30s, 60s San Lei Tou Liu Pian Duan, "
         "Mei Lei all Yao has first frame action, key line, Jie Guo change and cliffhanger/CTA; "
         "Mei 60 seconds Zhi Shao 2 Ge line+frame Shuang Gou Zi.\n"
@@ -151,7 +143,7 @@ def _commercial_score_contract() -> str:
 def _rewrite_closure_contract(rewrite_guidance: List[str]) -> str:
     actionable = [str(item).strip() for item in rewrite_guidance if str(item).strip()]
     checklist = "\n".join(
-        f"{idx}. 针对「{item}」：必须新增或改写至少 1 个 visible_event、"
+        f"{idx}. Zhen Dui「{item}」：Bi Xu Xin Zeng Huo Gai Xie at least 1 Ge visible_event、"
         "1 Ge action_line, 1 Ju Duan dialogue and 1 Ge Wai Bu Hou Guo; cannot Zhi Gai narration or note."
         for idx, item in enumerate(actionable[:8], start=1)
     )

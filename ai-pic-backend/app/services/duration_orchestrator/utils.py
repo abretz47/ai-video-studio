@@ -179,15 +179,15 @@ def compute_adjustment_hint(
         # when Zhang insufficient
         reason = "duration_too_short"
         hint = (
-            f"当前对白时长 {actual_duration_ms / 1000:.1f} 秒，"
-            f"目标 {target_duration_seconds} 秒，"
-            f"差距 {diff_seconds:.1f} 秒。\n"
-            f"建议增加约 {word_diff} 字的对白（约 {dialogue_diff} 句）。\n"
-            f"可以：\n"
-            f"1. 扩展现有对白的情感描写和反应\n"
-            f"2. 增加角色间的互动和追问\n"
-            f"3. 添加内心独白或旁白\n"
-            f"4. 丰富场景细节描述"
+            f"Dang Qian dialogue Shi Zhang {actual_duration_ms / 1000:.1f} Miao，"
+            f"Mu Biao {target_duration_seconds} Miao，"
+            f"Cha Ju {diff_seconds:.1f} Miao。\n"
+            f"Jian Yi Zeng Jia Yue {word_diff} Zi De dialogue（Yue {dialogue_diff} Ju）。\n"
+            f"Ke Yi：\n"
+            f"1. Kuo Zhan Xian You dialogue De Qing Gan Miao Xie He Fan Ying\n"
+            f"2. Zeng Jia character Jian De Hu Dong He Zhui Wen\n"
+            f"3. Tian Jia Nei Xin Du Bai Huo Pang Bai\n"
+            f"4. Feng Fu scene Xi Jie Miao Shu"
         )
     else:
         # when Zhang Guo Chang
@@ -195,15 +195,15 @@ def compute_adjustment_hint(
         dialogue_diff = max(1, word_diff // ADJUSTMENT_WORDS_PER_DIALOGUE)
         reason = "duration_too_long"
         hint = (
-            f"当前对白时长 {actual_duration_ms / 1000:.1f} 秒，"
-            f"目标 {target_duration_seconds} 秒，"
-            f"超出 {diff_seconds:.1f} 秒。\n"
-            f"建议删减约 {word_diff} 字的对白（约 {dialogue_diff} 句）。\n"
-            f"可以：\n"
-            f"1. 精简冗余对白，保留核心信息\n"
-            f"2. 合并相似内容的对话\n"
-            f"3. 删除对情节推进贡献不大的台词\n"
-            f"4. 简化过长的描述性语句"
+            f"Dang Qian dialogue Shi Zhang {actual_duration_ms / 1000:.1f} Miao，"
+            f"Mu Biao {target_duration_seconds} Miao，"
+            f"Chao Chu {diff_seconds:.1f} Miao。\n"
+            f"Jian Yi Shan Jian Yue {word_diff} Zi De dialogue（Yue {dialogue_diff} Ju）。\n"
+            f"Ke Yi：\n"
+            f"1. Jing Jian Rong Yu dialogue，Bao Liu He Xin Xin Xi\n"
+            f"2. He Bing Xiang Shi Nei Rong De Dui Hua\n"
+            f"3. Shan Chu Dui Qing Jie Tui Jin Gong Xian Bu Da De Tai Ci\n"
+            f"4. Jian Hua Guo Zhang De Miao Shu Xing Yu Ju"
         )
 
     return reason, hint
@@ -321,13 +321,13 @@ def format_budget_summary(budgets: List[SceneBudget]) -> str:
         actual_info = ""
         if b.actual_duration_seconds is not None:
             ratio = b.duration_ratio()
-            actual_info = f" -> 实际: {b.actual_duration_seconds:.1f}s ({ratio:.0%})"
+            actual_info = f" -> Shi Ji: {b.actual_duration_seconds:.1f}s ({ratio:.0%})"
 
         lines.append(
-            f"  {status_icon} 场景{b.scene_number}: "
-            f"目标 {b.target_duration_seconds}s, "
-            f"字数 {b.target_word_count}, "
-            f"尝试 {b.attempt_count}次"
+            f"  {status_icon} scene{b.scene_number}: "
+            f"Mu Biao {b.target_duration_seconds}s, "
+            f"Zi Shu {b.target_word_count}, "
+            f"Chang Shi {b.attempt_count}Ci"
             f"{actual_info}"
         )
 

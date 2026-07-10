@@ -37,9 +37,9 @@ def build_script_text(
             scene_no = scene.get("scene_number") or "-"
             slug = scene.get("slug_line") or f"Scene {scene.get('scene_number')}"
             summary = scene.get("summary") or scene.get("description") or ""
-            lines.append(f"- [场景 {scene_no}] {slug}: {summary}")
+            lines.append(f"- [scene {scene_no}] {slug}: {summary}")
             if summary:
-                lines.append(f"【快】【情绪目的：推进冲突】{summary}")
+                lines.append(f"【Kuai】【Qing Xu Mu De：Tui Jin Chong Tu】{summary}")
     if dialogues:
         lines.append("\n## dialogue")
         for dialogue in dialogues[:200]:
@@ -51,7 +51,7 @@ def build_script_text(
                 or dialogue.get("text")
                 or ""
             )
-            lines.append(f"[场景 {scene_no}] {character}: {content}")
+            lines.append(f"[scene {scene_no}] {character}: {content}")
     if stage_directions:
         lines.append("\n## Wu Tai Zhi Shi")
         for direction in stage_directions[:200]:
@@ -63,7 +63,7 @@ def build_script_text(
                 or ""
             )
             timing = direction.get("timing") or ""
-            lines.append(f"[场景 {scene_no}][{timing}] {content}")
+            lines.append(f"[scene {scene_no}][{timing}] {content}")
     if not _ends_with_question(lines):
         lines.append(
             "[Man][EmotionMu Di: Liu Xia suspense]shot Ting inKey clueon: Jie Xia Lai will Fa Sheng Shen Me?"

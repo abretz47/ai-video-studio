@@ -100,10 +100,10 @@ def commit_scene_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     reasoning = state.get("reasoning", [])
     reasoning.append(
-        f"场景 {budget.scene_number} 已提交: "
-        f"{actual_seconds:.1f}s (目标 {target_seconds}s, "
-        f"偏差 {deviation_seconds:+.1f}s, "
-        f"尝试 {budget.attempt_count} 次)"
+        f"scene {budget.scene_number} Yi Ti Jiao: "
+        f"{actual_seconds:.1f}s (Mu Biao {target_seconds}s, "
+        f"Pian Cha {deviation_seconds:+.1f}s, "
+        f"Chang Shi {budget.attempt_count} Ci)"
     )
 
     return {

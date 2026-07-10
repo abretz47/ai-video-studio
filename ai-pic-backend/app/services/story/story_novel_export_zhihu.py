@@ -69,8 +69,8 @@ async def export_zhihu_novel_to_file(
         )
     )
     full_text_parts: list[str] = [
-        f"【问题】\n{question_title}\n\n{question_detail}\n",
-        f"【回答】\n{narrator_profile}\n\n",
+        f"【Wen Ti】\n{question_title}\n\n{question_detail}\n",
+        f"【Hui Da】\n{narrator_profile}\n\n",
     ]
     total_words = 0
     produced_chapters = 0
@@ -78,7 +78,7 @@ async def export_zhihu_novel_to_file(
         if not isinstance(chapter, dict):
             continue
         chapter_number = int(chapter.get("chapter_number") or idx)
-        chapter_title = str(chapter.get("title") or f"更新 {chapter_number}")
+        chapter_title = str(chapter.get("title") or f"Geng Xin {chapter_number}")
         chapter_target = int(chapter.get("target_words") or 0) or max(
             1200, int(round(target_words / max(1, chapter_total)))
         )
@@ -117,7 +117,7 @@ async def export_zhihu_novel_to_file(
             extract_chapter_markers(final_text)
         )
         if progress:
-            progress(f"更新连贯性账本：更新 {chapter_number}/{len(chapters)}…")
+            progress(f"Geng Xin Lian Guan Xing Zhang Ben：Geng Xin {chapter_number}/{len(chapters)}…")
         ledger_prompt = prompt_manager.render_prompt(
             "story_novel_zhihu_ledger_update",
             {
@@ -165,7 +165,7 @@ async def export_zhihu_novel_to_file(
             if len(previous_cliffhanger) > 300:
                 previous_cliffhanger = previous_cliffhanger[:300].rstrip() + "…"
         previous_tail = tail_text(chapter_body or chapter_text, 900)
-        full_text_parts.append(f"—— 更新 {chapter_number}：{chapter_title} ——\n")
+        full_text_parts.append(f"—— Geng Xin {chapter_number}：{chapter_title} ——\n")
         full_text_parts.append(chapter_text.strip() + "\n\n")
         produced_chapters += 1
     full_text = "".join(full_text_parts).strip() + "\n"
@@ -181,7 +181,7 @@ async def export_zhihu_novel_to_file(
     file_path.parent.mkdir(parents=True, exist_ok=True)
     file_path.write_text(full_text, encoding="utf-8")
     if progress:
-        progress(f"完成：约 {total_words} 字，可下载。")
+        progress(f"Wan Cheng：Yue {total_words} Zi，Ke Xia Zai。")
     return StoryNovelExportResult(
         relative_path=relative_path,
         filename=filename,

@@ -32,14 +32,14 @@ def normalize_story_outline_strict(result: Any) -> Dict[str, Any]:
             errors = exc.errors()
             raise HTTPException(
                 status_code=500,
-                detail=f"AI故事生成失败：输出不符合 schema（{len(errors)} errors）",
+                detail=f"AIstory generation failed：Shu Chu Bu Fu He schema（{len(errors)} errors）",
             ) from exc
 
     errors = result.get("validation_errors")
     if errors:
         raise HTTPException(
             status_code=500,
-            detail=f"AI故事生成失败：输出不符合 schema（validation_errors={errors}）",
+            detail=f"AIstory generation failed：Shu Chu Bu Fu He schema（validation_errors={errors}）",
         )
 
     raise HTTPException(status_code=500, detail="AIstory Sheng Cheng failed: not return can parse JSON")

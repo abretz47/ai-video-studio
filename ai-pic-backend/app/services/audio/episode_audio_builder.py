@@ -111,7 +111,7 @@ async def generate_episode_audio_timeline(
             },
         )
         if not oss_result.get("success") or not oss_result.get("file_url"):
-            raise RuntimeError(f"OSS 上传失败: {oss_result}")
+            raise RuntimeError(f"OSS Shang Chuan failed: {oss_result}")
 
     return _persist_episode_timeline(
         db,

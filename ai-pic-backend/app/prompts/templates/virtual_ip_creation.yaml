@@ -55,7 +55,7 @@ usage_examples:
  description: "a lively and lovely young woman"
  age: "22 years old"
  gender: "female"
- personality_traits: ["Huo Po", "Hao Qi", "Le Guan"]
+ personality_traits: ["lively", "curious", "optimistic"]
  style_preference: "modern fashion"
  target_audience: "young adults"
  content_type: "Ri Chang Sheng Huo"

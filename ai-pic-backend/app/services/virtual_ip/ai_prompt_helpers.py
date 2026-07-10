@@ -12,22 +12,22 @@ def generate_template_content(name: str, basic_info: Optional[str]) -> Dict[str,
     """Sheng Cheng template content(DangAInot allowed Yong Shi Shi Yong)"""
     return {
         "description": (
-            f"{name}拥有鲜明的个性与清晰的形象定位。"
+            f"{name}Yong You Xian Ming De Ge Xing Yu Qing Xi De Xing Xiang Ding Wei。"
             f"{basic_info or 'Wai Biao and Qi Zhi Zi Qia, Yan Xing You Ji Ke Xun, Shi He Fa Zhan as Chang Qi Xu Shi character.'}"
         ),
         "background_story": (
-            f"在一个充满无限可能的世界里，{name}的故事开始了。\n\n"
+            f"Zai Yi Ge Chong Man Wu Xian Ke Neng De Shi Jie Li，{name}De story Kai Shi Le。\n\n"
             f"{basic_info or 'TaCheng Zhang Jing Li and key Xuan Ze, Su Zao Dang Xia Xing Ge and Chu Shi Fang Shi.'}\n\n"
-            f"每一次出现，{name}都会为观众带来新的惊喜和感动。"
+            f"Mei Yi Ci Chu Xian，{name}Dou Hui Wei Guan Zhong Dai Lai Xin De Jing Xi He Gan Dong。"
             "Zhe Bu Jin Jin Shi a character, Geng Shi a Chong Man Sheng Ming Li Xu Shi core."
         ),
         "biography": (
-            f"**角色档案：{name}**\n\n"
-            f"**外貌特征**：{name}拥有令人印象深刻的外貌，每一个细节都经过精心设计。\n\n"
+            f"**character Dang An：{name}**\n\n"
+            f"**Wai Mao Te Zheng**：{name}Yong You Ling Ren Yin Xiang Shen Ke De Wai Mao，Mei Yi Ge Xi Jie Dou Jing Guo Jing Xin She Ji。\n\n"
             "**Xing Ge Te Dian**: Xing Ge Xian Ming, Ji You Qin He Li You has Du Te Ge Ren Mei Li.\n\n"
             "**Xing Qu Ai Hao**: Re Ai Sheng Huo, Dui Shi Jie Chong Man Hao Qi Xin.\n\n"
             "**Te Chang Ji Neng**: in Zi Ji Ling Yu You Zhe Chu Se Biao Xian.\n\n"
-            f"**背景经历**：{basic_info or 'Yong You Feng Fu Ren Sheng Jing Li, Su Zao Xian Zai Ge Xing.'}\n\n"
+            f"**Bei Jing Jing Li**：{basic_info or 'Yong You Feng Fu Ren Sheng Jing Li, Su Zao Xian Zai Ge Xing.'}\n\n"
             "Zhe Shi a Zhi De Shen Ru Liao Jie and Xi Ai character."
         ),
         "tags": [],
@@ -76,7 +76,7 @@ def generate_template_style_prompt(
 
     modifier = category_modifiers.get(image_category, "Ban Shen Xiao Xiang, Xi Jie Qing Xi")
 
-    return f"{base_prompt}，{modifier}，细节丰富，清晰聚焦"
+    return f"{base_prompt}，{modifier}，Xi Jie Feng Fu，Qing Xi Ju Jiao"
 
 
 def build_biography_from_profile(profile: Dict[str, Any]) -> str:

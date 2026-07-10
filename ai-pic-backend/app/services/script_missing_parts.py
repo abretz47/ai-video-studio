@@ -87,7 +87,7 @@ def populate_dialogues_and_stage_if_missing(
             sc.get("summary")
             or sc.get("description")
             or sc.get("slug_line")
-            or f"场景 {scene_no}"
+            or f"scene {scene_no}"
         )
         extracted = extract_dialogues_from_scene_summary(
             str(summary),
@@ -112,7 +112,7 @@ def populate_dialogues_and_stage_if_missing(
             sc.get("summary")
             or sc.get("description")
             or sc.get("slug_line")
-            or f"场景 {scene_no}"
+            or f"scene {scene_no}"
         )
         generated_stage.append(
             {

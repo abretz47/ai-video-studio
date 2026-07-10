@@ -104,7 +104,7 @@ prompt: |
  - plot_points/timing Fu Gai story structure; Ruo You beats You Xian Dui Qi; none beats Shi Zi Xing Chai Fen.
  - conflicts Zhi Shao 1 Tiao, Ming Que conflict type Yu Qiang Du; scene_count Yu scene Dui Ying.
  - scenes Xu Bao Han scene_number/slug_line/location/time_of_day/summary; Ruo You beats Jin Liang Shun Xu Dui Ying; none beats Shi An He Li pacing Chai Fen.
- - keep {{ pacing }} Jie Zou Yu {{ plot_complexity }} Fu Za Du.
+ - keep {{ pacing }} Pacing Yu {{ plot_complexity }} Fu Za Du.
  {% if episode_duration %}- **key Shi length Yao Qiu**: Dan Ji target Shi length {{ episode_duration }} minutes({{ episode_duration * 60 }} seconds)
  - Mei Ge scene Bi Xu Biao Zhu estimated_duration_seconds(Yu Gu Shi Chang, Dan Wei Miao)
  - Suo You scene De estimated_duration_seconds Zhi He Ying Jie Jin target Shi length(Yun Xu±15%Wu Cha)

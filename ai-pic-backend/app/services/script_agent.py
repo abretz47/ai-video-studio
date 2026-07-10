@@ -437,10 +437,10 @@ class ScriptLangGraphAgent:
 
         # Combine all scene constraints
         combined = "\n\n---\n\n".join(
-            [f"### 场景 {i+1} 字数约束\n\n{c}" for i, c in enumerate(scene_constraints)]
+            [f"### scene {i+1} Zi Shu Yue Shu\n\n{c}" for i, c in enumerate(scene_constraints)]
         )
 
-        return f"\n\n## 各场景字数约束\n\n{combined}"
+        return f"\n\n## Ge scene Zi Shu Yue Shu\n\n{combined}"
 
     def _compute_budgets_from_scenes(
         self,
@@ -565,14 +565,14 @@ class ScriptLangGraphAgent:
             extra_words = int(diff * WORDS_PER_SECOND)
             return (
                 False,
-                f"时长不足：实际 {actual_seconds:.1f}s < 目标 {budget.target_duration_seconds}s，需增加约 {extra_words} 字",
+                f"Shi Zhang Bu Zu：Shi Ji {actual_seconds:.1f}s < Mu Biao {budget.target_duration_seconds}s，Xu Zeng Jia Yue {extra_words} Zi",
             )
         elif actual_seconds > budget.max_duration_seconds:
             diff = actual_seconds - budget.target_duration_seconds
             reduce_words = int(diff * WORDS_PER_SECOND)
             return (
                 False,
-                f"时长过长：实际 {actual_seconds:.1f}s > 目标 {budget.target_duration_seconds}s，需删减约 {reduce_words} 字",
+                f"Shi Zhang Guo Zhang：Shi Ji {actual_seconds:.1f}s > Mu Biao {budget.target_duration_seconds}s，Xu Shan Jian Yue {reduce_words} Zi",
             )
         return True, ""
 
@@ -1069,7 +1069,7 @@ class ScriptLangGraphAgent:
 
                 if not is_valid:
                     all_valid = False
-                    rejection_reasons.append(f"场景{scene_num}: {reason}")
+                    rejection_reasons.append(f"scene{scene_num}: {reason}")
 
                     # Update budget with rejection info for retry
                     updated_budget = SceneBudget(

@@ -143,21 +143,21 @@ class StoryQuickFixService:
         """Generate synopsis from title/genre/premise."""
         context_parts = []
         if story.title:
-            context_parts.append(f"标题：{story.title}")
+            context_parts.append(f"Biao Ti：{story.title}")
         if story.genre:
-            context_parts.append(f"类型：{story.genre}")
+            context_parts.append(f"Lei Xing：{story.genre}")
         if story.premise:
-            context_parts.append(f"前提：{story.premise}")
+            context_parts.append(f"Qian Ti：{story.premise}")
         if story.theme:
-            context_parts.append(f"主题：{story.theme}")
+            context_parts.append(f"Zhu Ti：{story.theme}")
 
         if not context_parts:
             return None
 
         synopsis = await self._generate_text(
-            f"根据以下信息，生成一段50-100字的故事概要（synopsis）：\n"
+            f"Gen Ju Yi Xia Xin Xi，generate Yi Duan50-100Zi De story Gai Yao（synopsis）：\n"
             f"{chr(10).join(context_parts)}\n\n"
-            f"要求：简洁明了，概括故事主线和核心冲突。只输出概要内容，不要其他文字。"
+            f"Yao Qiu：Jian Jie Ming Le，Gai Kuo story Zhu Xian He He Xin Chong Tu。Zhi Shu Chu Gai Yao Nei Rong，Bu Yao Qi Ta Wen Zi。"
         )
 
         if synopsis and len(synopsis.strip()) >= 50:
@@ -173,21 +173,21 @@ class StoryQuickFixService:
         """Generate main_conflict from synopsis/premise."""
         context_parts = []
         if story.title:
-            context_parts.append(f"标题：{story.title}")
+            context_parts.append(f"Biao Ti：{story.title}")
         if story.genre:
-            context_parts.append(f"类型：{story.genre}")
+            context_parts.append(f"Lei Xing：{story.genre}")
         if story.synopsis:
-            context_parts.append(f"概要：{story.synopsis}")
+            context_parts.append(f"Gai Yao：{story.synopsis}")
         elif story.premise:
-            context_parts.append(f"前提：{story.premise}")
+            context_parts.append(f"Qian Ti：{story.premise}")
 
         if not context_parts:
             return None
 
         conflict = await self._generate_text(
-            f"根据以下信息，生成故事的主要冲突（main_conflict）描述：\n"
+            f"Gen Ju Yi Xia Xin Xi，generate story De Zhu Yao Chong Tu（main_conflict）Miao Shu：\n"
             f"{chr(10).join(context_parts)}\n\n"
-            f"要求：一句话概括核心矛盾或冲突。只输出冲突描述，不要其他文字。"
+            f"Yao Qiu：Yi Ju Hua Gai Kuo He Xin Mao Dun Huo Chong Tu。Zhi Shu Chu Chong Tu Miao Shu，Bu Yao Qi Ta Wen Zi。"
         )
 
         if conflict and conflict.strip():
@@ -203,11 +203,11 @@ class StoryQuickFixService:
         """Generate setting_time from genre/synopsis."""
         context_parts = []
         if story.genre:
-            context_parts.append(f"类型：{story.genre}")
+            context_parts.append(f"Lei Xing：{story.genre}")
         if story.synopsis:
-            context_parts.append(f"概要：{story.synopsis}")
+            context_parts.append(f"Gai Yao：{story.synopsis}")
         elif story.premise:
-            context_parts.append(f"前提：{story.premise}")
+            context_parts.append(f"Qian Ti：{story.premise}")
 
         if not context_parts:
             # Default setting based on genre
@@ -219,10 +219,10 @@ class StoryQuickFixService:
             )
 
         setting = await self._generate_text(
-            f"根据以下信息，生成故事的时间设定（setting_time）：\n"
+            f"Gen Ju Yi Xia Xin Xi，generate story De Shi Jian She Ding（setting_time）：\n"
             f"{chr(10).join(context_parts)}\n\n"
-            f"要求：简短描述时间背景，如'当代'、'2024年'、'古代唐朝'等。"
-            f"只输出时间设定，不要其他文字。"
+            f"Yao Qiu：Jian Duan Miao Shu Shi Jian Bei Jing，Ru'Dang Dai'、'2024Nian'、'Gu Dai Tang Chao'Deng。"
+            f"Zhi Shu Chu Shi Jian She Ding，Bu Yao Qi Ta Wen Zi。"
         )
 
         if setting and setting.strip():
@@ -238,21 +238,21 @@ class StoryQuickFixService:
         """Generate world_building from genre/setting/synopsis."""
         context_parts = []
         if story.genre:
-            context_parts.append(f"类型：{story.genre}")
+            context_parts.append(f"Lei Xing：{story.genre}")
         if story.setting_time:
-            context_parts.append(f"时间：{story.setting_time}")
+            context_parts.append(f"Shi Jian：{story.setting_time}")
         if story.setting_location:
-            context_parts.append(f"地点：{story.setting_location}")
+            context_parts.append(f"Di Dian：{story.setting_location}")
         if story.synopsis:
-            context_parts.append(f"概要：{story.synopsis}")
+            context_parts.append(f"Gai Yao：{story.synopsis}")
 
         if not context_parts:
             return None
 
         world = await self._generate_text(
-            f"根据以下信息，生成简短的世界观设定（world_building）：\n"
+            f"Gen Ju Yi Xia Xin Xi，generate Jian Duan De Shi Jie Guan She Ding（world_building）：\n"
             f"{chr(10).join(context_parts)}\n\n"
-            f"要求：2-3句话描述故事世界的基本规则和氛围。只输出世界观描述，不要其他文字。"
+            f"Yao Qiu：2-3Ju Hua Miao Shu story Shi Jie De Ji Ben Gui Ze He Fen Wei。Zhi Shu Chu Shi Jie Guan Miao Shu，Bu Yao Qi Ta Wen Zi。"
         )
 
         if world and world.strip():

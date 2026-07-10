@@ -7,241 +7,241 @@ from tests.unit.services.script.test_beat_contract_normalizer import _valid_cont
 
 @pytest.mark.unit
 def test_quality_gate_accepts_structured_contract():
- contract = normalize_script_beat_contract(_valid_contract())
+    contract = normalize_script_beat_contract(_valid_contract())
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- assert report["passed"] is True
- assert report["failed_checks"] == []
+    assert report["passed"] is True
+    assert report["failed_checks"] == []
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_thin_scene_with_too_few_beats():
- payload = _valid_contract()
- payload["scenes"][0]["beats"] = payload["scenes"][0]["beats"][:1]
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    payload["scenes"][0]["beats"] = payload["scenes"][0]["beats"][:1]
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- assert report["passed"] is False
- assert "scene_min_beats" in {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_min_beats" in {item["check_id"] for item in report["failed_checks"]}
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_missing_payoff_for_multi_scene_episode():
- payload = _valid_contract()
- second = dict(payload["scenes"][0])
- second["scene_number"] = 2
- second["dramatic_role"] = "cliffhanger"
- second["beats"] = [dict(beat) for beat in payload["scenes"][0]["beats"]]
- second["beats"][-1]["beat_type"] = "cliffhanger"
- second["beats"][-1]["cliffhanger_tag"] = "new_threat"
- payload["scenes"].append(second)
- for scene in payload["scenes"]:
- for beat in scene["beats"]:
- beat["beat_type"] = (
- "conflict" if beat["order_index"] == 2 else beat["beat_type"]
-)
- beat.pop("payoff_tag", None)
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    second = dict(payload["scenes"][0])
+    second["scene_number"] = 2
+    second["dramatic_role"] = "cliffhanger"
+    second["beats"] = [dict(beat) for beat in payload["scenes"][0]["beats"]]
+    second["beats"][-1]["beat_type"] = "cliffhanger"
+    second["beats"][-1]["cliffhanger_tag"] = "new_threat"
+    payload["scenes"].append(second)
+    for scene in payload["scenes"]:
+        for beat in scene["beats"]:
+            beat["beat_type"] = (
+                "conflict" if beat["order_index"] == 2 else beat["beat_type"]
+            )
+            beat.pop("payoff_tag", None)
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- assert report["passed"] is False
- assert "payoff_required" in {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "payoff_required" in {item["check_id"] for item in report["failed_checks"]}
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_fallback_detected_contract():
- contract = normalize_script_beat_contract(
- {
- "scenes": [{"scene_number": 1, "summary": "Zhi You Pang Bai"}],
- "dialogues": [
- {
- "scene_number": 1,
- "character": "voiceover",
- "content": "Zhi You Pang Bai",
- "fallback": True,
- }
- ],
- "stage_directions": [],
- }
-)
+    contract = normalize_script_beat_contract(
+        {
+            "scenes": [{"scene_number": 1, "summary": "Zhi You voiceover"}],
+            "dialogues": [
+                {
+                    "scene_number": 1,
+                    "character": "voiceover",
+                    "content": "Zhi You voiceover",
+                    "fallback": True,
+                }
+            ],
+            "stage_directions": [],
+        }
+    )
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- assert report["passed"] is False
- assert "fallback_content" in {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "fallback_content" in {item["check_id"] for item in report["failed_checks"]}
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_generic_conflict_and_abstract_beats():
- payload = _valid_contract()
- scene = payload["scenes"][0]
- scene["conflict"]["stakes"] = "Protagonist Mian Lin Zhong Da crisis."
- scene["conflict"]["opposition"] = "mysterious Li Liang Zu Zhi Ta."
- for beat in scene["beats"]:
- beat["visible_event"] = "drama continue Tui Jin."
- beat["action_lines"] = [{"content": "character start Xing Dong."}]
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    scene = payload["scenes"][0]
+    scene["conflict"]["stakes"] = "protagonist Mian Lin Zhong Da crisis。"
+    scene["conflict"]["opposition"] = "mysterious Li Liang Zu Zhi Ta。"
+    for beat in scene["beats"]:
+        beat["visible_event"] = "drama continue Tui Jin。"
+        beat["action_lines"] = [{"content": "character start Xing Dong。"}]
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "scene_conflict_specificity" in failed
- assert "beat_visible_event_specificity" in failed
- assert "beat_action_specificity" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_conflict_specificity" in failed
+    assert "beat_visible_event_specificity" in failed
+    assert "beat_action_specificity" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_symbolic_payoff_and_empty_cliffhanger():
- payload = _valid_contract()
- beats = payload["scenes"][0]["beats"]
- beats[1]["beat_type"] = "payoff"
- beats[1]["payoff_tag"] = "win"
- beats[1]["visible_event"] = "Protagonist Huo De Sheng Li."
- beats[-1]["beat_type"] = "cliffhanger"
- beats[-1]["cliffhanger_tag"] = "suspense"
- beats[-1]["visible_event"] = "Liu Xia Ju Da Xuan Nian."
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    beats = payload["scenes"][0]["beats"]
+    beats[1]["beat_type"] = "payoff"
+    beats[1]["payoff_tag"] = "win"
+    beats[1]["visible_event"] = "protagonist Huo De Sheng Li。"
+    beats[-1]["beat_type"] = "cliffhanger"
+    beats[-1]["cliffhanger_tag"] = "suspense"
+    beats[-1]["visible_event"] = "Liu Xia Ju Da Xuan Nian。"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "payoff_specificity" in failed
- assert "cliffhanger_specificity" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "payoff_specificity" in failed
+    assert "cliffhanger_specificity" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_generic_dialogue_characters():
- payload = _valid_contract()
- for beat in payload["scenes"][0]["beats"]:
- for line in beat["dialogue_lines"]:
- line["character"] = "Protagonist"
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    for beat in payload["scenes"][0]["beats"]:
+        for line in beat["dialogue_lines"]:
+            line["character"] = "protagonist"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "dialogue_character_specificity" in failed
- assert "scene_protagonist_presence" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "dialogue_character_specificity" in failed
+    assert "scene_protagonist_presence" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_requires_recurring_named_character_in_scene():
- payload = _valid_contract()
- names = ["Xiao Ji", "Hui Ping", "Hei Ying"]
- for beat, name in zip(payload["scenes"][0]["beats"], names, strict=True):
- beat["dialogue_lines"][0]["character"] = name
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    names = ["Xiao Ji", "Hui Ping", "Hei Ying"]
+    for beat, name in zip(payload["scenes"][0]["beats"], names, strict=True):
+        beat["dialogue_lines"][0]["character"] = name
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "scene_protagonist_presence" in failed
- assert "dialogue_character_specificity" not in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_protagonist_presence" in failed
+    assert "dialogue_character_specificity" not in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_requires_protagonist_in_screen_action():
- payload = _valid_contract()
- scene = payload["scenes"][0]
- for beat in scene["beats"]:
- beat["visible_event"] = "Kong Zhi Tai Hong Deng Lian Xu Shan Shuo."
- beat["action_lines"] = [{"content": "screen Dan Chu permission Jing Bao."}]
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    scene = payload["scenes"][0]
+    for beat in scene["beats"]:
+        beat["visible_event"] = "Kong Zhi Tai Hong Deng Lian Xu Shan Shuo。"
+        beat["action_lines"] = [{"content": "screen Dan Chu permission Jing Bao。"}]
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "scene_protagonist_screen_presence" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_protagonist_screen_presence" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_requires_beat_durations_for_timed_scene():
- payload = _valid_contract()
- for beat in payload["scenes"][0]["beats"]:
- beat.pop("duration_seconds", None)
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    for beat in payload["scenes"][0]["beats"]:
+        beat.pop("duration_seconds", None)
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "beat_duration_required" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "beat_duration_required" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_scene_duration_mismatch():
- payload = _valid_contract()
- for beat in payload["scenes"][0]["beats"]:
- beat["duration_seconds"] = 2
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    for beat in payload["scenes"][0]["beats"]:
+        beat["duration_seconds"] = 2
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "scene_duration_alignment" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "scene_duration_alignment" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_internal_state_as_visible_action():
- payload = _valid_contract()
- scene = payload["scenes"][0]
- scene["beats"][0]["visible_event"] = "Xiao Ji Yi Shi to truth Zheng Zai Gai Bian Ming Yun."
- scene["beats"][0]["action_lines"] = [{"content": "Xiao Ji Nei Xin Gan Dao Beng Kui."}]
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    scene = payload["scenes"][0]
+    scene["beats"][0]["visible_event"] = "Xiao Ji Yi Shi to truth Zheng Zai Gai Bian Ming Yun。"
+    scene["beats"][0]["action_lines"] = [{"content": "Xiao Ji Nei Xin Gan Dao Beng Kui。"}]
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "beat_visible_event_specificity" in failed
- assert "beat_action_specificity" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "beat_visible_event_specificity" in failed
+    assert "beat_action_specificity" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_rejects_filler_dialogue_lines():
- payload = _valid_contract()
- for beat in payload["scenes"][0]["beats"]:
- for line in beat["dialogue_lines"]:
- line["content"] = "Hao De"
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    for beat in payload["scenes"][0]["beats"]:
+        for line in beat["dialogue_lines"]:
+            line["content"] = "Hao"
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "dialogue_substance" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "dialogue_substance" in failed
 
 
 @pytest.mark.unit
 def test_quality_gate_check_reports_failed_beat_contract():
- contract = normalize_script_beat_contract(
- {
- "scenes": [{"scene_number": 1, "summary": "Zhi You Pang Bai"}],
- "dialogues": [
- {
- "scene_number": 1,
- "character": "voiceover",
- "content": "Zhi You Pang Bai",
- "fallback": True,
- }
- ],
- "stage_directions": [],
- }
-)
- content = {"structured_script_contract": contract.model_dump(mode="json")}
- content["structured_script_contract"]["fallback_detected"] = True
+    contract = normalize_script_beat_contract(
+        {
+            "scenes": [{"scene_number": 1, "summary": "Zhi You voiceover"}],
+            "dialogues": [
+                {
+                    "scene_number": 1,
+                    "character": "voiceover",
+                    "content": "Zhi You voiceover",
+                    "fallback": True,
+                }
+            ],
+            "stage_directions": [],
+        }
+    )
+    content = {"structured_script_contract": contract.model_dump(mode="json")}
+    content["structured_script_contract"]["fallback_detected"] = True
 
- check = beat_contract_check(content)
+    check = beat_contract_check(content)
 
- assert check is not None
- assert check["id"] == "script_beat_contract"
- assert check["passed"] is False
+    assert check is not None
+    assert check["id"] == "script_beat_contract"
+    assert check["passed"] is False

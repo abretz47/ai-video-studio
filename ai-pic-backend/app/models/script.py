@@ -255,7 +255,7 @@ class StoryCharacter(SoftDeleteBusinessMixin, Base):
 
     @property
     def display_name(self):
-        return self.name or f"角色{self.id}"
+        return self.name or f"character{self.id}"
 
 
 class ScriptTemplate(SoftDeleteBusinessMixin, Base):

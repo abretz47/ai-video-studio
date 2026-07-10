@@ -106,4 +106,4 @@ class EpisodeCharacter(SoftDeleteBusinessMixin, Base):
 
     @property
     def display_name(self):
-        return self.name or f"临时角色{self.id}"
+        return self.name or f"Lin Shi character{self.id}"

@@ -77,7 +77,7 @@ def _build_character_card_brief(canonical_name: str, vip: VirtualIP) -> str:
     parts = [p for p in (_first_clause(desc, 90), _first_clause(style, 90)) if p]
     if parts:
         return f"{canonical_name}: {'；'.join(parts)}"
-    return f"{canonical_name}: 外观与服饰保持一致"
+    return f"{canonical_name}: Wai Guan Yu Fu Shi Bao Chi Yi Zhi"
 
 
 @dataclass(frozen=True, slots=True)

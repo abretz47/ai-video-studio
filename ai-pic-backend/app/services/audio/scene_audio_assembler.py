@@ -165,7 +165,7 @@ async def assemble_scene_audio(
         },
     )
     if not oss_result.get("success") or not oss_result.get("file_url"):
-        raise RuntimeError(f"OSS 上传失败: {oss_result}")
+        raise RuntimeError(f"OSS Shang Chuan failed: {oss_result}")
 
     persist_beats(db, beats, scene, scene_character_names, overwrite_beats)
     return update_scene_metadata(

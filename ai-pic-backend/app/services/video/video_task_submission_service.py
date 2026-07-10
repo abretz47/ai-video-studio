@@ -144,7 +144,7 @@ class VideoTaskSubmissionService:
         provider_task_id = (response.data or {}).get("task_id")
         if not provider_task_id:
             self._record_failure(task, script_id, frame_index, "Task ID was not returned")
-            return False, f"frame {frame_index}: 未返回任务ID"
+            return False, f"frame {frame_index}: Wei Fan Hui taskID"
 
         provider_duration_seconds = int(
             (response.data or {}).get("duration") or request_duration_seconds

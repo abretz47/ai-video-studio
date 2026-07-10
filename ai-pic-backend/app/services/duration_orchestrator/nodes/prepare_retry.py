@@ -55,7 +55,7 @@ def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
         reasoning = state.get("reasoning", [])
         reasoning.append(
-            f"场景 {budget.scene_number} 达到最大重试次数 ({MAX_RETRY_ATTEMPTS})，强制提交"
+            f"scene {budget.scene_number} Da Dao Zui Da Zhong Shi Ci Shu ({MAX_RETRY_ATTEMPTS})，Qiang Zhi Ti Jiao"
         )
 
         return {
@@ -98,7 +98,7 @@ def prepare_retry_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     reasoning = state.get("reasoning", [])
     reasoning.append(
-        f"场景 {budget.scene_number} 准备重试 (第 {budget.attempt_count + 1} 次): {reason}"
+        f"scene {budget.scene_number} Zhun Bei Zhong Shi (Di {budget.attempt_count + 1} Ci): {reason}"
     )
 
     return {

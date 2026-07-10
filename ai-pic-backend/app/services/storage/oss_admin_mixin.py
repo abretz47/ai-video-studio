@@ -18,7 +18,7 @@ class OSSAdminMixin:
         except Exception as exc:  # noqa: BLE001
             return {
                 "success": False,
-                "error": f"删除失败: {exc}",
+                "error": f"Shan Chu failed: {exc}",
                 "object_key": object_key,
             }
 
@@ -29,7 +29,7 @@ class OSSAdminMixin:
         try:
             return self.bucket.sign_url(method, object_key, expires)
         except Exception as exc:  # noqa: BLE001
-            raise Exception(f"生成签名URL失败: {exc}") from exc
+            raise Exception(f"generate Qian MingURLfailed: {exc}") from exc
 
     def list_objects(
         self, prefix: str = "", max_keys: int = 100, marker: str = ""
@@ -57,7 +57,7 @@ class OSSAdminMixin:
                 "next_marker": result.next_marker,
             }
         except Exception as exc:  # noqa: BLE001
-            return {"success": False, "error": f"列出对象失败: {exc}"}
+            return {"success": False, "error": f"Lie Chu Dui Xiang failed: {exc}"}
 
     def get_object_info(self, object_key: str) -> dict[str, Any]:
         """get Dui Xiang Xin Xi"""
@@ -83,6 +83,6 @@ class OSSAdminMixin:
         except Exception as exc:  # noqa: BLE001
             return {
                 "success": False,
-                "error": f"获取对象信息失败: {exc}",
+                "error": f"Huo Qu Dui Xiang Xin Xi failed: {exc}",
                 "object_key": object_key,
             }

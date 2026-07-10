@@ -192,9 +192,9 @@ async def _agent_choose_voice_id(
         "1) Zhi Neng Cong Hou Xuan list in Xuan Ze voice_id; \n"
         "2) priority Pi Pei character Qi Zhi/Nian Ling/Xing Bie(if Xin Xi insufficient then Xuan Ze Geng Tong Yong Cheng Ren voice timbre); \n"
         "3) only return strict JSON.\n\n"
-        f"角色名：{character_name}\n"
-        f"角色描述：{character_description or ''}\n"
-        f"候选音色（voice_id / voice_name）：\n"
+        f"character name：{character_name}\n"
+        f"character Miao Shu：{character_description or ''}\n"
+        f"Hou Xuan Yin Se（voice_id / voice_name）：\n"
         + "\n".join(f"- {c['voice_id']} / {c.get('voice_name','')}" for c in candidates)
     )
     resp = await ai_service.ai_manager.generate_text(
@@ -365,14 +365,14 @@ async def _agent_decide_derived_scope(
     }
 
     prompt = (
-        "you Shi script Zhi Zuo system character Zi Chan Zhu Shou.Gei Ding a"Yan Sheng character"(IPKu Zhong not Cun Zai), Qing determine Qi voice timbre Bang Ding Zuo Yong Yu: \n"
+        'You are a script production system character-asset assistant. Given an "extended character" (not stored in the IP library), determine the scope where its voice binding should apply:\n'
         "- scene: only current scene You Xiao(Yi Ci Xing Lu Ren/clerk)\n"
         "- episode: current Ji Nei Duo Ci Chu Xian\n"
         "- story: Kua Duo Ji Fan Fu Chu Xian(Chang Qi character)\n\n"
         "only return strict JSON.\n\n"
-        f"角色名：{character_name}\n"
-        f"该角色在本集出现次数：{occurrences_in_episode}\n"
-        f"该角色在全故事中出现的集数：{episodes_in_story}\n"
+        f"character name：{character_name}\n"
+        f"number of appearances of this character in this episode：{occurrences_in_episode}\n"
+        f"number of episodes where this character appears in the full story：{episodes_in_story}\n"
     )
 
     resp = await ai_service.ai_manager.generate_text(

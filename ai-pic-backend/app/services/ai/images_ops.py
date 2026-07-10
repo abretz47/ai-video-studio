@@ -32,5 +32,5 @@ class ImageOpsMixin:
                 result = response.json()
                 return result.get("image_url")
         except Exception as exc:
-            print(f"AI服务调用失败: {exc}")
+            print(f"AIFu Wu Diao Yong failed: {exc}")
             return None

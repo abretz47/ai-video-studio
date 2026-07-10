@@ -29,7 +29,7 @@ async def generate_story_novel_text(
             return resp.data.strip()
         raise HTTPException(
             status_code=500,
-            detail=f"AI生成失败: {getattr(resp, 'error', None) or 'unknown'}",
+            detail=f"AIgeneration failed: {getattr(resp, 'error', None) or 'unknown'}",
         )
 
     # Fallback: use legacy text generation chain (may be less stable)

@@ -26,7 +26,7 @@ def execute_brief_compose(
             label=skill.label if skill else "Brief Skill",
             status="ready",
             title="Que Ren production brief",
-            detail=f"目标：{request.prompt}",
+            detail=f"Mu Biao：{request.prompt}",
             outputs={
                 "prompt": request.prompt,
                 **({"canvas_run_id": request.run_id} if request.run_id else {}),
@@ -60,8 +60,8 @@ def execute_asset_selection(
             skill="asset.select",
             label=skill.label if skill else "Asset Selection",
             status=status,
-            title=f"复用资产：{ip_names} / {env_names}",
-            detail=f"复用现有 IP：{ip_names}；环境：{env_names}",
+            title=f"Fu Yong Zi Chan：{ip_names} / {env_names}",
+            detail=f"Fu Yong Xian You IP：{ip_names}；Huan Jing：{env_names}",
             outputs=outputs,
             reuse_targets=skill.reuse_targets if skill else [],
         )

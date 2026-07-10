@@ -67,40 +67,40 @@ def _build_generation_prompt(
     setting = scene_context.get("setting_location", "")
     time_period = scene_context.get("setting_time", "")
 
-    prompt = f"""请根据以下信息生成临时角色的详细背景资料：
+    prompt = f"""Qing Gen Ju Yi Xia Xin Xi generate Lin Shi character De Xiang Xi Bei Jing Zi Liao：
 
-角色名称：{character_info.character_name}
+character name Cheng：{character_info.character_name}
 
-出场场景：第{character_info.first_appearance_scene}场景到第{character_info.last_appearance_scene}场景
-对白总数：{character_info.dialogue_count}句
+Chu Chang scene：Di{character_info.first_appearance_scene}scene Dao Di{character_info.last_appearance_scene}scene
+dialogue Zong Shu：{character_info.dialogue_count}Ju
 
-角色对白示例：
+character dialogue Shi Li：
 {dialogues_text}
 
-外观线索：{appearance_hints_text or "none"}
+Wai Guan Xian Suo：{appearance_hints_text or "none"}
 
-场景设定：
-- 地点：{setting}
-- 时代：{time_period}
+scene She Ding：
+- Di Dian：{setting}
+- Shi Dai：{time_period}
 
-请生成以下三个方面的描述：
+Qing generate Yi Xia San Ge Fang Mian De Miao Shu：
 
-1. 性格特点（personality）：
-   - 基于对白分析角色的性格特征
-   - 2-3个关键词，用逗号分隔
-   - 示例："热情、专业、认真负责"
+1. Xing Ge Te Dian（personality）：
+   - Ji Yu dialogue Fen Xi character De Xing Ge Te Zheng
+   - 2-3Ge Guan Jian Ci，Yong Dou Hao Fen Ge
+   - Shi Li："Re Qing、Zhuan Ye、Ren Zhen Fu Ze"
 
-2. 角色背景（background）：
-   - 1-2句话描述角色的身份和背景
-   - 结合场景设定和角色名称
-   - 示例："快递公司员工，负责本小区的配送工作，对社区环境很熟悉"
+2. character Bei Jing（background）：
+   - 1-2Ju Hua Miao Shu character De Shen Fen He Bei Jing
+   - Jie He scene She Ding He character name Cheng
+   - Shi Li："Kuai Di Gong Si Yuan Gong，Fu Ze Ben Xiao Qu De Pei Song Gong Zuo，Dui She Qu Huan Jing Hen Shu Xi"
 
-3. 外观描述（appearance_override）：
-   - 1-2句话描述角色的外观特征
-   - 结合外观线索和职业特点
-   - 示例："穿着快递制服，背着快递包，看起来年轻有活力"
+3. Wai Guan Miao Shu（appearance_override）：
+   - 1-2Ju Hua Miao Shu character De Wai Guan Te Zheng
+   - Jie He Wai Guan Xian Suo He Zhi Ye Te Dian
+   - Shi Li："Chuan Zhe Kuai Di Zhi Fu，Bei Zhe Kuai Di Bao，Kan Qi Lai Nian Qing You Huo Li"
 
-请以JSON格式返回：
+Qing YiJSONformat Fan Hui：
 {{
   "personality": "...",
   "background": "...",
@@ -224,12 +224,12 @@ def _generate_with_heuristics(
     # Use appearance hints if available
     appearance = ", ".join(character_info.appearance_hints)
     if not appearance:
-        appearance = f"{char_name}的外观特征"
+        appearance = f"{char_name}De Wai Guan Te Zheng"
 
     # Generic fallback
     return {
         "personality": "Pu Tong, You Hao, Li Mao",
-        "background": f"{char_name}，在剧情中扮演临时角色",
+        "background": f"{char_name}，Zai Ju Qing Zhong Ban Yan Lin Shi character",
         "appearance_override": appearance,
     }
 
@@ -254,12 +254,12 @@ def _generate_with_heuristics_from_prompt(prompt: str) -> Dict[str, str]:
     appearance = (
         appearance_match.group(1).strip()
         if appearance_match
-        else f"{char_name}的外观特征"
+        else f"{char_name}De Wai Guan Te Zheng"
     )
 
     # Generic fallback
     return {
         "personality": "You Hao, professional, Ren Zhen",
-        "background": f"{char_name}，在剧情中扮演临时角色",
+        "background": f"{char_name}，Zai Ju Qing Zhong Ban Yan Lin Shi character",
         "appearance_override": appearance,
     }

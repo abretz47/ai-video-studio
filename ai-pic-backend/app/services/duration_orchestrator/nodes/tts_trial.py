@@ -114,9 +114,9 @@ async def tts_trial_node(state: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     reasoning.append(
-        f"场景 {budget.scene_number} {mode_label}: "
-        f"{actual_duration_seconds:.1f}s (目标 {target_seconds}s, "
-        f"偏差 {deviation:+.1f}s / {deviation_percent:+.0f}%)"
+        f"scene {budget.scene_number} {mode_label}: "
+        f"{actual_duration_seconds:.1f}s (Mu Biao {target_seconds}s, "
+        f"Pian Cha {deviation:+.1f}s / {deviation_percent:+.0f}%)"
     )
 
     return {

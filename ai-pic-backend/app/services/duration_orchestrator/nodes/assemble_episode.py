@@ -133,8 +133,8 @@ def assemble_episode_node(state: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     reasoning.append(
-        f"剧集组装完成: {committed_count}/{len(budgets)} 场景已提交, "
-        f"总时长 {total_actual_duration:.1f}s / {total_target_duration}s "
+        f"episode Zu Zhuang Wan Cheng: {committed_count}/{len(budgets)} scene Yi Ti Jiao, "
+        f"Zong Shi Zhang {total_actual_duration:.1f}s / {total_target_duration}s "
         f"({duration_ratio:.1%})"
     )
 

@@ -143,5 +143,5 @@ class StoryboardGenerationMixin:
                         "usage": response.usage,
                     }
             except Exception as exc:
-                print(f"分镜生成失败: {exc}")
+                print(f"Fen Jing generation failed: {exc}")
         return None

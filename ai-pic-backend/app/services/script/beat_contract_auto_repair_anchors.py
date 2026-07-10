@@ -32,7 +32,7 @@ def apply_workplace_anchors(
         data = [
             ("conflict", "Chen Mo Tu Ran QiangAPphone, Tong Zhi Lan Lu Chu Gai Wan Gei you20Wan, delete Que Ren Kuang Ting in Hong Se An Niu on.", ("Chen Mo", "phone Gei I."), (protagonist, "delete Jian Bie Peng.")),
             ("reveal", "Xiao Chen Suo Zhu log Tou Ping, Chen Mo Zuo Wan23:41Zhang Hao Ji Lu Hong Kuang Tao Zhu.", ("Xiao Chen", "Zhang Hao Shi Chen Mo."), (protagonist, "recording Ye in.")),
-            ("payoff", "Chen Mo phone Tong Zhi Lan Tiao Chu"Gai Wan Gei you20Wan", Zhang Zong Ting Zhi Che Dan Dian Hua.", ("Zhang Zong", "15seconds."), ("Chen Mo", "I Bi.")),
+            ("payoff", 'Chen Mo phone notice bar pops up with "After it is done, I will give you 200,000", and Director Zhang stops the withdrawal call.', ("Zhang Zong", "15seconds."), ("Chen Mo", "I Bi.")),
         ]
     elif index == count - 1:
         data = [
@@ -61,10 +61,10 @@ def _set_beat(
 ) -> None:
     beat["beat_type"] = beat_type
     beat["visible_event"] = visible
-    beat["dramatic_purpose"] = f"{visible}迫使客户和团队在屏幕前确认证据。"
+    beat["dramatic_purpose"] = f"{visible}Po Shi Ke Hu He Tuan Dui Zai Ping Mu Qian Que Ren Zheng Ju。"
     beat["action_lines"] = [
         {
-            "content": f"{protagonist}把原始文件推到投影前，屏幕证据被镜头推近。",
+            "content": f"{protagonist}Ba Yuan Shi file Tui Dao Tou Ying Qian，Ping Mu Zheng Ju Bei Jing Tou Tui Jin。",
             "timing": "mid",
             "type": "action",
         }

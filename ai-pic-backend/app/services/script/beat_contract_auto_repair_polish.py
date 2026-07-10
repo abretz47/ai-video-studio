@@ -40,7 +40,7 @@ def repair_beats(scene: dict[str, Any], beats: list[dict[str, Any]]) -> None:
     for beat in beats:
         visible = str(beat.get("visible_event") or "")
         if has_any(visible, _VAGUE_VISUAL):
-            beat["visible_event"] = f"{protagonist}停住脚步举起手机，云端日志时间戳映在屏幕上。"
+            beat["visible_event"] = f"{protagonist}Ting Zhu Jiao Bu Ju Qi Shou Ji，Yun Duan log timestamp Ying Zai Ping Mu Shang。"
         if (beat.get("beat_type") == "payoff" or beat.get("payoff_tag")) and has_any(
             visible, ("Xin Ren", "Beng Kui", "Cheng Ren")
         ):
@@ -48,7 +48,7 @@ def repair_beats(scene: dict[str, Any], beats: list[dict[str, Any]]) -> None:
             beat["payoff_tag"] = "Client signs to continue the project"
         purpose = str(beat.get("dramatic_purpose") or "")
         if not purpose or has_any(purpose, _VAGUE):
-            beat["dramatic_purpose"] = f"{beat['visible_event']}让证据链进入下一步。"
+            beat["dramatic_purpose"] = f"{beat['visible_event']}Rang Zheng Ju Lian Jin Ru Xia Yi Bu。"
         for action in beat.get("action_lines") or []:
             if isinstance(action, dict) and has_any(
                 str(action.get("content") or ""), _VAGUE_VISUAL
@@ -58,7 +58,7 @@ def repair_beats(scene: dict[str, Any], beats: list[dict[str, Any]]) -> None:
         beats[0].setdefault("action_lines", []).insert(
             0,
             {
-                "content": f"{protagonist}把原始文件推到投影前，客户和团队同时看向屏幕。",
+                "content": f"{protagonist}Ba Yuan Shi file Tui Dao Tou Ying Qian，Ke Hu He Tuan Dui Tong Shi Kan Xiang Ping Mu。",
                 "timing": "mid",
                 "type": "action",
             },

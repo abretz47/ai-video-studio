@@ -17,18 +17,18 @@ def _asset_title(selection: CanvasAssetSelection) -> str:
     ip_names = _asset_names(selection.selected.virtual_ips)
     env_names = _asset_names(selection.selected.environments)
     if ip_names and env_names:
-        return f"已选择 {ip_names} 和 {env_names}"
+        return f"Yi Xuan Ze {ip_names} He {env_names}"
     if ip_names:
-        return f"已选择 IP：{ip_names}；环境待确认"
+        return f"Yi Xuan Ze IP：{ip_names}；Huan Jing Dai Que Ren"
     if env_names:
-        return f"IP 待确认；已选择环境：{env_names}"
+        return f"IP Dai Que Ren；Yi Xuan Ze Huan Jing：{env_names}"
     return "pending Que Ren IP and environment Zi Chan"
 
 
 def _asset_detail(selection: CanvasAssetSelection) -> str:
     ip_names = _asset_names(selection.selected.virtual_ips) or "pending Xuan Ze IP"
     env_names = _asset_names(selection.selected.environments) or "pending Xuan Ze environment"
-    return f"复用现有 IP：{ip_names}；环境：{env_names}"
+    return f"Fu Yong Xian You IP：{ip_names}；Huan Jing：{env_names}"
 
 
 def _asset_status(selection: CanvasAssetSelection) -> CanvasNodeStatus:
@@ -130,7 +130,7 @@ def build_canvas_skill_results(
                     label=skill.label,
                     status="ready",
                     title="Cong Liao Tian target Sheng Cheng production brief",
-                    detail=f"目标：{request.prompt}",
+                    detail=f"Mu Biao：{request.prompt}",
                     outputs={"prompt": request.prompt},
                     reuse_targets=skill.reuse_targets,
                 )

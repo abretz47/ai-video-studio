@@ -193,24 +193,24 @@ def _fallback_sheet_prompt(
     lines = []
     for index in range(1, layout.panel_count + 1):
         frame = frame_inputs[(index - 1) % max(1, len(frame_inputs))] if frame_inputs else {}
-        description = str(frame.get("description") or f"镜头{index}")
-        title = description[:6] or f"镜头{index}"
+        description = str(frame.get("description") or f"Jing Tou{index}")
+        title = description[:6] or f"Jing Tou{index}"
         cells.append({"panel_index": index, "title": title, "caption": title})
         lines.append(
             f"{index:02d}｜{title}：{frame.get('shot_type') or 'medium shot'}，{description}。"
-            f"说明栏文字写：“{title}”。"
+            f"Shuo Ming Lan Wen Zi Xie：“{title}”。"
         )
     characters = scene_context.get("characters") or []
     char_lines = "；".join(f"{c['name']}：{c['appearance']}" for c in characters)
     sheet_prompt = "\n".join(
         [
-            f"生成一张横向 {aspect_ratio} 的高完成度中文{layout.panel_count}宫格动作分镜图。",
+            f"generate Yi Zhang Heng Xiang {aspect_ratio} De Gao Wan Cheng Du Zhong Wen{layout.panel_count}Gong Ge Dong Zuo Fen Jing Tu。",
             "[Zheng Ti Ding Wei]film Ji Xie Shi Fen Jing Ban, You Zhen Shi film Ju Zhao Zu Cheng, Bu Shi Su Miao Cao Tu, Ka Tong or Cha Hua, Shi He Zuo Wei AI video Sheng Cheng reference Tu.",
-            f"【整体版式】{layout.rows} 行 × {layout.columns} 列共 {layout.panel_count} 格；"
+            f"【Zheng Ti Ban Shi】{layout.rows} Xing × {layout.columns} Lie Gong {layout.panel_count} Ge；"
             "Mei Ge Zuo Shang Jiao has Hei Di Bai Zi Cu Ti ID; Mei Ge Xia Fang has Bai Se note Lan Xie Zhong Wen shot name.",
-            f"【场景设定】固定在同一空间：{scene.get('location') or 'Tong Yi scene'}，"
-            f"{scene.get('time') or ''}；{scene.get('description') or ''}；场景不得切换。",
-            f"【主角设定】{char_lines or 'character Wai Mao Quan Tu Bao Chi Yi Zhi'}。",
+            f"【scene She Ding】Gu Ding Zai Tong Yi Kong Jian：{scene.get('location') or 'Tong Yi scene'}，"
+            f"{scene.get('time') or ''}；{scene.get('description') or ''}；scene Bu De Qie Huan。",
+            f"【Zhu Jiao She Ding】{char_lines or 'character Wai Mao Quan Tu Bao Chi Yi Zhi'}。",
             "[shot content]",
             *lines,
             "[frame requirement]Mei Ge only a shot Shun Jian; Chu ID and note Lan Wai frame interior Bu De Chu Xian Qi Ta Wen Zi, Zi Mu, Shui Yin, logo; "
@@ -229,7 +229,7 @@ def _fallback_video_prompt(
     characters = scene_context.get("characters") or []
     char_lines = "；".join(f"{c['name']}：{c['appearance']}" for c in characters)
     shot_lines = [
-        f"镜头{cell.get('panel_index')}（约{cell.get('duration') or DEFAULT_CELL_DURATION}秒）："
+        f"Jing Tou{cell.get('panel_index')}（Yue{cell.get('duration') or DEFAULT_CELL_DURATION}Miao）："
         f"{cell.get('caption') or cell.get('title') or ''}"
         for cell in cells
     ]
@@ -237,8 +237,8 @@ def _fallback_video_prompt(
         [
             "Shi Yong input storyboard Tu Zuo Wei action storyboard reference.strict reference Qi Zhong shot Shun Xu, action Luo Ji, character Diao Du and Jie Zou advance, "
             "Dan Zui Zhong output Bi Xu Shi complete Lian Xu film frame, Bu De Chu Xian storyboard Ge Zi, ID, note Lan, Wen Zi, Bian Kuang or Zhi Zhang background.",
-            f"【整体风格】电影级写实质感，总时长约 {round(total_duration, 1)} 秒，画幅 {aspect_ratio}。",
-            f"【主角设定】{char_lines or 'Quan Pian character Mian Bu, Fu Zhuang, Ti Xing Bao Chi Yi Zhi'}。",
+            f"【Zheng Ti Feng Ge】Dian Ying Ji Xie Shi Zhi Gan，Zong Shi Zhang Yue {round(total_duration, 1)} Miao，Hua Fu {aspect_ratio}。",
+            f"【Zhu Jiao She Ding】{char_lines or 'Quan Pian character Mian Bu, Fu Zhuang, Ti Xing Bao Chi Yi Zhi'}。",
             "[shot and content She Ji]",
             *shot_lines,
             "[frame requirement]shot has Ming Xian Jing Bie and Ji Wei change, action Lian Guan Zi Ran, Bu De Chu Xian any Wen Zi and Shui Yin.",

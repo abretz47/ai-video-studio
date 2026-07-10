@@ -105,7 +105,7 @@ async def _submit_request(
         error_message = extract_error(create_data)
         if error_message:
             return _failure_response(
-                f"火山引擎视频生成错误: {error_message}",
+                f"Huo Shan Yin Qing video generate error: {error_message}",
                 provider_name,
                 model,
                 model_type,

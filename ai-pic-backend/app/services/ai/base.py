@@ -220,5 +220,5 @@ class AIServiceBase:
 
             return AIServiceManager(config)
         except Exception as exc:
-            print(f"AI服务管理器初始化失败: {exc}")
+            print(f"AIFu Wu Guan Li Qi Chu Shi Hua failed: {exc}")
             return None

@@ -36,7 +36,7 @@ variables:
  type: string
  required: false
  description: "Micro-genre / subgenre"
- examples: ["Ba Zong Fu Chou", "Lang Ren Lian Ai", "Hei Bang Fu Chou"]
+ examples: ["Ba Zong Fu Chou", "werewolf romance", "gang revenge"]
 
  theme:
  type: string

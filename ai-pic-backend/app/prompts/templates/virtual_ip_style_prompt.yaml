@@ -22,7 +22,7 @@ variables:
  biography:
  type: string
  required: true
- description: "Ren Wu Xiao Zhuan(Yong Yu Bu Chong Qi Zhi/Zhi Ye/style)"
+ description: "character bio(used to supplement temperament/profession/style)"
  min_length: 1
  max_length: 8000
  image_category:
@@ -32,7 +32,7 @@ variables:
 
 usage_examples:
  - name: "Mia"
- description: "22 years old, Huo Po Ke Ai De Nian Qing Nv Hai, Duan Fa, Tian Mei Xiao Rong."
+ description: "22 years old, lively Ke Ai De Nian Qing Nv Hai, Duan Fa, Tian Mei Xiao Rong."
  biography: "Xing Ge Kai Lang, Xi Huan She Ying Yu Lv Xing, Chang Chuan Xiu Xian Feng."
  image_category: "portrait"
 

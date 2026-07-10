@@ -208,4 +208,4 @@ def _scene_summary(scene: dict[str, Any], scene_no: int) -> str:
     for key in ("summary", "description", "conflict_question", "slug_line"):
         if scene.get(key):
             return str(scene[key])
-    return f"场景 {scene_no}"
+    return f"scene {scene_no}"

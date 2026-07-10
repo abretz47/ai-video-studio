@@ -124,7 +124,7 @@ def require_permission(permission_level: str) -> Callable:
     }
 
     if permission_level not in permission_functions:
-        raise ValueError(f"未知的权限级别: {permission_level}")
+        raise ValueError(f"unknown De Quan Xian Ji Bie: {permission_level}")
 
     return permission_functions[permission_level]
 

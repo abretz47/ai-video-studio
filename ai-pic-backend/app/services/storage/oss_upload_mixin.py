@@ -81,7 +81,7 @@ class OSSUploadMixin:
         except Exception as exc:  # noqa: BLE001
             return {
                 "success": False,
-                "error": f"上传失败: {exc}",
+                "error": f"Shang Chuan failed: {exc}",
                 "original_url": url,
             }
 
@@ -131,7 +131,7 @@ class OSSUploadMixin:
                 )
                 return {
                     "success": False,
-                    "error": f"上传失败: status={status}",
+                    "error": f"Shang Chuan failed: status={status}",
                     "filename": filename,
                 }
 
@@ -156,7 +156,7 @@ class OSSUploadMixin:
         except Exception as exc:  # noqa: BLE001
             return {
                 "success": False,
-                "error": f"上传失败: {exc}",
+                "error": f"Shang Chuan failed: {exc}",
                 "filename": filename,
             }
 
@@ -177,7 +177,7 @@ class OSSUploadMixin:
                 processed_results.append(
                     {
                         "success": False,
-                        "error": f"上传失败: {result}",
+                        "error": f"Shang Chuan failed: {result}",
                         "original_url": urls[index],
                     }
                 )

@@ -1,15 +1,15 @@
 """
-AIGong Zuo Jie DianPrompt management module
+AI workflow node prompt management module
 
-Ben Mo Kuai provide Tong Yi De prompt text management function, Zhi Chi Ge ZhongAIRen Wu De prompt text template.
-Bao Kuo: 
-- virtualIPgenerate
-- Ren Wu Xiao Zhuan generate
-- story Da Gang generate
-- Ju Ji Sheng Cheng
-- Ju Ben Sheng Cheng
-- Tu Xiang Sheng Cheng
-Deng Deng
+This module provides unified prompt management for templates used by various AI tasks.
+Includes: 
+- virtual IP generation
+- character profile generation
+- story outline generation
+- episode generation
+- script generation
+- image generation
+and more
 """
 
 from.manager import PromptManager

@@ -138,9 +138,9 @@ async def generate_dialogue_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
         reasoning = state.get("reasoning", [])
         reasoning.append(
-            f"场景 {budget.scene_number} 对白生成完成: "
-            f"{len(scene_dialogues)} 条对白，"
-            f"{actual_word_count} 字 (目标 {budget.target_word_count} 字)"
+            f"scene {budget.scene_number} dialogue generate Wan Cheng: "
+            f"{len(scene_dialogues)} Tiao dialogue，"
+            f"{actual_word_count} Zi (Mu Biao {budget.target_word_count} Zi)"
         )
 
         return {

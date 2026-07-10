@@ -48,7 +48,7 @@ class OSSBackupMixin:
                 results["results"].append(
                     {
                         "success": False,
-                        "error": f"处理失败: {exc}",
+                        "error": f"Chu Li failed: {exc}",
                         "original_url": url,
                     }
                 )

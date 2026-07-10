@@ -37,7 +37,7 @@ async def run_auto_timeline_placeholders(
 
     def _progress(message: str) -> None:
         if progress_callback:
-            progress_callback(f"生产级链路：{message}")
+            progress_callback(f"Sheng Chan Ji Lian Lu：{message}")
 
     owner_user_id = user_id or getattr(story, "user_id", None)
     main_chain = await run_timeline_main_chain(

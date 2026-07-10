@@ -15,7 +15,7 @@ from app.services.continuity.episode_continuity import (
 
 def _build_outline_stub_from_episode(episode: Dict[str, Any]) -> Dict[str, Any]:
     ep_num = int(episode.get("episode_number") or 0) or 1
-    title = episode.get("title") or f"第{ep_num}集"
+    title = episode.get("title") or f"Di{ep_num}Ji"
     logline = ""
     if isinstance(episode.get("plot_points"), list) and episode.get("plot_points"):
         first = episode["plot_points"][0]

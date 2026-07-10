@@ -7,7 +7,7 @@ from app.schemas.generation_requests import StoryGenerationRequest
 
 def build_story_outline_preview_prompt(request: StoryGenerationRequest) -> str:
     characters = [
-        {"id": char_id, "name": f"角色#{char_id}", "description": ""}
+        {"id": char_id, "name": f"character#{char_id}", "description": ""}
         for char_id in request.character_ids
     ]
     variables = {

@@ -82,9 +82,9 @@ class NotFoundError(DomainError):
     ):
         if message is None:
             if resource_id is not None:
-                message = f"{resource_type}不存在: {resource_id}"
+                message = f"{resource_type}not found: {resource_id}"
             else:
-                message = f"{resource_type}不存在"
+                message = f"{resource_type}not found"
 
         context = context or {}
         if resource_id is not None:
@@ -177,7 +177,7 @@ class MissingFieldError(ValidationError):
         context: Optional[Dict[str, Any]] = None,
     ):
         if message is None:
-            message = f"缺少必填字段: {field}"
+            message = f"missing required field: {field}"
         super().__init__(message, field, context)
 
 
@@ -198,7 +198,7 @@ class InvalidFormatError(ValidationError):
         context: Optional[Dict[str, Any]] = None,
     ):
         if message is None:
-            message = f"字段格式不正确: {field}"
+            message = f"invalid field format: {field}"
         super().__init__(message, field, context)
 
 
@@ -220,7 +220,7 @@ class DuplicateError(ValidationError):
         context: Optional[Dict[str, Any]] = None,
     ):
         if message is None:
-            message = f"{resource_type}已存在: {value}"
+            message = f"{resource_type}already exists: {value}"
         context = context or {}
         context["value"] = value
         super().__init__(message, resource_type, context)
@@ -295,7 +295,7 @@ class GenerationFailedError(ServiceError):
         reason: Optional[str] = None,
         context: Optional[Dict[str, Any]] = None,
     ):
-        message = f"{generation_type}生成失败"
+        message = f"{generation_type}generation failed"
         if reason:
             message += f": {reason}"
 
@@ -355,7 +355,7 @@ class ExternalServiceError(DomainError):
         reason: Optional[str] = None,
         context: Optional[Dict[str, Any]] = None,
     ):
-        message = f"外部服务 {service_name} 不可用"
+        message = f"external service {service_name} unavailable"
         if reason:
             message += f": {reason}"
 

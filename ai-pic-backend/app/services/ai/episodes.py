@@ -100,7 +100,7 @@ class EpisodeGenerationMixin:
             except NarrativeQualityGateError:
                 raise
             except Exception as exc:
-                print(f"AI服务管理器剧集生成失败: {exc}")
+                print(f"AIFu Wu Guan Li Qi episode generation failed: {exc}")
         # Ru GuoAIservice manager failed, Chang Shi Chuan Tong Fang Fa
         if production_mode:
             self.logger.warning(
@@ -162,7 +162,7 @@ class EpisodeGenerationMixin:
             except NarrativeQualityGateError:
                 raise
             except Exception as exc:
-                print(f"传统剧集生成方法失败: {exc}")
+                print(f"Chuan Tong episode generate Fang Fa failed: {exc}")
         # Zui Zhong fallback to mock service
         if production_mode or prefer_provider or model:
             self.logger.warning(

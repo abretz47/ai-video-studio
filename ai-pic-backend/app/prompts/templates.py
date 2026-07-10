@@ -1,7 +1,7 @@
 """
 Prompt template definitions
 
-Ding Yi Le Ge ZhongAIRen Wu De prompt text template Chang Liang He Mei Ju
+Defines prompt template constants and enums for various AI tasks.
 """
 
 from enum import Enum
@@ -11,68 +11,68 @@ from typing import Dict, List
 class PromptCategory(Enum):
  """Prompt category enum"""
 
- CHARACTER = "character" # Jue Se Xiang Guan
- STORY = "story" # Gu Shi Xiang Guan
- EPISODE = "episode" # Ju Ji Xiang Guan
- SCRIPT = "script" # Ju Ben Xiang Guan
- IMAGE = "image" # Tu Xiang Xiang Guan
- GENERAL = "general" # Tong Yong
+ CHARACTER = "character" # character-related
+ STORY = "story" # story-related
+ EPISODE = "episode" # episode-related
+ SCRIPT = "script" # script-related
+ IMAGE = "image" # image-related
+ GENERAL = "general" # general-purpose
 
 
 class PromptTemplate(Enum):
  """Prompt template enum"""
 
- # Jue Se Xiang Guan
+ # character-related
  VIRTUAL_IP_CREATION = "virtual_ip_creation"
  VIRTUAL_IP_STYLE_PROMPT = "virtual_ip_style_prompt"
  CHARACTER_PROFILE = "character_profile"
 
- # Gu Shi Xiang Guan
+ # story-related
  STORY_OUTLINE = "story_outline"
  STORY_SUMMARY = "story_summary"
 
- # Ju Ji Xiang Guan
+ # episode-related
  EPISODE_GENERATION = "episode_generation"
  EPISODE_OUTLINE = "episode_outline"
  EPISODE_STEP_OUTLINE = "episode_step_outline"
  EPISODE_STEP_OUTLINE_REPAIR = "episode_step_outline_repair"
  EPISODE_FROM_OUTLINE = "episode_from_outline"
- EPISODE_ENRICH = "episode_enrich" # Ju Ji Feng Fu(Dang Shi length Bu Zu Shi)
- EPISODE_DURATION_REJECT = "episode_duration_reject" # duration Bu Fu He Yao Qiu Shi Bo Hui Zhong generate
- EPISODE_LIST = "episode_list" # episode list generate
+ EPISODE_ENRICH = "episode_enrich" # episode enrichment (when duration is insufficient)
+ EPISODE_DURATION_REJECT = "episode_duration_reject" # regenerate when duration requirements are not met
+ EPISODE_LIST = "episode_list" # Episode list generation
 
- # Ju Ben Xiang Guan
+ # script-related
  SCRIPT_GENERATION = "script_generation"
  SCENE_WRITING = "scene_writing"
  DIALOGUE_WRITING = "dialogue_writing"
  SCRIPT_SCENES = "script_scenes"
  SCRIPT_DIALOGUES = "script_dialogues"
  SCRIPT_BEATS = "script_beats"
- SCRIPT_REVIEW = "script_review" # Ju Ben Shen He(dialogue/Wu Tai Zhi Shi Fen Lei Jiao Zheng)
- SCENE_DESCRIPTION = "scene_description" # Chang Jing Miao Shu
- SCRIPT_WORD_COUNT_CONSTRAINT = "script_word_count_constraint" # script word count Yue Shu
- DIALOGUE_DURATION_ADJUST = "dialogue_duration_adjust" # dialogue Shi length Tiao Zheng Jian Yi
- SCRIPT_SCORE = "script_score" # Ju Ben Ping Fen
- TRAFFIC_SHEET_GENERATION = "traffic_sheet_generation" # Tou Liu Biao generate
+ SCRIPT_REVIEW = "script_review" # Script review (dialogue/stage direction classification correction)
+ SCENE_DESCRIPTION = "scene_description" # scene description
+ SCRIPT_WORD_COUNT_CONSTRAINT = "script_word_count_constraint" # script word-count constraint
+ DIALOGUE_DURATION_ADJUST = "dialogue_duration_adjust" # dialogue duration adjustment suggestions
+ SCRIPT_SCORE = "script_score" # script scoring
+ TRAFFIC_SHEET_GENERATION = "traffic_sheet_generation" # traffic sheet generation
 
- # Fen Jing Xiang Guan
- STORYBOARD_GENERATION = "storyboard_generation" # Fen Jing Sheng Cheng
- STORYBOARD_SHOT = "storyboard_shot" # Dan Ge storyboard frame
- STORYBOARD_PLAN = "storyboard_plan" # Fen Jing Gui Hua
- STORYBOARD_SCENE = "storyboard_scene" # storyboard planning scene Zhan Kai
- STORYBOARD_KEYFRAME = "storyboard_keyframe" # storyboard Guan Jian Zhen prompt
- STORYBOARD_IMAGE_PROMPT = "storyboard_image_prompt" # storyboard image prompt Zu Zhuang
- STORYBOARD_IMAGE_FALLBACK = "storyboard_image_fallback" # storyboard image Que Sheng prompt
+ # storyboard-related
+ STORYBOARD_GENERATION = "storyboard_generation" # storyboard generation
+ STORYBOARD_SHOT = "storyboard_shot" # single storyboard frame
+ STORYBOARD_PLAN = "storyboard_plan" # storyboard planning
+ STORYBOARD_SCENE = "storyboard_scene" # storyboard planning scene expansion
+ STORYBOARD_KEYFRAME = "storyboard_keyframe" # storyboard keyframe prompt
+ STORYBOARD_IMAGE_PROMPT = "storyboard_image_prompt" # storyboard image prompt assembly
+ STORYBOARD_IMAGE_FALLBACK = "storyboard_image_fallback" # storyboard fallback image prompt
  STORYBOARD_DYNAMIC_IMAGE_PROMPT = (
- "storyboard_dynamic_image_prompt" # storyboard image Dong Tai prompt text Pi Liang generate
+ "storyboard_dynamic_image_prompt" # batch generation of dynamic storyboard image prompts
 )
- STORYBOARD_GRID_SHEET = "storyboard_grid_sheet" # Gong Ge story Ban image prompt
- STORYBOARD_GRID_VIDEO = "storyboard_grid_video" # Gong Ge Mian Ban Sheng video prompt
+ STORYBOARD_GRID_SHEET = "storyboard_grid_sheet" # grid storyboard image prompt
+ STORYBOARD_GRID_VIDEO = "storyboard_grid_video" # grid panel video prompt
  STORYBOARD_SCENE_GRID_PROMPT = (
- "storyboard_scene_grid_prompt" # scene Gong Ge storyboard image LLM prompt text generate
+ "storyboard_scene_grid_prompt" # scene grid storyboard image LLM prompt generation
 )
  STORYBOARD_SCENE_GRID_VIDEO_PROMPT = (
- "storyboard_scene_grid_video_prompt" # Gong Ge Tu Zhuan Lian Xu Cheng Pian prompt text generate
+ "storyboard_scene_grid_video_prompt" # grid-to-sequence prompt generation
 )
  STORYBOARD_AUDIO_VISUAL_DIALOGUE_SPOKEN = "storyboard_audio_visual_dialogue_spoken"
  STORYBOARD_AUDIO_VISUAL_DIALOGUE_VOICEOVER = (
@@ -85,23 +85,23 @@ class PromptTemplate(Enum):
  STORYBOARD_AUDIO_VISUAL_PAUSE = "storyboard_audio_visual_pause"
  STORYBOARD_AUDIO_VISUAL_CONTEXT = "storyboard_audio_visual_context"
 
- # Tu Xiang Xiang Guan
+ # image-related
  IMAGE_GENERATION = "image_generation"
  PORTRAIT_GENERATION = "portrait_generation"
  SCENE_IMAGE = "scene_image"
- ENVIRONMENT_IMAGE = "environment_image" # Huan Jing Tu Xiang
- ENVIRONMENT_IMAGE_VARIANT = "environment_image_variant" # environment image Tu Sheng image Bian Ti
- VIRTUAL_IP_IMAGE = "virtual_ip_image" # virtualIPWen Sheng Tu
- VIRTUAL_IP_IMAGE_VARIANT = "virtual_ip_image_variant" # virtualIPTu Sheng Tu
+ ENVIRONMENT_IMAGE = "environment_image" # Environment image
+ ENVIRONMENT_IMAGE_VARIANT = "environment_image_variant" # Environment image variation (image-to-image)
+ VIRTUAL_IP_IMAGE = "virtual_ip_image" # Virtual IP text-to-image
+ VIRTUAL_IP_IMAGE_VARIANT = "virtual_ip_image_variant" # Virtual IP image-to-image
 
- # Shi Jian Zhou related
- TIMELINE_GAP_REASONING = "timeline_gap_reasoning" # dialogue Jian Ge Tui Li
- TIMELINE_GAP_REPAIR = "timeline_gap_repair" # dialogue Jian Ge repair
+ # timeline-related
+ TIMELINE_GAP_REASONING = "timeline_gap_reasoning" # dialogue gap reasoning
+ TIMELINE_GAP_REPAIR = "timeline_gap_repair" # dialogue gap repair
 
  # system prompt text (System Prompts)
- SYSTEM_PROMPT_STORY = "system_prompt_story" # story Chuang Zuo system prompt
- SYSTEM_PROMPT_SCRIPT = "system_prompt_script" # Ju Ben Chuang Zuo system prompt
- SYSTEM_PROMPT_JSON_STRICT = "system_prompt_json_strict" # Yan GeJSONXi Tong Ti Shi
+ SYSTEM_PROMPT_STORY = "system_prompt_story" # story creation system prompt
+ SYSTEM_PROMPT_SCRIPT = "system_prompt_script" # script creation system prompt
+ SYSTEM_PROMPT_JSON_STRICT = "system_prompt_json_strict" # strict JSON system prompt
  STORY_OUTLINE_REPAIR = "story_outline_repair"
  EPISODE_PLAN_REPAIR = "episode_plan_repair"
 
@@ -132,37 +132,37 @@ class ImageCategory(Enum):
 class ScriptFormat(Enum):
  """Script format enum"""
 
- SCREENPLAY = "screenplay" # Dian Ying Ju Ben
- TELEPLAY = "teleplay" # Dian Shi Ju Ben
- STAGE = "stage" # Wu Tai Ju Ben
- AUDIO = "audio" # Yin Pin Ju Ben
- ANIMATION = "animation" # Dong Hua Ju Ben
+ SCREENPLAY = "screenplay" # Film script
+ TELEPLAY = "teleplay" # TV script
+ STAGE = "stage" # Stage script
+ AUDIO = "audio" # Audio script
+ ANIMATION = "animation" # Animation script
 
 
 class DialogueStyle(Enum):
  """Dialogue style enum"""
 
- NATURAL = "natural" # Zi Ran Dui Hua
- FORMAL = "formal" # Zheng Shi Dui Hua
- CASUAL = "casual" # Sui Yi Dui Hua
- DRAMATIC = "dramatic" # Xi Ju Dui Hua
- COMEDIC = "comedic" # Xi Ju Dui Hua
+ NATURAL = "natural" # Natural dialogue
+ FORMAL = "formal" # Formal dialogue
+ CASUAL = "casual" # Casual dialogue
+ DRAMATIC = "dramatic" # Dramatic dialogue
+ COMEDIC = "comedic" # Dramatic dialogue
 
 
 class PlotComplexity(Enum):
  """Plot complexity enum"""
 
- SIMPLE = "simple" # Jian Dan
- MEDIUM = "medium" # Zhong Deng
- COMPLEX = "complex" # Fu Za
+ SIMPLE = "simple" # Simple
+ MEDIUM = "medium" # Medium
+ COMPLEX = "complex" # Complex
 
 
 class Pacing(Enum):
- """Jie Zou Mei Ju"""
+ """Pacing enum"""
 
- SLOW = "slow" # Man Jie Zou
- MEDIUM = "medium" # Zhong Deng Jie Zou
- FAST = "fast" # Kuai Jie Zou
+ SLOW = "slow" # Slow pacing
+ MEDIUM = "medium" # Medium Pacing
+ FAST = "fast" # Fast pacing
 
 
 # Template category mapping
@@ -223,7 +223,7 @@ TEMPLATE_CATEGORIES: Dict[PromptTemplate, PromptCategory] = {
  PromptTemplate.STORY_OUTLINE_REPAIR: PromptCategory.GENERAL,
  PromptTemplate.EPISODE_PLAN_REPAIR: PromptCategory.GENERAL,
  PromptTemplate.EPISODE_STEP_OUTLINE_REPAIR: PromptCategory.GENERAL,
- # Shi Jian Zhou related
+ # timeline-related
  PromptTemplate.TIMELINE_GAP_REASONING: PromptCategory.SCRIPT,
  PromptTemplate.TIMELINE_GAP_REPAIR: PromptCategory.SCRIPT,
 }

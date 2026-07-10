@@ -40,21 +40,21 @@ async def poll_task_status(
             data = response.json() if response.content else {}
             if not isinstance(data, dict):
                 raise RuntimeError(
-                    f"火山引擎任务 {task_id} 返回非 dict 响应: {type(data).__name__}"
+                    f"Huo Shan Yin Qing task {task_id} Fan Hui Fei dict Xiang Ying: {type(data).__name__}"
                 )
 
             status = str(data.get("status") or "").lower()
             if status == "succeeded":
                 return data
             if status in {"failed", "canceled", "cancelled", "expired"}:
-                err_msg = extract_error(data) or f"任务状态: {status}"
-                raise RuntimeError(f"火山引擎任务失败: {err_msg}")
+                err_msg = extract_error(data) or f"task status: {status}"
+                raise RuntimeError(f"Huo Shan Yin Qing task failed: {err_msg}")
             if status in {"queued", "running", "processing", "pending"}:
                 await asyncio.sleep(delay)
                 continue
 
             logger.warning("Volcengine Yin Qing Ren Wu %s unknown status: %s", task_id, status)
-            raise RuntimeError(f"火山引擎任务未知状态: {status}")
+            raise RuntimeError(f"Huo Shan Yin Qing task unknown status: {status}")
         except RuntimeError:
             raise
         except Exception as exc:
@@ -67,9 +67,9 @@ async def poll_task_status(
             )
             await asyncio.sleep(delay)
 
-    suffix = f", 最后错误: {last_error}" if last_error else ""
+    suffix = f", Zui Hou error: {last_error}" if last_error else ""
     raise RuntimeError(
-        f"火山引擎任务 {task_id} 轮询超时 ({max_attempts * delay}s){suffix}"
+        f"Huo Shan Yin Qing task {task_id} Lun Xun Chao Shi ({max_attempts * delay}s){suffix}"
     )
 
 
@@ -123,7 +123,7 @@ async def generate_video(
         error_message = extract_error(create_data)
         if error_message:
             return _failure_response(
-                f"火山引擎视频生成错误: {error_message}",
+                f"Huo Shan Yin Qing video generate error: {error_message}",
                 provider_name,
                 ark_model,
                 model_type,

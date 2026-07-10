@@ -101,18 +101,18 @@ class DiagnosticService:
         for config_name, description in required_configs:
             value = getattr(settings, config_name, None)
             if value:
-                config_status[config_name] = f"✅ 已配置 ({description})"
+                config_status[config_name] = f"✅ Yi configuration ({description})"
             else:
-                config_status[config_name] = f"❌ 未配置 ({description})"
+                config_status[config_name] = f"❌ Wei configuration ({description})"
                 missing_required.append(config_name)
 
         # check can Xuan configuration
         for config_name, description in optional_configs:
             value = getattr(settings, config_name, None)
             if value:
-                config_status[config_name] = f"✅ 已配置 ({description})"
+                config_status[config_name] = f"✅ Yi configuration ({description})"
             else:
-                config_status[config_name] = f"⚠️  未配置 ({description}) - 可选"
+                config_status[config_name] = f"⚠️  Wei configuration ({description}) - Ke Xuan"
 
         # Te Shu check: AIservice configuration
         if hasattr(ai_service, "openai_api_key") and ai_service.openai_api_key:
@@ -124,7 +124,7 @@ class DiagnosticService:
         success = len(missing_required) == 0
         details = "\n".join([f"  {k}: {v}" for k, v in config_status.items()])
         error = (
-            f"缺少必需配置: {', '.join(missing_required)}" if missing_required else ""
+            f"missing Bi Xu configuration: {', '.join(missing_required)}" if missing_required else ""
         )
 
         self._log_test_result("environment configuration check", success, details, error)
@@ -147,13 +147,13 @@ class DiagnosticService:
 
             db.close()
 
-            details = f"虚拟IP数量: {ip_count}, 图像数量: {image_count}"
+            details = f"Xu NiIPShu Liang: {ip_count}, image Shu Liang: {image_count}"
             self._log_test_result("database connection", True, details)
             return True
 
         except Exception as e:
             self._log_test_result(
-                "database connection", False, error=f"数据库连接失败: {str(e)}"
+                "database connection", False, error=f"Shu Ju Ku Lian Jie failed: {str(e)}"
             )
             return False
 
@@ -185,19 +185,19 @@ class DiagnosticService:
                     result = response.json()
                     usage = result.get("usage", {})
                     details = (
-                        f"API正常，使用tokens: {usage.get('total_tokens', 'unknown')}"
+                        f"APIZheng Chang，Shi Yongtokens: {usage.get('total_tokens', 'unknown')}"
                     )
                     self._log_test_result("OpenAI API", True, details)
                     return True
                 else:
                     error_msg = (
-                        f"API返回错误: {response.status_code} - {response.text[:200]}"
+                        f"APIFan Hui error: {response.status_code} - {response.text[:200]}"
                     )
                     self._log_test_result("OpenAI API", False, error=error_msg)
                     return False
 
         except Exception as e:
-            self._log_test_result("OpenAI API", False, error=f"API请求异常: {str(e)}")
+            self._log_test_result("OpenAI API", False, error=f"APIQing Qiu Yi Chang: {str(e)}")
             return False
 
     async def test_oss_service(self) -> bool:
@@ -237,7 +237,7 @@ class DiagnosticService:
                 except Exception:
                     cleanup_status = "Qing Li exception"
 
-                details = f"上传成功，文件URL: {file_url}, {cleanup_status}"
+                details = f"Shang Chuan Cheng Gong，fileURL: {file_url}, {cleanup_status}"
                 self._log_test_result("OSS service", True, details)
                 return True
             else:
@@ -246,7 +246,7 @@ class DiagnosticService:
                 return False
 
         except Exception as e:
-            self._log_test_result("OSS service", False, error=f"OSS测试异常: {str(e)}")
+            self._log_test_result("OSS service", False, error=f"OSSCe Shi Yi Chang: {str(e)}")
             return False
 
     async def test_oss_image_upload(self) -> bool:
@@ -296,7 +296,7 @@ class DiagnosticService:
                 except Exception:
                     cleanup_status = "Qing Li exception"
 
-                details = f"图片上传成功，文件URL: {file_url}, {cleanup_status}"
+                details = f"Tu Pian Shang Chuan Cheng Gong，fileURL: {file_url}, {cleanup_status}"
                 self._log_test_result("OSS image upload", True, details)
                 return True
             else:
@@ -306,7 +306,7 @@ class DiagnosticService:
 
         except Exception as e:
             self._log_test_result(
-                "OSS image upload", False, error=f"OSS图片测试异常: {str(e)}"
+                "OSS image upload", False, error=f"OSSTu Pian Ce Shi Yi Chang: {str(e)}"
             )
             return False
 
@@ -343,7 +343,7 @@ class DiagnosticService:
             can_write = os.access(upload_dir, os.W_OK)
             can_execute = os.access(upload_dir, os.X_OK)
 
-            details = f"目录: {upload_dir} ({creation_status}), 权限: R({can_read}) W({can_write}) X({can_execute})"
+            details = f"Mu Lu: {upload_dir} ({creation_status}), Quan Xian: R({can_read}) W({can_write}) X({can_execute})"
             success = (
                 can_read and can_write and can_execute and read_content == test_content
             )
@@ -352,14 +352,14 @@ class DiagnosticService:
                 self._log_test_result("File system", True, details)
             else:
                 self._log_test_result(
-                    "File system", False, error=f"权限或读写测试失败: {details}"
+                    "File system", False, error=f"Quan Xian Huo Du Xie Ce Shi failed: {details}"
                 )
 
             return success
 
         except Exception as e:
             self._log_test_result(
-                "File system", False, error=f"文件系统测试异常: {str(e)}"
+                "File system", False, error=f"file Xi Tong Ce Shi Yi Chang: {str(e)}"
             )
             return False
 
@@ -404,20 +404,20 @@ class DiagnosticService:
             # check local file
             if local_file_path and os.path.exists(local_file_path):
                 file_size = os.path.getsize(local_file_path)
-                checks.append(f"✅ 本地文件: {local_file_path} ({file_size} bytes)")
+                checks.append(f"✅ Ben Di file: {local_file_path} ({file_size} bytes)")
             else:
                 checks.append("❌ local file not Cun Zai")
 
             # checkOSSShang Chuan
             if oss_upload and oss_upload.get("success"):
-                checks.append(f"✅ OSS上传: {oss_upload.get('file_url')}")
+                checks.append(f"✅ OSSShang Chuan: {oss_upload.get('file_url')}")
             else:
                 oss_error = oss_upload.get("error") if oss_upload else "OSSJie Guo Wei Kong"
-                checks.append(f"❌ OSS上传失败: {oss_error}")
+                checks.append(f"❌ OSSShang Chuan failed: {oss_error}")
 
             # check returnURL
             if image_url:
-                checks.append(f"✅ 返回URL: {image_url}")
+                checks.append(f"✅ Fan HuiURL: {image_url}")
             else:
                 checks.append("❌ not return imageURL")
 
@@ -434,19 +434,19 @@ class DiagnosticService:
                 if local_file_path and os.path.exists(local_file_path):
                     try:
                         os.remove(local_file_path)
-                        self.logger.info(f"已清理测试文件: {local_file_path}")
+                        self.logger.info(f"Yi Qing Li Ce Shi file: {local_file_path}")
                     except Exception as e:
-                        self.logger.warning(f"清理测试文件失败: {e}")
+                        self.logger.warning(f"Qing Li Ce Shi file failed: {e}")
             else:
                 self._log_test_result(
-                    "end-to-end test", False, error=f"部分检查失败:\n{details}"
+                    "end-to-end test", False, error=f"Bu Fen Jian Cha failed:\n{details}"
                 )
 
             return success
 
         except Exception as e:
             self._log_test_result(
-                "end-to-end test", False, error=f"端到端测试异常: {str(e)}"
+                "end-to-end test", False, error=f"Duan Dao Duan Ce Shi Yi Chang: {str(e)}"
             )
             return False
 

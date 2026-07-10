@@ -1,5 +1,5 @@
 name: dialogue_duration_adjust
-description: dialogue Shi length Tiao Zheng Jian Yi prompt text, Yong Yu Duration Orchestrator Zai dialogue duration Bu Da Biao Shi Bo Hui Zhong generate
+description: dialogue duration adjustment suggestions prompt text, Yong Yu Duration Orchestrator Zai dialogue duration Bu Da Biao Shi Bo Hui Zhong generate
 category: script
 version: "1.0"
 author: Duration Orchestrator

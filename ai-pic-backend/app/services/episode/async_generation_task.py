@@ -189,12 +189,12 @@ def _complete_task(
     ]
     if missing:
         raise RuntimeError(
-            f"剧集生成失败：缺少第 {missing} 集（期望 1..{request.episode_count}）"
+            f"episode generation failed：missing Di {missing} Ji（Qi Wang 1..{request.episode_count}）"
         )
     task.status = TaskStatus.COMPLETED
     task.result_file_path = f"episodes:{','.join(map(str, created_ids))}"
     final_desc = (
-        f"剧集生成完成：共写入 {len(created_ids)} 集"
+        f"episode generate Wan Cheng：Gong Xie Ru {len(created_ids)} Ji"
         if created_ids
         else "episode Sheng Cheng complete Dan none Xin Ju Ji write"
     )
@@ -225,10 +225,10 @@ def _handle_failure(
     task.error_message = error_text
     if is_soft_timeout and created_ids:
         _update_task_progress(
-            db, task, f"剧集生成超时：已保留 {len(created_ids)} 集，可重试补齐"
+            db, task, f"episode generate Chao Shi：Yi Bao Liu {len(created_ids)} Ji，Ke Zhong Shi Bu Qi"
         )
     else:
-        _update_task_progress(db, task, f"剧集生成失败：{error_text}")
+        _update_task_progress(db, task, f"episode generation failed：{error_text}")
 
 
 def _update_task_progress(db: Session, task: Task | None, description: str) -> None:

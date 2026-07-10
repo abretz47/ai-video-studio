@@ -71,7 +71,7 @@ class VirtualIPAIService:
                 )
                 content = profile
                 if prompt:
-                    prompts_used = [f"虚拟IP设定: {prompt[:100]}..."]
+                    prompts_used = [f"Xu NiIPShe Ding: {prompt[:100]}..."]
                 usage = usage or {}
                 tokens_used = int(usage.get("total_tokens") or 0)
                 steps.append("Sheng Cheng complete!")

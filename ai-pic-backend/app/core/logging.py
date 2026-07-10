@@ -50,7 +50,7 @@ class FeishuLogHandler(logging.Handler):
         log_entry = self.format(record)
         payload = {
             "msg_type": "text",
-            "content": {"text": f"AI视频工作室后端出错！\n{log_entry}\n"},
+            "content": {"text": f"AIvideo Gong Zuo Shi Hou Duan Chu Cuo！\n{log_entry}\n"},
         }
         try:
             response = requests.post(self.webhook_url, json=payload, timeout=5)

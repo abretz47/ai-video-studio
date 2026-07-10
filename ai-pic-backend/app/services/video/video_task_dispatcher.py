@@ -122,7 +122,7 @@ class VideoTaskDispatcher:
             if errors and self.ai_manager.config.enable_fallback:
                 error_details = self.ai_manager._truncate("; ".join(errors), 800)
                 return build_failure_response(
-                    f"所有视频生成提供商都失败了: {error_details}",
+                    f"Suo You video generate Ti Gong Shang Dou failed Le: {error_details}",
                     last_response.provider or DISPATCHER_PROVIDER,
                     last_model_used,
                     model_type,
@@ -204,7 +204,7 @@ class VideoTaskDispatcher:
             )
             provider_model = model
             response = build_failure_response(
-                f"视频任务提交失败: {exc}",
+                f"video task Ti Jiao failed: {exc}",
                 provider_name,
                 provider_model,
                 model_type,
@@ -233,7 +233,7 @@ class VideoTaskDispatcher:
     ) -> AIResponse:
         if not hasattr(provider, "submit_video_task"):
             return build_failure_response(
-                f"提供商 {provider_name} 不支持视频任务提交",
+                f"Ti Gong Shang {provider_name} Bu Zhi Chi video task Ti Jiao",
                 provider_name,
                 provider_model,
                 model_type,

@@ -304,10 +304,10 @@ class EpisodeQualityValidator:
                     EpisodeQualityIssue(
                         issue_type=EpisodeQualityIssueType.CHARACTER_ARC_STAGNANT,
                         severity=EpisodeQualitySeverity.WARNING,
-                        message=f"角色 '{name}' 在多集中状态/目标无明显变化",
+                        message=f"character '{name}' Zai Duo Ji Zhong status/Mu Biao Wu Ming Xian Bian Hua",
                         character_name=name,
                         suggestions=[
-                            f"为 '{name}' 设计明确的成长弧线",
+                            f"Wei '{name}' She Ji Ming Que De Cheng Zhang Hu Xian",
                             "in key plot Dian She Zhi target or status change",
                         ],
                     )
@@ -448,7 +448,7 @@ class EpisodeQualityValidator:
                     EpisodeQualityIssue(
                         issue_type=EpisodeQualityIssueType.TENSION_PLATEAU,
                         severity=EpisodeQualitySeverity.WARNING,
-                        message=f"第 {i + 1}-{i + 3} 集张力平稳，缺乏起伏",
+                        message=f"Di {i + 1}-{i + 3} Ji Zhang Li Ping Wen，Que Fa Qi Fu",
                         episode_number=i + 1,
                         details={"scores": window},
                         suggestions=[
@@ -467,7 +467,7 @@ class EpisodeQualityValidator:
                     EpisodeQualityIssue(
                         issue_type=EpisodeQualityIssueType.TENSION_DROP,
                         severity=EpisodeQualitySeverity.INFO,
-                        message=f"第 {i + 1} 集张力骤降，节奏可能断裂",
+                        message=f"Di {i + 1} Ji Zhang Li Zhou Jiang，Jie Zou Ke Neng Duan Lie",
                         episode_number=i + 1,
                         details={
                             "previous_score": tension_scores[i - 1],
@@ -594,7 +594,7 @@ class EpisodeQualityValidator:
                 EpisodeQualityIssue(
                     issue_type=EpisodeQualityIssueType.UNFIRED_CHEKHOV,
                     severity=EpisodeQualitySeverity.WARNING,
-                    message=f"有 {len(unresolved)} 条伏笔未回收，观众可能感到困惑",
+                    message=f"You {len(unresolved)} Tiao Fu Bi Wei Hui Shou，Guan Zhong Ke Neng Gan Dao Kun Huo",
                     details={
                         "unresolved": [item.setup_description for item in unresolved[:5]]
                     },
@@ -614,7 +614,7 @@ class EpisodeQualityValidator:
                         EpisodeQualityIssue(
                             issue_type=EpisodeQualityIssueType.PREMATURE_PAYOFF,
                             severity=EpisodeQualitySeverity.INFO,
-                            message=f"伏笔 '{item.setup_description[:20]}...' 回收过快",
+                            message=f"Fu Bi '{item.setup_description[:20]}...' Hui Shou Guo Kuai",
                             episode_number=item.setup_episode,
                             details={"gap": gap},
                             suggestions=["consider Yan Chi reveal Yi increase suspense"],

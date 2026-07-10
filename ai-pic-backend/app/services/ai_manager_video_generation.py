@@ -169,7 +169,7 @@ async def _call_provider_generate_video(
         )
     return AIResponse(
         success=False,
-        error=f"提供商 {provider_name} 不支持视频生成",
+        error=f"Ti Gong Shang {provider_name} Bu Zhi Chi video generate",
         provider=provider_name,
         model=model or "unknown",
         task_type=AITaskType.VIDEO_GENERATION,

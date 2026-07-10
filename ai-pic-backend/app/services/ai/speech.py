@@ -49,7 +49,7 @@ class SpeechGenerationMixin:
                             oss_service_override=oss_service,
                         )
                     except Exception as exc:
-                        print(f"音频OSS上传失败: {exc}")
+                        print(f"audioOSSShang Chuan failed: {exc}")
 
                 return {
                     "audio_url": (
@@ -69,6 +69,6 @@ class SpeechGenerationMixin:
                     "metadata": response.metadata,
                 }
         except Exception as exc:
-            print(f"语音生成失败: {exc}")
+            print(f"Yu Yin generation failed: {exc}")
 
         return None

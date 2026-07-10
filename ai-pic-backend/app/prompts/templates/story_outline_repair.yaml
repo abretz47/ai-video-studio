@@ -1,5 +1,5 @@
 name: story_outline_repair
-description: "repair story Da Gang output Wei Fu He StoryOutlineModel De Chun JSON"
+description: "repair story outline output Wei Fu He StoryOutlineModel De Chun JSON"
 category: general
 version: "1.0"
 author: "AI Video Studio"
@@ -30,7 +30,7 @@ variables:
  story_quality_warnings:
  type: list
  required: false
- description: "Gu Shi Jie Zou, hook, He Gui etc. Zhi Liang Jing Gao"
+ description: "Gu Shi Pacing, hook, He Gui etc. Zhi Liang Jing Gao"
  character_warnings:
  type: list
  required: false
@@ -47,5 +47,5 @@ variables:
 usage_examples:
  - schema: "{...StoryOutlineModel schema...}"
  missing_fields: ["premise", "synopsis"]
- original_prompt: "generate story Da Gang"
+ original_prompt: "generate story outline"
  original_output: '{"premise": "..."}'

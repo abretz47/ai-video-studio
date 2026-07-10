@@ -71,7 +71,7 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expecting.*\}", r"unterminated.*object", r"unexpected end of json"],
         description="JSON object not properly closed",
         repair_hints=[
-            "Qing Que Bao all { 都有对应的 }",
+            "Qing Que Bao all { all has Dui Ying }",
             "checkJSONstructure Wan Zheng Xing",
         ],
         example_errors=["Expecting '}' delimiter"],

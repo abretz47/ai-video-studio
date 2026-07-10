@@ -65,7 +65,7 @@ format_specifications:
  action: "Dong Zuo Miao Shu(Xian Zai Shi)"
 
  teleplay:
- structure: "Dian Shi Ju Ben format"
+ structure: "TV Ju Ben format"
  scene_header: "scene location time"
  character_name: "Jue Se Ming: "
  dialogue: "Dui Hua Nei Rong"
@@ -76,7 +76,7 @@ format_specifications:
  scene_header: "DiXChang"
  character_name: "Jue Se Ming: "
  dialogue: "Dui Hua Nei Rong"
- action: "(Wu Tai Zhi Shi)"
+ action: "(stage directions)"
 
 dialogue_guidelines:
  natural: "Ri Chang Hua, Sheng Huo Hua De conversation"

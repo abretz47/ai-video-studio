@@ -34,7 +34,7 @@ class TaskControlService:
         if TaskStatus.CANCELLED not in allowed:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"当前状态 {task.status.value} 不允许取消",
+                detail=f"Dang Qian status {task.status.value} Bu Yun Xu cancelled",
             )
         task.status = TaskStatus.CANCELLED
         task.error_message = "user Qu Xiao"

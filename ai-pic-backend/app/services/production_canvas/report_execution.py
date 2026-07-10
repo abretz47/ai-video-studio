@@ -167,8 +167,8 @@ def _report_run_summary(
             status="review",
             title="Hui Zong Hua Bu execute evidence",
             detail=(
-                f"画布 run {run.run_id} 已汇总 {len(nodes)} 个节点、"
-                f"{edge_count} 条连线和 {len(task_ids)} 个任务证据。"
+                f"Hua Bu run {run.run_id} Yi Hui Zong {len(nodes)} Ge Jie Dian、"
+                f"{edge_count} Tiao Lian Xian He {len(task_ids)} Ge task Zheng Ju。"
             ),
             outputs={
                 "report_source": "production_canvas_run",
@@ -221,7 +221,7 @@ def execute_report_summary(
             status="review",
             title="Hui Zong existing Ren Wu evidence",
             detail=(
-                f"任务 #{task.id}《{task.title}》当前状态 {task.status.value}；"
+                f"task #{task.id}《{task.title}》Dang Qian status {task.status.value}；"
                 "can continue in Ren Wu Ye check parameters, failed Xin Xi and Chan Wu path."
             ),
             outputs={

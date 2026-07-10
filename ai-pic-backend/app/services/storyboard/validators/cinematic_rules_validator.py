@@ -298,7 +298,7 @@ class CinematicRulesValidator:
                         validator_name=self.name,
                         passed=False,
                         severity=ValidationSeverity.WARNING,
-                        message=f"场景 {scene_num}: 可能违反180度规则，角色位置跳跃",
+                        message=f"scene {scene_num}: Ke Neng Wei Fan180Du Gui Ze，character Wei Zhi Tiao Yue",
                         details={
                             "scene_number": scene_num,
                             "violations": violations,
@@ -383,7 +383,7 @@ class CinematicRulesValidator:
                 results.append(
                     ValidationResult.warning(
                         validator_name=self.name,
-                        message=f"场景 {scene_num}: 无法识别镜头景别",
+                        message=f"scene {scene_num}: Wu Fa Shi Bie Jing Tou Jing Bie",
                         details={"scene_number": scene_num, "frame_count": len(frames)},
                         suggestions=[
                             "in storyboard description in clear Biao Zhu Jing Bie(close-up/medium shot/Quan Jing)",
@@ -404,7 +404,7 @@ class CinematicRulesValidator:
                         validator_name=self.name,
                         passed=True,  # Warning, not error
                         severity=ValidationSeverity.WARNING,
-                        message=f"场景 {scene_num}: 景别缺乏变化，{most_common_type} 占比 {ratio:.0%}",
+                        message=f"scene {scene_num}: Jing Bie Que Fa Bian Hua，{most_common_type} Zhan Bi {ratio:.0%}",
                         details={
                             "scene_number": scene_num,
                             "dominant_type": most_common_type,
@@ -413,7 +413,7 @@ class CinematicRulesValidator:
                         },
                         suggestions=[
                             "increase Jing Bie change Yi Feng Fu Shi Jue Jie Zou",
-                            f"减少 {most_common_type} 的使用，添加其他景别",
+                            f"Jian Shao {most_common_type} De Shi Yong，Tian Jia Qi Ta Jing Bie",
                             "consider in Dui Hua scene in Jiao Ti Shi Yong Jin Jing and medium shot",
                         ],
                     )
@@ -445,7 +445,7 @@ class CinematicRulesValidator:
                                 validator_name=self.name,
                                 passed=False,
                                 severity=ValidationSeverity.ERROR,
-                                message=f"场景 {scene_num} 帧 {i}: 光线突变 ({prev_lighting} → {current_lighting})",
+                                message=f"scene {scene_num} Zhen {i}: Guang Xian Tu Bian ({prev_lighting} → {current_lighting})",
                                 details={
                                     "scene_number": scene_num,
                                     "frame_index": i,
@@ -498,7 +498,7 @@ class CinematicRulesValidator:
                 results.append(
                     ValidationResult.warning(
                         validator_name=self.name,
-                        message=f"场景 {scene_num}: 连续使用相同景别可能造成跳切感",
+                        message=f"scene {scene_num}: Lian Xu Shi Yong Xiang Tong Jing Bie Ke Neng Zao Cheng Tiao Qie Gan",
                         details={
                             "scene_number": scene_num,
                             "problem_frames": jump_cut_warnings,

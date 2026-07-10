@@ -109,7 +109,7 @@ async def get_scripts_no_slash(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """兼容无尾斜杠的 /api/v1/scripts 请求，避免 307 重定向。"""
+    """Handles trailing-slash-free /api/v1/scripts requests to avoid 307 redirects."""
     return await _get_scripts(
         episode_id=episode_id,
         episode_business_id=episode_business_id,

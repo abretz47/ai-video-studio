@@ -43,7 +43,7 @@ def extract_rewrite_guidance(scoring: Dict[str, Any]) -> List[str]:
     overall = _score_overall(scoring)
     if overall and overall < PASS_OVERALL_THRESHOLD:
         items.append(
-            f"整体 ScriptScore 必须提升到 {PASS_OVERALL_THRESHOLD:.1f}+；"
+            f"Zheng Ti ScriptScore Bi Xu Ti Sheng Dao {PASS_OVERALL_THRESHOLD:.1f}+；"
             "Bu Yao only Wei Diao Yu Qi, need increase can Pai twist, clear Shou Huo and Geng Qiang Ka Dian."
         )
 
@@ -54,7 +54,7 @@ def extract_rewrite_guidance(scoring: Dict[str, Any]) -> List[str]:
             continue
         score_text = _format_score(value)
         items.append(
-            f"{guidance_text} 当前 {key}={score_text}，需 >= {PASS_DIMENSION_THRESHOLD:.1f}。"
+            f"{guidance_text} Dang Qian {key}={score_text}，Xu >= {PASS_DIMENSION_THRESHOLD:.1f}。"
         )
 
     _append_risk_guidance(items, script_score)
@@ -69,7 +69,7 @@ def _append_risk_guidance(items: List[str], script_score: Dict[str, Any]) -> Non
     for risk in risks[:3]:
         text = str(risk).strip()
         if text:
-            items.append(f"修复评分风险：{text}")
+            items.append(f"Xiu Fu Ping Fen Feng Xian：{text}")
 
 
 def _append_asset_guidance(items: List[str], scoring: Dict[str, Any]) -> None:

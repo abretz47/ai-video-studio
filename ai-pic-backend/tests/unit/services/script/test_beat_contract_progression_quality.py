@@ -6,14 +6,14 @@ from tests.unit.services.script.test_beat_contract_normalizer import _valid_cont
 
 @pytest.mark.unit
 def test_quality_gate_rejects_repeated_screen_beats():
- payload = _valid_contract()
- for beat in payload["scenes"][0]["beats"]:
- beat["visible_event"] = "Xiao Ji An Xia red confirm Jian, screen Dan Chu permission Jing Bao."
- beat["action_lines"] = [{"content": "Xiao Ji An Zhu red confirm Jian, Jing Bao Deng Chi Xu Shan Shuo."}]
- contract = normalize_script_beat_contract(payload)
+    payload = _valid_contract()
+    for beat in payload["scenes"][0]["beats"]:
+        beat["visible_event"] = "Xiao Ji An Xia red confirm Jian，screen Dan Chu permission Jing Bao。"
+        beat["action_lines"] = [{"content": "Xiao Ji An Zhu red confirm Jian，Jing Bao Deng Chi Xu Shan Shuo。"}]
+    contract = normalize_script_beat_contract(payload)
 
- report = evaluate_beat_contract_quality(contract)
+    report = evaluate_beat_contract_quality(contract)
 
- failed = {item["check_id"] for item in report["failed_checks"]}
- assert report["passed"] is False
- assert "beat_progression_repetition" in failed
+    failed = {item["check_id"] for item in report["failed_checks"]}
+    assert report["passed"] is False
+    assert "beat_progression_repetition" in failed

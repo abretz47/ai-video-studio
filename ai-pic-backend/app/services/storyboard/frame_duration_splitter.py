@@ -406,7 +406,7 @@ def _create_split_frame(
     if split_index > 0:
         desc = frame.get("description", "")
         if desc and not desc.startswith("(Xu)"):
-            frame["description"] = f"（续）{desc}"
+            frame["description"] = f"（Xu）{desc}"
 
     return frame
 

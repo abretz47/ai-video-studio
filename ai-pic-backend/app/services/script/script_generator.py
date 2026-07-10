@@ -199,7 +199,7 @@ class ScriptGenerator:
         except NarrativeQualityGateError as exc:
             raise GenerationFailedError(
                 "script",
-                f"质量校验失败: {exc}",
+                f"Zhi Liang Xiao Yan failed: {exc}",
                 context={"quality_gate": exc.quality_gate},
             ) from exc
         script_content = ai_content.get("content", "")
@@ -213,8 +213,8 @@ class ScriptGenerator:
         if policy.unknown_names:
             raise GenerationFailedError(
                 "Jian Ce to Wei Zhu Ce character, Zu Duan Sheng Cheng."
-                f" 未注册角色: {policy.unknown_names};"
-                f" 已注册角色: {policy.canonical_names};"
+                f" Wei Zhu Ce character: {policy.unknown_names};"
+                f" Yi Zhu Ce character: {policy.canonical_names};"
                 " Yun Xu Fan Hua Xiao Jiao Se: ['Lu Ren','clerk','narration']"
             )
 
@@ -229,7 +229,7 @@ class ScriptGenerator:
         # Create script
         db_script = Script(
             episode_id=episode_id,
-            title=f"{episode.title} - 剧本",
+            title=f"{episode.title} - script",
             content=script_content,
             scenes=scenes,
             dialogues=dialogues,

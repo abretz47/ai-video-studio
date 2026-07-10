@@ -7,25 +7,25 @@ BACKEND_ROOT = REPO_ROOT / "ai-pic-backend"
 sys.path.append(str(REPO_ROOT))
 sys.path.append(str(BACKEND_ROOT))
 
-from tests.scripts.provider_chain_fixtures import provider_payload # noqa: E402
+from tests.scripts.provider_chain_fixtures import provider_payload  # noqa: E402
 
-from scripts.harness.production_quality_script import (# noqa: E402
- structured_script_score,
+from scripts.harness.production_quality_script import (  # noqa: E402
+    structured_script_score,
 )
 
 
 def test_structured_score_rejects_repeated_provider_screen_beats() -> None:
- payload = provider_payload()
- script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
- for scene in script["scenes"]:
- for beat in scene["beats"]:
- beat["visible_event"] = "Xiaolan An Xia red confirm Jian, screen Dan Chu permission Jing Bao"
- beat["action"] = ["Xiaolan An Zhu red confirm Jian, Jing Bao Deng Chi Xu Shan Shuo"]
- payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
- script, ensure_ascii=False
-)
+    payload = provider_payload()
+    script = json.loads(payload["key_artifacts"]["script"]["raw_content"])
+    for scene in script["scenes"]:
+        for beat in scene["beats"]:
+            beat["visible_event"] = "Xiaolan An Xia red confirm Jian，screen Dan Chu permission Jing Bao"
+            beat["action"] = ["Xiaolan An Zhu red confirm Jian，Jing Bao Deng Chi Xu Shan Shuo"]
+    payload["key_artifacts"]["script"]["raw_content"] = json.dumps(
+        script, ensure_ascii=False
+    )
 
- result = structured_script_score(payload)
+    result = structured_script_score(payload)
 
- assert result["passed"] is False
- assert "beat_progression_repetition" in result["failed_checks"]
+    assert result["passed"] is False
+    assert "beat_progression_repetition" in result["failed_checks"]
