@@ -40,7 +40,7 @@ export function TimelineToolbar({
   zoom: number;
 }) {
   const timelineScopeLabel =
-    headerTitle?.replace(/Timeline$|时间轴$/, "").trim() || t("timeline.fullFilm", "Full Film");
+    headerTitle?.replace(/Timeline$|\u65f6\u95f4\u8f74$/, "").trim() || t("timeline.fullFilm", "Full Film");
   const timelineWindowLabel = `${formatTimelineLabel(
     minStart,
   )} – ${formatTimelineLabel(maxEnd)}`;
