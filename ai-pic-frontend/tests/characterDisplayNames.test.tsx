@@ -66,7 +66,7 @@ describe("character display names", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByLabelText("绑定角色 IP 快递员模板"));
+    assert.ok(utils.getByLabelText("Bind Character IP 快递员模板"));
     assert.equal(utils.queryByText("未命名角色"), null);
   });
 });

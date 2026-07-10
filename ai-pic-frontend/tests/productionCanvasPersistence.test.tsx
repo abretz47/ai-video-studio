@@ -126,10 +126,10 @@ describe("ProductionCanvasPersistence", () => {
       const utils = render(<ProductionCanvasContent storageKey={null} />, {
         container: dom.window.document.body,
       });
-      fireEvent.input(utils.getByLabelText("生产目标"), {
+      fireEvent.input(utils.getByLabelText("Production Goal"), {
         target: { value: "做一版短剧生产画布" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create Full Flow" }));
 
       await waitFor(() => {
         const input = utils.getByLabelText("Run ID") as HTMLInputElement;
@@ -216,10 +216,10 @@ describe("ProductionCanvasPersistence", () => {
         <ProductionCanvasContent storageKey={null} autosaveDelayMs={5} />,
         { container: dom.window.document.body },
       );
-      fireEvent.input(utils.getByLabelText("生产目标"), {
+      fireEvent.input(utils.getByLabelText("Production Goal"), {
         target: { value: "自动保存画布" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create Full Flow" }));
 
       await waitFor(() => assert.equal(savedBodies.length, 1));
       fireEvent.click(utils.getByRole("button", { name: "添加便签" }));

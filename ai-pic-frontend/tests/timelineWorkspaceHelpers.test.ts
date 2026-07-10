@@ -712,7 +712,7 @@ describe("timeline workspace helpers", () => {
 
     assert.equal(overview?.timelineLabel, "Timeline 10 · v5");
     assert.equal(overview?.durationLabel, "4.6s");
-    assert.equal(overview?.trackSummary, "2 轨 · 3 clips");
+    assert.equal(overview?.trackSummary, "2  tracks · 3 clips");
     assert.equal(overview?.dialogueClipCount, 1);
     assert.equal(overview?.videoClipCount, 2);
     assert.equal(overview?.audioUrl, "https://example.com/episode.mp3");

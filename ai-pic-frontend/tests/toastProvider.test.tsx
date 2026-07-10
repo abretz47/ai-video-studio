@@ -92,7 +92,7 @@ describe("toast provider", () => {
     const { utils, notify } = renderToastHarness();
     notify("手动关闭我", "warning", { durationMs: 60000 });
     await waitFor(() => assert.ok(utils.getByText("手动关闭我")));
-    fireEvent.click(utils.getByLabelText("关闭通知"));
+    fireEvent.click(utils.getByLabelText("Close Notification"));
     await waitFor(() => assert.equal(utils.queryByText("手动关闭我"), null));
   });
 

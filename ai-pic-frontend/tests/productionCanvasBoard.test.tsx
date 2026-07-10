@@ -40,7 +40,7 @@ describe("ProductionCanvasBoard", () => {
       (item) => item.href === "/canvas",
     );
 
-    assert.equal(productionNavItems[canvasIndex]?.label, "创作画布");
+    assert.equal(productionNavItems[canvasIndex]?.label, "Canvas");
     assert.equal(productionNavItems[canvasIndex]?.icon, "canvas");
     assert.equal(
       productionNavItems[canvasIndex - 1]?.href,
@@ -54,7 +54,7 @@ describe("ProductionCanvasBoard", () => {
       container: dom.window.document.body,
     });
 
-    assert.ok(utils.getByText("短剧生产链路"));
+    assert.ok(utils.getByText("Short Drama Production Flow"));
     assert.ok(
       utils.getByText(
         "Brief -> Script -> Storyboard -> Image Candidates -> Video Candidates -> Timeline -> Report",
@@ -78,8 +78,8 @@ describe("ProductionCanvasBoard", () => {
     );
     assert.ok(canvas);
     assert.match(canvas.className, /touch-none/);
-    assert.ok(utils.getByRole("button", { name: "添加便签" }));
-    assert.ok(utils.getByRole("button", { name: "适配" }));
+    assert.ok(utils.getByRole("button", { name: "Add Note" }));
+    assert.ok(utils.getByRole("button", { name: "Fit" }));
     assert.ok(utils.getByText("100%"));
   });
 
@@ -88,11 +88,11 @@ describe("ProductionCanvasBoard", () => {
       container: dom.window.document.body,
     });
 
-    utils.getByLabelText("Script 短剧节拍、对白和质量门禁").click();
+    utils.getByLabelText("Script Short-drama beats, dialogue, and quality gates").click();
 
-    assert.ok(utils.getByText("节点详情"));
+    assert.ok(utils.getByText("Node Details"));
     assert.ok(utils.getAllByText("Script").length >= 1);
-    assert.ok(utils.getByText("短剧节拍、对白和质量门禁"));
+    assert.ok(utils.getByText("Short-drama beats, dialogue, and quality gates"));
   });
 
   it("updates reusable canvas state for drag, zoom, and notes", () => {
@@ -112,7 +112,7 @@ describe("ProductionCanvasBoard", () => {
     const note = withNote.find((node) => node.id === "note-1");
 
     assert.equal(note?.kind, "note");
-    assert.equal(note?.label, "便签");
+    assert.equal(note?.label, "Note");
   });
 
   it("edits dynamic canvas edges from the selected node", () => {
@@ -144,15 +144,15 @@ describe("ProductionCanvasBoard", () => {
       null,
     );
 
-    fireEvent.change(utils.getByLabelText("连线目标"), {
+    fireEvent.change(utils.getByLabelText("Edge target"), {
       target: { value: "report" },
     });
-    fireEvent.click(utils.getByRole("button", { name: "添加连线" }));
+    fireEvent.click(utils.getByRole("button", { name: "Add Edge" }));
 
     assert.ok(
       utils.container.querySelector("[data-canvas-edge='brief-report']"),
     );
-    fireEvent.click(utils.getByRole("button", { name: "移除连线 Report" }));
+    fireEvent.click(utils.getByRole("button", { name: "Remove Edge Report" }));
     assert.equal(
       utils.container.querySelector("[data-canvas-edge='brief-report']"),
       null,
@@ -387,25 +387,25 @@ describe("ProductionCanvasBoard", () => {
         container: dom.window.document.body,
       });
 
-      const promptInput = utils.getByLabelText("生产目标");
+      const promptInput = utils.getByLabelText("Production Goal");
       fireEvent.input(promptInput, {
         target: { value: "基于林妹妹做第 4 集，办公室轻喜剧" },
       });
-      fireEvent.input(utils.getByLabelText("剧集 ID"), {
+      fireEvent.input(utils.getByLabelText("Episode ID"), {
         target: { value: "123" },
       });
-      fireEvent.input(utils.getByLabelText("任务 ID"), {
+      fireEvent.input(utils.getByLabelText("Task ID"), {
         target: { value: "44" },
       });
       await waitFor(() =>
         assert.equal(
           utils
-            .getByRole("button", { name: "整体创建" })
+            .getByRole("button", { name: "Create Full Flow" })
             .hasAttribute("disabled"),
           false,
         ),
       );
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create Full Flow" }));
 
       await waitFor(() => {
         assert.ok(utils.getAllByText("Asset Selection").length >= 1);
@@ -419,7 +419,7 @@ describe("ProductionCanvasBoard", () => {
       assert.ok(
         utils.getAllByText("复用现有 IP：林妹妹；环境：共享办公区").length >= 1,
       );
-      assert.ok(utils.getByText("后台复用"));
+      assert.ok(utils.getByText("Backend Reuse"));
       assert.ok(utils.getByText("Environment repository"));
       assert.ok(utils.getByText("candidate_environment_ids: 2"));
       assert.ok(utils.getByText("canvas_run_id: canvas-run-123"));
@@ -534,10 +534,10 @@ describe("ProductionCanvasBoard", () => {
         container: dom.window.document.body,
       });
 
-      fireEvent.input(utils.getByLabelText("生产目标"), {
+      fireEvent.input(utils.getByLabelText("Production Goal"), {
         target: { value: "基于林妹妹整体创建短剧" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create Full Flow" }));
 
       await waitFor(() => {
         assert.equal(executeRequests.length, 1);
@@ -639,10 +639,10 @@ describe("ProductionCanvasBoard", () => {
         container: dom.window.document.body,
       });
 
-      fireEvent.input(utils.getByLabelText("生产目标"), {
+      fireEvent.input(utils.getByLabelText("Production Goal"), {
         target: { value: "基于已有分镜整体生成图片和视频候选" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create Full Flow" }));
 
       await waitFor(() => {
         assert.equal(executeRequests.length, 2);
