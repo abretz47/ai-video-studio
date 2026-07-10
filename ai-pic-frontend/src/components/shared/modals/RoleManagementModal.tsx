@@ -422,7 +422,7 @@ export default function RoleManagementModal({
                     </h3>
                     <div className="mt-2 text-sm text-blue-700">
                       <p>
-                        This action removes the user's administrative permissions. The user will only be able to access regular user features.
+                        This action removes the user&apos;s administrative permissions. The user will only be able to access regular user features.
                         Ensure this change will not affect ongoing administrative work.
                       </p>
                     </div>

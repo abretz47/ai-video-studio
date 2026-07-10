@@ -29,7 +29,7 @@ function frameIndexesText(outputs: Record<string, unknown> | undefined) {
 
 function parseFrameIndexes(value: string) {
   const indexes = value
-    .split(",")}
+    .split(",")
     .map((item) => Number.parseInt(item.trim(), 10))
     .filter((item, index, all) => Number.isInteger(item) && item >= 0 && all.indexOf(item) === index);
   return indexes.length ? indexes : undefined;
