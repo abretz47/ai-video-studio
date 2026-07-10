@@ -1,14 +1,14 @@
 {%- import "fragments/image_macros.txt" as img -%}
-生成要求（重要）：
-- 只生成单幅画面：一个镜头的一个瞬间（single frame / movie still）。
-- 不要拼接、分屏、九宫格、多格漫画、多镜头合成（{{ img.constraint_no_collage_storyboard() }}）。
-- 画面中不要出现文字、字幕、对白气泡、界面UI、边框、分割线、水印、logo。
-- 不要生成“分镜联系表/接触印相/多帧拼贴/Contact Sheet”，不要出现帧号/标签（例如 frame 00/01）。
-- 若提示词包含“镜头切换/转场/上一镜头”等，仅作剪辑备注，不要在画面中表现多个镜头。
-- 若提供参考图像：优先匹配人物脸/服装/发型与环境光线/色彩，保持镜头风格统一与延续性。
+Generation requirements (important):
+- Generate only a single image: one instant from one shot (single frame / movie still).
+- Do not create collage, split-screen, nine-panel layout, multi-panel comic, or multi-shot composites ({{ img.constraint_no_collage_storyboard() }}).
+- Do not show text, subtitles, dialogue bubbles, UI, borders, divider lines, watermarks, or logos in the image.
+- Do not generate a "storyboard contact sheet / contact print / multi-frame collage / Contact Sheet," and do not show frame numbers or labels (such as frame 00/01).
+- If the prompt includes "shot transition / cut / previous shot," treat it only as an editing note; do not depict multiple shots in the same image.
+- If reference images are provided: prioritize matching the characters' faces / costumes / hairstyles and the environment's lighting / color palette, maintaining a unified and continuous visual style.
 
 Quality: {{ img.quality_high(subject="scene") }}, {{ img.quality_storyboard() }}
 Constraints: {{ img.constraint_no_text_artifacts() }}, {{ img.constraint_no_collage_storyboard() }}, {{ img.constraint_no_deformities_basic() }}, {{ img.constraint_no_low_quality() }}
 
 {{ base_prompt }}
-{% if reference_notes %}参考图像：{% for ref in reference_notes %}{% if ref.type == "frame" %}帧参考图{% elif ref.type == "user" %}用户提供的参考图{% elif ref.type == "character" %}{{ ref.name }} 的参考图{% elif ref.type == "environment" %}环境参考图{% else %}参考图{% endif %}{% if not loop.last %} | {% endif %}{% endfor %}{% endif %}
+{% if reference_notes %}Reference images: {% for ref in reference_notes %}{% if ref.type == "frame" %}frame reference image{% elif ref.type == "user" %}user-provided reference image{% elif ref.type == "character" %}reference image of {{ ref.name }}{% elif ref.type == "environment" %}environment reference image{% else %}reference image{% endif %}{% if not loop.last %} | {% endif %}{% endfor %}{% endif %}

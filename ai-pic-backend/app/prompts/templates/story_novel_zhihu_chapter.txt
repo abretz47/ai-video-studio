@@ -1,48 +1,48 @@
-你将续写知乎体长文故事的一次“更新”。请输出纯文本正文，不要 Markdown，不要代码块。
+You are continuing one "update" of a long-form Zhihu-style story. Output only plain-text body content. No Markdown. No code fences.
 
-【故事信息】
+[Story information]
 {{ story | tojson }}
 
-【整体大纲（plan）】
+[Overall outline (plan)]
 {{ plan | tojson }}
 
-【连贯性账本（ledger）】
+[Continuity ledger]
 {{ ledger | tojson }}
 
-【上一章结尾片段（previous_tail）】
+[Previous chapter ending excerpt (previous_tail)]
 {{ previous_tail }}
 
-【上一章卡点（previous_cliffhanger）】
+[Previous chapter cliffhanger (previous_cliffhanger)]
 {{ previous_cliffhanger }}
 
-【当前章节】
-章节号：{{ chapter.chapter_number }}
-章节标题：{{ chapter.title }}
-目标字数：{{ chapter.target_words }}
-关键节拍（按顺序）：
+[Current chapter]
+Chapter number: {{ chapter.chapter_number }}
+Chapter title: {{ chapter.title }}
+Target word count: {{ chapter.target_words }}
+Key beats (in order):
 {{ chapter.key_beats | tojson }}
-章末卡点提示：{{ chapter.cliffhanger_hint }}
+End-of-chapter cliffhanger hint: {{ chapter.cliffhanger_hint }}
 
-【已生成连载小结（running_summary）】
+[Generated running summary]
 {{ running_summary }}
 
-【字数目标】
-总目标：{{ total_target_words }}
-剩余目标：{{ remaining_target_words }}
+[Word-count target]
+Total target: {{ total_target_words }}
+Remaining target: {{ remaining_target_words }}
 
-写作要求：
-- 第一人称叙述，知乎回答口吻；叙述清晰、画面感强，包含对话与心理。
-- 本章主要推进新的情节，不要大段重复 running_summary 已经明确写过的内容。
-- 必须遵守 ledger 的已知事实/时间线/人物关系/开放线索，不要引入自相矛盾的新设定。
-- 必须自然承接 previous_tail 的语气与场景（若为空则从本章节拍起笔）。
-- 若 previous_cliffhanger 非空，正文开头必须在 1-3 段内回应/承接该卡点（继续现场或立刻解释卡点后的变化），避免跳过关键悬念。
-- 人物引入：如果本章第一次出现某个角色姓名（该姓名未在 previous_tail / running_summary 中出现），必须用 1-2 句交代其身份与与“我”的关系，并在首次点名处写清“我如何得知/确认这个名字”（自报、他人介绍、工牌/名牌、手机备注等）。若暂时不适合点名，可先用“她/那个人/新来的同事”等称呼，待合理揭示后再点名。
-- 若写完关键节拍后字数明显不足（低于目标字数的 70%），必须继续补写具体场景/对话/心理细节，直到接近目标字数，再输出小结与卡点。
-- 在进入【本章小结】前，正文最后一句必须完整，不要出现半句话/未闭合引号/未完成对话。
-- 尽量接近目标字数（允许 ±20%），且不要超过剩余目标的 120%。
-- 章节末尾必须按以下格式收尾（标记要一字不差，且各出现一次）：
-  【本章小结】
-  （用 2-6 条要点概括本章推进与人物变化）
-  【本章卡点】
-  （用 1-2 句制造悬念/钩子，引导下一章）
-- 合规：避免极端暴力/色情/真实政治敏感等内容；不输出任何“作为AI”免责声明。
+Writing requirements:
+- First-person narration in the tone of a Zhihu answer; keep the storytelling clear and vivid, including dialogue and inner thoughts.
+- This chapter should mainly advance new plot. Do not spend large sections repeating what running_summary has already made explicit.
+- You must follow the established facts / timeline / character relationships / open threads in the ledger. Do not introduce contradictory new setup.
+- You must naturally continue the tone and scene of previous_tail (if it is empty, begin from this chapter's opening naturally).
+- If previous_cliffhanger is not empty, the opening 1-3 paragraphs must respond to / continue that cliffhanger (either continue the scene or immediately explain what changed after it), instead of skipping the key suspense.
+- Character introduction: if a character name appears for the first time in this chapter (and that name did not appear in previous_tail / running_summary), use 1-2 sentences to explain who this person is and how they relate to "me," and make clear at the first mention *how I learned/confirmed the name* (self-introduction, someone else's introduction, badge/nameplate, phone note, etc.). If naming them is not appropriate yet, use "she / that person / the new coworker" and reveal the name only when justified.
+- If the chapter is still clearly short after finishing the key beats (under 70% of the target word count), you must continue adding concrete scenes / dialogue / psychological detail until the text is close to the target word count, then output the summary and cliffhanger.
+- Before entering [Chapter Summary], the last sentence of the main text must be complete. Do not leave half a sentence, an unclosed quotation mark, or unfinished dialogue.
+- Stay as close as possible to the target word count (±20% allowed), and do not exceed 120% of the remaining target.
+- The chapter must end using the exact format below (the markers must be character-for-character exact, and each must appear exactly once):
+  [Chapter Summary]
+  (Use 2-6 bullet points to summarize this chapter's progression and character changes)
+  [Chapter Cliffhanger]
+  (Use 1-2 sentences to create suspense / a hook for the next chapter)
+- Compliance: avoid extreme violence / explicit sexual content / real-world political sensitivity, etc.; do not output any "as an AI" disclaimer.

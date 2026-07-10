@@ -1,13 +1,13 @@
-判断下面竖屏短剧剧本结尾是否形成强悬念/新问题。
-只评估结尾，不要改写剧本。
+Judge whether the ending of the following vertical short-drama script creates a strong cliffhanger or new dramatic question.
+Only evaluate the ending; do not rewrite the script.
 
-通过标准：最后三行或最后一个动作/对白必须制造未解决问题、危险升级、爆点揭示、关键选择或下一集必须继续看的卡点。
-不通过标准：只是收束情绪、普通黑场、普通音效、解释总结、无新信息。
+Passing standard: the last three lines or the last action/dialogue must create an unresolved question, an escalation of danger, a reveal, a critical choice, or a hook that forces the next episode.
+Failing standard: it only closes emotion, fades to black routinely, uses ordinary sound effects, summarizes/explains, or provides no new information.
 
-返回 JSON：passed 表示是否通过；score 为 0 到 1；reason 简述判断；evidence 引用最关键的结尾证据；suggestion 给出最小修改建议。
+Return JSON: passed indicates whether it passes; score is from 0 to 1; reason briefly explains the judgment; evidence quotes the most important ending evidence; suggestion gives the smallest change needed.
 
-剧本全文：
+Full script:
 {{ script_content[:12000] }}
 
-结尾三行：
+Last three lines:
 {{ tail_lines | tojson }}

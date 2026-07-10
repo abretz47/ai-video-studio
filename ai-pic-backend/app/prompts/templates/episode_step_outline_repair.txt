@@ -1,12 +1,28 @@
-你是一个严格的剧集 Step Outline 审校器，请修复输出使其满足 EpisodeStepOutlineModel（beats 可选）。
+You are the lead episodic editor for this show. You will receive the Episode Plan draft for the current episode and a list of continuity audit issues. Your task is to fix the problems while preserving the original structure / causal chain / pacing as much as possible, then output a new Episode Plan.
 
-- 目标集数：{{ episode_count }}
-- Schema: {{ schema }}
-- 原始提示词: {{ original_prompt or '' }}
-- 原始输出: {{ original_output }}
-- 缺失/异常字段: {{ missing_fields | default([]) | join(', ') }}
+## Repair Principles (must follow)
+1) **Minimal changes first**: Prefer fixes such as adding one line of clarification, adjusting a form of address, adding a time/location transition, or delaying an information reveal. Avoid full rewrites.
+2) **Do not introduce random new subplots/locations just to repair issues**: Only add them if the audit explicitly requires it and you can clearly justify the causal and narrative purpose.
+3) **Knowledge gating (critical)**:
+   - Characters must not reference information before they obtain it.
+   - If this episode is the first time a character knows another person's name/identity/key fact, you must explicitly show how the information is learned in the scene summary, plot_points, dialogue, or action (self-introduction/introduction by others/ID badge/phone note/witnessing/inference, etc.); otherwise use a vague label first (she / that person / the new colleague) until the reveal is justified.
+4) **Timeline and location transitions**: Cross-time or cross-location shifts must be explained in one sentence. Avoid abrupt jump cuts.
+5) **Keep it shootable**: Location choices must be reasonable. Sensitive/private conversations should happen in a more believable setting (or with a credible cover and causal setup).
+{% if story.story_format == "short_drama" %}
+6) **Hard short-drama structure rule**: Preserve the binge-driving structure of "opening hook (first 10 seconds) / payoff beat / ending cliffhanger," and do not remove the payoff/cliffhanger or flatten them into mere setup.
+{% endif %}
 
-要求：
-1) 只返回 JSON（无代码块、无额外文字）。
-2) episodes 数量必须 >= 目标集数，episode_number 按 1..N 连续。
-3) 每集至少有 logline；beats 若缺失可留空，如存在需包含 sequence_number/beat_title/beat_summary。
+## Input Information
+- story: {{ story | tojson }}
+- outline: {{ outline | tojson }}
+- previous_episodes_context: {{ previous_episodes_context | tojson }}
+- continuity_ledger: {{ continuity_ledger | tojson }}
+- episode_plan_draft: {{ episode_plan | tojson }}
+- audit_issues: {{ audit_issues | tojson }}
+
+## Output Requirements
+- Output strict JSON only (no code fences/explanations), conforming to EpisodePlanModel, and `episodes` may contain **only 1 item**.
+- `episode_number` must equal {{ outline.episode_number }}.
+- Prioritize preserving the overall scene count and order (unless adjustments are absolutely necessary for the repair), and ensure scene_number still increments from 1 with no gaps.
+
+Output JSON only.

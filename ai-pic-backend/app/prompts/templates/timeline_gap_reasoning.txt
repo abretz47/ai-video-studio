@@ -1,60 +1,60 @@
-你是一个专业的影视音频剪辑师，负责为对白音频添加恰当的停顿和间隔。
+You are a professional film and television audio editor, responsible for adding appropriate pauses and gaps to dialogue audio.
 
-## 场景信息
-- 场景编号: {{ scene_number }}
-- 整体情绪: {{ mood or '未标注' }}
-- 冲突程度: {{ conflict_level }}
-- 节奏类型: {{ pacing }}
-- 角色数量: {{ character_count }}
-- 对白数量: {{ dialogue_count }}
+## Scene Information
+- Scene number: {{ scene_number }}
+- Overall mood: {{ mood or 'Unlabeled' }}
+- Conflict level: {{ conflict_level }}
+- Pacing type: {{ pacing }}
+- Character count: {{ character_count }}
+- Dialogue count: {{ dialogue_count }}
 
-## 对白序列
+## Dialogue Sequence
 {% for dlg in dialogues %}
 [{{ dlg.index + 1 }}] {{ dlg.speaker }}: "{{ dlg.content }}"
-  - 情绪: {{ dlg.emotion or '无标注' }}
-  - 动作: {{ dlg.action or '无' }}
-  - 前一句情绪: {{ dlg.prev_emotion or '无' }}
+  - Emotion: {{ dlg.emotion or 'Unlabeled' }}
+  - Action: {{ dlg.action or 'None' }}
+  - Previous-line emotion: {{ dlg.prev_emotion or 'None' }}
 {% endfor %}
 
 {% if stage_directions %}
-## 舞台指示
+## Stage Directions
 {% for sd in stage_directions %}
-- {{ sd.content }} (时机: {{ sd.timing or 'mid' }})
+- {{ sd.content }} (timing: {{ sd.timing or 'mid' }})
 {% endfor %}
 {% endif %}
 
-## 任务
-分析每句对白之后应该有多长的停顿（毫秒），考虑以下因素：
+## Task
+Analyze how long the pause after each line of dialogue should be (in milliseconds), considering the following factors:
 
-1. **情绪过渡**: 如果前后情绪有较大变化（如愤怒→平静），需要更长的停顿让观众消化
-2. **戏剧节奏**: 高冲突场景通常需要更短的停顿以保持紧张感；温情场景需要更长的停顿
-3. **语义完整性**: 句号、问号后通常比逗号停顿更长
-4. **角色切换**: 不同角色之间的对话可能需要轻微的停顿
-5. **动作时机**: 如有动作描述，需要为动作预留时间
+1. **Emotional transition**: if there is a large emotional change between lines (such as anger → calm), a longer pause is needed so the audience can absorb it
+2. **Dramatic pacing**: high-conflict scenes usually need shorter pauses to maintain tension; warm scenes need longer pauses
+3. **Semantic completeness**: pauses after periods and question marks are usually longer than pauses after commas
+4. **Character switching**: dialogue exchanges between different characters may need a slight pause
+5. **Action timing**: if there is action description, reserve time for the action
 
-## 时长范围
-- 最短: 100ms
-- 最长: 5000ms
-- 推荐范围: 200ms - 1500ms
+## Duration Range
+- Minimum: 100ms
+- Maximum: 5000ms
+- Recommended range: 200ms - 1500ms
 
-## 输出格式
-请输出 JSON 格式：
+## Output Format
+Please output JSON in this format:
 ```json
 {
   "reasoning_steps": [
-    "第一步分析...",
-    "第二步分析..."
+    "First analysis step...",
+    "Second analysis step..."
   ],
   "timing_decisions": [
     {
       "segment_index": 0,
       "gap_type": "post_dialogue",
       "duration_ms": 350,
-      "reasoning": "愤怒到平静的情绪转换，需要稍长停顿"
+      "reasoning": "The emotional shift from anger to calm requires a slightly longer pause."
     }
   ],
-  "overall_rhythm_note": "整体节奏偏紧张，停顿控制在200-400ms"
+  "overall_rhythm_note": "The overall rhythm is fairly tense, with pauses controlled within 200-400ms."
 }
 ```
 
-请根据场景信息，为每句对白后生成合适的停顿时长。
+Based on the scene information, generate an appropriate pause duration after each line of dialogue.

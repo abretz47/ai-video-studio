@@ -1,5 +1,5 @@
-画面主体: 竖屏短剧单镜头，{{ speaker }}处于旁白/内心独白对应的沉默反应时刻，不开口说话。
-表演动作: {% if intent %}内心语气{{ intent }}，{% endif %}{{ expression }}；{{ gesture }}。
-场景光线: 真实短剧片场质感，光线贴合当前场景时间和环境，气氛压住情绪。
-构图连续性: {{ shot_goal }}；保持人物脸型、发型、服装、站位和上一镜头空间方向一致。
-禁止项: 单幅画面，无字幕，无可读文字，无旁白文字，无分屏/拼贴/多格漫画。
+Main visual: a vertical short-drama single shot, {{ speaker }} is in the silent reaction moment corresponding to the voiceover/inner monologue, not speaking aloud.
+Performance and action: {% if intent %}inner tone {{ intent }}, {% endif %}{{ expression }}; {{ gesture }}.
+Scene lighting: realistic short-drama set texture, lighting matches the current scene time and environment, with the mood pressing down on the emotion.
+Composition continuity: {{ shot_goal }}; keep the character's facial structure, hairstyle, costume, blocking, and screen direction consistent with the previous shot.
+Prohibitions: single image only, no subtitles, no readable text, no voiceover text, no split-screen/collage/multi-panel comic.

@@ -1,82 +1,82 @@
-你将维护一个“continuity_ledger（连续剧一致性账本）”，用于跨集一致性、时间轴管理与知识门控。
+You will maintain a "continuity_ledger" for cross-episode continuity, timeline management, and knowledge gating.
 
-请基于【上一版账本】与【本集 Episode Plan】，输出**严格 JSON**（不要代码块、不要解释），用于下一集生成与审校。
+Based on the previous ledger and this episode's Episode Plan, output **strict JSON** (no code fences, no explanations) for use in next-episode generation and auditing.
 
-## 上一版账本（previous_ledger）
+## Previous Ledger (previous_ledger)
 {{ previous_ledger | tojson }}
 
-## 故事信息（story）
+## Story Information (story)
 {{ story | tojson }}
 
-## 本集 Step Outline（outline）
+## This Episode's Step Outline (outline)
 {{ outline | tojson }}
 
-## 本集 Episode Plan（episode_plan）
+## This Episode's Episode Plan (episode_plan)
 {{ episode_plan | tojson }}
 
-## 输出格式（严格 JSON）
+## Output Format (Strict JSON)
 {
   "ledger": {
     "version": 1,
-    "facts": ["已确认事实（短句）"],
+    "facts": ["Confirmed fact (short sentence)"],
     "timeline": [
       {
         "episode_number": 1,
-        "time_anchor": "时间锚点（同一天/第二天/一周后/具体日期等）",
-        "location_anchor": "地点锚点（城市/区域/关键主要地点）",
-        "events": ["本集关键事件（短句，最多8条）"],
-        "end_state": "本集结尾关键状态（短句）",
-        "reveals": ["本集揭示信息（短句，最多8条）"]
+        "time_anchor": "Time anchor (same day / next day / one week later / specific date, etc.)",
+        "location_anchor": "Location anchor (city / district / key primary location)",
+        "events": ["Key event in this episode (short sentence, max 8)"],
+        "end_state": "Key end state of this episode (short sentence)",
+        "reveals": ["Information revealed in this episode (short sentence, max 8)"]
       }
     ],
     "characters": {
-      "角色名": {
-        "status": "当前状态/处境（短句）",
-        "goal": "当前目标（短句）",
-        "relationships": {"他人": "关系变化（短句）"},
-        "known_info": ["角色已知信息（短句）"],
-        "unknown_info": ["角色未知但重要的信息（短句，可为空）"]
+      "Character Name": {
+        "status": "Current status/situation (short sentence)",
+        "goal": "Current goal (short sentence)",
+        "relationships": {"Other Person": "Relationship change (short sentence)"},
+        "known_info": ["Information known to the character (short sentence)"],
+        "unknown_info": ["Important information still unknown to the character (short sentence, may be empty)"]
       }
     },
     "info_acquisition_events": [
       {
         "episode_number": 1,
         "scene_number": 1,
-        "who": "谁获得信息（角色名/旁白/观众）",
-        "what": "获得的信息（姓名/身份/事实等）",
-        "how": "获得方式（自报/他人介绍/工牌/手机备注/目击/推断等）",
-        "evidence": "证据片段/引用（可选）"
+        "who": "Who acquired the information (character name/narrator/audience)",
+        "what": "Information acquired (name/identity/fact, etc.)",
+        "how": "Acquisition method (self-report / introduced by others / ID badge / phone contact note / witnessed / inferred, etc.)",
+        "evidence": "Evidence snippet / quotation (optional)"
       }
     ],
-    "open_threads": ["未解决线索/悬念（短句）"],
-    "resolved_threads": ["已收束线索/悬念（短句）"]
+    "open_threads": ["Unresolved clue / suspense thread (short sentence)"],
+    "resolved_threads": ["Resolved clue / suspense thread (short sentence)"]
   },
   "episode_snapshot": {
     "episode_number": {{ outline.episode_number }},
-    "time_anchor": "本集时间锚点（可为空）",
-    "location_anchor": "本集地点锚点（可为空）",
-    "end_state": "本集结尾关键状态（可为空）",
-    "reveals": ["本集揭示信息（短句）"],
+    "time_anchor": "This episode's time anchor (may be empty)",
+    "location_anchor": "This episode's location anchor (may be empty)",
+    "end_state": "This episode's key end state (may be empty)",
+    "reveals": ["Information revealed in this episode (short sentence)"],
     "info_acquisition_events": [
       {
         "episode_number": {{ outline.episode_number }},
         "scene_number": 1,
-        "who": "谁获得信息",
-        "what": "获得的信息",
-        "how": "获得方式",
-        "evidence": "可选"
+        "who": "Who acquired the information",
+        "what": "Information acquired",
+        "how": "Acquisition method",
+        "evidence": "Optional"
       }
     ]
   }
 }
 
-规则：
-- **增量更新**：必须在 previous_ledger 基础上更新；不要无中生有改写已发生事实。
-- **时间轴一致性**：timeline 必须按 episode_number 递增；time_anchor/location_anchor 要尽量明确（可用“同一天/第二天/当晚/一周后”等）。
-- **知识门控**：把本集中“首次知道某信息”的事件写入 info_acquisition_events；避免重复写入已存在事件（可合并/去重）。
-- **列表长度受控**：
-  - facts/open_threads/resolved_threads 各最多 25 条
-  - timeline 最多 30 条；每个 events/reveals 最多 8 条
-  - info_acquisition_events 最多 60 条；单集 snapshot 内最多 15 条
-  - 每个角色 known_info 最多 20 条，unknown_info 最多 10 条
-- 只输出 JSON。
+Rules:
+- **Incremental update**: You must update on top of previous_ledger; do not rewrite already established facts out of thin air.
+- **Timeline consistency**: `timeline` must increase by `episode_number`; `time_anchor` and `location_anchor` should be as specific as possible (for example, "same day / next day / that night / one week later").
+- **Knowledge gating**: Record events in which someone first learns information in `info_acquisition_events`; avoid duplicating events that already exist (you may merge/deduplicate).
+- **Controlled list sizes**:
+  - `facts` / `open_threads` / `resolved_threads`: max 25 each
+  - `timeline`: max 30 items; each `events` / `reveals`: max 8 items
+  - `info_acquisition_events`: max 60 items; max 15 items within a single-episode snapshot
+  - Per character, `known_info`: max 20 items; `unknown_info`: max 10 items
+- Output JSON only.

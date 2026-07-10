@@ -1,91 +1,91 @@
-你是一个专业的编剧和故事创作者，擅长创作各种类型的短剧剧本。请根据以下信息创作一个完整的故事概要：
+You are a professional screenwriter and story creator, skilled at creating short-drama scripts across many genres. Please create a complete story outline based on the information below:
 
-## 基本信息
-故事标题：{{ title }}
-类型：{{ genre }}
+## Basic information
+Story title: {{ title }}
+Genre: {{ genre }}
 {% if market_region -%}
-目标市场：{{ market_region }}
+Target market: {{ market_region }}
 {% endif -%}
 {% if micro_genre -%}
-微类型：{{ micro_genre }}
+Micro-genre: {{ micro_genre }}
 {% endif -%}
 {% if theme -%}
-主题：{{ theme }}
+Theme: {{ theme }}
 {% endif -%}
 {% if target_audience -%}
-目标受众：{{ target_audience }}
+Target audience: {{ target_audience }}
 {% endif -%}
 {% if duration_minutes -%}
-总时长：{{ duration_minutes }}分钟
+Total runtime: {{ duration_minutes }} minutes
 {% endif -%}
 
-## 主要角色
+## Main characters
 {% for character in characters %}
 ### {{ character.name }}
 {% if character.description -%}
-描述：{{ character.description }}
+Description: {{ character.description }}
 {% endif -%}
 {% if character.background_story -%}
-背景：{{ character.background_story }}
+Background: {{ character.background_story }}
 {% endif -%}
 {% if character.tags -%}
-标签：{{ character.tags | join(', ') }}
+Tags: {{ character.tags | join(', ') }}
 {% endif -%}
 
 {% endfor %}
 
-## 角色约束（重要）
-- **只允许**出现以上“主要角色”中列出的角色（名称必须一致），**不得新增任何其他有姓名的角色**。
-- 如需一次性工具人/背景人群，只能使用以下泛化小角色称谓：`路人/店员/旁白`（允许 `路人甲/路人乙/店员A` 等后缀），**禁止为其起真实姓名**。
+## Character constraints (important)
+- **Only** the characters listed above under "Main characters" may appear (names must match exactly). **Do not add any other named characters.**
+- If you need disposable function/background characters, you may only use these generic labels: `passerby / clerk / narrator` (suffixes such as `Passerby A / Passerby B / Clerk A` are allowed). **Do not give them real names.**
 
-## 设定信息
+## Setting information
 {% if setting_time -%}
-时间背景：{{ setting_time }}
+Time background: {{ setting_time }}
 {% endif -%}
 {% if setting_location -%}
-地点设定：{{ setting_location }}
+Location setting: {{ setting_location }}
 {% endif -%}
 {% if world_building -%}
-世界观：{{ world_building }}
+World-setting: {{ world_building }}
 {% endif -%}
 
-## 创作要求
+## Creative requirements
 {% if additional_requirements -%}
-额外要求：{{ additional_requirements }}
+Additional requirements: {{ additional_requirements }}
 {% endif -%}
 {% if style_preferences -%}
-风格偏好：{{ style_preferences | join(', ') }}
+Style preferences: {{ style_preferences | join(', ') }}
 {% endif -%}
 {% if content_restrictions -%}
-内容限制：{{ content_restrictions | join(', ') }}
+Content restrictions: {{ content_restrictions | join(', ') }}
 {% endif -%}
 
-## 生成内容
-请创作一个完整的故事概要，以JSON格式返回，包含以下内容：
+## Generated content
+Please create a complete story outline and return it in JSON format, including the following:
 
-1. **故事前提** (premise): 故事的核心概念和基础设定
-2. **详细概要** (synopsis): 完整的故事梗概，包含起承转合
-3. **主要冲突** (main_conflict): 故事的核心冲突和矛盾
-4. **解决方案** (resolution): 冲突的解决方式和故事结局
-5. **角色关系** (character_relationships): 主要角色之间的关系网
-6. **主角信息** (main_characters): 重新整理的主要角色信息
-7. **情节结构** (plot_structure): 故事的三幕式结构划分
-8. **核心价值** (core_values): 故事要传达的价值观和意义
-9. **视觉风格** (visual_style): 适合的视觉呈现风格建议
-10. **营销卖点** (selling_points): 故事的亮点和吸引观众的要素
-11. **爽点节奏** (hook_plan): 开场钩子、情绪积压与释放、关键反转规划
-12. **反转密度** (twist_density): 目标反转密度（文本即可）
-13. **悬念卡点** (cliffhanger_plan): 关键卡点/悬念列表
-14. **投流素材** (ad_snippets): 15/30/60 秒素材的钩子、画面摘要、CTA 建议
+1. **Story premise** (`premise`): the core concept and foundational setup of the story
+2. **Detailed synopsis** (`synopsis`): a complete story summary covering beginning, development, turn, and resolution
+3. **Main conflict** (`main_conflict`): the story's core conflict and contradiction
+4. **Resolution** (`resolution`): how the conflict is resolved and how the story ends
+5. **Character relationships** (`character_relationships`): the relationship web among the main characters
+6. **Main character information** (`main_characters`): a reorganized version of the main character information
+7. **Plot structure** (`plot_structure`): the story's three-act structure breakdown
+8. **Core values** (`core_values`): the values and meaning the story conveys
+9. **Visual style** (`visual_style`): suggested visual presentation style
+10. **Selling points** (`selling_points`): story highlights and elements that attract viewers
+11. **Payoff rhythm** (`hook_plan`): opening hook, emotional buildup/release, key reversal planning
+12. **Twist density** (`twist_density`): target twist density (text description is fine)
+13. **Cliffhanger plan** (`cliffhanger_plan`): key cliffhanger/suspense list
+14. **Ad assets** (`ad_snippets`): hooks, visual summaries, and CTA suggestions for 15/30/60-second assets
 
-## 创作原则
-- 确保故事结构完整，有明确的开始、发展、高潮和结局
-- 角色设定要符合{{ genre }}类型的特点
-- 适合{{ target_audience or '普通观众' }}观看
-- 内容积极向上，传播正能量
-- 具有可操作性，适合视频制作
+## Creative principles
+- Ensure the story structure is complete, with a clear opening, development, climax, and ending
+- Character setup should fit the conventions of the {{ genre }} genre
+- It should be suitable for {{ target_audience or 'general audiences' }}
+- The content should be positive and convey constructive values
+- It should be practical and suitable for video production
 
-## 输出格式
+## Output format
 {
     "premise": "...",
     "synopsis": "...",

@@ -1,15 +1,15 @@
 {%- set cat = (category | default('indoor')) | lower -%}
-{%- if 'outdoor' in cat or cat in ['outdoor', 'outside', 'exterior', '室外', '户外'] -%}
-{%- set focus = '室外空间、天气、周边环境' -%}
+{%- if 'outdoor' in cat or cat in ['outdoor', 'outside', 'exterior', '\u5ba4\u5916', '\u6237\u5916'] -%}
+{%- set focus = 'outdoor space, weather, and surrounding environment' -%}
 {%- else -%}
-{%- set focus = '室内布局、光线、材质细节' -%}
+{%- set focus = 'interior layout, lighting, and material detail' -%}
 {%- endif -%}
 {%- import "fragments/image_macros.txt" as img -%}
 Environment Variant: {{ environment_name }}
 Category: {{ category | default('indoor') }}
-Composition: 单幅画面内包含远景/中景/近景层次（仍为单帧，不要拼接/分屏/多格）。
-Focus: {{ focus }}；保持真实光影和透视，色彩与风格统一。
-Important: 只生成环境本身，不要出现人物/角色/动物。
+Composition: Include foreground, midground, and background depth within a single frame (still one image only; no collage, split screen, or multi-panel layout).
+Focus: {{ focus }}; maintain realistic lighting and perspective, with unified color and style.
+Important: Generate only the environment itself. Do not include people, characters, or animals.
 {% if tags %}Tags: {{ tags }}{% endif %}
 {% if description %}Description: {{ description }}{% endif %}
 {% if base_prompt %}Base Prompt: {{ base_prompt }}{% endif %}
