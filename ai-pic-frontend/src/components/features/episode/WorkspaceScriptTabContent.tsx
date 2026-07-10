@@ -81,11 +81,11 @@ export function WorkspaceScriptTabContent({
     return (
       <OperatorPanel>
         <OperatorSectionHeader
-          title="生成剧本"
-          subtitle="请配置参数并生成剧本以继续工作流"
+          title="Generate Script"
+          subtitle="Configure the parameters and generate a script to continue the workflow"
         />
         <div className="p-4">
-          <GenerationTaskStatusLine label="剧本" task={scriptTask} />
+          <GenerationTaskStatusLine label="Script" task={scriptTask} />
           <ScriptGenerationForm
             generateForm={generateForm}
             setGenerateForm={setGenerateForm}
@@ -106,7 +106,7 @@ export function WorkspaceScriptTabContent({
 
   return (
     <div className="space-y-4">
-      <GenerationTaskStatusLine label="剧本" task={scriptTask} />
+      <GenerationTaskStatusLine label="Script" task={scriptTask} />
       <ScriptTabToolbar
         activeSubTab={activeSubTab}
         setActiveSubTab={setActiveSubTab}

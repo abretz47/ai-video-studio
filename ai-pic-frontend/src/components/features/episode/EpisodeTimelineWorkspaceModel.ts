@@ -89,7 +89,7 @@ function legacyAudioTimelineToTimelineTracks(
         id: `frame-${id}`,
         startMs: start,
         endMs: end,
-        label: getString(record.description) || `分镜 ${idx + 1}`,
+        label: getString(record.description) || `Storyboard ${idx + 1}`,
         displayLabel: timelineItemDisplayLabel("storyboard", idx),
         type: "storyboard",
         color: "#7c3aed",
@@ -103,7 +103,7 @@ function legacyAudioTimelineToTimelineTracks(
     .map<TimelineItem>((item, idx) => ({
       ...item,
       id: `video-${item.id}`,
-      label: item.label ? `视频 ${item.label}` : "视频片段",
+      label: item.label ? `Video ${item.label}` : "VideoClip",
       displayLabel: timelineItemDisplayLabel("video", idx),
       type: "video",
       color: "#0f766e",
@@ -111,13 +111,13 @@ function legacyAudioTimelineToTimelineTracks(
 
   const tracks: Array<TimelineTrack | null> = [
     beatItems.length
-      ? { id: "dialogue", label: "对白", color: "#2563eb", items: beatItems }
+      ? { id: "dialogue", label: "Dialogue", color: "#2563eb", items: beatItems }
       : null,
     frameItems.length
-      ? { id: "storyboard", label: "分镜", color: "#7c3aed", items: frameItems }
+      ? { id: "storyboard", label: "Storyboard", color: "#7c3aed", items: frameItems }
       : null,
     videoItems.length
-      ? { id: "video", label: "视频", color: "#0f766e", items: videoItems }
+      ? { id: "video", label: "Video", color: "#0f766e", items: videoItems }
       : null,
   ];
   return prioritizeTimelineTracks(
@@ -203,7 +203,7 @@ function storyboardSupportTrack(
         id: `storyboard-${id}`,
         startMs: start,
         endMs: end,
-        label: getString(record.description) || `分镜 ${idx + 1}`,
+        label: getString(record.description) || `Storyboard ${idx + 1}`,
         displayLabel: timelineItemDisplayLabel("storyboard", idx),
         type: "storyboard",
         color: "#7c3aed",
@@ -212,22 +212,22 @@ function storyboardSupportTrack(
     })
     .filter((item): item is TimelineItem => Boolean(item));
   return items.length
-    ? { id: "storyboard", label: "分镜", color: "#7c3aed", items }
+    ? { id: "storyboard", label: "Storyboard", color: "#7c3aed", items }
     : null;
 }
 
 function timelineTrackLabel(trackType: string) {
-  if (trackType === "dialogue") return "对白";
-  if (trackType === "video") return "视频";
-  if (trackType === "subtitle") return "字幕";
-  return trackType || "时间轴";
+  if (trackType === "dialogue") return "Dialogue";
+  if (trackType === "video") return "Video";
+  if (trackType === "subtitle") return "Subtitle";
+  return trackType || "Timeline";
 }
 
 function timelineItemDisplayLabel(trackType: string, index: number) {
-  if (trackType === "dialogue") return `对白 ${index + 1}`;
-  if (trackType === "video") return `视频 ${index + 1}`;
-  if (trackType === "subtitle") return `字幕 ${index + 1}`;
-  if (trackType === "storyboard") return `分镜 ${index + 1}`;
+  if (trackType === "dialogue") return `Dialogue ${index + 1}`;
+  if (trackType === "video") return `Video ${index + 1}`;
+  if (trackType === "subtitle") return `Subtitle ${index + 1}`;
+  if (trackType === "storyboard") return `Storyboard ${index + 1}`;
   return undefined;
 }
 

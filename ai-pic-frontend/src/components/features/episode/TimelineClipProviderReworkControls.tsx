@@ -131,13 +131,13 @@ export function TimelineClipProviderReworkControls({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!timelineId || !timelineVersion || !clipId) {
-      const message = "当前片段缺少稳定 Timeline 上下文";
+      const message = "The current clip lacks a stable Timeline context";
       generationActions.setSubmitError(message);
       onNotify?.(message, "warning");
       return;
     }
     if (duration.trim() && !parsedDuration) {
-      const message = "请输入有效的视频时长";
+      const message = "Please enter a valid video duration";
       generationActions.setSubmitError(message);
       onNotify?.(message, "warning");
       return;
@@ -145,7 +145,7 @@ export function TimelineClipProviderReworkControls({
     if (!productionReadiness.canGenerateVideo) {
       const message =
         productionReadiness.videoGateMessage ||
-        "先完成片段分镜图和首尾帧后才能生视频";
+        "Complete the clip storyboard and start/end frames before generating video";
       generationActions.setSubmitError(message);
       onNotify?.(message, "warning");
       return;
@@ -177,7 +177,7 @@ export function TimelineClipProviderReworkControls({
         payload,
       );
       if (!res.success || !res.data) {
-        const message = res.error || "提交视频重做任务失败";
+        const message = res.error || "Failed to submit video rework task";
         generationActions.setSubmitError(message);
         onNotify?.(message, "error");
         return;
@@ -185,7 +185,7 @@ export function TimelineClipProviderReworkControls({
       setPrompt("");
       setReason("");
       await onQueued?.();
-      onNotify?.(`视频重做任务已提交 #${res.data.task_id}，生成中…`, "success");
+      onNotify?.(`Video rework task submitted #${res.data.task_id}，Generating…`, "success");
       taskTracker.track("video", res.data.task_id, clipId ?? null);
     } finally {
       setSubmitting(false);

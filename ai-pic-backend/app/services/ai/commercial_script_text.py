@@ -18,10 +18,10 @@ def build_commercial_vertical_text(
     target_chars_per_episode: Optional[int],
     title: Optional[str],
 ) -> str:
-    ordered_scenes = scenes or [{"scene_number": 1, "summary": title or "冲突爆发"}]
-    lines: List[str] = [f"第{episode_number}集"]
+    ordered_scenes = scenes or [{"scene_number": 1, "summary": title or "Conflict Erupts"}]
+    lines: List[str] = [f"Episode {episode_number}"]
     if not _first_lines_have_hook(lines + [_scene_summary(ordered_scenes[0])]):
-        lines.append("▲【音效】砰！画面直接切入冲突现场，所有人猛地看向主角。")
+        lines.append("▲[SFX] Bang! The frame cuts directly into the conflict scene; everyone snaps their gaze to the protagonist.")
     dialogues_by_scene = _group_by_scene(dialogues)
     stage_by_scene = _group_by_scene(stage_directions)
     for index, scene in enumerate(ordered_scenes, start=1):
@@ -29,24 +29,24 @@ def build_commercial_vertical_text(
         lines.append("")
         lines.append(_scene_header(scene, episode_number, scene_no))
         scene_dialogues = dialogues_by_scene.get(scene_no, [])
-        characters = _scene_characters(scene, scene_dialogues, fallback="旁白")
-        lines.append("人物： " + "、".join(characters))
+        characters = _scene_characters(scene, scene_dialogues, fallback="Narrator")
+        lines.append("Characters: " + ", ".join(characters))
 
         scene_stage = stage_by_scene.get(scene_no, [])
         summary = _scene_summary(scene)
         if not scene_stage:
             scene_stage = [
                 {
-                    "content": summary or "众人僵在原地，镜头压近主角的反应。",
+                    "content": summary or "Everyone freezes in place as the camera closes in on the protagonist's reaction.",
                     "timing": "intro",
                 }
             ]
         if not scene_dialogues:
             scene_dialogues = [
                 {
-                    "character": "旁白",
-                    "content": summary or "危机在这一刻升级。",
-                    "emotion": "压低声",
+                    "character": "Narrator",
+                    "content": summary or "The crisis escalates at this moment.",
+                    "emotion": "hushed tone",
                 }
             ]
 
@@ -71,9 +71,9 @@ def build_commercial_vertical_text(
             lines.append(_stage_line(scene_stage[stage_cursor]))
             stage_cursor += 1
     if not _has_cliffhanger(lines):
-        final_speaker = _last_dialogue_speaker(dialogues) or "旁白"
-        lines.append("▲【特写】镜头停在关键线索上，所有声音突然压低。")
-        lines.append(f"{final_speaker}(压低声)：你真以为，这就是全部真相？")
+        final_speaker = _last_dialogue_speaker(dialogues) or "Narrator"
+        lines.append("▲[CLOSE-UP] Camera lingers on the key clue; all sound suddenly drops to a hush.")
+        lines.append(f"{final_speaker}(hushed): You really think this is the whole truth?")
     return "\n".join(lines)
 
 
@@ -105,7 +105,7 @@ def _scene_header(scene: Dict[str, Any], episode_number: int, scene_no: int) -> 
         scene.get("location")
         or scene.get("place")
         or _location_from_slug(slug)
-        or "主要场景"
+        or "Main Scene"
     )
     time_of_day = _normalize_time_of_day(
         scene.get("time_of_day") or scene.get("time") or slug
@@ -123,21 +123,21 @@ def _location_from_slug(slug: str) -> Optional[str]:
 def _normalize_space_type(slug: str) -> str:
     upper = slug.upper()
     if upper.startswith("EXT.") or slug.startswith("外"):
-        return "外"
+        return "EXT"
     if "外" in slug and "内" not in slug:
-        return "外"
-    return "内"
+        return "EXT"
+    return "INT"
 
 
 def _normalize_time_of_day(value: Any) -> str:
     text = str(value or "").lower()
     if any(k in text for k in ("night", "夜", "晚")):
-        return "夜"
+        return "NIGHT"
     if any(k in text for k in ("morning", "晨", "早")):
-        return "晨"
+        return "MORNING"
     if any(k in text for k in ("evening", "dusk", "黄昏", "昏")):
-        return "昏"
-    return "日"
+        return "DUSK"
+    return "DAY"
 
 
 def _scene_summary(scene: Dict[str, Any]) -> str:
@@ -201,14 +201,14 @@ def _stage_line(direction: Dict[str, Any]) -> str:
         or ""
     ).strip()
     if not content:
-        content = "镜头压近人物反应。"
+        content = "Camera closes in on the character's reaction."
     if content.startswith("▲"):
         return content
     return f"▲{content}"
 
 
 def _dialogue_line(dialogue: Dict[str, Any]) -> str:
-    speaker = _clean_speaker(str(dialogue.get("character") or "旁白")) or "旁白"
+    speaker = _clean_speaker(str(dialogue.get("character") or "Narrator")) or "Narrator"
     content = str(
         dialogue.get("content") or dialogue.get("line") or dialogue.get("text") or ""
     ).strip()

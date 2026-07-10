@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDateTime as formatLocaleDateTime } from "@/lib/i18n";
 import React, { useState } from "react";
 import { adminAPI } from "@/utils/api/endpoints";
 import type { AdminUser } from "@/utils/api/types";
@@ -81,22 +82,22 @@ interface UserApprovalModalProps {
 
 // Predefined approval/rejection reasons
 const APPROVAL_REASONS = [
-  "资料完整，符合注册要求",
-  "通过人工审核验证",
-  "邮箱验证通过",
-  "身份信息确认无误",
-  "符合平台使用条件",
-  "其他",
+  "Profile complete, meets registration requirements",
+  "Passed manual review",
+  "Email verified",
+  "Identity information verified",
+  "Meets platform usage requirements",
+  "Other",
 ];
 
 const REJECTION_REASONS = [
-  "提供信息不完整或不准确",
-  "邮箱无效或无法验证",
-  "违反平台注册条款",
-  "疑似虚假注册信息",
-  "重复注册账户",
-  "不符合平台使用条件",
-  "其他",
+  "Submitted information is incomplete or inaccurate",
+  "Email is invalid or could not be verified",
+  "Violated platform registration terms",
+  "Suspected fraudulent registration information",
+  "Duplicate account registration",
+  "Does not meet platform usage requirements",
+  "Other",
 ];
 
 export default function UserApprovalModal({
@@ -134,10 +135,10 @@ export default function UserApprovalModal({
     if (!user || !action) return;
 
     const finalReason =
-      selectedReason === "其他" ? customReason : selectedReason;
+      selectedReason === "Other" ? customReason : selectedReason;
 
     if (!finalReason.trim()) {
-      setError("请选择或输入处理原因");
+      setError("Please select or enter a reason");
       return;
     }
 
@@ -157,44 +158,44 @@ export default function UserApprovalModal({
         );
         onClose();
       } else {
-        setError(response.error || "操作失败");
+        setError(response.error || "Operation failed");
       }
     } catch (err) {
-      setError("操作失败，请稍后重试");
-      console.error("用户审批失败:", err);
+      setError("Operation failed. Please try again later");
+      console.error("User ApprovalFailed:", err);
     } finally {
       setIsProcessing(false);
     }
   };
 
   const formatDateTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString("zh-CN");
+    return formatLocaleDateTime(dateString);
   };
 
   const getUserStatusInfo = (user: AdminUser) => {
     if (!user.email_verified) {
       return {
-        status: "邮箱未验证",
+        status: "Email unverified",
         color: "text-orange-600 bg-orange-100",
         icon: ExclamationIcon,
       };
     }
     if (!user.is_approved) {
       return {
-        status: "待审批",
+        status: "Pending approval",
         color: "text-yellow-600 bg-yellow-100",
         icon: ExclamationIcon,
       };
     }
     if (!user.is_active) {
       return {
-        status: "已暂停",
+        status: "Paused",
         color: "text-red-600 bg-red-100",
         icon: ExclamationIcon,
       };
     }
     return {
-      status: "正常",
+      status: "Active",
       color: "text-green-600 bg-green-100",
       icon: CheckIcon,
     };
@@ -214,8 +215,8 @@ export default function UserApprovalModal({
               <UserIcon className="h-6 w-6 text-blue-600" />
             </div>
             <div>
-              <h3 className="text-lg font-medium text-gray-900">用户审批</h3>
-              <p className="text-sm text-gray-500">处理用户注册申请</p>
+              <h3 className="text-lg font-medium text-gray-900">User Approval</h3>
+              <p className="text-sm text-gray-500">Review user registration requests</p>
             </div>
           </div>
           <button
@@ -231,23 +232,23 @@ export default function UserApprovalModal({
         <div className="flex-1 overflow-y-auto p-6">
           {/* User Information */}
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h4 className="text-md font-medium text-gray-900 mb-3">用户信息</h4>
+            <h4 className="text-md font-medium text-gray-900 mb-3">User Information</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  用户名
+                  Username
                 </label>
                 <p className="mt-1 text-sm text-gray-900">{user.username}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  邮箱地址
+                  Email Address
                 </label>
                 <p className="mt-1 text-sm text-gray-900">{user.email}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  全名
+                  Full Name
                 </label>
                 <p className="mt-1 text-sm text-gray-900">
                   {user.full_name || "-"}
@@ -255,7 +256,7 @@ export default function UserApprovalModal({
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  当前状态
+                  Current Status
                 </label>
                 <div className="mt-1">
                   <span
@@ -268,7 +269,7 @@ export default function UserApprovalModal({
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  注册时间
+                  Registered At
                 </label>
                 <p className="mt-1 text-sm text-gray-900">
                   {formatDateTime(user.created_at)}
@@ -276,10 +277,10 @@ export default function UserApprovalModal({
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  登录失败次数
+                  Failed Login Attempts
                 </label>
                 <p className="mt-1 text-sm text-gray-900">
-                  {user.failed_login_attempts || 0} 次
+                  {user.failed_login_attempts || 0} times
                 </p>
               </div>
             </div>
@@ -295,10 +296,10 @@ export default function UserApprovalModal({
             {/* Action Selection */}
             <div>
               <label className="text-base font-medium text-gray-900">
-                处理决定
+                Decision
               </label>
               <p className="text-sm leading-5 text-gray-500">
-                选择如何处理此用户的注册申请
+                Choose how to handle this user registration request
               </p>
               <fieldset className="mt-4">
                 <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
@@ -318,7 +319,7 @@ export default function UserApprovalModal({
                     >
                       <span className="flex items-center">
                         <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                        批准用户
+                        Approve User
                       </span>
                     </label>
                   </div>
@@ -338,7 +339,7 @@ export default function UserApprovalModal({
                     >
                       <span className="flex items-center">
                         <XIcon className="h-4 w-4 text-red-500 mr-2" />
-                        拒绝用户
+                        Reject User
                       </span>
                     </label>
                   </div>
@@ -353,7 +354,7 @@ export default function UserApprovalModal({
                   htmlFor="reason"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  {action === "approve" ? "批准原因" : "拒绝原因"}
+                  {action === "approve" ? "Approval Reason" : "Rejection Reason"}
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <select
@@ -363,7 +364,7 @@ export default function UserApprovalModal({
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
                   disabled={isProcessing}
                 >
-                  <option value="">请选择原因...</option>
+                  <option value="">Please select a reason...</option>
                   {(action === "approve"
                     ? APPROVAL_REASONS
                     : REJECTION_REASONS
@@ -377,13 +378,13 @@ export default function UserApprovalModal({
             )}
 
             {/* Custom Reason Input */}
-            {selectedReason === "其他" && (
+            {selectedReason === "Other" && (
               <div>
                 <label
                   htmlFor="customReason"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  请说明具体原因
+                  Please provide the exact reason
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <textarea
@@ -392,7 +393,7 @@ export default function UserApprovalModal({
                   value={customReason}
                   onChange={(e) => setCustomReason(e.target.value)}
                   className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="请输入具体的处理原因..."
+                  placeholder="Enter the specific reason..."
                   disabled={isProcessing}
                 />
               </div>
@@ -408,14 +409,14 @@ export default function UserApprovalModal({
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
             disabled={isProcessing}
           >
-            取消
+            Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={
               !action ||
               !selectedReason ||
-              (selectedReason === "其他" && !customReason.trim()) ||
+              (selectedReason === "Other" && !customReason.trim()) ||
               isProcessing
             }
             className={`px-4 py-2 text-sm font-medium text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed ${
@@ -448,10 +449,10 @@ export default function UserApprovalModal({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                处理中...
+                Processing...
               </span>
             ) : (
-              `确认${action === "approve" ? "批准" : "拒绝"}`
+              `Confirm ${action === "approve" ? "approval" : "rejection"}`
             )}
           </button>
         </div>

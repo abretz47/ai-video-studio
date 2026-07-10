@@ -108,19 +108,19 @@ describe("ProductionCanvasMediaControls", () => {
         <ProductionCanvasContent storageKey={null} autosaveDelayMs={null} />,
         { container: dom.window.document.body },
       );
-      fireEvent.input(utils.getByLabelText("生产目标"), {
+      fireEvent.input(utils.getByLabelText("Production Goal"), {
         target: { value: "生成媒体候选" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create Full Flow" }));
       await waitFor(() =>
         assert.ok(utils.getAllByText("图片候选执行入口").length),
       );
 
       fireEvent.click(utils.getByLabelText("Image Candidates 图片候选执行入口"));
-      fireEvent.input(utils.getByLabelText("媒体帧索引"), {
+      fireEvent.input(utils.getByLabelText("Media Frame Indexes"), {
         target: { value: "1" },
       });
-      fireEvent.input(utils.getByLabelText("媒体模型"), {
+      fireEvent.input(utils.getByLabelText("Media Model"), {
         target: { value: "codex:gpt-image-2" },
       });
       fireEvent.input(utils.getByLabelText("图片画幅"), {
@@ -136,10 +136,10 @@ describe("ProductionCanvasMediaControls", () => {
       assert.equal(executeRequests[0]?.require_reference_images, false);
 
       fireEvent.click(utils.getByLabelText("Video Candidates 视频候选执行入口"));
-      fireEvent.input(utils.getByLabelText("媒体帧索引"), {
+      fireEvent.input(utils.getByLabelText("Media Frame Indexes"), {
         target: { value: "1" },
       });
-      fireEvent.input(utils.getByLabelText("媒体模型"), {
+      fireEvent.input(utils.getByLabelText("Media Model"), {
         target: { value: "minimax:video-01" },
       });
       fireEvent.input(utils.getByLabelText("视频时长"), {

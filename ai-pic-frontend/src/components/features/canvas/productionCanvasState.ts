@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import {
   productionCanvasEdges,
   productionCanvasNodes,
@@ -213,15 +214,15 @@ export function addProductionCanvasNote(
     ...nodes,
     {
       id: `note-${index}`,
-      label: "便签",
-      title: "记录这个项目下一步的人工判断",
+      label: t("canvas.state.noteLabel", "Note"),
+      title: t("canvas.state.noteTitle", "Capture the next human judgment for this project"),
       status: "review",
       x: Math.round(position.x),
       y: Math.round(position.y),
       width: 190,
       height: 96,
       kind: "note",
-      detail: "便签只保存在当前浏览器，用来临时标注决策、风险或下一步。",
+      detail: t("canvas.state.noteDetail", "Notes stay only in the current browser and are meant for temporary decisions, risks, or next steps."),
     } satisfies ProductionCanvasNode,
   ];
 }

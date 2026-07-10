@@ -1,40 +1,40 @@
-## 时长约束（重要）
+## Duration constraints (important)
 
-本场景需要生成符合以下时长要求的对白：
+This scene needs dialogue that fits the following duration requirements:
 
-- **目标场景时长**: {{ target_duration_seconds }} 秒（{{ (target_duration_seconds / 60) | round(2) }} 分钟）
-- **目标对白字数**: 约 {{ target_word_count }} 个汉字
-- **对白数量指导**: 约 {{ (target_word_count / 25) | int }} - {{ (target_word_count / 20) | int }} 句对白
-- **容差范围**: {{ min_duration_seconds }} - {{ max_duration_seconds }} 秒
+- **Target scene duration**: {{ target_duration_seconds }} seconds ({{ (target_duration_seconds / 60) | round(2) }} minutes)
+- **Target dialogue character count**: about {{ target_word_count }} Chinese characters
+- **Dialogue quantity guidance**: about {{ (target_word_count / 25) | int }} - {{ (target_word_count / 20) | int }} lines of dialogue
+- **Tolerance range**: {{ min_duration_seconds }} - {{ max_duration_seconds }} seconds
 
-### 字数计算依据
+### Character-count basis
 
-- 中文 TTS 语速约 280 字/分钟（4.7 字/秒）
-- {{ target_duration_seconds }} 秒的场景需要约 {{ target_word_count }} 个汉字的对白
-- 每句对白平均 20-30 个汉字
+- Chinese TTS speaking speed is about 280 characters per minute (4.7 characters per second)
+- A {{ target_duration_seconds }}-second scene needs about {{ target_word_count }} Chinese characters of dialogue
+- Each line of dialogue averages 20-30 Chinese characters
 
 {% if is_retry and adjustment_hint %}
-### 调整建议（第 {{ attempt_number }} 次重试）
+### Adjustment suggestions (retry {{ attempt_number }})
 
-**上次生成结果不符合要求：**
+**The previous generation did not meet the requirements:**
 
 {{ adjustment_hint }}
 
-请根据以上建议调整对白内容。
+Please adjust the dialogue content according to the suggestions above.
 {% endif %}
 
-### 对白写作要求
+### Dialogue writing requirements
 
-1. **字数必须达标**：对白总字数应接近 {{ target_word_count }} 字（±20%）
-2. **scene_number 必须准确**：本场景所有对白/舞台指示的 scene_number 必须为 {{ scene_number }}（整数，不可为空/不可写错）
-3. **对白必须完整**：每句对白都要写出完整内容，不能用省略号代替
-4. **对白要自然**：包含情感表达、反应、追问，而非单纯信息传递
-5. **避免水分**：不要为了凑字数而添加无意义的重复或废话
-6. **禁止元语言**：不要输出编剧/助手的写作建议/点评（例如“这里可以…”），必须写成戏内台词或动作
+1. **Character count must meet the target**: the total dialogue character count should stay close to {{ target_word_count }} characters (±20%)
+2. **scene_number must be accurate**: the scene_number for all dialogue/stage-direction items in this scene must be {{ scene_number }} (integer, not null, not incorrect)
+3. **Dialogue must be complete**: every line of dialogue must be written in full; do not replace it with ellipses
+4. **Dialogue must feel natural**: include emotional expression, reactions, and follow-up questions rather than pure information transfer
+5. **Avoid padding**: do not add meaningless repetition or filler just to hit the character count
+6. **No meta language**: do not output writing advice/review from the screenwriter or assistant (for example, "here you could..."); everything must be written as in-world dialogue or action
 
-### 正确示例
+### Correct example
 
 ```
-错误写法：「他们讨论了这个问题……」
-正确写法：「小明皱着眉头说："这数据不对劲，你看这里。" 小红凑过来看了一眼："确实，这个峰值太异常了。"」
+Incorrect: "They discussed the issue..."
+Correct: "Xiaoming frowned and said, "Something is wrong with this data. Look here." Xiaohong leaned in for a glance. "You're right. This spike is way too abnormal.""
 ```

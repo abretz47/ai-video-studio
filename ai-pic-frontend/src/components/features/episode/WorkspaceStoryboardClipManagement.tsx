@@ -42,8 +42,8 @@ export function WorkspaceStoryboardClipManagement({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="片段分镜管理"
-        subtitle={`${items.length} 个 video clip 的环境/IP、分镜、首尾帧和视频生成状态`}
+        title="Clip storyboard management"
+        subtitle={`${items.length} video clip video clips' Environment/IP, Storyboard, Start/End Frames, and Video Generation Status`}
       />
       <div className="divide-y divide-gray-100">
         {items.map((item) => (
@@ -99,7 +99,7 @@ function StoryboardClipManagementRow({
       </div>
       {item.videoUrl ? (
         <video
-          aria-label={`播放片段 ${item.clipId}`}
+          aria-label={`Play clip ${item.clipId}`}
           className="w-full rounded-md border border-gray-200 bg-black"
           controls
           preload="none"
@@ -111,7 +111,7 @@ function StoryboardClipManagementRow({
         </div>
       )}
       <Link href={href} className={operatorButtonClass("secondary")}>
-        进入片段分镜
+        Open Clip Storyboard
       </Link>
     </div>
   );

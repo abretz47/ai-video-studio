@@ -61,7 +61,7 @@ export function WorkspaceStoryboardTimelinePanel({
         endMs={tracks.length ? undefined : 10000}
         initialZoom={1}
         fitToWidth
-        headerTitle="全片时间轴"
+        headerTitle="Full Film Timeline"
       />
       <div
         data-storyboard-support-timeline-summary="true"
@@ -72,13 +72,13 @@ export function WorkspaceStoryboardTimelinePanel({
           <span className="font-semibold text-slate-900">
             {overview.timelineLabel}
           </span>
-          <span>状态 {overview.status ?? "未知"}</span>
-          <span>时长 {overview.durationLabel}</span>
+          <span>Status {overview.status ?? "Unknown"}</span>
+          <span>Duration {overview.durationLabel}</span>
           <span>{overview.trackSummary}</span>
-          <span>对白 {overview.dialogueClipCount}</span>
-          <span>视频 {overview.videoClipCount}</span>
+          <span>Dialogue {overview.dialogueClipCount}</span>
+          <span>Video {overview.videoClipCount}</span>
           {overview.audioVersion ? (
-            <span>音频 v{overview.audioVersion}</span>
+            <span>Audio v{overview.audioVersion}</span>
           ) : null}
         </div>
         {overview.audioUrl ? (
@@ -87,11 +87,11 @@ export function WorkspaceStoryboardTimelinePanel({
             className="group relative"
           >
             <summary className="flex h-6 cursor-pointer list-none items-center rounded px-1.5 text-xs font-medium text-slate-600 hover:bg-white hover:text-slate-900 marker:hidden [&::-webkit-details-marker]:hidden">
-              音轨
+              Audio Track
             </summary>
             <div className="absolute right-0 top-full z-20 mt-1 w-80 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
               <audio
-                aria-label="播放时间轴音轨"
+                aria-label="Play timeline audio"
                 className="w-full"
                 controls
                 preload="none"
@@ -100,7 +100,7 @@ export function WorkspaceStoryboardTimelinePanel({
             </div>
           </details>
         ) : (
-          <span className="text-amber-700">暂无可播放音轨 URL</span>
+          <span className="text-amber-700">No playable audio URL available</span>
         )}
       </div>
     </div>
@@ -110,7 +110,7 @@ export function WorkspaceStoryboardTimelinePanel({
 const EMPTY_SUPPORT_TIMELINE_TRACKS: TimelineTrack[] = [
   {
     id: "video",
-    label: "视频",
+    label: "Video",
     color: "#0f766e",
     items: [],
   },

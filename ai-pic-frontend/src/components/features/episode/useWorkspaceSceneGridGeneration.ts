@@ -96,7 +96,7 @@ export function useWorkspaceSceneGridGeneration({
               item.character_name ||
               item.display_name ||
               item.name ||
-              `角色${item.virtual_ip_id}`,
+              `Character ${item.virtual_ip_id}`,
           }));
         if (episodeOptions.length) {
           setCharacters(episodeOptions);
@@ -122,7 +122,7 @@ export function useWorkspaceSceneGridGeneration({
                   item.display_name ||
                   item.name ||
                   item.virtual_ip_name ||
-                  `角色${item.virtual_ip_id}`,
+                  `Character ${item.virtual_ip_id}`,
               })),
           );
         }
@@ -134,7 +134,7 @@ export function useWorkspaceSceneGridGeneration({
   }, [expanded, episodeKey]);
 
   const { tasks, track } = useGenerationTaskTracker<"sheet" | "video">({
-    labels: { sheet: "宫格分镜图生成", video: "宫格成片生成" },
+    labels: { sheet: "Storyboard Grid Generation", video: "Grid Final Cut Generation" },
     onCompleted: async () => {
       await refreshGrids();
     },
@@ -170,12 +170,12 @@ export function useWorkspaceSceneGridGeneration({
       if (res.success && res.data) {
         track("sheet", res.data.task_id);
         showAlert?.({
-          message: `宫格分镜图任务已提交 #${res.data.task_id}`,
+          message: `Storyboard grid task submitted #${res.data.task_id}`,
           variant: "success",
         });
       } else {
         showAlert?.({
-          message: res.error || "宫格分镜图任务提交失败",
+          message: res.error || "Failed to submit storyboard grid task",
           variant: "error",
         });
       }
@@ -204,12 +204,12 @@ export function useWorkspaceSceneGridGeneration({
       if (res.success && res.data) {
         track("video", res.data.task_id);
         showAlert?.({
-          message: `宫格成片任务已提交 #${res.data.task_id}`,
+          message: `Grid final cut task submitted #${res.data.task_id}`,
           variant: "success",
         });
       } else {
         showAlert?.({
-          message: res.error || "宫格成片任务提交失败",
+          message: res.error || "Failed to submit grid final cut task",
           variant: "error",
         });
       }

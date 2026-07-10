@@ -113,7 +113,7 @@ export function timeLabel(
     return `${formatMs(startMs)} - ${formatMs(endMs)}`;
   }
   const duration = numberValue(durationSeconds);
-  return duration ? `${duration.toFixed(1)}s` : "未定时";
+  return duration ? `${duration.toFixed(1)}s` : "Unscheduled";
 }
 
 function formatDurationMs(value: number): string {

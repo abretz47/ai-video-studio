@@ -24,7 +24,7 @@ export function useTimelineGenerationRefresh({
   return useCallback(async () => {
     await reloadClipAssets?.();
     await reloadResolvedVideos?.();
-    // 片段视频成功后后端会自动排最终渲染，这里刷新渲染面板让新 job 立即可见
+    // After clip video succeeds, the backend automatically queues final rendering. Refresh the render panel here so the new job is visible immediately.
     await reloadRenderJobs?.();
     if (!timelineSpecId || !onTimelineUpdated) return;
     const res = await timelineAPI.getTimeline(timelineSpecId);

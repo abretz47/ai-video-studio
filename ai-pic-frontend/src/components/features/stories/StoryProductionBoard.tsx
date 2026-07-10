@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import {
   OperatorPanel,
   OperatorShell,
@@ -42,18 +43,23 @@ export function StoryProductionBoard({
 
   return (
     <OperatorShell
-      title="IP 故事生产"
-      subtitle="围绕 IP 组织故事、剧集和生成准备"
-      breadcrumb={["IP 中心", "故事生产"]}
+      title={t("stories.board.title", "IP Story Production")}
+      subtitle={t("stories.board.subtitle", "Organize stories, episodes, and generation prep around each IP")}
+      breadcrumb={[
+        t("common.breadcrumb.ipCenter", "IP Center"),
+        t("stories.board.breadcrumb", "Story Production"),
+      ]}
     >
       <div className="space-y-5">
         <OperatorPanel className="p-4">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <h2 className="text-sm font-semibold text-gray-950">故事入口</h2>
+              <h2 className="text-sm font-semibold text-gray-950">{t("stories.board.entryTitle", "Story entry")}</h2>
               <p className="mt-1 text-xs text-gray-500">
-                故事用于承接 IP
-                角色、环境资产和剧集生产；详情页内继续处理就绪检查与剧集生成。
+                {t(
+                  "stories.board.entryDescription",
+                  "Stories connect IP characters, environment assets, and episode production. Continue readiness checks and episode generation from the detail page.",
+                )}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -62,7 +68,7 @@ export function StoryProductionBoard({
                 onClick={openGenerateForm}
                 className={operatorButtonClass("primary")}
               >
-                从 IP 新建
+                {t("stories.board.createFromIp", "Create from IP")}
               </button>
             </div>
           </div>

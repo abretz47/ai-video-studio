@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import { ImagePreviewCard, OperatorState } from "@/components/shared";
 import type { EnvironmentImage } from "./types";
 
@@ -26,13 +27,13 @@ export function EnvironmentImagesPanel({
   return (
     <div className={containerClassName}>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-gray-950">图片池</h3>
-        <span className="text-xs text-gray-500">共 {images.length} 张</span>
+        <h3 className="text-sm font-semibold text-gray-950">{t("environments.images.title", "Image Pool")}</h3>
+        <span className="text-xs text-gray-500">{t("environments.images.count", "{count} images").replace("{count}", String(images.length))}</span>
       </div>
       {images.length === 0 ? (
         <OperatorState
-          title="暂无参考图"
-          detail="上传或创建生成任务后，图片会进入环境资产池。"
+          title={t("environments.images.emptyTitle", "No Reference Images Yet")}
+          detail={t("environments.images.emptyDetail", "Images will appear in the environment asset pool after upload or generation.")}
         />
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">

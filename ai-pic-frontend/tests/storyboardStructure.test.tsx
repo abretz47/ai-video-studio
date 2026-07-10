@@ -24,9 +24,9 @@ describe("Storyboard frames align to structured beats/shots (UI badge)", () => {
 
     const { getByText } = render(<FrameCard frame={frame} />);
 
-    assert.ok(getByText(/镜头号 1A/));
-    assert.ok(getByText(/镜头ID 7/));
-    assert.ok(getByText(/节拍 #5/));
+    assert.ok(getByText(/Shot #1A/));
+    assert.ok(getByText(/Shot ID 7/));
+    assert.ok(getByText(/Beat #5/));
     assert.ok(getByText(/WS/));
   });
 });

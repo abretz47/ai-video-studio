@@ -1,33 +1,33 @@
-你将基于“故事信息”，为知乎体长文故事生成一个可执行的连载写作大纲（plan）。
+Based on the [story information], generate an executable serialized-writing outline (`plan`) for a Zhihu-style long-form story.
 
-【故事信息】
+[Story information]
 {{ story | tojson }}
 
-【目标约束】
-- 目标字数：{{ target_words }}
-- 章节数：{{ chapter_count }}
+[Target constraints]
+- Target word count: {{ target_words }}
+- Number of chapters: {{ chapter_count }}
 
-请输出**严格 JSON**（不要代码块、不要多余解释），结构如下：
+Please output **strict JSON** (no code fences, no extra explanation) in the following structure:
 {
-  "question_title": "知乎问题标题（1 行）",
-  "question_detail": "问题补充描述（用 \\n 表示换行，2-6 行，像知乎提问；字符串内不要出现真实换行符）",
-  "narrator_profile": "回答者自我介绍/立场（用 \\n 表示换行，1-4 行，例如利益相关/亲历者/旁观者；字符串内不要出现真实换行符）",
-  "running_summary_seed": "用于保持连贯性的初始小结（可为空字符串）",
+  "question_title": "Zhihu question title (1 line)",
+  "question_detail": "Additional question description (use \n for line breaks, 2-6 lines, written like a Zhihu question; do not include real newline characters inside the string)",
+  "narrator_profile": "Answerer's self-introduction / position (use \n for line breaks, 1-4 lines, for example stakeholder / eyewitness / observer; do not include real newline characters inside the string)",
+  "running_summary_seed": "Initial running summary used to maintain continuity (may be an empty string)",
   "chapters": [
     {
       "chapter_number": 1,
-      "title": "更新标题（短句）",
+      "title": "Update title (short phrase)",
       "target_words": 1800,
-      "key_beats": ["按发生顺序列 5-9 条关键节拍（动作/冲突/信息揭示/情绪变化）"],
-      "cliffhanger_hint": "章末卡点/悬念提示（1-2 句）"
+      "key_beats": ["List 5-9 key beats in chronological order (action / conflict / information reveal / emotional shift)"],
+      "cliffhanger_hint": "End-of-chapter cliffhanger / suspense hint (1-2 sentences)"
     }
   ]
 }
 
-规则：
-- chapters.length 必须 == {{ chapter_count }}
-- 各章 target_words 之和应接近 {{ target_words }}（允许 ±10%）
-- 每章必须包含 cliffhanger_hint（最后一章可用“收束+余味”式卡点）
-- key_beats 需要可拍可演：具体、可执行、带因果链
-- 仅输出 JSON
-- JSON 字符串中禁止出现真实换行符；需要换行请写成 \\n
+Rules:
+- `chapters.length` must == {{ chapter_count }}
+- The sum of all `target_words` values should be close to {{ target_words }} (±10% allowed)
+- Every chapter must include `cliffhanger_hint` (the final chapter may use a "closure + lingering aftertaste" style cliffhanger)
+- `key_beats` must be filmable and performable: specific, executable, and causal
+- Output JSON only
+- Real newline characters are forbidden inside JSON strings. If you need a line break, write it as \n

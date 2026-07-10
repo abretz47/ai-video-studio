@@ -1,49 +1,49 @@
-你是一个专业的剧本审核专家。请审核以下对白和舞台指示的分类，找出被错误分类的内容并修正。
+You are a professional script review expert. Please review the classification of the following dialogue and stage directions, identify any misclassified content, and correct it.
 
-关键判断标准：
-1. **对白 (dialogues)**: 角色说的话，直接引语，有明确的说话人。示例：
-   - "嗯？电流读数异常波动。" ← 这是角色的内心独白或台词
-   - "搞什么……电磁干扰？" ← 这是角色的疑问/反应
-   - 任何带有疑问、感叹、对话特征的句子
+Key judgment criteria:
+1. **Dialogues**: Lines spoken by characters, direct speech, with a clear speaker. Examples:
+   - "Hm? The current reading is fluctuating abnormally." ← This is a character's inner monologue or line
+   - "What the hell... electromagnetic interference?" ← This is a character's question / reaction
+   - Any sentence with a questioning, exclamatory, or conversational quality
 
-2. **舞台指示 (stage_directions)**: 描述动作、场景变化、镜头、音效等非对白内容。示例：
-   - "压力测试进行中。屏幕上的数据流突然加速。" ← 场景描述
-   - "突然，一道蓝色电流脉冲划过房间。" ← 动作描述
-   - "镜头切至角落的旧物堆。" ← 镜头指示
+2. **Stage directions**: Non-dialogue content describing actions, scene changes, camera, sound effects, etc. Examples:
+   - "The stress test is underway. The data stream on the screen suddenly accelerates." ← Scene description
+   - "Suddenly, a pulse of blue current flashes across the room." ← Action description
+   - "Cut to the pile of old objects in the corner." ← Camera direction
 
-常见错误模式：
-- 角色的内心独白被放入舞台指示
-- 角色的反应性语句（如"嗯？""什么！""怎么回事"）被当作描述
-- 带有省略号、感叹号、问号的直接言语被误分类
+Common error patterns:
+- A character's inner monologue is placed in stage directions
+- Reactive lines from a character (such as "Hm?" "What?!" "What's going on") are treated as description
+- Direct speech with ellipses, exclamation marks, or question marks is misclassified
 
-请检查以下内容：
+Please check the following content:
 
-当前对白列表：
+Current dialogue list:
 {{ dialogues | tojson }}
 
-当前舞台指示列表：
+Current stage direction list:
 {{ stage_directions | tojson }}
 
-角色列表：
+Character list:
 {{ characters | tojson }}
 
-请返回修正后的 JSON，格式如下：
+Return corrected JSON in the following format:
 {
-  "dialogues": [...],  // 修正后的对白列表，每个包含 scene_number, character, content, emotion(可选)
-  "stage_directions": [...],  // 修正后的舞台指示列表
-  "corrections": [  // 记录所有修正
+  "dialogues": [...],  // corrected dialogue list; each item includes scene_number, character, content, emotion (optional)
+  "stage_directions": [...],  // corrected stage direction list
+  "corrections": [  // record all corrections
     {
-      "original_type": "stage_direction",  // 原来的类型
-      "corrected_type": "dialogue",  // 修正后的类型
-      "content": "...",  // 被修正的内容
-      "reason": "..."  // 修正原因
+      "original_type": "stage_direction",  // original type
+      "corrected_type": "dialogue",  // corrected type
+      "content": "...",  // corrected content
+      "reason": "..."  // reason for correction
     }
   ]
 }
 
-注意：
-- 如果对白没有明确的角色，请根据上下文推断，或使用主角名称
-- 只做「分类校正」：尽量保留原文，不要为了凑对白而新增大量内容
-- 只有确实是角色说的话才放入 dialogues；长段场景/动作描述必须保留在 stage_directions
-- 若发现对白中混入编剧/助手元语言（如“这里可以…建议…突出…”），必须删除或改写为戏内台词，不能原样保留
-- 保持原有的 scene_number 不变
+Notes:
+- If a dialogue line has no explicit character, infer it from context or use the protagonist's name
+- Only perform **classification correction**: preserve the original text whenever possible; do not add large amounts of new content just to fabricate dialogue
+- Put content in `dialogues` only if it is genuinely spoken by a character; long scene/action descriptions must remain in `stage_directions`
+- If writer/assistant meta language appears inside dialogue (such as "here you could... suggest... highlight..."), it must be deleted or rewritten as in-world dialogue and cannot be preserved verbatim
+- Keep the original scene_number unchanged

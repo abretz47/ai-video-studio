@@ -64,36 +64,36 @@ export function StoryboardReferenceCard({
   onGenerateStoryboard: () => void;
 }) {
   return (
-    <ClipProductionActionShell kind="storyboard" step="1" title="片段分镜图">
+    <ClipProductionActionShell kind="storyboard" step="1" title="Clip Storyboard">
       <div
         data-clip-action-group="storyboard"
         className="inline-flex w-full min-w-0 items-center gap-0 min-[720px]:w-auto"
       >
         <button
           type="button"
-          aria-label="生成片段分镜图"
+          aria-label="Generate Clip Storyboard"
           disabled={!canGenerateStoryboard}
           className={operatorButtonClass(
             "secondary",
             "!h-8 min-w-0 flex-1 gap-1.5 whitespace-nowrap rounded-l-md rounded-r-none border border-slate-200 bg-white px-2.5 text-slate-700 shadow-none hover:bg-slate-50 min-[720px]:min-w-[9.5rem]",
           )}
           onClick={onGenerateStoryboard}
-          title="生成片段分镜图"
+          title="Generate Clip Storyboard"
         >
           <ClipProductionActionIcon kind="storyboard" />
-          <span>{generatingStoryboard ? "提交中..." : "生成片段分镜图"}</span>
+          <span>{generatingStoryboard ? "Submitting..." : "Generate Clip Storyboard"}</span>
         </button>
         <CompactProductionDetails
           label="..."
-          ariaLabel="展开分镜参数与参考"
+          ariaLabel="Expand storyboard parameters and references"
           align="left"
           attached
         >
           <div className={FIELD_GRID_CLASS}>
             <label className="grid gap-1 text-xs text-gray-700">
-              <span>画面风格</span>
+              <span>Visual Style</span>
               <select
-                aria-label="画面风格"
+                aria-label="Visual Style"
                 value={storyboardStyle}
                 onChange={(event) =>
                   onStoryboardStyleChange(
@@ -102,15 +102,15 @@ export function StoryboardReferenceCard({
                 }
                 className={operatorSelectClass("w-full")}
               >
-                <option value="live_action">真人电影</option>
-                <option value="3d_cartoon">3D 卡通</option>
-                <option value="2d_cartoon">2D 卡通</option>
+                <option value="live_action">Live Action</option>
+                <option value="3d_cartoon">3D Cartoon</option>
+                <option value="2d_cartoon">2D Cartoon</option>
               </select>
             </label>
             <label className="grid gap-1 text-xs text-gray-700">
-              <span>分镜格数</span>
+              <span>Storyboard Panels</span>
               <select
-                aria-label="分镜 panel 数"
+                aria-label="Storyboard panel count"
                 value={storyboardPanelCount}
                 onChange={(event) =>
                   onStoryboardPanelCountChange(event.target.value)
@@ -119,7 +119,7 @@ export function StoryboardReferenceCard({
               >
                 {["2", "3", "4", "6", "8", "9"].map((count) => (
                   <option key={count} value={count}>
-                    {count} 格
+                    {count} panels
                   </option>
                 ))}
               </select>
@@ -185,16 +185,16 @@ export function StoryboardReferenceCard({
           target="_blank"
           rel="noreferrer"
           className="mt-3 block overflow-hidden rounded-md border border-gray-200 bg-gray-50"
-          title="点击查看大图"
+          title="Click to view full size"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={storyboardSheetUrl}
-            alt="片段分镜图预览"
+            alt="Clip StoryboardPreview"
             className="max-h-72 w-full object-contain"
           />
           <div className="border-t border-gray-200 px-2 py-1 text-center text-[11px] text-gray-500">
-            点击查看大图
+            Click to view full size
           </div>
         </a>
       ) : null}
@@ -215,15 +215,15 @@ function StoryboardImageModelSelect({
 }) {
   return (
     <label className="grid gap-1 text-xs text-gray-700">
-      <span>生图模型</span>
+      <span>Image Generation Model</span>
       <select
-        aria-label="分镜生图模型"
+        aria-label="StoryboardImage Generation Model"
         value={value}
         disabled={imageModelsLoading}
         onChange={(event) => onChange(event.target.value)}
         className={operatorSelectClass("w-full")}
       >
-        <option value="">自动选择模型</option>
+        <option value="">Automatically select model</option>
         {(imageModels || []).map((option) => {
           const optionValue = modelOptionValue(option);
           if (!optionValue) return null;

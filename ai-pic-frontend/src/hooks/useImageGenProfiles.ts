@@ -68,7 +68,7 @@ export function useImageGenProfiles(options: UseImageGenProfilesOptions) {
     try {
       const response = await imageGenAPI.getProfiles(model, mode);
       if (!response.success || !response.data) {
-        throw new Error(response.error || "获取 profiles 失败");
+        throw new Error(response.error || "Failed to fetch profiles");
       }
       profileCache.set(effectiveKey, response.data);
       setState({
@@ -81,7 +81,7 @@ export function useImageGenProfiles(options: UseImageGenProfilesOptions) {
       });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "获取 profiles 失败";
+        error instanceof Error ? error.message : "Failed to fetch profiles";
       setState((prev) => ({ ...prev, loading: false, error: message }));
     }
   }, [effectiveKey, enabled, model, mode]);

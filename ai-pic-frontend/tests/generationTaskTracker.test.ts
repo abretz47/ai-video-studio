@@ -101,7 +101,7 @@ describe("generation task tracker", () => {
       notices.some(
         (notice) =>
           notice.variant === "success" &&
-          notice.message.includes("剧本已生成完成"),
+          notice.message.includes("generated successfully"),
       ),
     );
   });
@@ -193,7 +193,7 @@ describe("generation task tracker", () => {
     await waitFor(() => assert.equal(latestTasks.script?.phase, "timeout"), {
       timeout: 3000,
     });
-    assert.ok(notices.some((message) => message.includes("等待超时")));
+    assert.ok(notices.some((message) => message.includes("timed out")));
   });
 
   it("replaces a tracked task of the same kind", async () => {

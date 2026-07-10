@@ -1,48 +1,48 @@
-你是一个专业的短剧分集编剧，擅长把故事概要拆成“每集必有爽点 + 结尾卡点”的短剧追更结构。请基于以下故事信息生成{{ episode_count }}集的短剧剧集规划：
+You are a professional short-drama episode writer skilled at turning a story outline into a binge-worthy structure where every episode must have a payoff and an ending hook. Based on the following story information, generate a short-drama episode plan for {{ episode_count }} episodes:
 
-## 故事信息
-故事标题：{{ story.title }}
-类型：{{ story.genre }}
+## Story Information
+Story Title: {{ story.title }}
+Genre: {{ story.genre }}
 {% if story.market_region -%}
-目标市场：{{ story.market_region }}
+Target Market: {{ story.market_region }}
 {% endif -%}
 {% if story.micro_genre -%}
-微类型：{{ story.micro_genre }}
+Micro-genre: {{ story.micro_genre }}
 {% endif -%}
 {% if story.theme -%}
-主题：{{ story.theme }}
+Theme: {{ story.theme }}
 {% endif -%}
 {% if story.synopsis -%}
-故事概要：{{ story.synopsis }}
+Story Outline: {{ story.synopsis }}
 {% endif -%}
 {% if story.main_conflict -%}
-主要冲突：{{ story.main_conflict }}
+Main Conflict: {{ story.main_conflict }}
 {% endif -%}
 {% if story.resolution -%}
-解决方案：{{ story.resolution }}
+Resolution: {{ story.resolution }}
 {% endif -%}
 {% if story.hook_plan -%}
-爽点节奏：{{ story.hook_plan | tojson }}
+Payoff Rhythm: {{ story.hook_plan | tojson }}
 {% endif -%}
 {% if story.twist_density -%}
-反转密度：{{ story.twist_density }}
+Twist Density: {{ story.twist_density }}
 {% endif -%}
 {% if story.cliffhanger_plan -%}
-悬念卡点：{{ story.cliffhanger_plan | join('；') }}
+Cliffhanger Beats: {{ story.cliffhanger_plan | join('; ') }}
 {% endif -%}
 {% if story.ad_snippets -%}
-投流素材建议：{{ story.ad_snippets | tojson }}
+Ad Creative Suggestions: {{ story.ad_snippets | tojson }}
 {% endif -%}
 
 {% if story.context_pack -%}
-## Context Pack（必须遵守，禁止与之矛盾）
+## Context Pack (mandatory; do not contradict it)
 {{ story.context_pack | tojson }}
 {% endif -%}
 
-## 主要角色
+## Main Characters
 {% if story.character_profiles %}
 {% for character in story.character_profiles %}
-- {{ character.name }}{{ "（%s）" % character.role if character.role else "" }}
+- {{ character.name }}{{ "(%s)" % character.role if character.role else "" }}
 {% endfor %}
 {% elif story.main_characters %}
 {% for character in story.main_characters %}
@@ -50,80 +50,80 @@
 {% endfor %}
 {% endif %}
 
-## 角色约束（重要）
-- **只允许**出现以上“主要角色”列表中的角色（名称必须一致），**不得新增任何其他有姓名的角色**。
-- 如需一次性工具人/背景人群，只能使用以下泛化小角色称谓：`路人/店员/旁白`（允许 `路人甲/路人乙/店员A` 等后缀），**禁止为其起真实姓名**。
+## Character Constraints (Important)
+- Only the characters listed above in "Main Characters" may appear (names must match exactly). Do not introduce any additional named characters.
+- If one-off utility roles or background crowds are needed, you may only use the following generic minor-role labels: `Passerby/Clerk/Narrator` (suffixes such as `Passerby A/Passerby B/Clerk A` are allowed). Do not give them real names.
 
-## 剧集参数（短剧）
-总集数：{{ episode_count }}集
+## Episode Parameters (Short Drama)
+Total Episodes: {{ episode_count }}
 {% if episode_duration -%}
-每集时长：{{ episode_duration }}分钟
+Episode Duration: {{ episode_duration }} minutes
 {% else -%}
-建议每集时长：2-4分钟（短剧默认）
+Recommended Episode Duration: 2-4 minutes (short-drama default)
 {% endif -%}
-情节复杂度：{{ plot_complexity }}
-节奏控制：{{ pacing }}
+Plot Complexity: {{ plot_complexity }}
+Pacing: {{ pacing }}
 
 {% if focus_characters -%}
-## 重点角色
+## Focus Characters
 {% for character in focus_characters %}
 - {{ character.name }}: {{ character.description }}
 {% endfor %}
 {% endif -%}
 
 {% if additional_requirements -%}
-## 特殊要求
+## Special Requirements
 {{ additional_requirements }}
 {% endif -%}
 
 {% if style_preferences -%}
-## 风格偏好
+## Style Preferences
 {{ style_preferences | join(', ') }}
 {% endif -%}
 
-## 【短剧硬性规则】每集必有爽点 + 结尾卡点
-为每一集都满足以下结构（不要出现“这一集主要铺垫、没有爽点”的情况）：
+## Hard Short-Drama Rule: Every Episode Must Have a Payoff + Ending Hook
+Every episode must follow the structure below (do not create episodes that are "mostly setup" without a payoff):
 
-1. **开场钩子**：第1场景/前10秒必须有冲突或信息爆点（抓奸/背叛/翻车/身份暴露/突发危机）。
-2. **升级推进**：中段快速升级（误会扩大、反派施压、证据出现、关系撕裂）。
-3. **爽点落点（=收获点）**：末段必须发生 1 个明确可拍的爽点事件（打脸/反击/揭露/惩罚/逆转/救援/告白），且主角必须“得到/赢到”一个具体收获（证据/资源/盟友/职位/金钱/身份优势/舆论等），不能只是抽象情绪。
-4. **卡点悬念**：结尾留下更大危机或反转，必须能驱动下一集（cliffhanger 不为空）。
-5. **低成本可拍**：每集 3-6 场景为宜，优先复用 1-2 个主要地点。
-6. **可剪投流**：每集提供至少 1 条 15 秒投流素材建议（钩子台词 + 画面摘要）。
+1. **Opening Hook**: The first scene / first 10 seconds must contain a conflict or information explosion (cheating exposed / betrayal / public humiliation / identity reveal / sudden crisis).
+2. **Escalation**: The middle section must escalate quickly (misunderstanding expands, antagonist applies pressure, evidence appears, relationships fracture).
+3. **Payoff Beat (= Gain Point)**: The ending stretch must include one clear, shootable payoff event (humiliation reversal / counterattack / reveal / punishment / reversal / rescue / confession), and the protagonist must gain a concrete win (evidence / resources / ally / position / money / identity advantage / public opinion). It cannot be only an abstract emotion.
+4. **Cliffhanger Hook**: The ending must leave a bigger crisis or reversal that drives the next episode (cliffhanger must not be empty).
+5. **Low-Cost Shootability**: Aim for 3-6 scenes per episode and prioritize reusing 1-2 main locations.
+6. **Ad-Clip Ready**: Provide at least one 15-second ad creative suggestion per episode (hook line + visual summary).
 
 {% if production_mode -%}
-## 【production episode writing brief】研究映射后的单集合同
-你要写的是可拍、可剪、可质检的竖屏短剧 Episode Plan，不是剧情梗概。
+## Production Episode Writing Brief: Single-Episode Contract After Research Mapping
+You are writing a shootable, editable, quality-checkable vertical short-drama Episode Plan, not a plot synopsis.
 
-- 每集必须输出 `structured_episode_contract`。
-- 0-3 秒 ignition：第一镜头/第一句就给冲突、证据、羞辱、身份或危险；前 30 秒必须给停留理由。
-- 每场必须包含：可拍动作、外部阻力、外部代价、主角选择、信息变化。
-- 对白必须带 `dialogue_function`，只允许使用 `reveal/threat/decision/counterattack/payoff`；无功能对白视为质量风险。
-- 强制 9:16 close-up：写出表情、眼神、手部、手机/证据/道具等视觉锚点。
-- 卡点必须来自当前剧情临界点，不能末尾硬塞新危机。
-- 中段不能闲聊或空泛抒情；必须交付新证据、新阻力、新关系变化或新阶段目标。
+- Every episode must output `structured_episode_contract`.
+- 0-3 second ignition: the first shot or first line must deliver conflict, evidence, humiliation, identity, or danger; the first 30 seconds must give the viewer a reason to stay.
+- Every scene must include: shootable action, external resistance, external cost, protagonist choice, and information change.
+- Dialogue must include `dialogue_function`; only `reveal/threat/decision/counterattack/payoff` are allowed. Dialogue without function is a quality risk.
+- Enforce 9:16 close-ups: write visual anchors such as facial expressions, eye focus, hands, phone/evidence/props.
+- The cliffhanger must come from the current plot pressure point; do not tack on a random new crisis at the end.
+- The middle section cannot be idle chatter or empty sentiment; it must deliver new evidence, new resistance, changed relationships, or a new stage goal.
 {% endif -%}
 
-## 输出格式
-请以JSON格式返回，包含episodes数组，每集必须包含：
+## Output Format
+Return JSON with an episodes array. Each episode must include:
 
-1. **episode_number**: 集数
-2. **title**: 剧集标题
-3. **summary**: 本集概要（100-200字，强调冲突与爽点/收获点）
-4. **plot_points**: 主要情节点列表（至少 4 条，含开场钩子/升级/爽点/卡点）
-5. **character_arcs**: 本集角色推进（至少主角 1 条，简短即可）
-6. **conflicts**: 本集冲突（至少 1 条，必须为数组，元素为对象）
-7. **scene_count**: 预估场景数量（建议 3-6）
-8. **cliffhanger**: 本集结尾卡点（必填）
-9. **payoff**: 本集爽点/收获点（必填，单句，必须“具体可拍”）
-10. **hook_plan**: 本集爽点/钩子节奏规划（必填）
-11. **twist_density**: 本集反转密度目标（必填，可用“高/中/低 + 说明”）
-12. **cliffhanger_plan**: 本集悬念/卡点列表（至少 2 条）
-13. **ad_snippets**: 本集投流素材建议（至少 1 条，含 hook 与 visual_summary）
-14. **scenes**: 场景列表（数组），每个包含 scene_number, slug_line, location, time_of_day, summary；其中爽点场景的 summary 必须以“爽点：...”开头，最后一个场景 summary 必须以“卡点：...”开头
-15. **scene_count 与 scenes 一致**: scene_count 必须等于 scenes 数组长度；scene_number 必须从 1 连续递增，禁止所有场景都写 1
+1. **episode_number**: Episode number
+2. **title**: Episode title
+3. **summary**: Episode summary (100-200 words, emphasizing conflict and the payoff/gain point)
+4. **plot_points**: List of major plot points (at least 4 items, including opening hook / escalation / payoff / cliffhanger)
+5. **character_arcs**: Character progression for this episode (at least one entry for the protagonist; brief is fine)
+6. **conflicts**: Conflicts in this episode (at least 1 entry, must be an array of objects)
+7. **scene_count**: Estimated number of scenes (recommended 3-6)
+8. **cliffhanger**: This episode's ending hook (required)
+9. **payoff**: This episode's payoff/gain point (required, one sentence, must be concrete and shootable)
+10. **hook_plan**: This episode's payoff/hook rhythm plan (required)
+11. **twist_density**: Twist density target for this episode (required; may use "high/medium/low + explanation")
+12. **cliffhanger_plan**: List of cliffhangers/hook points for this episode (at least 2 items)
+13. **ad_snippets**: Ad creative suggestions for this episode (at least 1 item, containing hook and visual_summary)
+14. **scenes**: Scene list (array), each containing scene_number, slug_line, location, time_of_day, summary; the payoff scene summary must start with "Payoff: ...", and the final scene summary must start with "Cliffhanger: ..."
+15. **scene_count matches scenes**: scene_count must equal the length of the scenes array; scene_number must increase continuously from 1, and all scenes may not be numbered 1
 {% if production_mode -%}
-16. **structured_episode_contract**: 必填，包含 episode_goal, ignition_0_3s, first_30s_reason, midpoint_jolt, payoff, final_button_cliffhanger, visual_anchor, information_delta, dialogue_functions
+16. **structured_episode_contract**: Required; must contain episode_goal, ignition_0_3s, first_30s_reason, midpoint_jolt, payoff, final_button_cliffhanger, visual_anchor, information_delta, dialogue_functions
 {% endif -%}
 
 {
@@ -133,20 +133,20 @@
             "title": "...",
             "summary": "...",
             "plot_points": [
-                { "sequence": 1, "description": "开场钩子：...", "timing": "开场" },
-                { "sequence": 2, "description": "升级推进：...", "timing": "中段" },
-                { "sequence": 3, "description": "爽点落点（收获点）：...", "timing": "后段" },
-                { "sequence": 4, "description": "结尾卡点：...", "timing": "结尾" }
+                { "sequence": 1, "description": "Opening hook: ...", "timing": "Opening" },
+                { "sequence": 2, "description": "Escalation: ...", "timing": "Mid" },
+                { "sequence": 3, "description": "Payoff beat (gain point): ...", "timing": "Late" },
+                { "sequence": 4, "description": "Ending cliffhanger: ...", "timing": "Ending" }
             ],
-            "character_arcs": { "主角": "本集角色推进（简短）" },
+            "character_arcs": { "Protagonist": "Character progression in this episode (brief)" },
             "conflicts": [
-                { "type": "人际冲突/利益冲突/身份冲突/价值观冲突", "description": "...", "intensity": "low/medium/high" }
+                { "type": "Interpersonal conflict/Interest conflict/Identity conflict/Values conflict", "description": "...", "intensity": "low/medium/high" }
             ],
             "scene_count": 3,
             "cliffhanger": "...",
-            "payoff": "一句话说明主角本集赢到了什么（具体可拍）",
+            "payoff": "One sentence explaining exactly what the protagonist wins in this episode (concrete and shootable)",
             "hook_plan": { "opening_hook": "...", "escalation_plan": "...", "payoff_plan": "..." },
-            "twist_density": "高：每集至少一次反转或身份信息揭露",
+            "twist_density": "High: at least one reversal or identity/information reveal per episode",
             "cliffhanger_plan": ["...", "..."],
             "ad_snippets": [
                 { "duration_seconds": 15, "hook": "...", "visual_summary": "...", "call_to_action": "..." }
@@ -158,39 +158,39 @@
                 "midpoint_jolt": "...",
                 "payoff": "...",
                 "final_button_cliffhanger": "...",
-                "visual_anchor": "9:16 close-up 表情/手部/手机/证据",
+                "visual_anchor": "9:16 close-up facial expression/hands/phone/evidence",
                 "information_delta": "...",
                 "dialogue_functions": ["reveal", "threat", "decision", "counterattack", "payoff"]
             }{% endif %},
             "scenes": [
                 {
                     "scene_number": 1,
-                    "slug_line": "INT. ... - 日",
+                    "slug_line": "INT. ... - DAY",
                     "location": "...",
                     "time_of_day": "day",
-                    "summary": "开场钩子：..."{% if production_mode %},
-                    "visual_anchor": "close-up reaction：...",
-                    "action_obstacle_cost": "动作/阻力/代价/选择/信息变化",
+                    "summary": "Opening hook: ..."{% if production_mode %},
+                    "visual_anchor": "close-up reaction: ...",
+                    "action_obstacle_cost": "action/resistance/cost/choice/information change",
                     "dialogue_function": "reveal"{% endif %}
                 },
                 {
                     "scene_number": 2,
-                    "slug_line": "INT. ... - 夜",
+                    "slug_line": "INT. ... - NIGHT",
                     "location": "...",
                     "time_of_day": "night",
-                    "summary": "爽点：...（明确事件）"{% if production_mode %},
-                    "visual_anchor": "close-up reaction：...",
-                    "action_obstacle_cost": "动作/阻力/代价/选择/信息变化",
+                    "summary": "Payoff: ... (clear event)"{% if production_mode %},
+                    "visual_anchor": "close-up reaction: ...",
+                    "action_obstacle_cost": "action/resistance/cost/choice/information change",
                     "dialogue_function": "counterattack/payoff"{% endif %}
                 },
                 {
                     "scene_number": 3,
-                    "slug_line": "INT. ... - 夜",
+                    "slug_line": "INT. ... - NIGHT",
                     "location": "...",
                     "time_of_day": "night",
-                    "summary": "卡点：...（更大危机/反转）"{% if production_mode %},
-                    "visual_anchor": "close-up reaction：...",
-                    "action_obstacle_cost": "动作/阻力/代价/选择/信息变化",
+                    "summary": "Cliffhanger: ... (bigger crisis/reversal)"{% if production_mode %},
+                    "visual_anchor": "close-up reaction: ...",
+                    "action_obstacle_cost": "action/resistance/cost/choice/information change",
                     "dialogue_function": "threat/reveal"{% endif %}
                 }
             ]

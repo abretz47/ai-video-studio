@@ -95,9 +95,9 @@ export function ImageGenAdvancedFields({
     >
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h4 className="text-sm font-medium text-gray-900">高级参数</h4>
+          <h4 className="text-sm font-medium text-gray-900">Advanced Parameters</h4>
           <p className="text-xs text-gray-500">
-            根据所选模型动态展示（不支持的参数会被隐藏/忽略）
+            Displayed dynamically based on the selected model; unsupported parameters are hidden/ignored.
           </p>
         </div>
         {hasAnyField ? (
@@ -106,14 +106,14 @@ export function ImageGenAdvancedFields({
             onClick={() => setOpen((prev) => !prev)}
             className="text-xs text-blue-600 hover:text-blue-800"
           >
-            {open ? "收起" : "展开"}
+            {open ? "Collapse" : "Expand"}
           </button>
         ) : null}
       </div>
 
       {ui.notes.length > 0 ? (
         <GenerationAuditWarnings
-          title="模型提示"
+          title="Model Help"
           warnings={ui.notes}
           className="mt-3"
         />

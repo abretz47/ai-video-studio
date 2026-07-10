@@ -49,8 +49,8 @@ export function ImagePreviewCard({
   onPreview,
   onImg2Img,
   onDelete,
-  img2imgLabel = "图生图",
-  deleteLabel = "删除",
+  img2imgLabel = "Image-to-Image",
+  deleteLabel = "Delete",
   footer,
   showActionsOnHover = true,
 }: ImagePreviewCardProps) {
@@ -89,12 +89,12 @@ export function ImagePreviewCard({
       >
         {imageFailed ? (
           <div className="flex h-full w-full items-center justify-center bg-gray-50 text-xs text-gray-400">
-            图片不可用
+            Image unavailable
           </div>
         ) : (
           <Image
             src={currentSrc}
-            alt={alt || "图片"}
+            alt={alt || "Image"}
             fill
             sizes="100%"
             className="object-cover"
@@ -156,12 +156,12 @@ export function ImagePreviewCard({
               onClick={() => setPreviewOpen(false)}
               className="absolute right-3 top-3 z-10 rounded bg-black/70 px-3 py-1 text-sm text-white hover:bg-black/90"
             >
-              关闭
+              Close
             </button>
             <div className="relative w-full" style={{ paddingBottom: "60%" }}>
               <Image
                 src={currentSrc}
-                alt={alt || "预览图"}
+                alt={alt || "Preview Image"}
                 fill
                 className="object-contain"
                 unoptimized

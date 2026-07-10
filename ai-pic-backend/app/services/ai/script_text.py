@@ -29,31 +29,31 @@ def build_script_text(
 
     lines: List[str] = [
         f"# {format_type} ({language})",
-        "【音效】砰！画面直接切入冲突现场。",
+        "[SFX] Bang! The frame cuts directly into the conflict scene.",
     ]
     if scenes:
-        lines.append("## 场景")
+        lines.append("## Scenes")
         for scene in scenes:
             scene_no = scene.get("scene_number") or "-"
             slug = scene.get("slug_line") or f"Scene {scene.get('scene_number')}"
             summary = scene.get("summary") or scene.get("description") or ""
-            lines.append(f"- [场景 {scene_no}] {slug}: {summary}")
+            lines.append(f"- [Scene {scene_no}] {slug}: {summary}")
             if summary:
-                lines.append(f"【快】【情绪目的：推进冲突】{summary}")
+                lines.append(f"[FAST][Emotional purpose: escalate conflict]{summary}")
     if dialogues:
-        lines.append("\n## 对白")
+        lines.append("\n## Dialogue")
         for dialogue in dialogues[:200]:
             scene_no = dialogue.get("scene_number") or "-"
-            character = dialogue.get("character") or "旁白"
+            character = dialogue.get("character") or "Narrator"
             content = (
                 dialogue.get("content")
                 or dialogue.get("line")
                 or dialogue.get("text")
                 or ""
             )
-            lines.append(f"[场景 {scene_no}] {character}: {content}")
+            lines.append(f"[Scene {scene_no}] {character}: {content}")
     if stage_directions:
-        lines.append("\n## 舞台指示")
+        lines.append("\n## Stage Directions")
         for direction in stage_directions[:200]:
             scene_no = direction.get("scene_number") or "-"
             content = (
@@ -63,10 +63,10 @@ def build_script_text(
                 or ""
             )
             timing = direction.get("timing") or ""
-            lines.append(f"[场景 {scene_no}][{timing}] {content}")
+            lines.append(f"[Scene {scene_no}][{timing}] {content}")
     if not _ends_with_question(lines):
         lines.append(
-            "【慢】【情绪目的：留下悬念】镜头停在关键线索上：接下来会发生什么？"
+            "[SLOW][Emotional purpose: leave suspense] Camera lingers on a key clue: what will happen next?"
         )
     return "\n".join(lines)
 

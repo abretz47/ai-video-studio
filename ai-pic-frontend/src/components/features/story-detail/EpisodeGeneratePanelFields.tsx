@@ -21,7 +21,7 @@ export function EpisodeGeneratePanelFields({
     <>
       <div className="grid grid-cols-1 gap-3">
         <NumberField
-          label="生成集数"
+          label="Generate Episode"
           min={1}
           max={100}
           value={genForm.episode_count}
@@ -30,7 +30,7 @@ export function EpisodeGeneratePanelFields({
           }
         />
         <NumberField
-          label="每集时长（分钟）"
+          label="Duration per episode (minutes)"
           min={1}
           max={120}
           value={genForm.episode_duration}
@@ -39,39 +39,39 @@ export function EpisodeGeneratePanelFields({
           }
         />
         <SelectField
-          label="复杂度"
+          label="Complexity"
           value={genForm.plot_complexity}
           options={[
-            ["simple", "简单"],
-            ["medium", "中等"],
-            ["complex", "复杂"],
+            ["simple", "Simple"],
+            ["medium", "Medium"],
+            ["complex", "Complex"],
           ]}
           onChange={(value) =>
             setGenForm((prev) => ({ ...prev, plot_complexity: value }))
           }
         />
         <SelectField
-          label="节奏"
+          label="Pacing"
           value={genForm.pacing}
           options={[
-            ["slow", "慢"],
-            ["medium", "中"],
-            ["fast", "快"],
+            ["slow", "Slow"],
+            ["medium", "Medium"],
+            ["fast", "Fast"],
           ]}
           onChange={(value) => setGenForm((prev) => ({ ...prev, pacing: value }))}
         />
         <MultiModelSelector
-          label="模型"
+          label="Model"
           value={genForm.model ? [genForm.model] : []}
           onChange={(ids) =>
             setGenForm((prev) => ({ ...prev, model: ids[0] || "" }))
           }
           modelType="text"
           multiple={false}
-          helperText="留空时将由后端推荐最佳模型"
+          helperText="Leave empty to let the backend recommend the best model"
         />
         <div>
-          <FieldLabel>温度（{genForm.temperature.toFixed(1)}）</FieldLabel>
+          <FieldLabel>Temperature ({genForm.temperature.toFixed(1)})</FieldLabel>
           <input
             type="range"
             min={0}
@@ -91,11 +91,11 @@ export function EpisodeGeneratePanelFields({
       <MarketingFields
         form={genForm}
         setForm={setGenForm}
-        title="市场/微类型/节奏模板"
+        title="Market / Micro-genre / Pacing Template"
         idPrefix="episode"
       />
       <div>
-        <FieldLabel>额外要求</FieldLabel>
+        <FieldLabel>Additional Requirements</FieldLabel>
         <textarea
           value={genForm.additional_requirements}
           onChange={(event) =>

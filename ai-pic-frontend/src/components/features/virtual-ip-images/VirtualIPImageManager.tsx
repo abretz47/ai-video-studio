@@ -80,7 +80,7 @@ export function VirtualIPImageManager({
   if (!activeVirtualIP && loading) {
     return (
       <section id="ip-images" className="scroll-mt-24">
-        <OperatorState title="加载图片管理中..." />
+        <OperatorState title="Loading image manager..." />
       </section>
     );
   }
@@ -93,15 +93,15 @@ export function VirtualIPImageManager({
     <section id="ip-images" className="scroll-mt-24">
       <OperatorPanel className="overflow-hidden">
         <OperatorSectionHeader
-          title={`${activeVirtualIP.name} - 图片管理`}
-          subtitle="按 IP 资产维护头像、半身、动作和参考图"
+          title={`${activeVirtualIP.name} - Image Manager`}
+          subtitle="Maintain portraits, half-body shots, actions, and reference images for this IP"
           action={
             <button
               type="button"
               onClick={() => router.push("/tasks")}
               className={operatorButtonClass("secondary")}
             >
-              查看任务
+              View Tasks
             </button>
           }
         />
@@ -113,14 +113,14 @@ export function VirtualIPImageManager({
               onSelectCategory={setSelectedCategory}
             />
             <OperatorState
-              title="图片资产"
-              detail="图片资产将随 IP 项目进入故事生产。"
+              title="Image Assets"
+              detail="Image assets will follow the IP project into story production."
               tone="blue"
             />
           </aside>
           <div className="min-w-0">
             {loading ? (
-              <OperatorState title="加载图片中..." />
+              <OperatorState title="Loading images..." />
             ) : (
               <ImageGrid
                 images={filteredImages}
@@ -149,7 +149,7 @@ export function VirtualIPImageManager({
                   showGenerateForm ? "primary" : "secondary",
                 )}
               >
-                生成图片
+                Generate Images
               </button>
               <button
                 type="button"
@@ -158,7 +158,7 @@ export function VirtualIPImageManager({
                   !showGenerateForm ? "primary" : "secondary",
                 )}
               >
-                上传
+                Upload
               </button>
             </div>
             {showGenerateForm ? (
@@ -189,8 +189,8 @@ export function VirtualIPImageManager({
           onClose={() => {
             setVariantModalOpen(false);
           }}
-          title="图生图变体"
-          description="将参考图与提示词提交到图生图任务，可调整模型、分辨率与生成数量。"
+          title="Image-to-Image Variants"
+          description="Submit reference images and prompts to image-to-image tasks. Model, resolution, and image count can be adjusted."
           referenceSections={variantReferenceSections}
           defaultSelected={variantReferenceSections.flatMap(
             (section) => section.images,

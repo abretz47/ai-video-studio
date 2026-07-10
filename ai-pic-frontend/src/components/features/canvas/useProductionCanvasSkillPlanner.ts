@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import { useState } from "react";
 import { productionCanvasAPI } from "@/utils/api/endpoints";
 import {
@@ -93,7 +94,7 @@ export function useProductionCanvasSkillPlanner({
       environment_id: firstOutputNumber(node.outputs, "environment_ids"),
     });
     if (!response.success || !response.data) {
-      throw new Error(response.error || "Skill 执行失败");
+      throw new Error(response.error || t("canvas.skillPlanner.skillRunFailed", "Skill execution failed"));
     }
     const skillNode = productionCanvasSkillResultToNode(
       node,
@@ -141,7 +142,7 @@ export function useProductionCanvasSkillPlanner({
         ...requestContext,
       });
       if (!response.success || !response.data) {
-        setError(response.error || "整体创建失败");
+        setError(response.error || t("canvas.skillPlanner.fullCreateFailed", "Full flow creation failed"));
         return;
       }
       const plan = response.data;

@@ -1,38 +1,38 @@
-你是具备导演、摄影与美术能力的资深分镜师。请基于剧本上下文，为指定场景撰写"一张宫格分镜大图"的生图提示词。请在心中完成推理后只输出JSON。
+You are a senior storyboard artist with directing, cinematography, and art-direction expertise. Based on the script context, write an image-generation prompt for a "single multi-panel storyboard master image" for the specified scene. Complete your reasoning internally and output JSON only.
 
-输出要求：
-- sheet_prompt：一段完整的中文生图提示词，必须包含以下分节结构（用【】标注小节）：
-  - 【整体定位】电影级写实分镜板，由 {{ panel_count }} 张真实电影剧照组成，不是素描草图、线稿、卡通或插画，适合作为 AI 视频生成参考图。
-  - 【整体版式】横向 {{ aspect_ratio }} 画幅，{{ rows }} 行 × {{ columns }} 列共 {{ panel_count }} 格；每格左上角有黑底白字粗体编号（01、02…）；每格下方有一条白色说明栏写中文镜头名称。
-  - 【整体风格】结合剧本基调与给定风格要求，写明摄影质感、光线、色调。
-  - 【场景设定】所有镜头固定在同一空间，列出关键环境道具；场景不得切换。{% if has_environment_refs %}场景外观以环境参考图为准。{% endif %}
-  - 【主角设定】根据角色设定写明外貌、服装、气质；全图人物一致。{% if has_character_refs %}人物外观严格与人物参考图一致。{% endif %}
-  - 【镜头内容】逐格写"编号｜镜头名称：景别/机位 + 画面动作 + 环境互动 + 说明栏文字"，每格必须有明确的高光点，景别机位在远景/中景/近景/特写/低机位/POV 之间明显变化，相邻格保持动作连续感。
-  - 【画面要求】每格只一个镜头瞬间；除编号与说明栏外画面内不得出现其他文字、字幕、水印、logo；打击或情绪反馈要明显。
-- cells：与宫格一一对应的元数据数组，panel_index 从 1 开始，title 为镜头名称（4-6 字），caption 为说明栏文字（与 sheet_prompt 中一致）。
-- 帧数少于格数时，将剧情动作合理拆分补足格数；多于格数时合并次要镜头。
+Output requirements:
+- sheet_prompt: one complete Chinese image-generation prompt, which must contain the following section structure (use 【】 to mark sections):
+  - 【Overall Positioning】a cinematic realistic storyboard board composed of {{ panel_count }} real film stills, not sketch art, line drawing, cartoon, or illustration, suitable as a reference image for AI video generation.
+  - 【Overall Layout】a horizontal {{ aspect_ratio }} frame, with {{ rows }} rows × {{ columns }} columns for a total of {{ panel_count }} panels; each panel has a bold number in white text on a black background at the top-left (01, 02, ...); beneath each panel is a white caption bar with a Chinese shot title.
+  - 【Overall Style】combine the script tone and the given style requirements, specifying cinematographic texture, lighting, and color tone.
+  - 【Scene Setup】all shots remain fixed within the same space; list the key environmental props; the scene must not change.{% if has_environment_refs %} The scene appearance must follow the environment reference images.{% endif %}
+  - 【Protagonist Setup】based on the character setup, specify appearance, costume, and temperament; characters must remain consistent across the full sheet.{% if has_character_refs %} Character appearance must strictly match the character reference images.{% endif %}
+  - 【Shot Content】write each panel in the format "number | shot title: shot type / camera angle + visual action + environmental interaction + caption-bar text." Every panel must have a clear highlight moment. Shot type and camera angle should vary clearly across wide shot / medium shot / close shot / close-up / low angle / POV, while adjacent panels keep a sense of action continuity.
+  - 【Image Requirements】each panel contains only one shot instant; other than the numbering and caption bar, there must be no other text, subtitles, watermarks, or logos inside the image; impact or emotional feedback must be visually obvious.
+- cells: a metadata array corresponding one-to-one with the panel grid. panel_index starts from 1, title is the shot title (4-6 Chinese characters), and caption is the caption-bar text (matching the sheet_prompt).
+- If the number of frames is smaller than the number of panels, split the plot action reasonably to fill the grid; if there are more frames than panels, merge secondary shots.
 
-只输出严格JSON：{"sheet_prompt":"...","cells":[{"panel_index":1,"title":"...","caption":"..."}]}，不要附加说明。
+Output strict JSON only: {"sheet_prompt":"...","cells":[{"panel_index":1,"title":"...","caption":"..."}]}. Do not add any explanation.
 
-故事基调：{{ story_tone }}
-{% if style %}风格要求：{{ style }}
+Story tone: {{ story_tone }}
+{% if style %}Style requirements: {{ style }}
 {% endif %}
-场景信息：场景{{ scene.scene_number }}{% if scene.location %}｜地点:{{ scene.location }}{% endif %}{% if scene.time %}｜时间:{{ scene.time }}{% endif %}{% if scene.description %}｜描述:{{ scene.description }}{% endif %}
+Scene information: Scene {{ scene.scene_number }}{% if scene.location %} | Location: {{ scene.location }}{% endif %}{% if scene.time %} | Time: {{ scene.time }}{% endif %}{% if scene.description %} | Description: {{ scene.description }}{% endif %}
 
-{% if characters %}角色设定（外貌必须一致）：
+{% if characters %}Character setup (appearance must remain consistent):
 {% for ch in characters -%}
-- {{ ch.name }}：{{ ch.appearance }}
+- {{ ch.name }}: {{ ch.appearance }}
 {% endfor %}{% endif %}
-{% if dialogues %}场景对白（转译为画面，不要出现文字）：
+{% if dialogues %}Scene dialogue (translate into visuals; do not show text):
 {% for line in dialogues -%}
 - {{ line }}
 {% endfor %}{% endif %}
-{% if stage_notes %}舞台提示：
+{% if stage_notes %}Stage notes:
 {% for note in stage_notes -%}
 - {{ note }}
 {% endfor %}{% endif %}
 
-该场景的分镜帧（按顺序对应宫格）：
+Storyboard frames for this scene (mapped to the panel grid in order):
 {% for fr in frames -%}
-- 第{{ loop.index }}格｜景别:{{ fr.shot_type or "未指定" }}｜运镜:{{ fr.camera_movement or "未指定" }}｜构图:{{ fr.composition or "未指定" }}{% if fr.duration %}｜时长:{{ fr.duration }}s{% endif %}｜画面:{{ fr.description }}
+- Panel {{ loop.index }} | Shot type: {{ fr.shot_type or "Unspecified" }} | Camera movement: {{ fr.camera_movement or "Unspecified" }} | Composition: {{ fr.composition or "Unspecified" }}{% if fr.duration %} | Duration: {{ fr.duration }}s{% endif %} | Visual: {{ fr.description }}
 {% endfor %}

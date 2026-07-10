@@ -10,7 +10,7 @@ const POLL_INTERVAL_MS = 10000;
 /**
  * Poll the caller's in-flight generation tasks for the selected timeline and
  * fold them into render readiness, so clips already being produced show as
- * "生成中" instead of "缺失".
+ * "Generating" instead of "Missing".
  */
 export function useTimelineRenderReadinessWithTasks({
   selectedTimelineSpec,

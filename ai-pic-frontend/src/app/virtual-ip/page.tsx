@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import { AuthGuard, OperatorPanel, OperatorShell } from "@/components/shared";
 import { useAlertModal } from "@/components/shared/modals/AlertModalProvider";
 import {
@@ -40,14 +41,17 @@ function VirtualIPListContent() {
 
   return (
     <OperatorShell
-      title="IP 项目"
-      subtitle="IP 资产是故事、剧集和生成任务的入口"
-      breadcrumb={["IP 中心", "IP 项目"]}
+      title={t("virtualIp.page.title", "IP Projects")}
+      subtitle={t("virtualIp.page.subtitle", "IP assets are the starting point for stories, episodes, and generation tasks")}
+      breadcrumb={[
+        t("common.breadcrumb.ipCenter", "IP Center"),
+        t("virtualIp.page.breadcrumb", "IP Projects"),
+      ]}
     >
       <OperatorPanel className="mb-5 p-4">
-        <h2 className="text-sm font-semibold text-gray-950">生产入口</h2>
+        <h2 className="text-sm font-semibold text-gray-950">{t("virtualIp.page.entryTitle", "Production entry")}</h2>
         <p className="mt-1 text-xs text-gray-500">
-          IP 资产用于组织角色、故事和剧集；新故事优先从这里选择角色资产。
+          {t("virtualIp.page.entryDescription", "Use IP assets to organize characters, stories, and episodes. New stories should select character assets from here first.")}
         </p>
       </OperatorPanel>
 

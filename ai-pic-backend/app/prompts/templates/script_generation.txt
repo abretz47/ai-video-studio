@@ -1,128 +1,128 @@
-你是一个专业的剧本编剧，擅长将剧集大纲转化为详细的可拍摄剧本。请基于以下信息生成完整的{{ format_type }}格式剧本：
+You are a professional scriptwriter skilled at turning episode outlines into detailed, shootable scripts. Based on the information below, generate a complete script in {{ format_type }} format:
 
-## 故事背景
-故事标题：{{ story.title }}
-类型：{{ story.genre }}
+## Story background
+Story title: {{ story.title }}
+Genre: {{ story.genre }}
 {% if story.market_region -%}
-目标市场：{{ story.market_region }}
+Target market: {{ story.market_region }}
 {% endif -%}
 {% if story.micro_genre -%}
-微类型：{{ story.micro_genre }}
+Micro-genre: {{ story.micro_genre }}
 {% endif -%}
 {% if story.world_building -%}
-世界观：{{ story.world_building }}
+World-setting: {{ story.world_building }}
 {% endif -%}
 {% if story.setting_time -%}
-时间设定：{{ story.setting_time }}
+Time setting: {{ story.setting_time }}
 {% endif -%}
 {% if story.setting_location -%}
-地点设定：{{ story.setting_location }}
+Location setting: {{ story.setting_location }}
 {% endif -%}
 {% if story.hook_plan -%}
-爽点节奏：{{ story.hook_plan | tojson }}
+Payoff rhythm: {{ story.hook_plan | tojson }}
 {% endif -%}
 {% if story.twist_density -%}
-反转密度：{{ story.twist_density }}
+Twist density: {{ story.twist_density }}
 {% endif -%}
 {% if story.cliffhanger_plan -%}
-悬念卡点：{{ story.cliffhanger_plan | join('；') }}
+Cliffhanger plan: {{ story.cliffhanger_plan | join('；') }}
 {% endif -%}
 {% if story.ad_snippets -%}
-投流素材：{{ story.ad_snippets | tojson }}
+Ad assets: {{ story.ad_snippets | tojson }}
 {% endif -%}
 
-## 剧集信息
-剧集标题：第{{ episode.episode_number }}集 - {{ episode.title }}
+## Episode information
+Episode title: Episode {{ episode.episode_number }} - {{ episode.title }}
 {% if episode.summary -%}
-剧集概要：{{ episode.summary }}
+Episode summary: {{ episode.summary }}
 {% endif -%}
 {% if episode.duration_minutes -%}
-预计时长：{{ episode.duration_minutes }}分钟
+Estimated runtime: {{ episode.duration_minutes }} minutes
 {% endif -%}
 {% if episode.scene_count -%}
-场景数量：{{ episode.scene_count }}个
+Number of scenes: {{ episode.scene_count }}
 {% endif -%}
 
 {% if episode.scenes -%}
-## 预设场景（来自剧集规划）
-请围绕以下场景编号展开剧本，保持顺序与编号一致；如需调整请在描述中说明。
+## Preset scenes (from episode planning)
+Build the script around the scene numbers below, keeping their order and numbering consistent; if you need to adjust them, explain it in the description.
 {% for sc in episode.scenes %}
-- 场景 {{ sc.scene_number }}：{{ sc.slug_line or sc.title or sc.summary or '待定场景' }}
-  {% if sc.summary %}概要：{{ sc.summary }}{% endif %}
-  {% if sc.location or sc.time_of_day %}设定：{{ sc.location or '地点待定' }} / {{ sc.time_of_day or '时间待定' }}{% endif %}
+- Scene {{ sc.scene_number }}: {{ sc.slug_line or sc.title or sc.summary or 'TBD scene' }}
+  {% if sc.summary %}Summary: {{ sc.summary }}{% endif %}
+  {% if sc.location or sc.time_of_day %}Setting: {{ sc.location or 'Location TBD' }} / {{ sc.time_of_day or 'Time TBD' }}{% endif %}
 {% endfor %}
 {% endif -%}
 
-## 前情提要
+## Previously on
 {% if story.previous_episode_summaries -%}
 {% for prev in story.previous_episode_summaries %}
-- 第{{ prev.episode_number }}集《{{ prev.title }}》：{{ prev.summary or '暂无概要' }}
+- Episode {{ prev.episode_number }} "{{ prev.title }}": {{ prev.summary or 'No summary yet' }}
   {% if prev.plot_points -%}
-  关键事件：
+  Key events:
   {% for point in prev.plot_points %}
-  · {{ point.description if point.description is defined else point }}{% if point.timing is defined and point.timing %}（{{ point.timing }}）{% endif %}
+  · {{ point.description if point.description is defined else point }}{% if point.timing is defined and point.timing %} ({{ point.timing }}){% endif %}
   {% endfor %}
   {% endif -%}
   {% if prev.conflicts -%}
-  主要冲突：
+  Main conflicts:
   {% for conflict in prev.conflicts %}
-  · {% if conflict.type is defined and conflict.type %}{{ conflict.type }}：{% endif %}{{ conflict.description if conflict.description is defined else conflict }}{% if conflict.intensity is defined and conflict.intensity %}（强度：{{ conflict.intensity }}）{% endif %}
+  · {% if conflict.type is defined and conflict.type %}{{ conflict.type }}: {% endif %}{{ conflict.description if conflict.description is defined else conflict }}{% if conflict.intensity is defined and conflict.intensity %} (intensity: {{ conflict.intensity }}){% endif %}
   {% endfor %}
   {% endif -%}
 {% endfor %}
 {% else -%}
-暂无前情信息，可直接聚焦本集。
+No prior episode information is available; focus directly on this episode.
 {% endif -%}
 
-## 连贯性账本（continuity_ledger）
+## Continuity ledger
 {% if story.continuity_ledger -%}
 {{ story.continuity_ledger | tojson }}
 {% else -%}
-- （暂无账本；请在本集内保持自洽）
+- (No ledger yet; keep this episode internally consistent)
 {% endif -%}
 
-## 情节要点
+## Plot points
 {% if episode.plot_points -%}
 {% for plot_point in episode.plot_points %}
 {{ loop.index }}. {{ plot_point.description }} ({{ plot_point.timing }})
 {% endfor %}
 {% endif -%}
 
-## 角色发展
+## Character development
 {% if episode.character_arcs -%}
 {% for character, arc in episode.character_arcs.items() %}
 - {{ character }}: {{ arc }}
 {% endfor %}
 {% endif -%}
 
-## 冲突设置
+## Conflict setup
 {% if episode.conflicts -%}
 {% for conflict in episode.conflicts %}
-- {{ conflict.type }}: {{ conflict.description }} (强度: {{ conflict.intensity }})
+- {{ conflict.type }}: {{ conflict.description }} (intensity: {{ conflict.intensity }})
 {% endfor %}
 {% endif -%}
 
-## 角色设定
+## Character setup
 {% if story.character_profiles %}
 {% for character in story.character_profiles %}
-- {{ character.name }}{{ "（%s）" % character.role if character.role else "" }}
+- {{ character.name }}{{ " (%s)" % character.role if character.role else "" }}
 {% if character.description %}
-  背景/定位：{{ character.description }}
+  Background / function: {{ character.description }}
 {% endif %}
 {% if character.personality %}
-  性格特质：{{ character.personality }}
+  Personality traits: {{ character.personality }}
 {% endif %}
 {% if character.motivation %}
-  目标动机：{{ character.motivation }}
+  Goal and motivation: {{ character.motivation }}
 {% endif %}
 {% if character.arc %}
-  角色弧线：{{ character.arc }}
+  Character arc: {{ character.arc }}
 {% endif %}
 {% if character.relationships %}
-  人际关系：
+  Relationships:
 {% if character.relationships is mapping %}
 {% for rel_name, rel_desc in character.relationships.items() %}
-    · {{ rel_name }}：{{ rel_desc }}
+    · {{ rel_name }}: {{ rel_desc }}
 {% endfor %}
 {% else %}
     · {{ character.relationships }}
@@ -131,130 +131,130 @@
 {% endfor %}
 {% elif story.main_characters %}
 {% for character in story.main_characters %}
-- {{ character.name if character.name is defined else character }}：{{ character.description if character.description is defined else character.role if character.role is defined else '' }}
+- {{ character.name if character.name is defined else character }}: {{ character.description if character.description is defined else character.role if character.role is defined else '' }}
 {% endfor %}
 {% else %}
-暂无角色资料，请根据设定保持人物一致性。
+No character materials are available; keep characterization consistent with the setup.
 {% endif %}
 
-## 角色约束（重要）
-- **只允许**使用以上“角色设定”中列出的角色名（名称必须一致），**不得新增任何其他有姓名的角色**。
-- 如需一次性工具人/背景人群，只能使用以下泛化小角色称谓：`路人/店员/旁白`（允许 `路人甲/路人乙/店员A` 等后缀），**禁止为其起真实姓名**。
-- 任何对白条目中的 `character` 字段必须为“角色设定”中的角色名或允许的泛化小角色，不要输出别名/昵称到 `character` 字段。
+## Character constraints (important)
+- **Only** use the character names listed above under "Character setup" (the names must match exactly). **Do not add any other named characters.**
+- If you need disposable function/background characters, you may only use these generic labels: `passerby / clerk / narrator` (suffixes such as `Passerby A / Passerby B / Clerk A` are allowed). **Do not give them real names.**
+- The `character` field in every dialogue entry must be a character name from "Character setup" or an allowed generic minor role. Do not output aliases or nicknames in the `character` field.
 
-## 剧本参数
-格式类型：{{ format_type }}
-语言：{{ language }}
-对话风格：{{ dialogue_style }}
-场景描述详细程度：{{ scene_detail_level }}
+## Script parameters
+Format type: {{ format_type }}
+Language: {{ language }}
+Dialogue style: {{ dialogue_style }}
+Scene description detail level: {{ scene_detail_level }}
 
 {% if additional_requirements -%}
-## 特殊要求
+## Special requirements
 {{ additional_requirements }}
 {% endif -%}
 
 {% if style_preferences -%}
-## 风格偏好
+## Style preferences
 {{ style_preferences | join(', ') }}
 {% endif -%}
 
-## 生成要求
-请生成一个完整的可拍摄剧本，包含：
+## Generation requirements
+Please generate a complete shootable script, including:
 
-1. **完整剧本内容**: 标准{{ format_type }}格式
-2. **场景列表**: 所有拍摄场景
-3. **对话列表**: 所有角色对话
-4. **舞台指示**: 详细的拍摄指导
-5. **爽点/卡点节奏**: 若提供爽点/卡点/投流素材，需要在关键场景体现
-6. **一致性与时间轴**: 必须遵守前情与 continuity_ledger；跨时间/地点切换要交代；角色不得提前知道未获得的信息
+1. **Complete script content**: Standard {{ format_type }} format
+2. **Scene list**: All shooting scenes
+3. **Dialogue list**: All character dialogue
+4. **Stage directions**: Detailed shooting guidance
+5. **Payoff / cliffhanger rhythm**: If payoff beats / cliffhanger beats / ad assets are provided, they must appear in key scenes
+6. **Consistency and timeline**: You must follow prior episode context and the continuity_ledger; explain cross-time/location transitions; characters must not know information they have not obtained yet
 
-## 格式要求
-- 使用标准{{ format_type }}格式
-- 对话要{{ dialogue_style }}，符合角色性格
-- 场景描述要{{ scene_detail_level }}详细
-- 确保剧本结构完整：开场→发展→高潮→结尾
-- 时长控制在{{ episode.duration_minutes or '30' }}分钟左右
+## Format requirements
+- Use standard {{ format_type }} format
+- Dialogue should be {{ dialogue_style }} and fit each character's personality
+- Scene descriptions should be {{ scene_detail_level }} in detail
+- Ensure a complete script structure: opening → development → climax → ending
+- Keep the runtime around {{ episode.duration_minutes or '30' }} minutes
 
-## 【重要】对白内容要求
-此剧本需要配音，请根据场景类型合理安排对白：
+## [Important] Dialogue content requirements
+This script will need voice acting. Arrange dialogue appropriately based on scene type:
 
-**场景类型与对白要求**：
-1. **对话场景**（角色交流、情感表达）：需要丰富对白，3-5轮或更多
-2. **动作场景**（追逐、打斗、操作）：可以有简短对白或无对白
-3. **氛围场景**（环境展示、情绪渲染）：通常无需对白，用舞台指示描述
-4. **过渡场景**（场景切换、时间流逝）：一般不需要对白
+**Scene types and dialogue requirements**:
+1. **Dialogue scenes** (character interaction, emotional expression): need rich dialogue, 3-5 exchanges or more
+2. **Action scenes** (chases, fights, operations): may have brief dialogue or no dialogue
+3. **Atmosphere scenes** (environment display, mood rendering): usually do not need dialogue; use stage directions instead
+4. **Transition scenes** (scene changes, passage of time): generally do not need dialogue
 
-**总体对白量**：
-- 每分钟对白约需要 100-150 个汉字（正常语速）
-- {{ episode.duration_minutes or 30 }} 分钟剧本总对白量约 {{ ((episode.duration_minutes or 30) * 120)|int }}-{{ ((episode.duration_minutes or 30) * 150)|int }} 个汉字
-- 对白量可在场景间灵活分配，重点场景多一些，氛围场景可以没有
+**Overall dialogue volume**:
+- Each minute of dialogue usually needs about 100-150 Chinese characters at a normal speaking rate
+- A {{ episode.duration_minutes or 30 }}-minute script needs about {{ ((episode.duration_minutes or 30) * 120)|int }}-{{ ((episode.duration_minutes or 30) * 150)|int }} Chinese characters of total dialogue
+- Dialogue can be distributed flexibly across scenes: more in key scenes, none in atmosphere scenes if appropriate
 
-**对白质量要求**：
-- 对白应自然流畅，符合角色性格
-- 包含情感表达、反应、追问等
-- 避免使用"……"省略对白，写出完整台词
-- 对白格式：角色名：'对白内容' 或 角色名："对白内容"
- - **知识门控**：角色不得在未获得信息前引用该信息；若首次点名/首次揭示，必须用对白/动作写清“如何得知”（自报/他人介绍/工牌/手机备注/目击/推断等），或先用模糊称呼直到合理揭示
+**Dialogue quality requirements**:
+- Dialogue should feel natural and fluent, matching each character's personality
+- Include emotional expression, reactions, follow-up questions, etc.
+- Avoid using "..." to skip dialogue; write the full line
+- Dialogue format: Character name: 'line of dialogue' or Character name: "line of dialogue"
+ - **Knowledge gating**: Characters must not reference information before obtaining it; if a name or reveal appears for the first time, use dialogue/action to explain *how it was learned* (self-introduction / someone else's introduction / badge / phone note / eyewitness / inference, etc.), or use a vague form of address until the reveal is justified
 
-## 剧本结构指导
-### 开场 (前10%)
-- 建立场景和氛围
-- 介绍主要角色状态
-- 引入本集核心问题
+## Script structure guidance
+### Opening (first 10%)
+- Establish the setting and atmosphere
+- Introduce the main characters' current state
+- Introduce the episode's core problem
 
-### 发展 (中70%)
-- 情节逐步推进
-- 角色冲突展开
-- 悬念和张力建立
+### Development (middle 70%)
+- Advance the plot step by step
+- Unfold character conflicts
+- Build suspense and tension
 
-### 高潮 (后15%)
-- 冲突达到顶点
-- 关键选择时刻
-- 情感爆发点
+### Climax (last 15%)
+- Bring the conflict to its peak
+- Present the key moment of choice
+- Deliver the emotional explosion point
 
-### 结尾 (最后5%)
-- 问题解决或转折
-- 为下集埋下伏笔
-- 情感落地
+### Ending (final 5%)
+- Resolve the problem or trigger a turn
+- Plant foreshadowing for the next episode
+- Land the emotional beat
 
-## 输出格式
-请以JSON格式返回：
+## Output format
+Return JSON in the following format:
 
 {
-    "content": "完整的剧本内容，使用{{ format_type }}标准格式",
+    "content": "Complete script content using the standard {{ format_type }} format",
     "scenes": [
         {
             "scene_number": 1,
-            "location": "拍摄地点",
-            "time": "时间（日/夜/黄昏等）",
-            "description": "场景描述",
-            "characters": ["出场角色"],
-            "props": ["需要的道具"],
-            "notes": "拍摄注意事项"
+            "location": "shooting location",
+            "time": "time (day/night/dusk, etc.)",
+            "description": "scene description",
+            "characters": ["characters present"],
+            "props": ["required props"],
+            "notes": "shooting notes"
         }
     ],
     "dialogues": [
         {
             "scene_number": 1,
-            "character": "角色名",
-            "content": "对话内容",
-            "emotion": "情感状态",
-            "action": "伴随动作",
-            "notes": "表演提示"
+            "character": "character name",
+            "content": "dialogue content",
+            "emotion": "emotional state",
+            "action": "accompanying action",
+            "notes": "performance note"
         }
     ],
     "stage_directions": [
         {
             "scene_number": 1,
-            "timing": "对话前/对话中/对话后",
-            "content": "舞台指示内容",
-            "type": "动作/表情/环境/效果"
+            "timing": "before dialogue / during dialogue / after dialogue",
+            "content": "stage direction content",
+            "type": "action / expression / environment / effect"
         }
     ],
     "metadata": {
         "total_scenes": 0,
         "total_dialogues": 0,
-        "estimated_duration": "{{ episode.duration_minutes or 30 }}分钟",
+        "estimated_duration": "{{ episode.duration_minutes or 30 }} minutes",
         "shooting_locations": [],
         "main_characters": [],
         "special_effects": [],

@@ -20,15 +20,15 @@ export type StoryboardFrame = {
   beat_id?: number;
   shot_id?: number;
   shot_number?: string;
-  /** Hook 标签：hook/reversal/payoff/cliffhanger 等 */
+  /** Hook tag: hook/reversal/payoff/cliffhanger, etc. */
   hook_tag?: string;
-  /** Hook 强度：low/medium/high */
+  /** Hook intensity: low/medium/high */
   hook_intensity?: string;
-  /** 关联的投流素材 ID */
+  /** Associated ad asset ID */
   ad_snippet_id?: string;
-  /** 时间轴起点（毫秒） */
+  /** Timeline start (milliseconds) */
   start_ms?: number;
-  /** 时间轴终点（毫秒） */
+  /** Timeline end (milliseconds) */
   end_ms?: number;
   generated_at?: string;
   updated_at?: string;
@@ -42,7 +42,7 @@ const SceneTag = ({ label }: { label: string }) => (
 
 export const formatText = (
   value: unknown,
-  fallback = "暂无内容",
+  fallback = "No content yet",
   max = 160,
 ) => {
   if (!value) return fallback;
@@ -51,7 +51,7 @@ export const formatText = (
   return clean.length > max ? `${clean.slice(0, max)}…` : clean;
 };
 
-/** 格式化毫秒为 MM:SS.ms 格式 */
+/** Format milliseconds as MM:SS.ms */
 const formatMs = (ms?: number): string => {
   if (ms === undefined || ms === null) return "—";
   const totalSeconds = Math.floor(ms / 1000);
@@ -68,9 +68,9 @@ export const FrameCard = ({ frame }: { frame: StoryboardFrame }) => (
     <header className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <span className="font-semibold text-gray-800">
-          分镜 {frame.frame_number}
+          Storyboard {frame.frame_number}
         </span>
-        {/* Hook 标签 */}
+        {/* Hook Tag */}
         {frame.hook_tag && (
           <HookTagBadge
             hookType={frame.hook_tag}
@@ -81,10 +81,10 @@ export const FrameCard = ({ frame }: { frame: StoryboardFrame }) => (
       </div>
       <div className="flex items-center gap-2 text-xs text-gray-500">
         {frame.shot_number && (
-          <SceneTag label={`镜头号 ${frame.shot_number}`} />
+          <SceneTag label={`Shot #${frame.shot_number}`} />
         )}
-        {frame.shot_id && <SceneTag label={`镜头ID ${frame.shot_id}`} />}
-        {frame.beat_id && <SceneTag label={`节拍 #${frame.beat_id}`} />}
+        {frame.shot_id && <SceneTag label={`Shot ID ${frame.shot_id}`} />}
+        {frame.beat_id && <SceneTag label={`Beat #${frame.beat_id}`} />}
         {frame.shot_type && <SceneTag label={frame.shot_type} />}
         {frame.generation_method && (
           <SceneTag label={frame.generation_method} />
@@ -92,28 +92,28 @@ export const FrameCard = ({ frame }: { frame: StoryboardFrame }) => (
       </div>
     </header>
     <p className="mt-2 text-xs text-gray-600">
-      {formatText(frame.description, "暂无描述", 180)}
+      {formatText(frame.description, "No description", 180)}
     </p>
     <dl className="mt-2 grid grid-cols-2 gap-x-1 gap-y-1 text-[11px] text-gray-500">
       <div>
-        <dt className="inline text-gray-400">运镜：</dt>
+        <dt className="inline text-gray-400">Camera movement: </dt>
         <dd className="inline">{frame.camera_movement || "—"}</dd>
       </div>
       <div>
-        <dt className="inline text-gray-400">构图：</dt>
+        <dt className="inline text-gray-400">Composition: </dt>
         <dd className="inline">{frame.composition || "—"}</dd>
       </div>
       <div>
-        <dt className="inline text-gray-400">时长：</dt>
+        <dt className="inline text-gray-400">Duration: </dt>
         <dd className="inline">{frame.duration_seconds || "—"}s</dd>
       </div>
       <div>
-        <dt className="inline text-gray-400">模型：</dt>
+        <dt className="inline text-gray-400">Model: </dt>
         <dd className="inline">{frame.generation_model || "—"}</dd>
       </div>
       {(frame.start_ms !== undefined || frame.end_ms !== undefined) && (
         <div className="col-span-2">
-          <dt className="inline text-gray-400">时间窗：</dt>
+          <dt className="inline text-gray-400">Time range: </dt>
           <dd className="inline">
             {formatMs(frame.start_ms)} - {formatMs(frame.end_ms)}
           </dd>
@@ -122,7 +122,7 @@ export const FrameCard = ({ frame }: { frame: StoryboardFrame }) => (
     </dl>
     {frame.ai_prompt && (
       <div className="mt-2 rounded bg-white/70 p-2 text-[11px] text-gray-500">
-        <div className="mb-1 font-medium text-gray-600">AI 提示词</div>
+        <div className="mb-1 font-medium text-gray-600">AI Prompt</div>
         <p className="whitespace-pre-wrap">{frame.ai_prompt}</p>
       </div>
     )}
@@ -135,7 +135,7 @@ export const FrameCard = ({ frame }: { frame: StoryboardFrame }) => (
             rel="noreferrer"
             className="text-blue-600 hover:text-blue-800"
           >
-            查看图像
+            View Image
           </a>
         )}
         {frame.video_url && (
@@ -145,7 +145,7 @@ export const FrameCard = ({ frame }: { frame: StoryboardFrame }) => (
             rel="noreferrer"
             className="text-blue-600 hover:text-blue-800"
           >
-            查看视频
+            View Video
           </a>
         )}
       </div>

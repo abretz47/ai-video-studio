@@ -12,10 +12,10 @@ from app.prompts.templates import (
 
 DEFAULT_GENERATION_PARAMS = {
     "story_outline": {
-        "target_audience": "普通观众",
+        "target_audience": "general audience",
         "duration_minutes": 90,
-        "style_preferences": ["正能量", "有趣"],
-        "content_restrictions": ["暴力", "色情"],
+        "style_preferences": ["positive", "entertaining"],
+        "content_restrictions": ["violence", "sexual content"],
     },
     "episode_generation": {
         "episode_duration": 30,
@@ -53,9 +53,9 @@ QUALITY_ENHANCERS = {
         ],
     },
     "text": {
-        "creativity": ["创意", "原创", "有趣"],
-        "quality": ["专业", "精彩", "引人入胜"],
-        "structure": ["结构完整", "逻辑清晰", "层次分明"],
+        "creativity": ["creative", "original", "entertaining"],
+        "quality": ["professional", "compelling", "engaging"],
+        "structure": ["well-structured", "logically clear", "well-organized"],
     },
 }
 
@@ -67,39 +67,39 @@ NEGATIVE_PROMPTS = {
         "general": ["worst quality", "low resolution", "jpeg artifacts"],
     },
     "text": {
-        "content": ["暴力", "色情", "政治敏感"],
-        "quality": ["低质量", "逻辑混乱", "表达不清"],
+        "content": ["violence", "sexual content", "politically sensitive"],
+        "quality": ["low quality", "logically incoherent", "poorly expressed"],
     },
 }
 
 TEMPLATE_EXAMPLES = {
     PromptTemplate.VIRTUAL_IP_CREATION: {
-        "name": "小雅",
-        "description": "一个活泼可爱的年轻女孩",
-        "age": "22岁",
-        "gender": "女性",
-        "personality_traits": ["活泼", "好奇", "乐观"],
-        "style_preference": "现代时尚",
-        "target_audience": "年轻人",
+        "name": "Xiao Ya",
+        "description": "a lively and cute young girl",
+        "age": "22 years old",
+        "gender": "female",
+        "personality_traits": ["lively", "curious", "optimistic"],
+        "style_preference": "modern fashion",
+        "target_audience": "young people",
     },
     PromptTemplate.VIRTUAL_IP_STYLE_PROMPT: {
-        "name": "小雅",
-        "description": "22岁活泼女孩，短发，甜美笑容",
-        "biography": "开朗乐观，喜欢摄影与旅行，日常休闲穿搭",
+        "name": "Xiao Ya",
+        "description": "22-year-old lively girl, short hair, sweet smile",
+        "biography": "cheerful and optimistic, loves photography and travel, casual everyday style",
         "image_category": "portrait",
     },
     PromptTemplate.STORY_OUTLINE: {
-        "title": "友情的力量",
-        "genre": "剧情",
-        "theme": "友情与成长",
+        "title": "The Power of Friendship",
+        "genre": "drama",
+        "theme": "friendship and growth",
         "characters": [
-            {"name": "小雅", "description": "活泼的大学生"},
-            {"name": "李明", "description": "内向的程序员"},
+            {"name": "Xiao Ya", "description": "a lively college student"},
+            {"name": "Li Ming", "description": "an introverted programmer"},
         ],
     },
     PromptTemplate.IMAGE_GENERATION: {
-        "character_name": "小雅",
-        "character_description": "22岁活泼女孩",
+        "character_name": "Xiao Ya",
+        "character_description": "22-year-old lively girl",
         "style": "realistic",
         "category": "portrait",
     },

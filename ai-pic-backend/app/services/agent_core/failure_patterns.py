@@ -71,8 +71,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expecting.*\}", r"unterminated.*object", r"unexpected end of json"],
         description="JSON object not properly closed",
         repair_hints=[
-            "请确保所有 { 都有对应的 }",
-            "检查JSON结构的完整性",
+            "Ensure all { have corresponding }",
+            "Check the completeness of the JSON structure",
         ],
         example_errors=["Expecting '}' delimiter"],
     ),
@@ -82,8 +82,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expecting.*\]", r"unterminated.*array"],
         description="JSON array not properly closed",
         repair_hints=[
-            "请确保所有 [ 都有对应的 ]",
-            "检查数组是否完整",
+            "Ensure all [ have corresponding ]",
+            "Check if the array is complete",
         ],
     ),
     FailurePattern(
@@ -92,8 +92,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"trailing comma", r"unexpected.*,.*\}", r",\s*[\}\]]"],
         description="Invalid trailing comma in JSON",
         repair_hints=[
-            "删除最后一个元素后的逗号",
-            "JSON不允许尾随逗号",
+            "Remove the trailing comma after the last element",
+            "JSON does not allow trailing commas",
         ],
     ),
     FailurePattern(
@@ -102,8 +102,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"invalid.*escape", r"bad.*escape", r"\\[^\"\\\/bfnrtu]"],
         description="Invalid escape sequence in string",
         repair_hints=[
-            "使用有效的转义序列",
-            "对特殊字符使用 \\\\ 双反斜杠",
+            "Use valid escape sequences",
+            "Use \\\\ double backslash for special characters",
         ],
     ),
     # Schema Violations
@@ -113,8 +113,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"required.*field", r"missing.*required", r"field.*required"],
         description="Required field missing from output",
         repair_hints=[
-            "确保输出包含所有必需字段",
-            "参考schema定义的必需字段",
+            "Ensure output includes all required fields",
+            "Refer to the required fields defined in the schema",
         ],
     ),
     FailurePattern(
@@ -123,8 +123,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"expected.*type", r"invalid.*type", r"type.*mismatch"],
         description="Field has wrong data type",
         repair_hints=[
-            "检查字段的数据类型",
-            "数组字段需要用[]包围",
+            "Check the data type of each field",
+            "Array fields must be enclosed in []",
         ],
     ),
     # Content Length Issues
@@ -134,8 +134,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"dialogue.*too.*long", r"台词.*超过", r"对白.*过长"],
         description="Dialogue line exceeds maximum length",
         repair_hints=[
-            "将长台词拆分为多句",
-            "每句对白控制在15字以内",
+            "Split long dialogue lines into multiple sentences",
+            "Keep each dialogue line within 15 characters",
         ],
     ),
     FailurePattern(
@@ -144,8 +144,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"output.*truncated", r"max.*tokens", r"token.*limit"],
         description="Output was truncated due to length",
         repair_hints=[
-            "减少输出内容量",
-            "分批生成较长内容",
+            "Reduce the amount of output content",
+            "Generate longer content in batches",
         ],
     ),
     # Character Consistency
@@ -155,8 +155,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"unknown.*character", r"未知.*角色", r"角色.*不存在"],
         description="Referenced character not in character list",
         repair_hints=[
-            "只使用预定义的角色",
-            "检查角色名称拼写",
+            "Only use pre-defined characters",
+            "Check character name spelling",
         ],
     ),
     FailurePattern(
@@ -165,8 +165,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"attribute.*conflict", r"属性.*矛盾", r"性格.*不一致"],
         description="Character attributes contradict profile",
         repair_hints=[
-            "确保角色行为符合设定",
-            "检查角色性格描述",
+            "Ensure character behavior aligns with their profile",
+            "Check character personality description",
         ],
     ),
     # Timeline Errors
@@ -176,8 +176,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"timeline.*inconsist", r"时间线.*错误", r"时序.*矛盾"],
         description="Events out of chronological order",
         repair_hints=[
-            "检查事件时间顺序",
-            "确保因果关系正确",
+            "Check the chronological order of events",
+            "Ensure causal relationships are correct",
         ],
     ),
     # Format Errors
@@ -187,8 +187,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"format.*incorrect", r"格式.*错误", r"output.*format"],
         description="Output doesn't match expected format",
         repair_hints=[
-            "严格按照示例格式输出",
-            "检查JSON结构是否正确",
+            "Output strictly in the example format",
+            "Verify that the JSON structure is correct",
         ],
     ),
     # API Errors
@@ -198,8 +198,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"rate.*limit", r"too.*many.*requests", r"quota.*exceeded"],
         description="API rate limit exceeded",
         repair_hints=[
-            "等待后重试",
-            "减少请求频率",
+            "Wait and retry",
+            "Reduce the request frequency",
         ],
     ),
     FailurePattern(
@@ -208,8 +208,8 @@ COMMON_PATTERNS: List[FailurePattern] = [
         patterns=[r"context.*length", r"max.*context", r"input.*too.*long"],
         description="Input context too long for model",
         repair_hints=[
-            "压缩输入内容",
-            "移除非必要的上下文",
+            "Compress the input content",
+            "Remove non-essential context",
         ],
     ),
 ]

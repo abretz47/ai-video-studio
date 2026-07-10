@@ -1,8 +1,8 @@
-import type { Episode, Script } from "@/utils/api/types";
-import type { TimelineResponse } from "@/utils/api/types";
+import { formatDateTime, t } from "@/lib/i18n";
+import type { Episode, Script, TimelineResponse } from "@/utils/api/types";
 
 export const formatStoryTime = (value: string) =>
-  new Date(value).toLocaleString("zh-CN", {
+  formatDateTime(value, {
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
@@ -41,7 +41,7 @@ export function storyDisplayText(...values: Array<string | null | undefined>) {
     const cleaned = unwrapStoryJson(value);
     if (cleaned) return cleaned;
   }
-  return "暂无概要";
+  return t("stories.common.noSynopsis", "No synopsis yet");
 }
 
 function unwrapStoryJson(value: string | null | undefined) {

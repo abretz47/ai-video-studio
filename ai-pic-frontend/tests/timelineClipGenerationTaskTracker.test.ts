@@ -87,10 +87,10 @@ describe("timeline clip generation task tracker", () => {
     trackFn!("storyboard", 88, "clip-1");
 
     await waitFor(() =>
-      assert.ok(utils.getByText(/片段分镜图生成中（任务 #88）/)),
+      assert.ok(utils.getByText(/Generating \(Task #88\)/)),
     );
     await waitFor(
-      () => assert.ok(utils.getByText(/片段分镜图已生成完成（任务 #88）/)),
+      () => assert.ok(utils.getByText(/GeneratedCompleted/)),
       { timeout: 3000 },
     );
     assert.deepEqual(completed, [{ kind: "storyboard", taskId: 88 }]);
@@ -98,7 +98,7 @@ describe("timeline clip generation task tracker", () => {
       notices.some(
         (notice) =>
           notice.variant === "success" &&
-          notice.message.includes("片段分镜图已生成完成"),
+          notice.message.includes("generated successfully"),
       ),
     );
   });

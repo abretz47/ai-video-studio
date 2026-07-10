@@ -1,48 +1,48 @@
-你是一个专业的影视剧分集编剧，擅长将故事概要分解为具体的剧集内容。请基于以下故事信息生成{{ episode_count }}集的剧集大纲（电视剧/网剧）：
+You are a professional TV/streaming series episode writer skilled at breaking a story outline into concrete episode content. Based on the following story information, generate an episode outline for {{ episode_count }} episodes (TV series / web series):
 
-## 故事信息
-故事标题：{{ story.title }}
-类型：{{ story.genre }}
+## Story Information
+Story Title: {{ story.title }}
+Genre: {{ story.genre }}
 {% if story.market_region -%}
-目标市场：{{ story.market_region }}
+Target Market: {{ story.market_region }}
 {% endif -%}
 {% if story.micro_genre -%}
-微类型：{{ story.micro_genre }}
+Micro-genre: {{ story.micro_genre }}
 {% endif -%}
 {% if story.theme -%}
-主题：{{ story.theme }}
+Theme: {{ story.theme }}
 {% endif -%}
 {% if story.synopsis -%}
-故事概要：{{ story.synopsis }}
+Story Outline: {{ story.synopsis }}
 {% endif -%}
 {% if story.main_conflict -%}
-主要冲突：{{ story.main_conflict }}
+Main Conflict: {{ story.main_conflict }}
 {% endif -%}
 {% if story.resolution -%}
-解决方案：{{ story.resolution }}
+Resolution: {{ story.resolution }}
 {% endif -%}
 {% if story.hook_plan -%}
-爽点节奏：{{ story.hook_plan | tojson }}
+Payoff Rhythm: {{ story.hook_plan | tojson }}
 {% endif -%}
 {% if story.twist_density -%}
-反转密度：{{ story.twist_density }}
+Twist Density: {{ story.twist_density }}
 {% endif -%}
 {% if story.cliffhanger_plan -%}
-悬念卡点：{{ story.cliffhanger_plan | join('；') }}
+Cliffhanger Beats: {{ story.cliffhanger_plan | join('; ') }}
 {% endif -%}
 {% if story.ad_snippets -%}
-投流素材建议：{{ story.ad_snippets | tojson }}
+Ad Creative Suggestions: {{ story.ad_snippets | tojson }}
 {% endif -%}
 
 {% if story.context_pack -%}
-## Context Pack（必须遵守，禁止与之矛盾）
+## Context Pack (mandatory; do not contradict it)
 {{ story.context_pack | tojson }}
 {% endif -%}
 
-## 主要角色
+## Main Characters
 {% if story.character_profiles %}
 {% for character in story.character_profiles %}
-- {{ character.name }}{{ "（%s）" % character.role if character.role else "" }}
+- {{ character.name }}{{ "(%s)" % character.role if character.role else "" }}
 {% endfor %}
 {% elif story.main_characters %}
 {% for character in story.main_characters %}
@@ -50,72 +50,72 @@
 {% endfor %}
 {% endif %}
 
-## 角色约束（重要）
-- **只允许**出现以上“主要角色”列表中的角色（名称必须一致），**不得新增任何其他有姓名的角色**。
-- 如需一次性工具人/背景人群，只能使用以下泛化小角色称谓：`路人/店员/旁白`（允许 `路人甲/路人乙/店员A` 等后缀），**禁止为其起真实姓名**。
+## Character Constraints (Important)
+- Only the characters listed above in "Main Characters" may appear (names must match exactly). Do not introduce any additional named characters.
+- If one-off utility roles or background crowds are needed, you may only use the following generic minor-role labels: `Passerby/Clerk/Narrator` (suffixes such as `Passerby A/Passerby B/Clerk A` are allowed). Do not give them real names.
 
-## 角色关系
+## Character Relationships
 {% if story.character_relationships -%}
 {% for relationship, description in story.character_relationships.items() %}
 - {{ relationship }}: {{ description }}
 {% endfor %}
 {% endif -%}
 
-## 剧集参数
-总集数：{{ episode_count }}集
+## Episode Parameters
+Total Episodes: {{ episode_count }}
 {% if episode_duration -%}
-每集时长：{{ episode_duration }}分钟
+Episode Duration: {{ episode_duration }} minutes
 {% endif -%}
-情节复杂度：{{ plot_complexity }}
-节奏控制：{{ pacing }}
+Plot Complexity: {{ plot_complexity }}
+Pacing: {{ pacing }}
 
 {% if focus_characters -%}
-## 重点角色
+## Focus Characters
 {% for character in focus_characters %}
 - {{ character.name }}: {{ character.description }}
 {% endfor %}
 {% endif -%}
 
 {% if additional_requirements -%}
-## 特殊要求
+## Special Requirements
 {{ additional_requirements }}
 {% endif -%}
 
 {% if style_preferences -%}
-## 风格偏好
+## Style Preferences
 {{ style_preferences | join(', ') }}
 {% endif -%}
 
-## 生成要求（影视剧）
-请为每一集生成详细的内容规划，确保：
+## Generation Requirements (TV / Streaming Series)
+Please generate a detailed content plan for each episode and ensure that:
 
-1. **整体连贯性**: 主线清晰贯穿，多集递进
-2. **节奏控制**: 根据"{{ pacing }}"节奏要求安排情节发展（每集都应有推进与留钩子）
-3. **复杂度适配**: 按照"{{ plot_complexity }}"复杂度设计情节（主线+可控支线）
-4. **角色发展**: 角色关系与弧光可持续变化
-5. **冲突升级**: 冲突逐步升级，阶段性高潮落点明确
-6. **场景拆分**: 返回每集的 scenes 数组，至少包含 scene_number/slug_line/location/time_of_day/summary
-7. **微类型与投流对齐**: 若给出微类型/爽点/投流素材，需在每集体现节奏与钩子
+1. **Overall Coherence**: The main storyline stays clear and advances across multiple episodes.
+2. **Pacing Control**: Arrange plot development according to the "{{ pacing }}" pacing requirement (each episode should advance the story and leave a hook).
+3. **Complexity Fit**: Design the plot according to the "{{ plot_complexity }}" complexity level (main line + controlled subplots).
+4. **Character Development**: Character relationships and arcs can continue evolving.
+5. **Conflict Escalation**: Conflicts escalate progressively, with clear intermediate climactic beats.
+6. **Scene Breakdown**: Return a scenes array for each episode containing at least scene_number/slug_line/location/time_of_day/summary.
+7. **Micro-genre and Ad Alignment**: If a micro-genre, payoff rhythm, or ad creative is provided, reflect that pacing and hook structure in every episode.
 
-## 输出格式
-请以JSON格式返回，包含episodes数组，每集包含：
+## Output Format
+Return JSON with an episodes array. Each episode must include:
 
-1. **episode_number**: 集数
-2. **title**: 剧集标题
-3. **summary**: 剧集概要（150-300字）
-4. **plot_points**: 主要情节点列表
-5. **character_arcs**: 角色发展安排
-6. **conflicts**: 本集的冲突设置
-7. **scene_count**: 预估场景数量
-8. **emotional_tone**: 情感基调
-9. **key_moments**: 关键时刻描述
-10. **cliffhanger**: 悬念设置（如果适用）
-11. **hook_plan**: 爽点/钩子节奏规划（如有）
-12. **twist_density**: 反转密度目标（如有）
-13. **cliffhanger_plan**: 悬念/卡点规划（如有）
-14. **ad_snippets**: 投流素材建议（如有）
-15. **scenes**: 场景列表（数组），每个包含 scene_number, slug_line, location, time_of_day, summary
-16. **scene_count 与 scenes 一致**: scene_count 必须等于 scenes 数组长度；scene_number 必须从 1 连续递增，禁止所有场景都写 1
+1. **episode_number**: Episode number
+2. **title**: Episode title
+3. **summary**: Episode summary (150-300 words)
+4. **plot_points**: List of major plot points
+5. **character_arcs**: Character development plan
+6. **conflicts**: Conflicts in this episode
+7. **scene_count**: Estimated number of scenes
+8. **emotional_tone**: Emotional tone
+9. **key_moments**: Description of key moments
+10. **cliffhanger**: Cliffhanger setup (if applicable)
+11. **hook_plan**: Payoff/hook rhythm plan (if applicable)
+12. **twist_density**: Twist density target (if applicable)
+13. **cliffhanger_plan**: Cliffhanger/hook-point plan (if applicable)
+14. **ad_snippets**: Ad creative suggestions (if applicable)
+15. **scenes**: Scene list (array), each containing scene_number, slug_line, location, time_of_day, summary
+16. **scene_count matches scenes**: scene_count must equal the length of the scenes array; scene_number must increase continuously from 1, and all scenes may not be numbered 1
 
 {
     "episodes": [
@@ -127,17 +127,17 @@
                 {
                     "sequence": 1,
                     "description": "...",
-                    "timing": "开场/前段/中段/后段/结尾"
+                    "timing": "Opening/Early/Mid/Late/Ending"
                 }
             ],
             "character_arcs": {
-                "character_name": "本集的角色发展"
+                "character_name": "This episode's character development"
             },
             "conflicts": [
                 {
-                    "type": "内心冲突/人际冲突/环境冲突",
+                    "type": "Internal/Interpersonal/Environmental Conflict",
                     "description": "...",
-                    "intensity": "低/中/高"
+                    "intensity": "Low/Medium/High"
                 }
             ],
             "scene_count": 3,
@@ -161,24 +161,24 @@
             "scenes": [
                 {
                     "scene_number": 1,
-                    "slug_line": "INT. 办公室 - 日",
-                    "location": "公司总部办公室",
+                    "slug_line": "INT. OFFICE - DAY",
+                    "location": "Company headquarters office",
                     "time_of_day": "day",
-                    "summary": "开场场景概要，交代人物/冲突铺垫"
+                    "summary": "Opening scene summary establishing the characters and conflict setup"
                 },
                 {
                     "scene_number": 2,
-                    "slug_line": "EXT. 街道 - 傍晚",
-                    "location": "城市街道",
+                    "slug_line": "EXT. STREET - DUSK",
+                    "location": "City street",
                     "time_of_day": "dusk",
-                    "summary": "中段推进场景概要，升级矛盾"
+                    "summary": "Mid-episode progression summary escalating the tension"
                 },
                 {
                     "scene_number": 3,
-                    "slug_line": "INT. 客厅 - 夜",
-                    "location": "主角家客厅",
+                    "slug_line": "INT. LIVING ROOM - NIGHT",
+                    "location": "Protagonist's living room",
                     "time_of_day": "night",
-                    "summary": "结尾转折场景概要，留下悬念"
+                    "summary": "Ending turning-point summary that leaves a cliffhanger"
                 }
             ]
         }

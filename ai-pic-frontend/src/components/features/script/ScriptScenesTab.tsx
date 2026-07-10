@@ -1,5 +1,6 @@
 "use client";
 
+import { t } from "@/lib/i18n";
 import type {
   NormalizedScene,
   NormalizedShot,
@@ -56,7 +57,10 @@ export function ScriptScenesTab(props: ScriptScenesTabProps) {
       variant="rail-main-inspector"
       className="h-[calc(100vh-18rem)] min-h-[560px]"
       rail={
-        <OperatorContextRail title="场景列表" subtitle={`共 ${props.scenes.length} 个`}>
+        <OperatorContextRail
+          title={t("script.scenes.sceneList", "Scene List")}
+          subtitle={t("script.scenes.sceneCount", "{count} total").replace("{count}", String(props.scenes.length))}
+        >
           <div className="space-y-2">
             {props.scenes.map((scene, index) => {
               const sceneNumber = toSceneNumber(scene.scene_number) ?? index + 1;
@@ -68,14 +72,14 @@ export function ScriptScenesTab(props: ScriptScenesTabProps) {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-sm font-medium text-gray-950">
-                      场景 {sceneNumber}
+                      {t("common.sceneWithNumber", "Scene {number}").replace("{number}", String(sceneNumber))}
                     </span>
                     <StatusPill tone="gray">
-                      {filterByScene(props.dialogues, sceneNumber).length} 句
+                      {t("script.scenes.dialogueCount", "{count} lines").replace("{count}", String(filterByScene(props.dialogues, sceneNumber).length))}
                     </StatusPill>
                   </div>
                   <p className="mt-1 line-clamp-2 text-xs text-gray-500">
-                    {formatText(scene.description, "暂无描述", 100)}
+                    {formatText(scene.description, t("common.noDescription", "No description"), 100)}
                   </p>
                 </OperatorListRow>
               );
@@ -87,20 +91,24 @@ export function ScriptScenesTab(props: ScriptScenesTabProps) {
         <OperatorMainCanvas className="space-y-4">
           <OperatorPanel>
             <OperatorSectionHeader
-              title={props.activeScene ? `场景 ${activeNumber || ""}` : "场景详情"}
-              subtitle={props.activeScene?.location || "选择左侧场景查看详情"}
+              title={
+                props.activeScene
+                  ? t("common.sceneWithNumber", "Scene {number}").replace("{number}", String(activeNumber || ""))
+                  : t("script.scenes.sceneDetails", "Scene Details")
+              }
+              subtitle={props.activeScene?.location || t("script.scenes.selectScenePrompt", "Select a scene on the left to view details")}
             />
             <div className="space-y-4 p-4">
               {props.activeScene ? (
                 <>
                   <p className="text-sm leading-6 text-gray-700">
-                    {formatText(props.activeScene.description, "暂无场景描述", 500)}
+                    {formatText(props.activeScene.description, t("script.scenes.noSceneDescription", "No scene description"), 500)}
                   </p>
-                  <ContentBlock title="对白" items={sceneDialogues} empty="暂无对白" />
-                  <ContentBlock title="舞台指令" items={sceneDirections} empty="暂无舞台指令" />
+                  <ContentBlock title={t("script.overview.dialogue", "Dialogue")} items={sceneDialogues} empty={t("script.scenes.noDialogue", "No dialogue")}/>
+                  <ContentBlock title={t("script.overview.stageDirections", "Stage Directions")} items={sceneDirections} empty={t("script.scenes.noStageDirections", "No stage directions")}/>
                 </>
               ) : (
-                <OperatorState title="请选择场景" detail="左侧列表用于定位剧本场景。" />
+                <OperatorState title={t("script.scenes.selectScene", "Select a scene")} detail={t("script.scenes.selectSceneDetail", "Use the list on the left to locate script scenes.")} />
               )}
             </div>
           </OperatorPanel>
@@ -108,19 +116,21 @@ export function ScriptScenesTab(props: ScriptScenesTabProps) {
       }
       inspector={
         <OperatorInspector
-          title="结构检查"
-          subtitle="节拍、镜头和规范化场景"
+          title={t("script.scenes.structureCheck", "Structure Check")}
+          subtitle={t("script.scenes.structureSubtitle", "Beats, shots, and normalized scenes")}
           action={
             <button
               type="button"
               onClick={() => props.setShowStructureEditor(!props.showStructureEditor)}
               className={operatorButtonClass("secondary")}
             >
-              {props.showStructureEditor ? "收起" : "编辑"}
+              {props.showStructureEditor
+                ? t("common.collapse", "Collapse")
+                : t("common.edit", "Edit")}
             </button>
           }
         >
-          {props.structureLoading ? <OperatorState title="加载结构化场景..." /> : null}
+          {props.structureLoading ? <OperatorState title={t("script.scenes.loadingStructuredScenes", "Loading structured scenes...")} /> : null}
           {props.structureError ? <OperatorState title={props.structureError} tone="red" /> : null}
           <StructureSummary
             scene={props.selectedNormalizedScene}
@@ -174,7 +184,9 @@ function ContentBlock({
         {items.length ? (
           items.map((item, index) => (
             <div key={index} className="rounded-md border border-gray-200 bg-gray-50 p-3 text-xs text-gray-700">
-              {typeof item === "string" ? item : `${item.character || "角色"}：${item.content || ""}`}
+              {typeof item === "string"
+                ? item
+                : `${item.character || t("common.character", "Character")}: ${item.content || ""}`}
             </div>
           ))
         ) : (
@@ -197,16 +209,16 @@ function StructureSummary({
   shots?: NormalizedShot[];
 }) {
   if (!scene) {
-    return <OperatorState title="未匹配规范化场景" tone="amber" />;
+    return <OperatorState title={t("script.scenes.noNormalizedScene", "No normalized scene matched")} tone="amber" />;
   }
   return (
     <div className="space-y-3">
       <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
         <div className="text-sm font-medium text-gray-950">
-          {scene.slug_line || `场景 ${scene.scene_number}`}
+          {scene.slug_line || t("common.sceneWithNumber", "Scene {number}").replace("{number}", String(scene.scene_number))}
         </div>
         <div className="mt-1 text-xs text-gray-500">
-          节拍 {beats?.length || 0} · 镜头 {shots?.length || 0}
+          {t("script.scenes.beatAndShotCount", "Beats {beats} · Shots {shots}").replace("{beats}", String(beats?.length || 0)).replace("{shots}", String(shots?.length || 0))}
         </div>
       </div>
     </div>

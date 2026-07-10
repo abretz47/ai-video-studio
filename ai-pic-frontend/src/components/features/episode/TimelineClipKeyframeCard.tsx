@@ -22,14 +22,14 @@ export function TimelineClipKeyframeCard({
   onGenerate: () => void;
 }) {
   return (
-    <ClipProductionActionShell kind="keyframes" step="2" title="首尾帧">
+    <ClipProductionActionShell kind="keyframes" step="2" title="Start/End Frames">
       <div
         data-clip-action-group="keyframes"
         className="inline-flex w-full min-w-0 items-center min-[720px]:w-auto"
       >
         <button
           type="button"
-          aria-label="生成首尾帧"
+          aria-label="Generate Start/End Frames"
           disabled={!canGenerate}
           className={operatorButtonClass(
             "secondary",
@@ -38,12 +38,12 @@ export function TimelineClipKeyframeCard({
           onClick={onGenerate}
         >
           <ClipProductionActionIcon kind="keyframes" />
-          <span>{generating ? "提交中..." : "生成首尾帧"}</span>
+          <span>{generating ? "Submitting..." : "Generate Start/End Frames"}</span>
         </button>
       </div>
       <div className="mt-2 rounded-md bg-slate-50 px-2 py-1.5 text-[11px] text-slate-600">
         <span>{keyframeStatus.label}</span>
-        <span> · 推荐作为视频生成的首尾帧控制</span>
+        <span> · Recommended for controlling start/end frames in video generation</span>
       </div>
       <TimelineClipTaskStatusLine
         kind="keyframes"

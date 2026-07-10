@@ -1,3 +1,4 @@
+import { locale } from "@/lib/i18n";
 import type { ScriptGenerationRequest } from "@/utils/api/types";
 
 export const SCRIPT_GENERATION_DEFAULTS: ScriptGenerationRequest = {
@@ -5,7 +6,7 @@ export const SCRIPT_GENERATION_DEFAULTS: ScriptGenerationRequest = {
   generation_mode: "production",
   auto_timeline_pipeline: true,
   format_type: "screenplay",
-  language: "zh-CN",
+  language: locale,
   template_style: "commercial_vertical_drama",
   target_chars_per_episode: 1300,
   quality_threshold: 9,

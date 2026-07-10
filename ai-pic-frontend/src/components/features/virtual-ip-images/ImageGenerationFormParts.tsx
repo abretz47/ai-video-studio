@@ -21,14 +21,14 @@ export function ImageGenerationActions({
         disabled={generating}
         className={operatorButtonClass("primary")}
       >
-        {generating ? "提交中..." : "提交生成任务"}
+        {generating ? "Submitting..." : "Submit Generation Task"}
       </button>
       <button
         type="button"
         onClick={onCancel}
         className={operatorButtonClass("secondary")}
       >
-        取消
+        Cancel
       </button>
     </div>
   );

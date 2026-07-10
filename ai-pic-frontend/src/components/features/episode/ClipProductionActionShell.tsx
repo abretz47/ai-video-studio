@@ -27,7 +27,7 @@ export function ClipProductionActionShell({
     <section
       data-clip-command-card={kind}
       data-clip-command-card-tone={tone}
-      aria-label={`步骤 ${step} · ${title}`}
+      aria-label={`Step ${step} · ${title}`}
       className={`min-w-0 ${MOBILE_LAYOUT_CLASS[kind]}`}
     >
       <div data-clip-command-card-actions="inline" className="min-w-0">

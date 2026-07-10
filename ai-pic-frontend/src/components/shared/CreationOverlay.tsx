@@ -46,7 +46,7 @@ export function CreationOverlay({
             type="button"
             onClick={onClose}
             className="rounded-md p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-            aria-label="关闭"
+            aria-label="Close"
           >
             <svg
               className="h-5 w-5"

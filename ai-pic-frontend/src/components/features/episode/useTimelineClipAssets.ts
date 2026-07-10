@@ -34,7 +34,7 @@ export function useTimelineClipAssets({
         setClipAssets(res.data.items || []);
         setError(null);
       } else {
-        setError(res.error || "读取片段资产失败");
+        setError(res.error || "Failed to load clip assets");
       }
     } finally {
       setLoading(false);

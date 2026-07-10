@@ -1,5 +1,7 @@
 "use client";
 
+import { t } from "@/lib/i18n";
+
 interface VirtualIPTagsFieldProps {
   tags: string[];
   addTag: (tag: string) => void;
@@ -14,7 +16,7 @@ export function VirtualIPTagsField({
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        标签
+        {t("common.tags", "Tags")}
       </label>
       <div className="flex flex-wrap gap-2 mb-2">
         {tags.map((tag) => (
@@ -36,7 +38,7 @@ export function VirtualIPTagsField({
       <div className="flex gap-2">
         <input
           type="text"
-          placeholder="输入标签"
+          placeholder={t("virtualIp.tags.placeholder", "Enter a tag")}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -57,7 +59,7 @@ export function VirtualIPTagsField({
           }}
           className="h-8 rounded-md border border-gray-200 bg-white px-3 text-xs text-gray-700 hover:bg-gray-50"
         >
-          添加
+          {t("common.add", "Add")}
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
-画面主体: 竖屏短剧单镜头，{{ speaker }}正在查看屏幕或文件，屏幕/纸面内容只能模糊呈现，屏幕文字模糊不可读。
-表演动作: {{ reaction }}，人物不开口读出文字，情绪通过眼神、呼吸和手部细节表现。
-场景光线: 真实室内/场景光线，屏幕或文件只作为视觉道具，不出现可辨认文字。
-构图连续性: 中近景或特写突出人物反应，脸型、发型、服装和参考图保持一致。
-禁止项: 单幅画面，无字幕，无可读文字，无对白气泡，无分屏/拼贴/多格漫画。
+Main visual subject: a vertical short-drama single shot. {{ speaker }} is looking at a screen or document; the screen/paper content should appear only as a blur, and any text on the screen must be unreadable.
+Performance action: {{ reaction }}. The character must not read the text aloud; emotion should be conveyed through eyes, breathing, and hand detail.
+Scene lighting: realistic interior / scene lighting. The screen or document serves only as a visual prop and must not show recognizable text.
+Composition continuity: use a medium close-up or close-up to emphasize the character's reaction. Keep the face shape, hairstyle, costume, and reference-image consistency intact.
+Prohibited: single image, no subtitles, no readable text, no dialogue bubbles, no split screen / collage / multi-panel comic layout.

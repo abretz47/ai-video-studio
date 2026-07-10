@@ -61,7 +61,7 @@ export function VirtualIPInfoSection({
             <form id={formId} onSubmit={onSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  名称 *
+                  Name *
                 </label>
                 <input
                   type="text"
@@ -76,7 +76,7 @@ export function VirtualIPInfoSection({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  描述
+                  Description
                 </label>
                 <textarea
                   value={editForm.description}
@@ -90,7 +90,7 @@ export function VirtualIPInfoSection({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  标签
+                  Tags
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {editForm.tags.map((tag) => (
@@ -112,7 +112,7 @@ export function VirtualIPInfoSection({
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="输入标签"
+                    placeholder="Enter a tag"
                     onKeyPress={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -133,7 +133,7 @@ export function VirtualIPInfoSection({
                     }}
                     className="h-8 rounded-md border border-gray-200 bg-white px-3 text-xs text-gray-700 hover:bg-gray-50"
                   >
-                    添加
+                    Add
                   </button>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export function VirtualIPInfoSection({
                   />
                 </div>
               ) : (
-                <p className="text-sm text-gray-400 mb-4">暂无描述</p>
+                <p className="text-sm text-gray-400 mb-4">No description</p>
               )}
               {virtualIP.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">

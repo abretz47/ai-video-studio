@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { t } from "@/lib/i18n";
 import { operatorButtonClass, operatorInputClass } from "./OperatorPrimitives";
 import {
   OperatorShellNavIcon,
@@ -27,18 +28,18 @@ export type OperatorNavItem = {
 type OperatorShellMode = "production" | "admin";
 
 export const productionNavItems: OperatorNavItem[] = [
-  { href: "/", label: "工作台", icon: "workspace" },
-  { href: "/canvas", label: "创作画布", icon: "canvas" },
-  { href: "/virtual-ip", label: "IP 项目", icon: "ip" },
-  { href: "/stories", label: "故事生产", icon: "stories" },
-  { href: "/environments", label: "环境资产", icon: "environments" },
-  { href: "/tasks", label: "任务", icon: "tasks" },
+  { href: "/", label: t("operator.nav.workspace", "Workspace"), icon: "workspace" },
+  { href: "/canvas", label: t("operator.nav.canvas", "Canvas"), icon: "canvas" },
+  { href: "/virtual-ip", label: t("operator.nav.ip", "IP Projects"), icon: "ip" },
+  { href: "/stories", label: t("operator.nav.stories", "Story Production"), icon: "stories" },
+  { href: "/environments", label: t("operator.nav.environments", "Environment Assets"), icon: "environments" },
+  { href: "/tasks", label: t("operator.nav.tasks", "Tasks"), icon: "tasks" },
 ];
 
 const adminNavItems: OperatorNavItem[] = [
-  { href: "/admin/users", label: "用户管理", icon: "users" },
-  { href: "/admin/stats", label: "统计数据", icon: "stats" },
-  { href: "/admin/settings", label: "系统设置", icon: "settings" },
+  { href: "/admin/users", label: t("operator.adminNav.users", "User Management"), icon: "users" },
+  { href: "/admin/stats", label: t("operator.adminNav.stats", "Statistics"), icon: "stats" },
+  { href: "/admin/settings", label: t("operator.adminNav.settings", "System Settings"), icon: "settings" },
 ];
 
 export function OperatorShell({
@@ -68,8 +69,14 @@ export function OperatorShell({
   const router = useRouter();
   const [username, setUsername] = useState("operator");
   const navItems = mode === "admin" ? adminNavItems : productionNavItems;
-  const shellTitle = mode === "admin" ? "管理控制台" : "短剧制作台";
-  const shellSubtitle = mode === "admin" ? "Admin Console" : "Operator Console";
+  const shellTitle =
+    mode === "admin"
+      ? t("operator.shell.adminTitle", "Admin Console")
+      : t("operator.shell.productionTitle", "Short Drama Studio");
+  const shellSubtitle =
+    mode === "admin"
+      ? t("operator.shell.adminSubtitle", "Admin Console")
+      : t("operator.shell.productionSubtitle", "Operator Console");
 
   useEffect(() => {
     if (userLabel) {
@@ -153,7 +160,7 @@ export function OperatorShell({
             <div className="truncate text-sm font-semibold text-gray-950">
               {breadcrumb?.length
                 ? breadcrumb.join(" / ")
-                : title || "生产工作台"}
+                : title || t("operator.shell.defaultBreadcrumb", "Production Workspace")}
             </div>
             {title || subtitle ? (
               <div className="truncate text-xs text-gray-500">
@@ -171,8 +178,8 @@ export function OperatorShell({
                   )}
                 >
                   {mode === "admin"
-                    ? "搜索用户、权限、审计"
-                    : "搜索 IP、故事、剧集"}
+                    ? t("operator.shell.adminSearch", "Search users, roles, audit")
+                    : t("operator.shell.productionSearch", "Search IPs, stories, episodes")}
                 </div>
               ) : null)}
             <span className={operatorShellUserClass(compactNavigation)}>
@@ -186,7 +193,7 @@ export function OperatorShell({
                 operatorShellLogoutButtonClass(compactNavigation),
               )}
             >
-              退出
+              {t("operator.shell.logout", "Sign out")}
             </button>
           </div>
         </header>

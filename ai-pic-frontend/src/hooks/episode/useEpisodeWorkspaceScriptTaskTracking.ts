@@ -46,7 +46,7 @@ export function useEpisodeWorkspaceScriptTaskTracking(args: {
         !Array.isArray(scriptsRes.data) ||
         scriptsRes.data.length === 0
       ) {
-        notify?.("新剧本已生成，但刷新列表失败，请手动刷新", "warning");
+        notify?.("A new script was generated, but the list failed to refresh. Please refresh manually.", "warning");
         return;
       }
       const ordered = sortScriptsNewestFirst(scriptsRes.data);
@@ -64,7 +64,7 @@ export function useEpisodeWorkspaceScriptTaskTracking(args: {
   );
 
   const tracker = useGenerationTaskTracker<"script">({
-    labels: { script: "剧本" },
+    labels: { script: "Script" },
     onCompleted: handleCompleted,
     onNotify: notify,
     pollIntervalMs,

@@ -59,9 +59,9 @@ class EpisodeMockScriptMixin:
             summary = (
                 episode.get("summary")
                 or story.get("synopsis")
-                or "角色在本集中推进剧情。"
+                or "Characters advance the plot in this episode."
             )
-            plot_points = [{"description": summary, "timing": "中段"}]
+            plot_points = [{"description": summary, "timing": "midpoint"}]
 
         focus_characters: List[str] = []
         for char in story.get("main_characters") or []:
@@ -73,9 +73,9 @@ class EpisodeMockScriptMixin:
         scenes: List[Dict[str, Any]] = []
         dialogues: List[Dict[str, Any]] = []
         stage_directions: List[Dict[str, Any]] = []
-        script_sections: List[str] = [f"# {episode.get('title', '未命名剧集')}"]
+        script_sections: List[str] = [f"# {episode.get('title', 'Untitled Episode')}"]
 
-        default_locations = ["教室", "校园花园", "图书馆", "操场"]
+        default_locations = ["Classroom", "Campus Garden", "Library", "Playground"]
         default_times = ["DAY", "EVENING", "NIGHT"]
 
         # 若有真实场景，按场景生成；否则使用情节点生成
@@ -98,14 +98,14 @@ class EpisodeMockScriptMixin:
                 )
                 slug_line = item.get("slug_line") or f"INT. {location} - {time_of_day}"
                 description = (
-                    item.get("summary") or item.get("description") or f"场景 {idx}"
+                    item.get("summary") or item.get("description") or f"Scene {idx}"
                 )
                 story_beat = item.get("story_beat") or item.get("timing") or "beat"
             else:
                 location = default_locations[(idx - 1) % len(default_locations)]
                 time_of_day = default_times[(idx - 1) % len(default_times)]
                 slug_line = f"INT. {location.upper()} - {time_of_day}"
-                description = item.get("description") or f"故事在第{idx}个阶段推进。"
+                description = item.get("description") or f"The story advances in phase {idx}."
                 story_beat = item.get("timing") or "beat"
 
             scenes.append(
@@ -130,24 +130,24 @@ class EpisodeMockScriptMixin:
             stage_directions.append(
                 {
                     "scene_number": idx,
-                    "content": f"镜头捕捉角色与场景，突出：{description}",
-                    "camera_suggestion": "中景",
-                    "lighting": "自然光",
+                    "content": f"Camera captures characters and scene, highlighting: {description}",
+                    "camera_suggestion": "medium shot",
+                    "lighting": "natural light",
                 }
             )
 
             section_lines = [
-                f"场景 {idx}: {location} - {time_of_day}",
+                f"Scene {idx}: {location} - {time_of_day}",
                 description,
                 "",
             ]
             for dialog in [d for d in dialogues if d["scene_number"] == idx]:
                 line_text = dialog.get("content") or dialog.get("line") or ""
-                section_lines.append(f"{dialog.get('character', '旁白')}: {line_text}")
+                section_lines.append(f"{dialog.get('character', 'Narrator')}: {line_text}")
             script_sections.append("\n".join(section_lines))
 
         if additional_requirements:
-            script_sections.append(f"\n【制作要求】{additional_requirements}")
+            script_sections.append(f"\n[Production Requirements] {additional_requirements}")
 
         if template_style == "commercial_vertical_drama":
             script_text = build_script_text(
@@ -183,7 +183,7 @@ class EpisodeMockScriptMixin:
                     "style_preferences": style_preferences or [],
                 },
             },
-            "prompt": "模拟剧本生成提示词",
+            "prompt": "Mock script generation prompt",
             "generation_method": "mock_service",
             "template_used": "mock_script_template",
             "provider_used": "mock",

@@ -47,11 +47,11 @@ export function StoryReadinessPanel({
   const [quickFixPreview, setQuickFixPreview] =
     useState<QuickFixResponse | null>(null);
 
-  if (loading) return <OperatorState title="检查生成就绪状态..." />;
+  if (loading) return <OperatorState title="Checking generation readiness..." />;
   if (error) {
     return (
       <OperatorState
-        title={`就绪检查失败: ${error}`}
+        title={`Readiness check failed: ${error}`}
         tone="red"
         action={
           <button
@@ -59,7 +59,7 @@ export function StoryReadinessPanel({
             onClick={onRefreshReadiness}
             className={operatorButtonClass("secondary")}
           >
-            重试
+            Retry
           </button>
         }
       />
@@ -68,14 +68,14 @@ export function StoryReadinessPanel({
   if (!readiness) {
     return (
       <OperatorState
-        title="尚未检查生成就绪状态"
+        title="Generation readiness has not been checked yet"
         action={
           <button
             type="button"
             onClick={onRefreshReadiness}
             className={operatorButtonClass("secondary")}
           >
-            开始检查
+            Start Check
           </button>
         }
       />
@@ -98,14 +98,14 @@ export function StoryReadinessPanel({
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               <StatusPill tone={readiness.ready ? "green" : "amber"}>
-                通过 {readiness.passed_count}
+                Passed {readiness.passed_count}
               </StatusPill>
               <StatusPill tone={readiness.failed_count ? "red" : "gray"}>
-                失败 {readiness.failed_count}
+                Failed {readiness.failed_count}
               </StatusPill>
               {readiness.warnings.length ? (
                 <StatusPill tone="amber">
-                  警告 {readiness.warnings.length}
+                  Warnings {readiness.warnings.length}
                 </StatusPill>
               ) : null}
             </div>
@@ -115,7 +115,7 @@ export function StoryReadinessPanel({
             onClick={onRefreshReadiness}
             className={operatorButtonClass("ghost")}
           >
-            刷新
+            Refresh
           </button>
         </div>
       </div>
@@ -127,7 +127,7 @@ export function StoryReadinessPanel({
           ))}
         </div>
       ) : (
-        <OperatorState title="所有检查已通过" tone="green" />
+        <OperatorState title="All checks passed" tone="green" />
       )}
 
       {readiness.passed_count > 0 ? (
@@ -136,7 +136,7 @@ export function StoryReadinessPanel({
           onClick={() => setShowAllChecks((value) => !value)}
           className={operatorButtonClass("ghost")}
         >
-          {showAllChecks ? "只显示失败项" : `显示全部 ${readiness.checks.length} 项`}
+          {showAllChecks ? "Show only failed items" : `Show all ${readiness.checks.length} items`}
         </button>
       ) : null}
 
@@ -156,8 +156,8 @@ export function StoryReadinessPanel({
 
       {!readiness.can_proceed ? (
         <OperatorState
-          title="存在严重问题，无法继续生成剧集"
-          detail="请先修复 CRITICAL 项。"
+          title="Critical issues block episode continuation"
+          detail="Please resolve critical items first."
           tone="red"
         />
       ) : null}
@@ -202,14 +202,14 @@ function QuickFixBox({
         disabled={loading}
         className={operatorButtonClass("primary")}
       >
-        {loading ? "生成中..." : "预览修复"}
+        {loading ? "Generating..." : "Preview Fixes"}
       </button>
     );
   }
   return (
     <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
       <div className="text-sm font-medium text-gray-950">
-        将修复 {preview.improvement.fixed_count} 项
+        Will fix {preview.improvement.fixed_count} items
       </div>
       <div className="mt-2 space-y-1 text-xs text-gray-600">
         {preview.fixes_applied.slice(0, 4).map((fix, index) => (
@@ -225,14 +225,14 @@ function QuickFixBox({
           disabled={loading}
           className={operatorButtonClass("primary")}
         >
-          确认应用
+          Confirm Apply
         </button>
         <button
           type="button"
           onClick={onCancel}
           className={operatorButtonClass("secondary")}
         >
-          取消
+          Cancel
         </button>
       </div>
     </div>

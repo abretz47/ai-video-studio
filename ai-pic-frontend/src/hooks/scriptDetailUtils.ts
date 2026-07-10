@@ -1,3 +1,5 @@
+import { formatDateTime, t } from "@/lib/i18n";
+
 export type ScriptScene = {
   scene_number?: number | string;
   location?: string;
@@ -28,9 +30,9 @@ export type ScriptDirection =
   | string;
 
 export const formatDate = (value?: string): string => {
-  if (!value) return "—";
+  if (!value) return t("common.emptyDash", "—");
   try {
-    return new Date(value).toLocaleString();
+    return formatDateTime(value);
   } catch {
     return value;
   }

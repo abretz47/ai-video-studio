@@ -57,7 +57,7 @@ export function OperatorAdminShell({
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f5f6f8]">
-        <OperatorState title="加载管理控制台..." />
+        <OperatorState title="Loading admin console..." />
       </div>
     );
   }
@@ -69,7 +69,7 @@ export function OperatorAdminShell({
       mode="admin"
       title={title}
       subtitle={subtitle}
-      breadcrumb={["IP 中心", "管理控制台"]}
+      breadcrumb={["IP Center", "Admin Console"]}
       userLabel={currentUser.username}
       onLogout={() => void handleLogout()}
       rightSlot={
@@ -78,7 +78,7 @@ export function OperatorAdminShell({
             href="/admin/users?status=pending"
             className={operatorButtonClass("secondary")}
           >
-            待审批 {stats?.pending_approval}
+            Pending approval {stats?.pending_approval}
           </a>
         ) : undefined
       }

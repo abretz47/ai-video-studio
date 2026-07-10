@@ -7,6 +7,7 @@ import {
   currentBrowserReturnPath,
 } from "@/utils/authReturnPath";
 import { isAuthenticated } from "@/utils/auth";
+import { t } from "@/lib/i18n";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -33,23 +34,22 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     checkAuth();
   }, [router]);
 
-  // 显示加载状态
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">检查登录状态...</p>
+          <p className="mt-4 text-gray-600">
+            {t("auth.guard.checking", "Checking sign-in status...")}
+          </p>
         </div>
       </div>
     );
   }
 
-  // 未认证状态不渲染子组件
   if (!authenticated) {
     return null;
   }
 
-  // 已认证，渲染子组件
   return <>{children}</>;
 }

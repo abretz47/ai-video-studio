@@ -1,41 +1,41 @@
-你将为“知乎体长文故事”的单章生成一个可执行的“关键节拍（beats）”列表，用于后续写作。
+You will generate an executable list of "key beats" for one chapter of a Zhihu-style long-form story for later writing.
 
-请输出**严格 JSON**（不要代码块、不要解释），结构如下：
+Please output **strict JSON** (no code fences, no explanations) in the following structure:
 {
-  "key_beats": ["按发生顺序列 5-9 条关键节拍（短句）"]
+  "key_beats": ["List 5-9 key beats in chronological order (short phrases)"]
 }
 
-【故事信息】
+[Story information]
 {{ story | tojson }}
 
-【整体大纲（plan）】
+[Overall outline (plan)]
 {{ plan | tojson }}
 
-【连贯性账本（ledger）】
+[Continuity ledger]
 {{ ledger | tojson }}
 
-【上一章结尾片段（previous_tail）】
+[Previous chapter ending excerpt (previous_tail)]
 {{ previous_tail }}
 
-【上一章卡点（previous_cliffhanger）】
+[Previous chapter cliffhanger (previous_cliffhanger)]
 {{ previous_cliffhanger }}
 
-【当前章节规划】
-章节号：{{ chapter.chapter_number }}
-章节标题：{{ chapter.title }}
-目标字数：{{ chapter.target_words }}
-本章目标：{{ chapter.chapter_goal }}
-章末卡点提示：{{ chapter.cliffhanger_hint }}
+[Current chapter plan]
+Chapter number: {{ chapter.chapter_number }}
+Chapter title: {{ chapter.title }}
+Target word count: {{ chapter.target_words }}
+Chapter goal: {{ chapter.chapter_goal }}
+End-of-chapter cliffhanger hint: {{ chapter.cliffhanger_hint }}
 
-【已生成连载小结（running_summary）】
+[Generated running summary]
 {{ running_summary }}
 
-规则：
-- key_beats.length 必须在 5-9 之间
-- 每条 beat 必须具体、可执行、带动作/冲突/信息推进，避免“概述/旁白式总结”
-- 严格遵守 ledger 的事实/人物关系/时间线，不得自相矛盾
-- 必须自然承接 previous_tail（若为空则从本章开场起笔）
-- 若 previous_cliffhanger 非空，第一条 beat 必须直接回应/承接该卡点（要么续写现场，要么立刻交代“卡点之后发生了什么”）。
-- beats 最后一条要能导向 cliffhanger_hint（不需要直接写卡点台词，但要铺垫到位）
-- 如 beats 中首次出现新的角色姓名（此前未在 previous_tail / running_summary / ledger.characters 中出现），必须在该 beat 中写明“姓名的获取方式”（自报、他人介绍、工牌/名牌、手机备注等）。
-- 仅输出 JSON；JSON 字符串中禁止出现真实换行符；需要换行请写成 \\n
+Rules:
+- `key_beats.length` must be between 5 and 9
+- Every beat must be specific, executable, and contain action / conflict / information progression. Avoid summary-style narration.
+- Strictly follow the facts / character relationships / timeline in the ledger; do not create contradictions.
+- You must naturally continue from previous_tail (if it is empty, begin from this chapter's opening)
+- If previous_cliffhanger is not empty, the first beat must directly respond to / continue that cliffhanger (either continue the scene or immediately explain what happened after the cliffhanger).
+- The final beat should lead into cliffhanger_hint (it does not need to include the exact cliffhanger line, but the setup must be sufficient).
+- If a new character name appears in beats for the first time (it did not previously appear in previous_tail / running_summary / ledger.characters), that beat must specify *how the name is obtained* (self-introduction, someone else's introduction, badge/nameplate, phone note, etc.).
+- Output JSON only; real newline characters are forbidden inside JSON strings. If you need a line break, write it as \n

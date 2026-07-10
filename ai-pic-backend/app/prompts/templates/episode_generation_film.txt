@@ -1,52 +1,52 @@
-你是一个专业的电影剧本规划师，擅长将故事概要拆解为结构化的叙事段落。请基于以下故事信息生成{{ episode_count }}段的结构化规划（电影模式）：
+You are a professional film script planner skilled at breaking a story outline into structured narrative sections. Based on the following story information, generate a structured plan of {{ episode_count }} sections (film mode):
 
-说明：
-- 若 episode_count = 1：表示整片的单段规划（可把 scenes 拆细）
-- 若 episode_count > 1：将每一段视作“分幕/段落/章节”，仍按 episodes 数组返回
+Notes:
+- If episode_count = 1: treat it as a single-section plan for the full film (you may break the scenes down more finely)
+- If episode_count > 1: treat each section as an act/segment/chapter, but still return them in the episodes array
 
-## 故事信息
-故事标题：{{ story.title }}
-类型：{{ story.genre }}
+## Story Information
+Story Title: {{ story.title }}
+Genre: {{ story.genre }}
 {% if story.market_region -%}
-目标市场：{{ story.market_region }}
+Target Market: {{ story.market_region }}
 {% endif -%}
 {% if story.micro_genre -%}
-微类型：{{ story.micro_genre }}
+Micro-genre: {{ story.micro_genre }}
 {% endif -%}
 {% if story.theme -%}
-主题：{{ story.theme }}
+Theme: {{ story.theme }}
 {% endif -%}
 {% if story.synopsis -%}
-故事概要：{{ story.synopsis }}
+Story Outline: {{ story.synopsis }}
 {% endif -%}
 {% if story.main_conflict -%}
-主要冲突：{{ story.main_conflict }}
+Main Conflict: {{ story.main_conflict }}
 {% endif -%}
 {% if story.resolution -%}
-解决方案：{{ story.resolution }}
+Resolution: {{ story.resolution }}
 {% endif -%}
 {% if story.hook_plan -%}
-爽点节奏：{{ story.hook_plan | tojson }}
+Payoff Rhythm: {{ story.hook_plan | tojson }}
 {% endif -%}
 {% if story.twist_density -%}
-反转密度：{{ story.twist_density }}
+Twist Density: {{ story.twist_density }}
 {% endif -%}
 {% if story.cliffhanger_plan -%}
-悬念卡点：{{ story.cliffhanger_plan | join('；') }}
+Cliffhanger Beats: {{ story.cliffhanger_plan | join('; ') }}
 {% endif -%}
 {% if story.ad_snippets -%}
-投流素材建议：{{ story.ad_snippets | tojson }}
+Ad Creative Suggestions: {{ story.ad_snippets | tojson }}
 {% endif -%}
 
 {% if story.context_pack -%}
-## Context Pack（必须遵守，禁止与之矛盾）
+## Context Pack (mandatory; do not contradict it)
 {{ story.context_pack | tojson }}
 {% endif -%}
 
-## 主要角色
+## Main Characters
 {% if story.character_profiles %}
 {% for character in story.character_profiles %}
-- {{ character.name }}{{ "（%s）" % character.role if character.role else "" }}
+- {{ character.name }}{{ "(%s)" % character.role if character.role else "" }}
 {% endfor %}
 {% elif story.main_characters %}
 {% for character in story.main_characters %}
@@ -54,57 +54,57 @@
 {% endfor %}
 {% endif %}
 
-## 角色约束（重要）
-- **只允许**出现以上“主要角色”列表中的角色（名称必须一致），**不得新增任何其他有姓名的角色**。
-- 如需一次性工具人/背景人群，只能使用以下泛化小角色称谓：`路人/店员/旁白`（允许 `路人甲/路人乙/店员A` 等后缀），**禁止为其起真实姓名**。
+## Character Constraints (Important)
+- Only the characters listed above in "Main Characters" may appear (names must match exactly). Do not introduce any additional named characters.
+- If one-off utility roles or background crowds are needed, you may only use the following generic minor-role labels: `Passerby/Clerk/Narrator` (suffixes such as `Passerby A/Passerby B/Clerk A` are allowed). Do not give them real names.
 
-## 剧本参数
-段落数量：{{ episode_count }}（电影模式）
+## Script Parameters
+Number of Sections: {{ episode_count }} (film mode)
 {% if episode_duration -%}
-目标时长：{{ episode_duration }}分钟
+Target Duration: {{ episode_duration }} minutes
 {% endif -%}
-情节复杂度：{{ plot_complexity }}
-节奏控制：{{ pacing }}
+Plot Complexity: {{ plot_complexity }}
+Pacing: {{ pacing }}
 
 {% if additional_requirements -%}
-## 特殊要求
+## Special Requirements
 {{ additional_requirements }}
 {% endif -%}
 
 {% if style_preferences -%}
-## 风格偏好
+## Style Preferences
 {{ style_preferences | join(', ') }}
 {% endif -%}
 
-## 生成要求（电影）
-- 三幕式逻辑清晰，关键转折明确（进入第二幕/中点/进入第三幕/高潮/结局）
-- 场景推进有因果链，情绪曲线清晰
-- scenes 数组至少包含 scene_number/slug_line/location/time_of_day/summary
-- scene_count 必须等于 scenes 数组长度；scene_number 必须从 1 连续递增，禁止所有场景都写 1
+## Generation Requirements (Film)
+- Maintain clear three-act logic, with defined turning points (entering Act Two / midpoint / entering Act Three / climax / ending)
+- Ensure scenes advance through cause and effect, with a clear emotional curve
+- The scenes array must include at least scene_number/slug_line/location/time_of_day/summary
+- scene_count must equal the length of the scenes array; scene_number must increase continuously from 1, and all scenes may not be numbered 1
 
-## 输出格式
-请以JSON格式返回，包含episodes数组（每个元素代表一个分幕/段落/章节的规划）：
+## Output Format
+Return JSON with an episodes array (each element represents the plan for one act/segment/chapter):
 {
     "episodes": [
         {
             "episode_number": 1,
-            "title": "第一幕/段落标题",
+            "title": "Act One / Segment Title",
             "summary": "...",
             "plot_points": [
                 {
                     "sequence": 1,
                     "description": "...",
-                    "timing": "开场/前段/中段/后段/结尾"
+                    "timing": "Opening/Early/Mid/Late/Ending"
                 }
             ],
             "character_arcs": {
-                "character_name": "本段的角色发展"
+                "character_name": "Character development in this section"
             },
             "conflicts": [
                 {
-                    "type": "内心冲突/人际冲突/环境冲突",
+                    "type": "Internal/Interpersonal/Environmental Conflict",
                     "description": "...",
-                    "intensity": "低/中/高"
+                    "intensity": "Low/Medium/High"
                 }
             ],
             "scene_count": 3,
@@ -128,24 +128,24 @@
             "scenes": [
                 {
                     "scene_number": 1,
-                    "slug_line": "EXT. 城市街道 - 日",
-                    "location": "城市街道",
+                    "slug_line": "EXT. CITY STREET - DAY",
+                    "location": "City street",
                     "time_of_day": "day",
-                    "summary": "建立人物与世界，埋下冲突种子"
+                    "summary": "Establish the characters and world, and plant the seed of conflict"
                 },
                 {
                     "scene_number": 2,
-                    "slug_line": "INT. 公寓 - 傍晚",
-                    "location": "主角公寓",
+                    "slug_line": "INT. APARTMENT - DUSK",
+                    "location": "Protagonist's apartment",
                     "time_of_day": "dusk",
-                    "summary": "中段转折，推动人物选择"
+                    "summary": "Mid-section turning point that drives the character's choice"
                 },
                 {
                     "scene_number": 3,
-                    "slug_line": "EXT. 天台 - 夜",
-                    "location": "城市天台",
+                    "slug_line": "EXT. ROOFTOP - NIGHT",
+                    "location": "City rooftop",
                     "time_of_day": "night",
-                    "summary": "段落结尾，完成情绪落点"
+                    "summary": "Section ending that lands the emotional beat"
                 }
             ]
         }

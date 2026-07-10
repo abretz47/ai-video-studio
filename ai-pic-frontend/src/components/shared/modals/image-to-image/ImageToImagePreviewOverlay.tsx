@@ -21,12 +21,12 @@ export function ImageToImagePreviewOverlay({
           onClick={onClose}
           className="absolute right-3 top-3 z-10 rounded bg-black/70 px-3 py-1 text-sm text-white hover:bg-black/90"
         >
-          关闭
+          Close
         </button>
         <div className="relative w-full" style={{ paddingBottom: "60%" }}>
           <Image
             src={src}
-            alt="参考图预览"
+            alt="Reference ImagePreview"
             fill
             className="object-contain"
             unoptimized

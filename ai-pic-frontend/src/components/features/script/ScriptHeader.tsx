@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { t } from "@/lib/i18n";
 import type { Script } from "@/utils/api/types";
 import { formatDate } from "@/hooks/useScriptDetail";
 import {
@@ -29,8 +30,8 @@ export function ScriptHeader({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="剧本资产"
-        subtitle={`剧本 #${script.id}`}
+        title={t("script.header.title", "Script Asset")}
+        subtitle={t("script.header.subtitle", "Script #{id}").replace("{id}", String(script.id))}
         action={
           <div className="flex gap-2">
             <button
@@ -38,14 +39,14 @@ export function ScriptHeader({
               onClick={onNavigateToEpisode}
               className={operatorButtonClass("secondary")}
             >
-              返回剧集
+              {t("script.header.backToEpisode", "Back to episode")}
             </button>
             <button
               type="button"
               onClick={onNavigateToTimeline}
               className={operatorButtonClass("secondary")}
             >
-              进入时间轴
+              {t("script.header.openTimeline", "Open timeline")}
             </button>
             <div className="relative">
               <button
@@ -53,7 +54,7 @@ export function ScriptHeader({
                 onClick={() => setShowExportMenu(!showExportMenu)}
                 className={operatorButtonClass("primary")}
               >
-                导出剧本
+                {t("script.header.exportScript", "Export script")}
               </button>
               {showExportMenu && (
                 <div className="absolute right-0 z-10 mt-2 w-36 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg">
@@ -64,7 +65,7 @@ export function ScriptHeader({
                       onClick={() => onExport(format)}
                       className="block w-full px-3 py-2 text-left text-xs text-gray-700 hover:bg-gray-50"
                     >
-                      导出 {format.toUpperCase()}
+                      {t("script.header.exportFormat", "Export {format}").replace("{format}", format.toUpperCase())}
                     </button>
                   ))}
                 </div>
@@ -80,36 +81,36 @@ export function ScriptHeader({
               {script.title}
             </h1>
             <p className="mt-1 text-xs text-gray-500">
-              {script.format_type?.toUpperCase() || "剧本"} ·{" "}
-              {script.language?.toUpperCase()} · 版本 {script.version || "1.0"}
+              {script.format_type?.toUpperCase() || t("common.script", "Script")} ·{" "}
+              {script.language?.toUpperCase()} · {t("common.version", "Version")} {script.version || "1.0"}
             </p>
           </div>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
           <InfoCard
-            label="字数"
+            label={t("script.header.wordCount", "Word count")}
             value={script.word_count || 0}
-            hint="字数统计"
+            hint={t("script.header.wordCountHint", "Word count")}
           />
           <InfoCard
-            label="字符数"
+            label={t("script.header.characterCount", "Character count")}
             value={script.character_count || 0}
-            hint="字符统计"
+            hint={t("script.header.characterCountHint", "Character count")}
           />
           <InfoCard
-            label="页数"
+            label={t("script.header.pageCount", "Pages")}
             value={script.page_count || 0}
-            hint="预计页数"
+            hint={t("script.header.pageCountHint", "Estimated pages")}
           />
           <InfoCard
-            label="状态"
+            label={t("common.status", "Status")}
             value={
               script.status === "published"
-                ? "已发布"
+                ? t("common.status.published", "Published")
                 : script.status === "approved"
-                ? "已审核"
-                : "草稿"
+                ? t("common.status.approved", "Approved")
+                : t("common.status.draft", "Draft")
             }
             tone={
               script.status === "published"
@@ -120,16 +121,16 @@ export function ScriptHeader({
             }
             hint={
               script.status === "draft"
-                ? "可编辑"
+                ? t("script.header.draftHint", "Editable")
                 : script.status === "approved"
-                ? "待发布"
-                : "无需修改"
+                ? t("script.header.approvedHint", "Pending publish")
+                : t("script.header.publishedHint", "No revision needed")
             }
           />
         </div>
         <div className="mt-4 grid grid-cols-1 gap-2 text-xs text-gray-500 md:grid-cols-2">
-          <div>创建时间：{formatDate(script.created_at)}</div>
-          <div>更新时间：{formatDate(script.updated_at)}</div>
+          <div>{t("common.createdAt", "Created")}: {formatDate(script.created_at)}</div>
+          <div>{t("common.updatedAt", "Updated")}: {formatDate(script.updated_at)}</div>
         </div>
       </div>
     </OperatorPanel>

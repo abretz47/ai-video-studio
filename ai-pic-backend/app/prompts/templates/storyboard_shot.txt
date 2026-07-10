@@ -1,9 +1,9 @@
-短剧竖屏镜头提示: {{ description }}
-{% if shot_type %}景别: {{ shot_type }}{% endif %}
-{% if camera_movement %}运镜: {{ camera_movement }}{% endif %}
-{% if composition %}构图: {{ composition }}{% endif %}
-{% if characters %}人物: {{ characters | join(', ') }}{% endif %}
+Vertical short-drama shot prompt: {{ description }}
+{% if shot_type %}Shot type: {{ shot_type }}{% endif %}
+{% if camera_movement %}Camera movement: {{ camera_movement }}{% endif %}
+{% if composition %}Composition: {{ composition }}{% endif %}
+{% if characters %}Characters: {{ characters | join(', ') }}{% endif %}
 {% if transition %}
-{% if transition.kind == "intro" %}镜头切换: 开场{% elif transition.kind == "scene_change" %}镜头切换: 切入新场景{{ transition.to_scene }}{% elif transition.kind == "shot_change" %}镜头切换: {{ transition.from_shot }}转{{ transition.to_shot }}{% elif transition.kind == "movement_change" %}镜头切换: {{ transition.from_move }}转{{ transition.to_move }}{% elif transition.kind == "composition_change" %}镜头切换: {{ transition.from_comp }}转{{ transition.to_comp }}{% else %}镜头切换: 连切{% endif %}
+{% if transition.kind == "intro" %}Shot transition: opening{% elif transition.kind == "scene_change" %}Shot transition: cut into new scene {{ transition.to_scene }}{% elif transition.kind == "shot_change" %}Shot transition: {{ transition.from_shot }} to {{ transition.to_shot }}{% elif transition.kind == "movement_change" %}Shot transition: {{ transition.from_move }} to {{ transition.to_move }}{% elif transition.kind == "composition_change" %}Shot transition: {{ transition.from_comp }} to {{ transition.to_comp }}{% else %}Shot transition: continuous cut{% endif %}
 {% endif %}
-统一要求: 单个镜头、单幅画面、竖屏短剧质感；保持人物外观、服装、环境光线和空间方向连续；禁止字幕、可读文字、UI、水印、分屏、拼贴和多格漫画。
+Unified requirements: single shot, single image, vertical short-drama texture; keep character appearance, costume, environmental lighting, and screen direction continuous; prohibit subtitles, readable text, UI, watermarks, split-screen, collage, and multi-panel comics.

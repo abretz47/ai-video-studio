@@ -70,7 +70,7 @@ export function GenerationProfileSelect({
   value,
   onChange,
   disabled = false,
-  label = "质量档位",
+  label = "Quality Tier",
   helperText,
   className,
 }: GenerationProfileSelectProps) {
@@ -120,8 +120,8 @@ export function GenerationProfileSelect({
   const effectiveHelperText =
     helperText ??
     (mode === "image_to_image"
-      ? "按模型默认参数收敛 strength/fidelity 等关键参数，提升质量一致性"
-      : "按模型默认参数收敛 steps/cfg/negative 等关键参数，提升质量一致性");
+      ? "Use model default parameters to normalize strength/fidelity and related parameters for more consistent quality"
+      : "Use model default parameters to normalize steps/cfg/negative and related parameters for more consistent quality");
 
   return (
     <div className={className}>
@@ -138,10 +138,10 @@ export function GenerationProfileSelect({
           disabled={selectDisabled}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-400"
         >
-          {!modelId ? <option value="">请先选择模型</option> : null}
-          {loading ? <option value="">加载中...</option> : null}
+          {!modelId ? <option value="">Please select a model first</option> : null}
+          {loading ? <option value="">Loading...</option> : null}
           {isUnsupported ? (
-            <option value="">该模型不支持 profile</option>
+            <option value="">This model does not support profiles</option>
           ) : null}
           {!loading &&
             profiles.map((profile) => (
@@ -156,7 +156,7 @@ export function GenerationProfileSelect({
             onClick={() => void refresh()}
             className="shrink-0 text-xs text-blue-600 hover:text-blue-800"
           >
-            重试
+            Retry
           </button>
         ) : null}
       </div>
@@ -166,7 +166,7 @@ export function GenerationProfileSelect({
           className="mt-1 text-xs text-gray-500"
           title={selectedProfile.defaults.negative_prompt || ""}
         >
-          默认参数：{formatDefaults(selectedProfile) || "（无）"}
+          DefaultParameters：{formatDefaults(selectedProfile) || "(none)"}
         </p>
       ) : null}
     </div>

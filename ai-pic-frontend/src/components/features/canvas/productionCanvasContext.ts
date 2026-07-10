@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import type { ProductionCanvasPlanRequest } from "@/utils/api/types";
 
 export type ProductionCanvasContextKey =
@@ -14,11 +15,11 @@ export const productionCanvasContextFields: Array<{
   label: string;
   placeholder: string;
 }> = [
-  { key: "virtual_ip_id", label: "IP ID", placeholder: "可选" },
-  { key: "environment_id", label: "环境 ID", placeholder: "可选" },
-  { key: "episode_id", label: "剧集 ID", placeholder: "必填后可生成剧本" },
-  { key: "script_id", label: "剧本 ID", placeholder: "已有剧本可填" },
-  { key: "task_id", label: "任务 ID", placeholder: "报告证据" },
+  { key: "virtual_ip_id", label: "IP ID", placeholder: t("canvas.context.optional", "Optional") },
+  { key: "environment_id", label: t("canvas.context.environmentId", "Environment ID"), placeholder: t("canvas.context.optional", "Optional") },
+  { key: "episode_id", label: t("canvas.context.episodeId", "Episode ID"), placeholder: t("canvas.context.episodeRequired", "Required before generating a script") },
+  { key: "script_id", label: t("canvas.context.scriptId", "Script ID"), placeholder: t("canvas.context.scriptOptional", "Optional when a script already exists") },
+  { key: "task_id", label: t("canvas.context.taskId", "Task ID"), placeholder: t("canvas.context.taskPlaceholder", "Evidence output") },
 ];
 
 export const emptyProductionCanvasContext: ProductionCanvasContextDraft = {

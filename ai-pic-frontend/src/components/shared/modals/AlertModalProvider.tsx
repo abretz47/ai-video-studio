@@ -107,7 +107,7 @@ export function AlertModalProvider({ children }: { children: ReactNode }) {
 
   const showAlert = useCallback((options: AlertOptions) => {
     setAlertState({
-      confirmText: "确定",
+      confirmText: "Confirm",
       variant: "info",
       ...options,
     });
@@ -155,10 +155,10 @@ export function AlertModalProvider({ children }: { children: ReactNode }) {
                 >
                   {alertState.title ??
                     (variant === "success"
-                      ? "操作成功"
+                      ? "Success"
                       : variant === "error"
-                      ? "操作失败"
-                      : "提醒")}
+                      ? "Operation failed"
+                      : "Notice")}
                 </h2>
                 <p
                   id="alert-modal-description"
@@ -174,14 +174,14 @@ export function AlertModalProvider({ children }: { children: ReactNode }) {
                 onClick={handleClose}
                 className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
-                取消
+                Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirm}
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
               >
-                {alertState.confirmText ?? "确定"}
+                {alertState.confirmText ?? "Confirm"}
               </button>
             </div>
           </div>
@@ -194,7 +194,7 @@ export function AlertModalProvider({ children }: { children: ReactNode }) {
 export function useAlertModal() {
   const context = useContext(AlertModalContext);
   if (!context) {
-    throw new Error("useAlertModal 必须在 AlertModalProvider 内使用");
+    throw new Error("useAlertModal must be used within AlertModalProvider");
   }
   return context;
 }

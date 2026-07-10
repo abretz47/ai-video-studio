@@ -240,7 +240,7 @@ export function useEpisodeWorkspaceController(args: {
     handleOpenStoryboard,
     handleRegenerateScript,
     storyboardActionLabel: storyboardEntryClipId
-      ? "进入片段分镜"
-      : "打开分镜辅助",
+      ? "Open Clip Storyboard"
+      : "Open Storyboard Support",
   };
 }

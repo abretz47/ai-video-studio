@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type Dispatch, type SetStateAction } from "react";
+import { t } from "@/lib/i18n";
 import type { StoryGenerationForm, StoryFormat } from "@/utils/storyOptions";
 import { AIModelType } from "@/utils/api/types";
 import { MarketingFields, MultiModelSelector } from "@/components/shared";
@@ -24,7 +25,7 @@ export function StoryBasicsSection({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            故事标题 *
+            {t("stories.basics.titleLabel", "Story title *")}
           </label>
           <input
             type="text"
@@ -32,14 +33,14 @@ export function StoryBasicsSection({
             onChange={(e) =>
               setGenerateForm((prev) => ({ ...prev, title: e.target.value }))
             }
-            placeholder="输入故事标题"
+            placeholder={t("stories.basics.titlePlaceholder", "Enter a story title")}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            故事类型
+            {t("stories.basics.genreLabel", "Story genre")}
           </label>
           <select
             value={generateForm.genre}
@@ -58,7 +59,7 @@ export function StoryBasicsSection({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            故事形态
+            {t("stories.basics.formatLabel", "Story format")}
           </label>
           <select
             value={generateForm.story_format}
@@ -77,14 +78,14 @@ export function StoryBasicsSection({
             ))}
           </select>
           <p className="mt-1 text-xs text-gray-500">
-            选择后端对应的提示词变体（短剧/电视剧/电影）会自动生效
+            {t("stories.basics.formatHelper", "Selecting a format automatically applies the matching backend prompt variant (short drama / series / film).")}
           </p>
         </div>
 
         {generateForm.story_format === "short_drama" ? (
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              短剧故事模板（可选）
+              {t("stories.basics.templateLabel", "Short drama story template (optional)")}
             </label>
             <select
               value={storyTemplateId}
@@ -120,7 +121,7 @@ export function StoryBasicsSection({
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">不使用模板</option>
+              <option value="">{t("stories.basics.noTemplate", "No template")}</option>
               {SHORT_DRAMA_STORY_TEMPLATES.map((template) => (
                 <option key={template.id} value={template.id}>
                   {template.label}
@@ -130,14 +131,14 @@ export function StoryBasicsSection({
             <p className="mt-1 text-xs text-gray-500">
               {SHORT_DRAMA_STORY_TEMPLATES.find(
                 (item) => item.id === storyTemplateId,
-              )?.description || "选择后会自动填充市场/微类型/节奏与额外要求。"}
+              )?.description || t("stories.basics.templateHelper", "Selecting a template auto-fills market, micro-genre, pacing, and extra requirements.")}
             </p>
           </div>
         ) : null}
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            故事主题
+            {t("stories.basics.themeLabel", "Theme")}
           </label>
           <input
             type="text"
@@ -145,14 +146,14 @@ export function StoryBasicsSection({
             onChange={(e) =>
               setGenerateForm((prev) => ({ ...prev, theme: e.target.value }))
             }
-            placeholder="例如：友情、成长、冒险"
+            placeholder={t("stories.basics.themePlaceholder", "For example: friendship, growth, adventure")}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            目标受众
+            {t("stories.basics.audienceLabel", "Target audience")}
           </label>
           <input
             type="text"
@@ -163,7 +164,7 @@ export function StoryBasicsSection({
                 target_audience: e.target.value,
               }))
             }
-            placeholder="例如：青少年、成人、女性向"
+            placeholder={t("stories.basics.audiencePlaceholder", "For example: teens, adults, female audience")}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -172,14 +173,14 @@ export function StoryBasicsSection({
       <MarketingFields
         form={generateForm}
         setForm={setGenerateForm}
-        title="市场/微类型/节奏模板"
+        title={t("stories.basics.marketingTitle", "Market / micro-genre / pacing template")}
         idPrefix="story"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            预计总时长（分钟）
+            {t("stories.basics.durationLabel", "Estimated total duration (minutes)")}
           </label>
           <input
             type="number"
@@ -197,19 +198,19 @@ export function StoryBasicsSection({
         </div>
 
         <MultiModelSelector
-          label="选择模型"
+          label={t("stories.basics.modelLabel", "Select model")}
           value={generateForm.model ? [generateForm.model] : []}
           onChange={(ids) =>
             setGenerateForm((prev) => ({ ...prev, model: ids[0] || "" }))
           }
           modelType={AIModelType.Text}
           multiple={false}
-          helperText="为空将由后端自动挑选最佳提供商与模型（故事生成推荐使用支持 JSON Schema 的模型）"
+          helperText={t("stories.basics.modelHelper", "Leave empty to let the backend choose the best provider and model automatically (JSON Schema-capable models are recommended for story generation).")}
         />
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            温度（0.0 - 1.5）
+            {t("stories.basics.temperatureLabel", "Temperature (0.0 - 1.5)")}
           </label>
           <input
             type="range"
@@ -226,7 +227,7 @@ export function StoryBasicsSection({
             className="w-full"
           />
           <div className="text-sm text-gray-600">
-            当前温度：{generateForm.temperature?.toFixed(1)}
+            {t("stories.basics.temperatureCurrent", "Current temperature: {value}").replace("{value}", generateForm.temperature?.toFixed(1) ?? "0.7")}
           </div>
         </div>
       </div>

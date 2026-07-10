@@ -21,7 +21,7 @@ export function TasksToolbar({
   return (
     <div className="flex flex-wrap items-center gap-3">
       <label className="flex items-center gap-2 text-xs text-gray-600">
-        类型
+        Type
         <select
           value={taskTypeFilter}
           onChange={(event) => onTaskTypeFilterChange(event.target.value)}
@@ -40,14 +40,14 @@ export function TasksToolbar({
           checked={poll}
           onChange={(e) => onPollChange(e.target.checked)}
         />
-        自动刷新
+        Auto Refresh
       </label>
       <button
         type="button"
         onClick={onRefresh}
         className={operatorButtonClass("secondary")}
       >
-        刷新
+        Refresh
       </button>
     </div>
   );

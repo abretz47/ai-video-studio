@@ -7,6 +7,7 @@ import {
   type FormEvent,
   type SetStateAction,
 } from "react";
+import { locale, t } from "@/lib/i18n";
 import type { VoiceConfig } from "@/utils/api/types";
 import { CreationOverlay, SmartInputField } from "@/components/shared";
 import type { AlertOptions } from "@/components/shared/modals/AlertModalProvider";
@@ -85,8 +86,10 @@ export function VirtualIPCreateModal({
   });
 
   const defaultPreviewText = formState.name
-    ? `你好，我是${formState.name}，很高兴认识你。`
-    : "你好，我是你的虚拟角色，很高兴认识你。";
+    ? t("virtualIp.create.previewTextWithName", "Hi, I'm {name}. Nice to meet you.").replace("{name}", formState.name)
+    : locale.toLowerCase().startsWith("zh")
+    ? t("virtualIp.create.previewTextDefault", "Hi, I'm your virtual character. Nice to meet you.")
+    : "Hi, I'm your virtual character. Nice to meet you.";
   const {
     previewText,
     setPreviewText,
@@ -121,21 +124,21 @@ export function VirtualIPCreateModal({
   return (
     <CreationOverlay
       open={open}
-      title="创建 IP"
-      subtitle="从角色资产开始组织故事和剧集"
+      title={t("virtualIp.create.title", "Create IP")}
+      subtitle={t("virtualIp.create.subtitle", "Start organizing stories and episodes from character assets")}
       onClose={onClose}
       widthClassName="max-w-5xl"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-700">
-          新建 IP 将作为故事生产入口，可继续组织角色资产和剧集内容。
+          {t("virtualIp.create.notice", "A new IP becomes the story production entry point and can continue into character assets and episode content.")}
         </div>
 
         <SmartInputField
-          label="名称 *"
+          label={t("virtualIp.create.nameLabel", "Name *")}
           value={formState.name}
           onChange={(value) => updateField("name", value)}
-          placeholder="输入虚拟IP名称，如：小雅、李教授、小明等"
+          placeholder={t("virtualIp.create.namePlaceholder", "Enter a virtual IP name, for example: Xiaoya, Professor Li, Xiao Ming")}
           type="input"
           showAIAssist={false}
         />
@@ -149,10 +152,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="角色描述"
+          label={t("virtualIp.create.descriptionLabel", "Character Description")}
           value={formState.description}
           onChange={(value) => updateField("description", value)}
-          placeholder="描述这个角色的基本特征、性格、外貌等"
+          placeholder={t("virtualIp.create.descriptionPlaceholder", "Describe the character's core traits, personality, and appearance")}
           type="textarea"
           rows={3}
           aiSuggestType="description"
@@ -161,10 +164,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="背景故事"
+          label={t("virtualIp.create.backgroundLabel", "Background Story")}
           value={formState.background_story}
           onChange={(value) => updateField("background_story", value)}
-          placeholder="描述角色的成长经历、重要事件、生活背景等"
+          placeholder={t("virtualIp.create.backgroundPlaceholder", "Describe the character's growth, major events, and life background")}
           type="textarea"
           rows={4}
           aiSuggestType="background_story"
@@ -176,10 +179,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="人物小传"
+          label={t("virtualIp.create.biographyLabel", "Biography")}
           value={formState.biography}
           onChange={(value) => updateField("biography", value)}
-          placeholder="详细介绍角色的生平、成就、重要关系等"
+          placeholder={t("virtualIp.create.biographyPlaceholder", "Introduce the character's life, achievements, and major relationships")}
           type="textarea"
           rows={4}
           aiSuggestType="biography"
@@ -192,10 +195,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="风格提示词"
+          label={t("virtualIp.create.stylePromptLabel", "Style Prompt")}
           value={formState.style_prompt}
           onChange={(value) => updateField("style_prompt", value)}
-          placeholder="用于图像生成的风格提示词（可在生成后微调）"
+          placeholder={t("virtualIp.create.stylePromptPlaceholder", "Style prompt for image generation (can be refined after generation)")}
           type="textarea"
           rows={4}
           showAIAssist={false}

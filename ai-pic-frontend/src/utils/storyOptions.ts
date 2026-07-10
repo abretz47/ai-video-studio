@@ -1,31 +1,32 @@
+import { t } from "@/lib/i18n";
 import type { StoryGenerationRequest } from "@/utils/api/types";
 
 export const STORY_GENRES = [
-  { value: "drama", label: "剧情" },
-  { value: "comedy", label: "喜剧" },
-  { value: "romance", label: "爱情" },
-  { value: "thriller", label: "惊悚" },
-  { value: "action", label: "动作" },
-  { value: "fantasy", label: "奇幻" },
-  { value: "sci-fi", label: "科幻" },
-  { value: "horror", label: "恐怖" },
-  { value: "mystery", label: "悬疑" },
-  { value: "historical", label: "历史" },
+  { value: "drama", label: t("storyOptions.genre.drama", "Drama") },
+  { value: "comedy", label: t("storyOptions.genre.comedy", "Comedy") },
+  { value: "romance", label: t("storyOptions.genre.romance", "Romance") },
+  { value: "thriller", label: t("storyOptions.genre.thriller", "Thriller") },
+  { value: "action", label: t("storyOptions.genre.action", "Action") },
+  { value: "fantasy", label: t("storyOptions.genre.fantasy", "Fantasy") },
+  { value: "sci-fi", label: t("storyOptions.genre.scifi", "Sci-Fi") },
+  { value: "horror", label: t("storyOptions.genre.horror", "Horror") },
+  { value: "mystery", label: t("storyOptions.genre.mystery", "Mystery") },
+  { value: "historical", label: t("storyOptions.genre.historical", "Historical") },
 ];
 
 export const STORY_STATUSES = [
-  { value: "", label: "全部状态" },
-  { value: "draft", label: "草稿" },
-  { value: "approved", label: "已批准" },
-  { value: "published", label: "已发布" },
+  { value: "", label: t("storyOptions.status.all", "All statuses") },
+  { value: "draft", label: t("storyOptions.status.draft", "Draft") },
+  { value: "approved", label: t("storyOptions.status.approved", "Approved") },
+  { value: "published", label: t("storyOptions.status.published", "Published") },
 ];
 
 export type StoryFormat = "short_drama" | "tv_series" | "film";
 
 export const STORY_FORMATS: Array<{ value: StoryFormat; label: string }> = [
-  { value: "short_drama", label: "短剧" },
-  { value: "tv_series", label: "电视剧/网剧" },
-  { value: "film", label: "电影" },
+  { value: "short_drama", label: t("storyOptions.format.shortDrama", "Short drama") },
+  { value: "tv_series", label: t("storyOptions.format.tvSeries", "TV / web series") },
+  { value: "film", label: t("storyOptions.format.film", "Film") },
 ];
 
 export type StoryAspectRatio = "9:16" | "16:9";
@@ -34,8 +35,8 @@ export const STORY_ASPECT_RATIOS: Array<{
   value: StoryAspectRatio;
   label: string;
 }> = [
-  { value: "9:16", label: "9:16 竖屏" },
-  { value: "16:9", label: "16:9 横屏" },
+  { value: "9:16", label: t("storyOptions.aspectRatio.vertical", "9:16 Vertical") },
+  { value: "16:9", label: t("storyOptions.aspectRatio.horizontal", "16:9 Horizontal") },
 ];
 
 export type StoryGenerationForm = StoryGenerationRequest & {

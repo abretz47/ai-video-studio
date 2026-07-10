@@ -32,7 +32,7 @@ export function ShortDramaScriptTemplateSelector({
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        短剧剧本模板（可选）
+        Short Drama Script Template (Optional)
       </label>
       <select
         value={templateId}
@@ -54,7 +54,7 @@ export function ShortDramaScriptTemplateSelector({
         }}
         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        <option value="">不使用模板</option>
+        <option value="">Do not use a template</option>
         {SHORT_DRAMA_SCRIPT_TEMPLATES.map((template) => (
           <option key={template.id} value={template.id}>
             {template.label}
@@ -63,7 +63,7 @@ export function ShortDramaScriptTemplateSelector({
       </select>
       <p className="mt-1 text-xs text-gray-500">
         {selectedTemplate?.description ||
-          "选择后会自动补充短剧爽点/卡点结构要求到额外要求中。"}
+          "Selecting a template automatically adds short-drama payoff/cliffhanger structure requirements to Additional Requirements."}
       </p>
     </div>
   );

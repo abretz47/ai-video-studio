@@ -59,15 +59,15 @@ export function TimelineClipAssetAuditPanel({
 
   const header = (
     <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-      <span className="text-sm font-semibold text-gray-950">资产审计</span>
+      <span className="text-sm font-semibold text-gray-950">Asset Audit</span>
       {!clipId ? (
-        <span className="text-[11px] text-gray-500">未关联片段 ID</span>
+        <span className="text-[11px] text-gray-500">No clip ID linked</span>
       ) : null}
     </div>
   );
   const countPill = (
     <StatusPill tone={matches.length ? "green" : "gray"}>
-      {loading ? "读取中" : `${matches.length} 条`}
+      {loading ? "Loading" : `${matches.length} items`}
     </StatusPill>
   );
 
@@ -78,11 +78,11 @@ export function TimelineClipAssetAuditPanel({
           <div className="min-w-0">{header}</div>
           <div className="flex items-center gap-2">
             {countPill}
-            <span className="text-[11px] font-medium text-gray-500">展开</span>
+            <span className="text-[11px] font-medium text-gray-500">Expand</span>
           </div>
         </summary>
         <div className="mt-2 border-t border-gray-100 pt-2 text-xs text-gray-500">
-          暂无资产记录。
+          No asset records yet.
         </div>
         <AssetOperationDetails
           clipId={clipId}
@@ -108,11 +108,11 @@ export function TimelineClipAssetAuditPanel({
 
       {error ? <div className="mt-3 text-xs text-red-600">{error}</div> : null}
       {!loading && clipId && matches.length === 0 ? (
-        <div className="mt-2 text-xs text-gray-500">暂无资产记录。</div>
+        <div className="mt-2 text-xs text-gray-500">No asset records yet.</div>
       ) : null}
       {!clipId ? (
         <div className="mt-3 text-xs text-gray-500">
-          当前片段无稳定片段 ID。
+          The current clip has no stable clip ID.
         </div>
       ) : null}
 

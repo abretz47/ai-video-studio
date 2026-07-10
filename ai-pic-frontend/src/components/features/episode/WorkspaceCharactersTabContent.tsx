@@ -57,21 +57,21 @@ export function WorkspaceCharactersTabContent({
   };
 
   const handleDelete = async (characterId: number | string) => {
-    if (confirm("确定要删除此临时角色吗？")) {
-      await deleteCharacter(characterId, "用户手动删除");
+    if (confirm("Are you sure you want to delete this temporary character?")) {
+      await deleteCharacter(characterId, "User manual delete");
     }
   };
 
   if (loading && characters.length === 0) {
-    return <OperatorState title="加载临时角色..." />;
+    return <OperatorState title="Loading temporary characters..." />;
   }
 
   return (
     <div className="space-y-4">
       {showAutoCreated && autoCreatedCharacters.length > 0 ? (
         <OperatorState
-          title={`自动创建了 ${autoCreatedCharacters.length} 个临时角色`}
-          detail="这些角色从剧本对白中识别，可继续完善图片和声音资源。"
+          title={`Automatically created ${autoCreatedCharacters.length}Temporary Characters`}
+          detail="These characters were detected from script dialogue and can be completed with image and voice resources."
           tone="blue"
           action={
             <button
@@ -79,7 +79,7 @@ export function WorkspaceCharactersTabContent({
               onClick={() => setShowAutoCreated(false)}
               className={operatorButtonClass("ghost")}
             >
-              关闭
+              Close
             </button>
           }
         />
@@ -87,15 +87,15 @@ export function WorkspaceCharactersTabContent({
 
       <OperatorPanel>
         <OperatorSectionHeader
-          title="临时角色管理"
-          subtitle="管理本集出现的快递员、路人等临时角色"
+          title="Temporary Role Management"
+          subtitle="Manage temporary characters that appear in this episode, such as couriers and passersby"
           action={
             <button
               type="button"
               onClick={() => setIsCreateModalOpen(true)}
               className={operatorButtonClass("primary")}
             >
-              添加角色
+              AddCharacter
             </button>
           }
         />
@@ -106,7 +106,7 @@ export function WorkspaceCharactersTabContent({
         ) : null}
         {characters.length === 0 ? (
           <div className="p-4">
-            <OperatorState title="暂无临时角色" detail="点击添加角色创建。" />
+            <OperatorState title="No temporary characters yet" detail="Click Add Character to create one." />
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
@@ -122,7 +122,7 @@ export function WorkspaceCharactersTabContent({
         )}
         {total > 0 ? (
           <div className="border-t border-gray-200 px-4 py-3 text-center text-xs text-gray-500">
-            共 {total} 个临时角色
+            Total {total}Temporary Characters
           </div>
         ) : null}
       </OperatorPanel>
@@ -133,7 +133,7 @@ export function WorkspaceCharactersTabContent({
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
           onSubmit={handleCreate}
-          title="添加临时角色"
+          title="AddTemporary Characters"
         />
       ) : null}
       {editingCharacter ? (
@@ -143,7 +143,7 @@ export function WorkspaceCharactersTabContent({
           onClose={() => setEditingCharacter(null)}
           onSubmit={(data) => handleUpdate(editingCharacter.id, data)}
           initialData={editingCharacter}
-          title="编辑临时角色"
+          title="Edit Temporary Characters"
         />
       ) : null}
     </div>

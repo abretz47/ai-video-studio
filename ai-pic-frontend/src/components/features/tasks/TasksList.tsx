@@ -30,24 +30,24 @@ type TasksListProps = {
 const getStatusText = (status: APITask["status"]) => {
   switch (status) {
     case "pending":
-      return "等待中";
+      return "Waiting";
     case "processing":
-      return "生成中";
+      return "Generating";
     case "completed":
-      return "已完成";
+      return "Completed";
     case "failed":
-      return "失败";
+      return "Failed";
     case "cancelled":
-      return "已取消";
+      return "Cancelled";
     default:
-      return "未知";
+      return "Unknown";
   }
 };
 
 const formatTaskType = (taskType?: string) => {
   if (!taskType) return "—";
   return TASK_TYPE_LABELS[taskType]
-    ? `${TASK_TYPE_LABELS[taskType]}（${taskType}）`
+    ? `${TASK_TYPE_LABELS[taskType]}（${taskType})`
     : taskType;
 };
 
@@ -67,7 +67,7 @@ export function TasksList({
   onDelete,
 }: TasksListProps) {
   if (!loading && !fetchError && tasks.length === 0) {
-    return <div className="p-6 text-sm text-gray-500">暂无任务。</div>;
+    return <div className="p-6 text-sm text-gray-500">No tasks yet.</div>;
   }
 
   return (
@@ -86,7 +86,7 @@ export function TasksList({
               </div>
               {task.progress_detail && (
                 <p className="mb-2 text-xs text-gray-700">
-                  进度：
+                  Progress: 
                   <span className="text-gray-800">{task.progress_detail}</span>
                 </p>
               )}
@@ -97,19 +97,19 @@ export function TasksList({
               )}
               <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                 <span>
-                  创建时间：
+                  Created: 
                   {task.created_at
                     ? new Date(task.created_at).toLocaleString()
-                    : "未知"}
+                    : "Unknown"}
                 </span>
                 {task.updated_at && (
                   <span>
-                    更新时间：{new Date(task.updated_at).toLocaleString()}
+                    Updated: {new Date(task.updated_at).toLocaleString()}
                   </span>
                 )}
-                {task.description && <span>描述：{task.description}</span>}
+                {task.description && <span>Description：{task.description}</span>}
                 {task.task_type && (
-                  <span>类型：{formatTaskType(task.task_type)}</span>
+                  <span>Type: {formatTaskType(task.task_type)}</span>
                 )}
               </div>
               {expanded[task.id] ? (
@@ -122,7 +122,7 @@ export function TasksList({
             </div>
             <div className="flex shrink-0 items-center gap-2">
               {task.status === "processing" && (
-                <span className="text-xs text-blue-700">生成中...</span>
+                <span className="text-xs text-blue-700">Generating...</span>
               )}
               {task.status === "pending" && (
                 <button
@@ -130,7 +130,7 @@ export function TasksList({
                   disabled={isStartingId === task.id}
                   className={operatorButtonClass("primary")}
                 >
-                  {isStartingId === task.id ? "启动中..." : "开始"}
+                  {isStartingId === task.id ? "Starting..." : "Start"}
                 </button>
               )}
               {(task.status === "pending" ||
@@ -140,7 +140,7 @@ export function TasksList({
                   disabled={cancellingTaskId === task.id}
                   className={operatorButtonClass("secondary")}
                 >
-                  {cancellingTaskId === task.id ? "取消中..." : "取消"}
+                  {cancellingTaskId === task.id ? "CancelMedium..." : "Cancel"}
                 </button>
               )}
               <button
@@ -148,13 +148,13 @@ export function TasksList({
                 disabled={deletingTaskId === task.id}
                 className={operatorButtonClass("ghost", "text-red-700")}
               >
-                {deletingTaskId === task.id ? "删除中..." : "删除"}
+                {deletingTaskId === task.id ? "DeleteMedium..." : "Delete"}
               </button>
               <button
                 onClick={() => onToggleExpanded(task)}
                 className={operatorButtonClass("secondary")}
               >
-                {expanded[task.id] ? "收起详情" : "详情"}
+                {expanded[task.id] ? "Collapse Details" : "Details"}
               </button>
             </div>
           </div>

@@ -1,57 +1,57 @@
-你将作为“知乎体长文故事”的责任编辑，对一章草稿进行润色、纠错与一致性修订，然后输出终稿。
+You will act as the handling editor for a Zhihu-style long-form story, polish a chapter draft, correct errors, revise consistency issues, and then output the final text.
 
-要求：输出纯文本，不要 Markdown，不要代码块。
+Requirement: output plain text only. No Markdown. No code fences.
 
-【故事信息】
+[Story information]
 {{ story | tojson }}
 
-【整体大纲（plan）】
+[Overall outline (plan)]
 {{ plan | tojson }}
 
-【连贯性账本（ledger）】
+[Continuity ledger]
 {{ ledger | tojson }}
 
-【上一章结尾片段（previous_tail）】
+[Previous chapter ending excerpt (previous_tail)]
 {{ previous_tail }}
 
-【上一章卡点（previous_cliffhanger）】
+[Previous chapter cliffhanger (previous_cliffhanger)]
 {{ previous_cliffhanger }}
 
-【已生成连载小结（running_summary）】
+[Generated running summary]
 {{ running_summary }}
 
-【当前章节规划】
-章节号：{{ chapter.chapter_number }}
-章节标题：{{ chapter.title }}
-目标字数：{{ chapter.target_words }}
-关键节拍（按顺序）：
+[Current chapter plan]
+Chapter number: {{ chapter.chapter_number }}
+Chapter title: {{ chapter.title }}
+Target word count: {{ chapter.target_words }}
+Key beats (in order):
 {{ chapter.key_beats | tojson }}
-章末卡点提示：{{ chapter.cliffhanger_hint }}
+End-of-chapter cliffhanger hint: {{ chapter.cliffhanger_hint }}
 
-【字数目标】
-总目标：{{ total_target_words }}
-剩余目标：{{ remaining_target_words }}
+[Word-count target]
+Total target: {{ total_target_words }}
+Remaining target: {{ remaining_target_words }}
 
-【本章草稿（draft）】
+[Chapter draft]
 {{ draft }}
 
-修订要求（必须同时满足）：
-- 纠错：修正明显的事实矛盾、时间线冲突、人物称谓混乱、逻辑跳跃。
-- 一致性：严格遵守 ledger（已发生事件、人物关系、开放线索）；如草稿与 ledger 冲突，优先以 ledger 为准。
-- 结构：按关键节拍推进情节；不要写成“概述”；增加具体场景、动作、对话、心理。
-- 叙述：第一人称、知乎回答口吻，克制吐槽/自嘲但不油腻；节奏在线。
-- 承接：自然承接 previous_tail 的语气和场景（若为空则从本章开场自然起笔）。
-- 若 previous_cliffhanger 非空：检查本章开头是否承接该卡点；如未承接，必须补上 1-3 段承接内容或调整开场顺序，避免悬念断裂。
-- 去重：避免大段重复 running_summary 的内容；可以点到为止带过前情。
-- 人物与信息承接：检查是否出现“我突然知道某人名字/身份/背景/动机”的跳跃；如该姓名未在 previous_tail / running_summary 中出现，则必须在本章首次点名处补写“得知名字的具体方式”（对方自报/他人介绍/名牌/手机备注等）或改回模糊称呼，直到合理揭示为止。
-- 场景过渡：跨时间/地点/视角的切换必须用一句话交代（例如“第二天”“回到公司”“下班后我在楼下”），避免突然跳场造成断裂感。
-- 收束：检查【本章小结】之前是否出现半句话/未完成对话/未闭合引号；如有，必须补写或调整，使正文最后一句完整后再进入小结。
-- 扩写：如果草稿明显低于目标字数（低于目标字数的 70%），必须补写具体场景/对话/心理细节，把字数拉回目标附近。
-- 字数：尽量贴近目标字数（允许 ±15%），且不要超过剩余目标的 120%。
-- 必须保留并规范章节末尾收尾格式（标记要一字不差，且各出现一次）：
-  【本章小结】
-  （用 2-6 条要点概括本章推进与人物变化）
-  【本章卡点】
-  （用 1-2 句制造悬念/钩子，引导下一章）
+Revision requirements (all must be satisfied):
+- Error correction: fix obvious factual contradictions, timeline conflicts, inconsistent forms of address, and logical jumps.
+- Consistency: strictly follow the ledger (events already happened, character relationships, open threads); when the draft conflicts with the ledger, the ledger takes priority.
+- Structure: advance the plot according to the key beats; do not write in pure summary form; add concrete scenes, actions, dialogue, and inner thoughts.
+- Narration: first-person, Zhihu-answer tone, restrained sarcasm/self-mockery but not greasy; keep the pacing alive.
+- Continuation: naturally continue the tone and scene of previous_tail (if empty, begin naturally from this chapter's opening).
+- If previous_cliffhanger is not empty: check whether the opening already continues that cliffhanger; if not, add 1-3 paragraphs of continuation or adjust the opening order to avoid breaking the suspense.
+- De-duplication: avoid repeating large sections of running_summary; touch on prior events only as needed.
+- Character and information continuity: check for jumps where "I suddenly know someone's name / identity / background / motive." If that name did not appear in previous_tail / running_summary, you must add the specific way the name was learned at the first mention (self-introduction / someone else's introduction / nameplate / phone note, etc.), or switch back to a vague reference until the reveal is justified.
+- Scene transitions: cross-time / cross-location / cross-viewpoint changes must be bridged with one sentence (for example, "The next day," "Back at the office," "After work I was downstairs") to avoid abrupt cuts.
+- Closure: before [Chapter Summary], check for half-sentences / unfinished dialogue / unclosed quotation marks; if any exist, you must repair or rewrite them so the last sentence of the main text is complete before the summary begins.
+- Expansion: if the draft is clearly below the target word count (under 70% of target), you must add concrete scenes / dialogue / psychological detail until the word count returns close to the target.
+- Word count: stay as close as possible to the target (±15% allowed), and do not exceed 120% of the remaining target.
+- You must preserve and normalize the chapter-ending format below (the markers must be character-for-character exact, and each must appear exactly once):
+  [Chapter Summary]
+  (Use 2-6 bullet points to summarize this chapter's progression and character changes)
+  [Chapter Cliffhanger]
+  (Use 1-2 sentences to create suspense / a hook for the next chapter)
 
-只输出终稿正文。
+Output only the final body text.

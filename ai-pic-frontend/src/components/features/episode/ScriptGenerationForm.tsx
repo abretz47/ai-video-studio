@@ -42,17 +42,17 @@ export function ScriptGenerationForm({
   onCancel,
 }: ScriptGenerationFormProps) {
   const handlePreviewPrompt = async () => {
-    setPromptPreview("加载中...");
+    setPromptPreview("Loading...");
     const res = await scriptAPI.previewScriptPrompt(generateForm);
     if (res.success && res.data) {
-      setPromptPreview(res.data.prompt ?? "（空内容）");
+      setPromptPreview(res.data.prompt ?? "(Empty)");
     } else {
-      setPromptPreview("生成提示词失败");
+      setPromptPreview("Failed to generate prompt");
     }
   };
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-gray-950">生成剧本</h3>
+      <h3 className="text-sm font-semibold text-gray-950">Generate Script</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <CommercialScriptOptions
@@ -62,7 +62,7 @@ export function ScriptGenerationForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            剧本格式
+            Script Format
           </label>
           <select
             value={generateForm.format_type}
@@ -84,7 +84,7 @@ export function ScriptGenerationForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            语言
+            Language
           </label>
           <select
             value={generateForm.language}
@@ -103,7 +103,7 @@ export function ScriptGenerationForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            对话风格
+            Dialogue Style
           </label>
           <select
             value={generateForm.dialogue_style}
@@ -115,15 +115,15 @@ export function ScriptGenerationForm({
             }
             className={operatorSelectClass("w-full")}
           >
-            <option value="formal">正式</option>
-            <option value="natural">自然</option>
-            <option value="casual">随意</option>
+            <option value="formal">Formal</option>
+            <option value="natural">Natural</option>
+            <option value="casual">Casual</option>
           </select>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            场景描述详细程度
+            Scene Detail Level
           </label>
           <select
             value={generateForm.scene_detail_level}
@@ -135,9 +135,9 @@ export function ScriptGenerationForm({
             }
             className={operatorSelectClass("w-full")}
           >
-            <option value="minimal">简洁</option>
-            <option value="medium">中等</option>
-            <option value="detailed">详细</option>
+            <option value="minimal">Minimal</option>
+            <option value="medium">Medium</option>
+            <option value="detailed">Detailed</option>
           </select>
         </div>
       </div>
@@ -145,7 +145,7 @@ export function ScriptGenerationForm({
       <MarketingFields
         form={generateForm}
         setForm={setGenerateForm}
-        title="市场/微类型/节奏模板"
+        title="Market / Micro-genre / Pacing Template"
         idPrefix="script"
       />
 
@@ -159,7 +159,7 @@ export function ScriptGenerationForm({
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          额外要求
+          Additional Requirements
         </label>
         <textarea
           value={generateForm.additional_requirements}
@@ -169,7 +169,7 @@ export function ScriptGenerationForm({
               additional_requirements: e.target.value,
             }))
           }
-          placeholder="对剧本生成的特殊要求"
+          placeholder="Special requirements for script generation"
           rows={3}
           className={operatorTextareaClass("w-full")}
         />
@@ -177,19 +177,19 @@ export function ScriptGenerationForm({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
         <MultiModelSelector
-          label="模型"
+          label="Model"
           value={generateForm.model ? [generateForm.model] : []}
           onChange={(ids) =>
             setGenerateForm((prev) => ({ ...prev, model: ids[0] || "" }))
           }
           modelType="text"
           multiple={false}
-          helperText="留空将使用后端推荐模型"
+          helperText="Leave empty to use the backend-recommended model"
           className="md:col-span-1"
         />
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            温度（{(generateForm.temperature ?? 0.7).toFixed(1)}）
+            Temperature ({(generateForm.temperature ?? 0.7).toFixed(1)})
           </label>
           <input
             type="range"
@@ -221,7 +221,7 @@ export function ScriptGenerationForm({
           onClick={handlePreviewPrompt}
           className={operatorButtonClass("secondary")}
         >
-          提示词预览
+          Prompt Preview
         </button>
       </div>
       {promptPreview && (
@@ -236,13 +236,13 @@ export function ScriptGenerationForm({
           disabled={generating}
           className={operatorButtonClass("primary")}
         >
-          {generating ? "生成中..." : "开始生成"}
+          {generating ? "Generating..." : "Start Generation"}
         </button>
         <button
           onClick={onCancel}
           className={operatorButtonClass("secondary")}
         >
-          取消
+          Cancel
         </button>
       </div>
     </div>

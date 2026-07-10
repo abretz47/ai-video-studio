@@ -1,19 +1,19 @@
 import type { Environment, NormalizedScene } from "@/utils/api/types";
 
 const LOCATION_TOKENS = [
-  "老拐",
-  "阿盖儿",
-  "客厅",
-  "厨房",
-  "餐厅",
-  "工作室",
-  "办公室",
-  "会议室",
-  "公寓",
-  "家",
+  "Old Guai",
+  "A Gai'er",
+  "Living Room",
+  "Kitchen",
+  "Dining Room",
+  "Studio",
+  "Office",
+  "Meeting Room",
+  "Apartment",
+  "Home",
 ];
 
-const HOME_ROOM_TOKENS = ["客厅", "厨房", "餐厅", "卧室"];
+const HOME_ROOM_TOKENS = ["Living Room", "Kitchen", "Dining Room", "Bedroom"];
 
 export function inferEnvironmentIdForScene(
   scene: NormalizedScene | null,
@@ -49,12 +49,12 @@ function scoreEnvironmentMatch(sceneText: string, environment: Environment) {
   }
   for (const token of LOCATION_TOKENS) {
     if (sceneText.includes(token) && envText.includes(token)) {
-      score += token === "工作室" ? 50 : 30;
+      score += token === "Studio" ? 50 : 30;
     }
   }
   if (
     HOME_ROOM_TOKENS.some((token) => sceneText.includes(token)) &&
-    envText.includes("家")
+    envText.includes("Home")
   ) {
     score += 25;
   }

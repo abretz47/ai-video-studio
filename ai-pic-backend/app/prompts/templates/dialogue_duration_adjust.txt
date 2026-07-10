@@ -1,81 +1,81 @@
-# 对白时长调整
+# Dialogue Duration Adjustment
 
-你之前生成的对白**时长不符合要求**，需要调整后重新生成。
+The dialogue you generated previously **does not meet the duration requirement** and must be adjusted and regenerated.
 
-## 时长差异分析
+## Duration Gap Analysis
 
-- **目标时长**: {{ target_duration_seconds }} 秒（{{ (target_duration_seconds / 60) | round(2) }} 分钟）
-- **实际时长**: {{ actual_duration_seconds | round(1) }} 秒
-- **时长比例**: {{ (actual_duration_seconds / target_duration_seconds * 100) | round(0) }}%
-- **差异**: {% if actual_duration_seconds < target_duration_seconds %}少了 {{ (target_duration_seconds - actual_duration_seconds) | round(1) }} 秒{% else %}多了 {{ (actual_duration_seconds - target_duration_seconds) | round(1) }} 秒{% endif %}
+- **Target Duration**: {{ target_duration_seconds }} seconds ({{ (target_duration_seconds / 60) | round(2) }} minutes)
+- **Actual Duration**: {{ actual_duration_seconds | round(1) }} seconds
+- **Duration Ratio**: {{ (actual_duration_seconds / target_duration_seconds * 100) | round(0) }}%
+- **Difference**: {% if actual_duration_seconds < target_duration_seconds %}short by {{ (target_duration_seconds - actual_duration_seconds) | round(1) }} seconds{% else %}over by {{ (actual_duration_seconds - target_duration_seconds) | round(1) }} seconds{% endif %}
 
 {% if rejection_reason == "duration_too_short" %}
-## 问题：对白内容不足
+## Issue: Insufficient Dialogue Content
 
-当前对白字数约 {{ actual_word_count }} 字，目标约 {{ target_word_count }} 字，需要增加约 {{ (target_word_count - actual_word_count) | int }} 字。
+The current dialogue is approximately {{ actual_word_count }} characters, while the target is approximately {{ target_word_count }} characters. Add about {{ (target_word_count - actual_word_count) | int }} more characters.
 
-### 扩充建议
+### Expansion Suggestions
 
-1. **丰富情感表达**：为现有对白添加情感反应、内心活动
-2. **增加互动回合**：让角色之间有更多追问、回应、反驳
-3. **补充细节描述**：添加动作描写、表情描述、环境互动
-4. **添加过渡对白**：在话题转换处添加自然的过渡语句
+1. **Enrich emotional expression**: Add emotional reactions and inner thoughts to the existing dialogue
+2. **Add more interaction turns**: Let characters ask follow-up questions, respond, and argue more
+3. **Supplement descriptive detail**: Add action beats, facial expressions, and environmental interaction
+4. **Add transition dialogue**: Insert natural bridging lines when topics shift
 
-### 示例
+### Example
 
-原对白（过短）：
+Original dialogue (too short):
 ```
-小明："这个方案不行。"
-小红："好吧。"
+Xiao Ming: "This plan won't work."
+Xiao Hong: "Okay."
 ```
 
-扩充后（合适）：
+Expanded version (appropriate):
 ```
-小明（皱着眉头）："这个方案不行，预算超了整整三成。"
-小红沉默了一会儿，翻看着手中的文件："确实……那我们只能砍掉一些功能了。"
-小明叹了口气："关键是哪些能砍，哪些不能砍，客户那边不好交代。"
-小红抬头看着他："要不我们约个时间，和客户再沟通一下？"
+Xiao Ming (frowning): "This plan won't work. The budget is over by a full thirty percent."
+Xiao Hong fell silent for a moment and flipped through the documents in her hands. "You're right... then we'll have to cut some features."
+Xiao Ming let out a sigh. "The key issue is which ones we can cut and which ones we can't. It's going to be hard to explain this to the client."
+Xiao Hong looked up at him. "How about we set up a time to talk to the client again?"
 ```
 
 {% elif rejection_reason == "duration_too_long" %}
-## 问题：对白内容过多
+## Issue: Excessive Dialogue Content
 
-当前对白字数约 {{ actual_word_count }} 字，目标约 {{ target_word_count }} 字，需要删减约 {{ (actual_word_count - target_word_count) | int }} 字。
+The current dialogue is approximately {{ actual_word_count }} characters, while the target is approximately {{ target_word_count }} characters. Cut about {{ (actual_word_count - target_word_count) | int }} characters.
 
-### 精简建议
+### Condensing Suggestions
 
-1. **删除冗余表达**：去掉重复的信息和无意义的语气词
-2. **合并相似内容**：把多轮相似对话合并成精炼的一两句
-3. **保留关键信息**：只保留推动剧情的核心对白
-4. **简化描述性语句**：用简洁的动作描写替代冗长的叙述
+1. **Delete redundant phrasing**: Remove repeated information and meaningless filler words
+2. **Merge similar content**: Compress multiple similar exchanges into one or two concise lines
+3. **Keep only key information**: Retain only the core dialogue that advances the plot
+4. **Simplify descriptive sentences**: Replace lengthy narration with concise action beats
 
-### 示例
+### Example
 
-原对白（过长）：
+Original dialogue (too long):
 ```
-小明（看着报告，皱着眉头，沉思了一会儿）："我觉得这个方案可能有点问题。你看这里，预算超支了很多。这样的话，可能客户那边会有意见的。"
-小红（也凑过来看）："是吗？让我看看……嗯，确实是超了不少。这样不行啊，我们得想想办法。"
-小明（叹气）："是啊，真的很头疼。"
+Xiao Ming (looking at the report, frowning, thinking for a while): "I think there may be a problem with this plan. Look here, the budget has gone way over. If that's the case, the client may have objections."
+Xiao Hong (leaning in to look as well): "Really? Let me see... yeah, it really is way over. This won't work. We need to think of a solution."
+Xiao Ming (sighing): "Yeah, this is really a headache."
 ```
 
-精简后（合适）：
+Condensed version (appropriate):
 ```
-小明（皱眉）："这方案预算超支了三成，客户那边不好交代。"
-小红看了看报告："确实。我们得重新调整一下。"
+Xiao Ming (frowning): "This plan is thirty percent over budget. The client won't accept it."
+Xiao Hong glanced at the report. "True. We'll have to rework it."
 ```
 
 {% endif %}
 
-## 当前对白内容（需要调整）
+## Current Dialogue Content (Needs Adjustment)
 
 {% if current_dialogues %}
 {% for dlg in current_dialogues %}
-[{{ loop.index }}] {{ dlg.character or '旁白' }}: "{{ dlg.content }}"
+[{{ loop.index }}] {{ dlg.character or 'Narration' }}: "{{ dlg.content }}"
 {% endfor %}
 {% else %}
-（无对白内容）
+(No dialogue content)
 {% endif %}
 
-## 输出要求
+## Output Requirement
 
-请根据以上建议，重新生成符合时长要求的对白。输出格式与原始对白相同。
+Based on the suggestions above, regenerate dialogue that meets the duration requirement. Keep the output format the same as the original dialogue.

@@ -125,7 +125,7 @@ export function buildStoryboardSupportFrames(
       description:
         getString(frame.description) ??
         getString(frame.beat_text) ??
-        `分镜 ${index + 1}`,
+        `Storyboard ${index + 1}`,
       beatType: getString(frame.beat_type) ?? null,
       speakerName: getString(frame.speaker_name) ?? null,
       status: getString(frame.status) ?? "draft",

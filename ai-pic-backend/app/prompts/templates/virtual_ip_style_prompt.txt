@@ -1,17 +1,17 @@
-你是一个资深的 AI 绘画提示词（prompt）工程师。请根据以下角色信息，生成用于 AI 绘画的中文提示词（中文为主）。
+You are a senior AI art prompt engineer. Based on the following character information, generate a Chinese prompt for AI image creation (primarily in Chinese).
 
-角色名称：{{ name }}
-角色描述：{{ description }}
-人物小传：{{ biography }}
-图片类型：{{ image_category }}
+Character name: {{ name }}
+Character description: {{ description }}
+Character bio: {{ biography }}
+Image category: {{ image_category }}
 
-要求：
-1) 只输出中文提示词（不要标题、不要解释、不要换行说明）。
-2) 提示词要具体：外貌特征、服饰、气质、年龄段、发型、肤色、道具/配饰等尽量明确。
-3) 根据图片类型补充构图：肖像/半身/全身/场景/动作 等。
-4) 必须包含画面质量词：高质量、细节丰富、清晰聚焦（可适当补充）。
-5) 不超过 100 字。
-6) 不要出现“虚拟IP/虚拟角色/虚拟人物/virtual ip”等元描述词。
+Requirements:
+1) Output only the Chinese prompt text (no title, no explanation, no line-break notes).
+2) The prompt must be specific: make appearance, clothing, temperament, age range, hairstyle, skin tone, props/accessories, and similar details as explicit as possible.
+3) Add composition guidance according to the image category: portrait / half-body / full-body / scene / action, etc.
+4) It must include image-quality terms such as high quality, rich detail, and sharp focus (with appropriate additions if needed).
+5) Keep it within 100 Chinese characters.
+6) Do not include meta-description terms such as "virtual IP / virtual character / virtual person / virtual ip."
 
-输出示例（仅示例，不要照抄）：
-高质量的二次元女孩，银色短发，精致五官，淡雅妆容，半身肖像，柔和光线，细节丰富，清晰聚焦
+Output example (for reference only, do not copy):
+High-quality anime girl, short silver hair, delicate features, light makeup, half-body portrait, soft lighting, rich detail, sharp focus

@@ -91,11 +91,11 @@ export function useVirtualIPDetail({
         syncVirtualIPVoice(response.data);
       } else {
         console.error("Failed to fetch virtual IP:", response.error);
-        showAlert({ message: "获取虚拟IP失败", variant: "error" });
+        showAlert({ message: "Failed to fetch virtual IPs", variant: "error" });
       }
     } catch (error) {
       console.error("Error fetching virtual IP:", error);
-      showAlert({ message: "获取虚拟IP失败", variant: "error" });
+      showAlert({ message: "Failed to fetch virtual IPs", variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -113,42 +113,42 @@ export function useVirtualIPDetail({
       if (response.success && response.data) {
         setVirtualIP(response.data);
         setEditing(false);
-        showAlert({ message: "更新成功", variant: "success" });
+        showAlert({ message: "Updated successfully", variant: "success" });
       } else {
         showAlert({
-          message: `更新失败：${response.error || "未知错误"}`,
+          message: `Update failed: ${response.error || "Unknown error"}`,
           variant: "error",
         });
       }
     } catch (error) {
       console.error("Error updating virtual IP:", error);
-      showAlert({ message: "更新失败，请稍后重试", variant: "error" });
+      showAlert({ message: "Update failed. Please retry later", variant: "error" });
     }
   };
 
   // Delete virtual IP
   const handleDeleteIP = () => {
     showAlert({
-      title: "确认删除虚拟IP",
-      message: "确定删除该虚拟IP吗？此操作不可恢复！",
+      title: "Confirm Delete Virtual IP",
+      message: "Delete this virtual IP? This action cannot be undone!",
       variant: "warning",
-      confirmText: "删除",
+      confirmText: "Delete",
       onConfirm: async () => {
         try {
           const identifier = virtualIP?.business_id || ipKey;
           const response = await virtualIPAPI.deleteVirtualIP(identifier);
           if (response.success) {
-            showAlert({ message: "删除成功", variant: "success" });
+            showAlert({ message: "Deleted successfully", variant: "success" });
             router.push("/virtual-ip");
           } else {
             showAlert({
-              message: `删除失败：${response.error || "未知错误"}`,
+              message: `Delete failed: ${response.error || "Unknown error"}`,
               variant: "error",
             });
           }
         } catch (error) {
           console.error("Error deleting virtual IP:", error);
-          showAlert({ message: "删除失败，请稍后重试", variant: "error" });
+          showAlert({ message: "Delete failed. Please retry later", variant: "error" });
         }
       },
     });

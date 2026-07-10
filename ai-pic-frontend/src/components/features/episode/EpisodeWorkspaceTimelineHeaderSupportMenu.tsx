@@ -33,8 +33,8 @@ export function SupportViewMenu({
       <button
         type="button"
         aria-expanded={open}
-        aria-label="支持视图"
-        title="支持视图"
+        aria-label="Support View"
+        title="Support View"
         onClick={() => setOpen((value) => !value)}
         data-support-view-trigger="icon"
         className="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-950 min-[760px]:h-8 min-[760px]:w-8"
@@ -51,28 +51,28 @@ export function SupportViewMenu({
             }}
             className={timelineHeaderSupportButtonClass}
           >
-            返回故事
+            Back Story
           </button>
           <button
             type="button"
             onClick={() => navigateTab("script")}
             className={timelineHeaderSupportButtonClass}
           >
-            剧本设置
+            Script Settings
           </button>
           <button
             type="button"
             onClick={() => navigateTab("storyboard")}
             className={timelineHeaderSupportButtonClass}
           >
-            分镜参考
+            Storyboard References
           </button>
           <button
             type="button"
             onClick={() => navigateTab("characters")}
             className={timelineHeaderSupportButtonClass}
           >
-            临时角色/IP 绑定
+            Temporary Characters / IP Bindings
           </button>
         </div>
       ) : null}

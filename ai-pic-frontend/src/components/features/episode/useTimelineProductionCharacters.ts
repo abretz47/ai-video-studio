@@ -60,7 +60,7 @@ export function useTimelineProductionCharacters({
         if (cancelled) return;
         setStoryCharacters([]);
         setStoryCharactersError(
-          error instanceof Error ? error.message : "故事角色加载失败",
+          error instanceof Error ? error.message : "Failed to load story characters",
         );
       })
       .finally(() => {

@@ -18,7 +18,7 @@ export function VirtualIPReadinessWarnings({
       role="alert"
     >
       <div className="text-sm font-semibold text-amber-900">
-        生产就绪提醒（{readiness.warnings.length} 项待补齐）
+        Production Readiness Warning ({readiness.warnings.length} items missing)
       </div>
       <ul className="mt-1.5 list-disc space-y-1 pl-5 text-xs text-amber-800">
         {readiness.warnings.map((warning) => (

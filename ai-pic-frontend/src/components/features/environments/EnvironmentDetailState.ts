@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useAlertModal } from "@/components/shared/modals";
+import { t } from "@/lib/i18n";
 import { storyStructureAPI } from "@/utils/api/endpoints";
 import type { Environment } from "@/utils/api/types";
 
@@ -47,12 +48,12 @@ export function useEnvironmentDetailState(envKey: string) {
       if (envRes.success && envRes.data) {
         setEnv(envRes.data);
       } else {
-        showAlert({ message: envRes.error || "加载环境失败", variant: "error" });
+        showAlert({ message: envRes.error || t("environments.page.loadFailed", "Failed to load environments"), variant: "error" });
       }
       setImages(imgRes.success && imgRes.data ? imgRes.data.images || [] : []);
     } catch (error) {
       console.error(error);
-      showAlert({ message: "加载环境详情失败", variant: "error" });
+      showAlert({ message: t("environments.detail.loadFailed", "Failed to load environment details"), variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -75,17 +76,17 @@ export function useEnvironmentDetailState(envKey: string) {
     (url: string) => {
       if (!envKey) return;
       showAlert({
-        title: "确认删除",
-        message: "确定要删除该参考图吗？",
+        title: t("common.delete", "Delete"),
+        message: t("environments.detail.confirmDeleteImage", "Are you sure you want to delete this reference image?"),
         variant: "warning",
-        confirmText: "删除",
+        confirmText: t("common.delete", "Delete"),
         onConfirm: async () => {
           const res = await storyStructureAPI.deleteEnvironmentImage(envKey, url);
           if (res.success && res.data) {
             setImages(res.data.images ?? []);
-            showAlert({ message: "删除成功", variant: "success" });
+            showAlert({ message: t("common.deleteSuccess", "Delete successful"), variant: "success" });
           } else {
-            showAlert({ message: res.error || "删除失败", variant: "error" });
+            showAlert({ message: res.error || t("common.deleteFailed", "Delete failed"), variant: "error" });
           }
         },
       });
@@ -133,13 +134,13 @@ export function useEnvironmentDetailState(envKey: string) {
       if (res.success && res.data) {
         setEnv(res.data);
         setEditingMeta(false);
-        showAlert({ message: "环境信息已更新", variant: "success" });
+        showAlert({ message: t("environments.detail.updated", "Environment information updated"), variant: "success" });
       } else {
-        showAlert({ message: res.error || "更新失败", variant: "error" });
+        showAlert({ message: res.error || t("common.saveFailed", "Update failed"), variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "更新失败", variant: "error" });
+      showAlert({ message: t("common.saveFailed", "Update failed"), variant: "error" });
     } finally {
       setSavingMeta(false);
     }

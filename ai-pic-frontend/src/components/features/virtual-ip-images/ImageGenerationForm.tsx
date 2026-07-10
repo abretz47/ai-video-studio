@@ -102,11 +102,11 @@ export function ImageGenerationForm({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-gray-950">生成图片</h3>
+      <h3 className="text-sm font-semibold text-gray-950">Generate Images</h3>
       <div className="grid grid-cols-1 gap-4 [&>*]:col-span-full" style={{ gridTemplateColumns: "1fr" }}>
         <div>
           <MultiModelSelector
-            label="AI 模型"
+            label="AI Model"
             value={generateForm.model ? [generateForm.model] : []}
             onChange={(ids) =>
               setGenerateForm((prev) => ({ ...prev, model: ids[0] || "" }))
@@ -119,7 +119,7 @@ export function ImageGenerationForm({
             allowAuto={false}
             multiple={false}
             autoSelectDefault
-            helperText="选择用于图片生成的模型"
+            helperText="Select the model used for image generation"
             className="space-y-1"
             onModelsLoaded={(_, defaultModel) => {
               if (!generateForm.model && defaultModel) {
@@ -143,7 +143,7 @@ export function ImageGenerationForm({
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            生成风格
+            Generation Style
           </label>
           <select
             value={generateForm.style}
@@ -152,9 +152,9 @@ export function ImageGenerationForm({
             }
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="realistic">写实</option>
-            <option value="anime">二次元</option>
-            <option value="cartoon">卡通</option>
+            <option value="realistic">Realistic</option>
+            <option value="anime">Anime</option>
+            <option value="cartoon">Cartoon</option>
           </select>
         </div>
 

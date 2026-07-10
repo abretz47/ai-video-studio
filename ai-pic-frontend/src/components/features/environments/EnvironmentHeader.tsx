@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDateTime, t } from "@/lib/i18n";
 import { operatorButtonClass, operatorInputClass } from "@/components/shared";
 import { CollapsibleText } from "@/components/ui";
 import type { Environment } from "@/utils/api/types";
@@ -41,7 +42,7 @@ export function EnvironmentHeader({
         <div className="space-y-3">
           <div>
             <h1 className="text-lg font-semibold text-gray-950">{env.name}</h1>
-            <p className="mt-0.5 text-xs text-gray-500">环境详情</p>
+            <p className="mt-0.5 text-xs text-gray-500">{t("environments.detail.title", "Environment Details")}</p>
           </div>
 
           {!editing ? (
@@ -62,7 +63,7 @@ export function EnvironmentHeader({
               {env.description ? (
                 <CollapsibleText text={env.description} collapsedLines={3} />
               ) : (
-                <p className="text-sm text-gray-400">暂无描述</p>
+                <p className="text-sm text-gray-400">{t("common.noDescription", "No description")}</p>
               )}
             </>
           ) : null}
@@ -73,20 +74,20 @@ export function EnvironmentHeader({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
-                  类别
+                  {t("common.category", "Category")}
                 </label>
                 <input
                   value={form.category}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, category: e.target.value }))
                   }
-                  placeholder="例如 indoor / outdoor / custom"
+                  placeholder="indoor / outdoor / custom"
                   className={operatorInputClass("w-full")}
                 />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
-                  标签
+                  {t("common.tags", "Tags")}
                 </label>
                 <div className="mb-2 flex flex-wrap gap-2">
                   {form.tags.map((tag) => (
@@ -108,7 +109,7 @@ export function EnvironmentHeader({
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="输入标签"
+                    placeholder={t("virtualIp.tags.placeholder", "Enter a tag")}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -129,7 +130,7 @@ export function EnvironmentHeader({
                     }}
                     className={operatorButtonClass("secondary")}
                   >
-                    添加
+                    {t("common.add", "Add")}
                   </button>
                 </div>
               </div>
@@ -137,7 +138,7 @@ export function EnvironmentHeader({
 
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-700">
-                描述
+                {t("common.description", "Description")}
               </label>
               <textarea
                 value={form.description}
@@ -145,7 +146,7 @@ export function EnvironmentHeader({
                   setForm((prev) => ({ ...prev, description: e.target.value }))
                 }
                 rows={4}
-                placeholder="填写环境描述或使用场景"
+                placeholder={t("environments.detail.descriptionPlaceholder", "Describe the environment or where it should be used")}
                 className={operatorInputClass(
                   "h-auto min-h-24 w-full py-2 text-sm",
                 )}
@@ -158,21 +159,21 @@ export function EnvironmentHeader({
       <div className="bg-gray-50/70 p-4">
         <div className="grid grid-cols-1 gap-3 text-xs text-gray-600 sm:grid-cols-2">
           <div>
-            <span className="font-medium">类别：</span>
-            {categoryValue || "未指定"}
+            <span className="font-medium">{t("common.category", "Category")}: </span>
+            {categoryValue || t("common.unspecified", "Unspecified")}
           </div>
           <div>
-            <span className="font-medium">创建者：</span>
+            <span className="font-medium">{t("common.creator", "Creator")}: </span>
             {resolveCreatorLabel(env.creator)}
           </div>
           <div>
-            <span className="font-medium">创建时间：</span>
-            {new Date(env.created_at).toLocaleString()}
+            <span className="font-medium">{t("common.createdAt", "Created")}: </span>
+            {formatDateTime(env.created_at)}
           </div>
           {env.updated_at && (
             <div>
-              <span className="font-medium">更新时间：</span>
-              {new Date(env.updated_at).toLocaleString()}
+              <span className="font-medium">{t("common.updatedAt", "Updated")}: </span>
+              {formatDateTime(env.updated_at)}
             </div>
           )}
         </div>
