@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-调试可灵AI图像生成功能
+Debug Keling AI image generation
 
-详细调试可灵AI的集成问题
+Detailed debugging for Keling AI integration issues
 """
 
 import asyncio
@@ -11,7 +11,7 @@ from pathlib import Path
 
 import httpx
 
-# 添加项目根目录到Python路径
+# Add the project root to the Python path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from app.core.config import settings
@@ -20,16 +20,16 @@ from app.services.providers.keling_provider import KelingProvider
 
 
 async def debug_keling_provider():
-    """直接调试可灵提供商"""
-    print("🔍 直接测试可灵提供商")
+    """Debug the Keling provider directly"""
+    print("🔍 Directly testing the Keling provider")
     print("=" * 50)
 
     if not settings.KELING_API_KEY or not settings.KELING_SECRET_KEY:
-        print("❌ 缺少可灵AI配置")
+        print("❌ Missing Keling AI configuration")
         return
 
     try:
-        # 创建可灵提供商配置
+        # Create Keling provider configuration
         config = ProviderConfig(
             name="keling",
             api_key=settings.KELING_API_KEY,
@@ -38,30 +38,30 @@ async def debug_keling_provider():
             timeout=120.0,
         )
 
-        # 创建可灵提供商实例
+        # Create Keling provider instance
         provider = KelingProvider(config)
-        print("✅ 可灵提供商创建成功")
-        print(f"   名称: {provider.name}")
-        print(f"   基础URL: {provider.base_url}")
+        print("✅ Keling provider created successfully")
+        print(f"   Name: {provider.name}")
+        print(f"   Base URL: {provider.base_url}")
         print(
-            f"   支持的模型类型: {[mt.value for mt in provider.supported_model_types]}"
+            f"   Supported model types: {[mt.value for mt in provider.supported_model_types]}"
         )
-        print(f"   可用模型数量: {len(provider.available_models)}")
+        print(f"   Number of available models: {len(provider.available_models)}")
 
-        # 打印可用模型
+        # Print available models
         print("\n📋 可用模型:")
         for model in provider.available_models:
             print(f"   - {model.model_id}: {model.name}")
-            print(f"     类型: {model.model_type.value}")
-            print(f"     功能: {model.capabilities}")
+            print(f"     Type: {model.model_type.value}")
+            print(f"     Capabilities: {model.capabilities}")
 
-        # 测试图像生成
+        # Test image generation
         print("\n🎨 测试图像生成...")
 
-        test_prompt = "一个可爱的小女孩，卡通风格，高质量"
+        test_prompt = "A cute little girl, cartoon style, high quality"
 
-        print(f"提示词: {test_prompt}")
-        print("开始调用可灵AI API...")
+        print(f"Prompt: {test_prompt}")
+        print("Starting Keling AI API call...")
 
         response = await provider.generate_image(
             prompt=test_prompt,
@@ -72,31 +72,31 @@ async def debug_keling_provider():
         )
 
         print("\n📊 API响应:")
-        print(f"   成功: {response.success}")
-        print(f"   错误: {response.error}")
-        print(f"   提供商: {response.provider}")
-        print(f"   模型: {response.model}")
-        print(f"   数据: {response.data}")
-        print(f"   元数据: {response.metadata}")
+        print(f"   Success: {response.success}")
+        print(f"   Error: {response.error}")
+        print(f"   Provider: {response.provider}")
+        print(f"   Model: {response.model}")
+        print(f"   Data: {response.data}")
+        print(f"   Metadata: {response.metadata}")
 
     except Exception as e:
-        print(f"❌ 提供商测试失败: {e}")
+        print(f"❌ Provider test failed: {e}")
         import traceback
 
         traceback.print_exc()
 
 
 async def debug_http_request():
-    """直接调试HTTP请求"""
+    """Debug HTTP requests directly"""
     print("\n🌐 直接测试HTTP请求")
     print("=" * 50)
 
     if not settings.KELING_API_KEY:
-        print("❌ 缺少API密钥")
+        print("❌ Missing API key")
         return
 
     try:
-        # 测试可灵AI API连通性
+        # Test Keling AI API connectivity
         test_urls = [
             "https://klingai.com/api/v1/images/generate",
             "https://api.klingai.com/v1/images/generate",
@@ -114,40 +114,40 @@ async def debug_http_request():
                         "User-Agent": "ai-video-studio/1.0",
                     }
 
-                    # 测试请求数据
+                    # Test request data
                     request_data = {
-                        "prompt": "一个简单的测试图片",
+                        "prompt": "A simple test image",
                         "width": 512,
                         "height": 512,
                         "model": "kling-image",
                         "num_outputs": 1,
                     }
 
-                    print(f"   请求头: {headers}")
-                    print(f"   请求数据: {request_data}")
+                    print(f"   Headers: {headers}")
+                    print(f"   Request data: {request_data}")
 
                     response = await client.post(
                         url, json=request_data, headers=headers
                     )
 
-                    print(f"   响应状态: {response.status_code}")
-                    print(f"   响应头: {dict(response.headers)}")
+                    print(f"   Response status: {response.status_code}")
+                    print(f"   Response headers: {dict(response.headers)}")
 
                     if response.status_code == 200:
                         data = response.json()
-                        print(f"   ✅ 成功响应: {data}")
+                        print(f"   ✅ Successful response: {data}")
                     else:
-                        print(f"   ❌ 错误响应: {response.text[:500]}")
+                        print(f"   ❌ Error response: {response.text[:500]}")
 
             except Exception as e:
-                print(f"   ❌ 请求失败: {e}")
+                print(f"   ❌ Request failed: {e}")
 
     except Exception as e:
-        print(f"❌ HTTP调试失败: {e}")
+        print(f"❌ HTTP debugging failed: {e}")
 
 
 async def debug_ai_manager():
-    """调试AI管理器"""
+    """Debug AI manager"""
     print("\n🤖 测试AI管理器")
     print("=" * 50)
 
@@ -157,65 +157,65 @@ async def debug_ai_manager():
         ai_service = AIService()
 
         if not ai_service.ai_manager:
-            print("❌ AI管理器未初始化")
+            print("❌ AI manager is not initialized")
             return
 
-        print("✅ AI管理器初始化成功")
+        print("✅ AI manager initialized successfully")
 
-        # 获取提供商状态
+        # Get provider status
         status = ai_service.ai_manager.get_provider_status()
 
         print("\n📊 提供商状态:")
         for name, provider_status in status.items():
             print(f"   {name}: {provider_status}")
 
-        # 检查可灵提供商
+        # Check the Keling provider
         if "keling" in status:
             keling_status = status["keling"]
             print("\n🎯 可灵提供商详情:")
             for key, value in keling_status.items():
                 print(f"   {key}: {value}")
 
-        # 测试图像生成
+        # Test image generation
         print("\n🎨 通过AI管理器测试图像生成...")
 
         response = await ai_service.ai_manager.generate_image(
-            prompt="一个测试图片",
+            prompt="A test image",
             model="kling-image",
             prefer_provider="keling",
             width=512,
             height=512,
         )
 
-        print(f"   响应: {response}")
-        print(f"   成功: {response.success}")
-        print(f"   错误: {response.error}")
-        print(f"   数据: {response.data}")
+        print(f"   Response: {response}")
+        print(f"   Success: {response.success}")
+        print(f"   Error: {response.error}")
+        print(f"   Data: {response.data}")
 
     except Exception as e:
-        print(f"❌ AI管理器调试失败: {e}")
+        print(f"❌ AI manager debugging failed: {e}")
         import traceback
 
         traceback.print_exc()
 
 
 async def main():
-    """主函数"""
-    print("🔧 可灵AI详细调试脚本")
-    print("🎯 目标: 找出可灵AI集成问题")
+    """Main function"""
+    print("🔧 Detailed Keling AI debugging script")
+    print("🎯 Goal: identify Keling AI integration issues")
     print("")
 
-    # 显示配置状态
-    print("📋 环境配置:")
-    print(f"   KELING_API_KEY: {'✅已配置' if settings.KELING_API_KEY else '❌未配置'}")
+    # Show configuration status
+    print("📋 Environment configuration:")
+    print(f"   KELING_API_KEY: {'✅ configured' if settings.KELING_API_KEY else '❌ not configured'}")
     print(
-        f"   KELING_SECRET_KEY: {'✅已配置' if settings.KELING_SECRET_KEY else '❌未配置'}"
+        f"   KELING_SECRET_KEY: {'✅ configured' if settings.KELING_SECRET_KEY else '❌ not configured'}"
     )
 
     if settings.KELING_API_KEY:
-        print(f"   API Key前缀: {settings.KELING_API_KEY[:10]}...")
+        print(f"   API key prefix: {settings.KELING_API_KEY[:10]}...")
 
-    # 依次执行调试步骤
+    # Run the debugging steps in sequence
     await debug_keling_provider()
     await debug_http_request()
     await debug_ai_manager()

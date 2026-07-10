@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-数据库迁移管理脚本
+Database migration management script
 
-使用方法:
-    python migrate.py init          # 初始化迁移（仅第一次使用）
-    python migrate.py generate      # 生成新的迁移文件
-    python migrate.py upgrade       # 应用迁移到数据库
-    python migrate.py downgrade     # 回退迁移
-    python migrate.py current       # 查看当前迁移版本
-    python migrate.py history       # 查看迁移历史
-    python migrate.py reset         # 重置数据库（危险操作）
+Usage:
+    python migrate.py init          # Initialize migrations (first-time use only)
+    python migrate.py generate      # Generate a new migration file
+    python migrate.py upgrade       # Apply migrations to the database
+    python migrate.py downgrade     # Roll back migrations
+    python migrate.py current       # Show the current migration revision
+    python migrate.py history       # Show migration history
+    python migrate.py reset         # Reset the database (dangerous operation)
 """
 
 import os
@@ -19,121 +19,121 @@ from pathlib import Path
 
 
 def run_command(cmd):
-    """运行命令并返回结果"""
+    """Run a command and return the result"""
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         if result.returncode != 0:
-            print(f"错误: {result.stderr}")
+            print(f"Error: {result.stderr}")
             return False
         if result.stdout:
             print(result.stdout)
         return True
     except Exception as e:
-        print(f"执行命令时出错: {e}")
+        print(f"Error while running command: {e}")
         return False
 
 
 def init_migration():
-    """初始化迁移"""
-    print("正在初始化数据库迁移...")
+    """Initialize migrations"""
+    print("Initializing database migrations...")
     if not run_command("alembic stamp head"):
-        print("初始化失败")
+        print("Initialization failed")
         return False
-    print("迁移初始化完成")
+    print("Migration initialization complete")
     return True
 
 
 def generate_migration():
-    """生成新的迁移文件"""
-    message = input("请输入迁移描述信息 (可选): ").strip()
+    """Generate a new migration file"""
+    message = input("Enter a migration description (optional): ").strip()
     if message:
         cmd = f'alembic revision --autogenerate -m "{message}"'
     else:
         cmd = "alembic revision --autogenerate"
 
-    print("正在生成迁移文件...")
+    print("Generating migration file...")
     if not run_command(cmd):
-        print("生成迁移文件失败")
+        print("Failed to generate migration file")
         return False
-    print("迁移文件生成完成")
+    print("Migration file generation complete")
     return True
 
 
 def upgrade_database():
-    """应用迁移到数据库"""
-    print("正在应用迁移到数据库...")
+    """Apply migrations to the database"""
+    print("正在Apply migrations to the database...")
     if not run_command("alembic upgrade head"):
-        print("应用迁移失败")
+        print("Failed to apply migrations")
         return False
-    print("迁移应用完成")
+    print("Migration application complete")
     return True
 
 
 def downgrade_database():
-    """回退迁移"""
-    print("警告: 这将回退数据库到上一个版本！")
-    confirm = input("确定要继续吗? (y/N): ").strip().lower()
+    """Roll back migrations"""
+    print("Warning: this will roll the database back to the previous revision!")
+    confirm = input("Are you sure you want to continue? (y/N): ").strip().lower()
     if confirm != "y":
-        print("操作已取消")
+        print("Operation cancelled")
         return False
 
-    print("正在回退迁移...")
+    print("正在Roll back migrations...")
     if not run_command("alembic downgrade -1"):
-        print("回退迁移失败")
+        print("Roll back migrations失败")
         return False
-    print("迁移回退完成")
+    print("Migration rollback complete")
     return True
 
 
 def show_current():
-    """显示当前迁移版本"""
-    print("当前迁移版本:")
+    """Show current migration revision"""
+    print("Current migration revision:")
     run_command("alembic current")
 
 
 def show_history():
-    """显示迁移历史"""
-    print("迁移历史:")
+    """Show migration history"""
+    print("Migration history:")
     run_command("alembic history")
 
 
 def reset_database():
-    """重置数据库（危险操作）"""
-    print("警告: 这将删除所有数据并重置数据库！")
-    confirm = input("确定要继续吗? (y/N): ").strip().lower()
+    """Reset database (dangerous operation)"""
+    print("Warning: this will delete all data and reset the database!")
+    confirm = input("Are you sure you want to continue? (y/N): ").strip().lower()
     if confirm != "y":
-        print("操作已取消")
+        print("Operation cancelled")
         return False
 
-    double_confirm = input("再次确认，这将删除所有数据！输入 'RESET' 确认: ").strip()
+    double_confirm = input("Confirm again, this will delete all data! Type 'RESET' to confirm: ").strip()
     if double_confirm != "RESET":
-        print("操作已取消")
+        print("Operation cancelled")
         return False
 
-    print("正在重置数据库...")
-    # 回退到初始状态
+    print("Resetting database...")
+    # Roll back to the initial state
     if not run_command("alembic downgrade base"):
-        print("重置失败")
+        print("Reset failed")
         return False
 
-    # 重新应用所有迁移
+    # Reapply all migrations
     if not run_command("alembic upgrade head"):
-        print("重新应用迁移失败")
+        print("重新Failed to apply migrations")
         return False
 
-    print("数据库重置完成")
+    print("Database reset complete")
     return True
 
 
 def main():
-    """主函数"""
+    """Main function"""
     if len(sys.argv) != 2:
         print(__doc__)
         sys.exit(1)
 
     command = sys.argv[1].lower()
 
-    # 确保在正确的目录中
+    # Ensure we are in the correct directory
     script_dir = Path(__file__).parent
     os.chdir(script_dir)
 
@@ -148,7 +148,7 @@ def main():
     }
 
     if command not in commands:
-        print(f"未知命令: {command}")
+        print(f"Unknown command: {command}")
         print(__doc__)
         sys.exit(1)
 
@@ -157,7 +157,7 @@ def main():
     except KeyboardInterrupt:
         print("\n操作被用户中断")
     except Exception as e:
-        print(f"执行命令时出错: {e}")
+        print(f"Error while running command: {e}")
         sys.exit(1)
 
 

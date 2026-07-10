@@ -1,0 +1,15 @@
+ai-pic-frontend/src/components/features/episode/WorkspaceStoryboardSceneGridParts.tsx
+ai-pic-frontend/src/components/features/episode/WorkspaceCharactersTabContent.tsx
+ai-pic-frontend/src/components/features/episode/ScriptAsyncModeToggle.tsx
+ai-pic-frontend/src/components/features/episode/episodeCharacterDisplay.ts
+ai-pic-frontend/src/components/features/episode/useTimelinePipelineTracking.ts
+ai-pic-frontend/src/components/features/episode/WorkspaceScriptTabContentParts.tsx
+ai-pic-frontend/src/components/features/episode/EpisodeWorkspaceTimelineHeader.tsx
+ai-pic-frontend/src/components/features/episode/WorkspaceStoryboardFrameRow.tsx
+ai-pic-frontend/src/components/features/episode/WorkspaceStoryboardTimelineOverviewModel.ts
+ai-pic-frontend/src/components/features/episode/useTimelineClipStoryboardReferenceImages.ts
+ai-pic-frontend/src/components/features/episode/TimelineClipProviderReworkCardSections.tsx
+ai-pic-frontend/src/components/features/episode/useWorkspaceScriptStructure.ts
+ai-pic-frontend/src/components/features/episode/TimelineClipReworkControls.tsx
+ai-pic-frontend/src/components/features/episode/WorkspaceStoryboardClipManagement.tsx
+ai-pic-frontend/src/components/features/episode/EpisodeTimelineWorkspaceModel.ts

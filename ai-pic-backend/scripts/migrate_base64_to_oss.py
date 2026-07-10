@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-数据迁移脚本：将数据库中的 base64 图片数据上传到 OSS 并更新为 URL
+Data migration script: upload base64 image data in the database to OSS and update it to URLs
 
-此脚本扫描以下表中可能包含 base64 图片数据的字段：
-- scripts.extra_metadata (JSON) - storyboard 中的 *_original 字段
+This script scans the following tables for fields that may contain base64 image data:
+- scripts.extra_metadata (JSON) - *_original fields in storyboard
 - stories.extra_metadata (JSON)
 - episodes.extra_metadata (JSON)
 - scenes.metadata (JSON)
@@ -18,9 +18,9 @@ Usage:
     python scripts/migrate_base64_to_oss.py [--dry-run] [--table TABLE_NAME] [--batch-size N]
 
 Options:
-    --dry-run       只扫描不修改数据
-    --table         只处理指定的表
-    --batch-size    每批处理的记录数（默认 100）
+    --dry-run       Scan only without modifying data
+    --table         Process only the specified table
+    --batch-size    Number of records to process per batch (default: 100)
 """
 
 import argparse
@@ -32,7 +32,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-# 添加项目根目录到 Python 路径
+# Add the project root to the Python path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
@@ -40,7 +40,7 @@ from app.core.config import settings  # noqa: E402
 from sqlalchemy import create_engine, text  # noqa: E402
 from sqlalchemy.orm import sessionmaker  # noqa: E402
 
-# 配置日志
+# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -49,7 +49,7 @@ logger = logging.getLogger(__name__)
 
 
 class Base64ToOSSMigrator:
-    """Base64 图片数据迁移器"""
+    """Base64 image data migrator"""
 
     def __init__(self, dry_run: bool = False, batch_size: int = 100):
         self.dry_run = dry_run
@@ -66,16 +66,16 @@ class Base64ToOSSMigrator:
         }
 
     async def init_oss_service(self):
-        """初始化 OSS 服务"""
+        """Initialize OSS service"""
         from app.services.storage.oss_service import oss_service
 
         if not oss_service:
-            raise RuntimeError("OSS 服务未配置，请检查环境变量")
+            raise RuntimeError("OSS service is not configured, please check environment variables")
         self.oss_service = oss_service
-        logger.info("OSS 服务初始化成功")
+        logger.info("OSS service initialized successfully")
 
     def is_base64_image(self, value: str) -> bool:
-        """检查字符串是否是 base64 图片格式"""
+        """Check whether a string is a base64 image format"""
         if not isinstance(value, str):
             return False
         return value.startswith("data:image")
@@ -83,26 +83,26 @@ class Base64ToOSSMigrator:
     async def convert_base64_to_oss(
         self, base64_data: str, prefix: str = "migrated"
     ) -> Optional[str]:
-        """将 base64 图片上传到 OSS 并返回 URL"""
+        """Upload a base64 image to OSS and return the URL"""
         if not self.is_base64_image(base64_data):
             return None
 
         try:
-            # 解析 base64 数据
-            # 格式: data:image/png;base64,iVBORw0KGgo...
+            # Parse base64 data
+            # Format: data:image/png;base64,iVBORw0KGgo...
             header, b64_data = base64_data.split(",", 1)
             mime_part = header.split(";")[0]  # "data:image/png"
             mime_type = mime_part.split(":")[1] if ":" in mime_part else "image/png"
             ext = mime_type.split("/")[1] if "/" in mime_type else "png"
 
-            # 解码 base64
+            # Decode base64
             image_bytes = base64.b64decode(b64_data)
 
             if self.dry_run:
-                logger.info(f"[DRY-RUN] 将上传 {len(image_bytes)} 字节的图片到 OSS")
+                logger.info(f"[DRY-RUN] Would upload an image of {len(image_bytes)} bytes to OSS")
                 return f"https://oss.example.com/{prefix}/migrated.{ext}"
 
-            # 上传到 OSS
+            # Upload to OSS
             upload_result = await self.oss_service.upload_file_content(
                 file_content=image_bytes,
                 filename=f"migrated.{ext}",
@@ -112,14 +112,14 @@ class Base64ToOSSMigrator:
 
             if upload_result.get("success"):
                 oss_url = upload_result.get("file_url")
-                logger.info(f"上传成功: {len(image_bytes)} 字节 -> {oss_url}")
+                logger.info(f"Upload succeeded: {len(image_bytes)} bytes -> {oss_url}")
                 return oss_url
             else:
-                logger.error(f"上传失败: {upload_result.get('error')}")
+                logger.error(f"Upload failed: {upload_result.get('error')}")
                 return None
 
         except Exception as e:
-            logger.error(f"转换 base64 到 OSS 失败: {e}")
+            logger.error(f"Failed to convert base64 to OSS: {e}")
             return None
 
     async def migrate_string_field(
@@ -129,13 +129,13 @@ class Base64ToOSSMigrator:
         field_name: str,
         prefix: str,
     ) -> Tuple[int, int, int]:
-        """迁移字符串字段中的 base64 数据"""
+        """Migrate base64 data in string fields"""
         found = 0
         converted = 0
         failed = 0
 
         with self.Session() as session:
-            # 查询可能包含 base64 的记录
+            # Query records that may contain base64
             query = text(
                 f"SELECT {id_column}, {field_name} FROM {table_name} "
                 f"WHERE {field_name} LIKE 'data:image%' "
@@ -164,12 +164,12 @@ class Base64ToOSSMigrator:
                         session.commit()
                     converted += 1
                     self.stats["converted"] += 1
-                    logger.info(f"[{table_name}] ID={record_id}: 已转换 {field_name}")
+                    logger.info(f"[{table_name}] ID={record_id}: converted {field_name}")
                 else:
                     failed += 1
                     self.stats["failed"] += 1
                     logger.warning(
-                        f"[{table_name}] ID={record_id}: 转换失败 {field_name}"
+                        f"[{table_name}] ID={record_id}: failed to convert {field_name}"
                     )
 
         return found, converted, failed
@@ -181,13 +181,13 @@ class Base64ToOSSMigrator:
         field_name: str,
         prefix: str,
     ) -> Tuple[int, int, int]:
-        """迁移 JSON 字段中的 base64 数据（仅处理简单列表）"""
+        """Migrate base64 data in JSON fields (simple lists only)"""
         found = 0
         converted = 0
         failed = 0
 
         with self.Session() as session:
-            # 查询所有非空的 JSON 字段
+            # Query all non-empty JSON fields
             query = text(
                 f"SELECT {id_column}, {field_name} FROM {table_name} "
                 f"WHERE {field_name} IS NOT NULL "
@@ -203,7 +203,7 @@ class Base64ToOSSMigrator:
                 if not json_value:
                     continue
 
-                # 解析 JSON
+                # Parse JSON
                 try:
                     if isinstance(json_value, str):
                         data = json.loads(json_value)
@@ -212,7 +212,7 @@ class Base64ToOSSMigrator:
                 except json.JSONDecodeError:
                     continue
 
-                # 检查是否是列表且包含 base64
+                # Check whether it is a list containing base64
                 if not isinstance(data, list):
                     continue
 
@@ -225,7 +225,7 @@ class Base64ToOSSMigrator:
                 found += 1
                 self.stats["base64_found"] += 1
 
-                # 转换列表中的 base64
+                # Convert base64 entries in the list
                 new_data = []
                 all_converted = True
 
@@ -235,7 +235,7 @@ class Base64ToOSSMigrator:
                         if oss_url:
                             new_data.append(oss_url)
                         else:
-                            new_data.append(item)  # 保留原始数据
+                            new_data.append(item)  # Keep original data
                             all_converted = False
                     else:
                         new_data.append(item)
@@ -254,7 +254,7 @@ class Base64ToOSSMigrator:
                     converted += 1
                     self.stats["converted"] += 1
                     logger.info(
-                        f"[{table_name}] ID={record_id}: 已转换 {field_name} 中的图片"
+                        f"[{table_name}] ID={record_id}: converted {field_name} 中的图片"
                     )
                 else:
                     failed += 1
@@ -263,7 +263,7 @@ class Base64ToOSSMigrator:
         return found, converted, failed
 
     def _count_base64_in_json(self, data: Any) -> int:
-        """递归统计 JSON 中的 base64 图片数量"""
+        """Recursively count base64 images in JSON"""
         count = 0
         if isinstance(data, str):
             if self.is_base64_image(data):
@@ -280,7 +280,7 @@ class Base64ToOSSMigrator:
         self, data: Any, prefix: str
     ) -> Tuple[Any, int, int]:
         """
-        递归转换 JSON 中的所有 base64 图片为 OSS URL
+        Recursively convert all base64 images in JSON to OSS URLs
 
         Returns:
             (converted_data, success_count, fail_count)
@@ -325,13 +325,13 @@ class Base64ToOSSMigrator:
         field_name: str,
         prefix: str,
     ) -> Tuple[int, int, int]:
-        """迁移嵌套 JSON 字段中的 base64 数据（递归处理）"""
+        """Migrate base64 data in nested JSON fields (recursive)"""
         found = 0
         converted = 0
         failed = 0
 
         with self.Session() as session:
-            # 查询包含 base64 的记录
+            # Query records containing base64
             query = text(
                 f"SELECT {id_column}, {field_name} FROM {table_name} "
                 f"WHERE {field_name} LIKE '%data:image%' "
@@ -347,7 +347,7 @@ class Base64ToOSSMigrator:
                 if not json_value:
                     continue
 
-                # 解析 JSON
+                # Parse JSON
                 try:
                     if isinstance(json_value, str):
                         data = json.loads(json_value)
@@ -356,7 +356,7 @@ class Base64ToOSSMigrator:
                 except json.JSONDecodeError:
                     continue
 
-                # 统计 base64 数量
+                # Count base64 entries
                 base64_count = self._count_base64_in_json(data)
                 if base64_count == 0:
                     continue
@@ -364,10 +364,10 @@ class Base64ToOSSMigrator:
                 found += 1
                 self.stats["base64_found"] += base64_count
                 logger.info(
-                    f"[{table_name}] ID={record_id}: 发现 {base64_count} 个 base64 图片"
+                    f"[{table_name}] ID={record_id}: found {base64_count} base64 images"
                 )
 
-                # 递归转换
+                # Convert recursively
                 new_data, success, fail = await self._convert_base64_in_json(
                     data, prefix
                 )
@@ -389,25 +389,25 @@ class Base64ToOSSMigrator:
                     converted += success
                     self.stats["converted"] += success
                     logger.info(
-                        f"[{table_name}] ID={record_id}: 成功转换 {success} 个图片"
+                        f"[{table_name}] ID={record_id}: successfully converted {success} images"
                     )
 
                 if fail > 0:
                     failed += fail
                     self.stats["failed"] += fail
                     logger.warning(
-                        f"[{table_name}] ID={record_id}: {fail} 个图片转换失败"
+                        f"[{table_name}] ID={record_id}: failed to convert {fail} images"
                     )
 
         return found, converted, failed
 
     async def migrate_table(self, table_name: str) -> Dict[str, int]:
-        """迁移指定表"""
-        logger.info(f"开始处理表: {table_name}")
+        """Migrate the specified table"""
+        logger.info(f"Starting to process table: {table_name}")
         results = {"found": 0, "converted": 0, "failed": 0}
 
         if table_name == "virtual_ip_images":
-            # file_path 字段
+            # file_path field
             f, c, fa = await self.migrate_string_field(
                 "virtual_ip_images", "id", "file_path", "migrated/virtual-ip-images"
             )
@@ -415,7 +415,7 @@ class Base64ToOSSMigrator:
             results["converted"] += c
             results["failed"] += fa
 
-            # oss_url 字段
+            # oss_url field
             f, c, fa = await self.migrate_string_field(
                 "virtual_ip_images", "id", "oss_url", "migrated/virtual-ip-images"
             )
@@ -459,7 +459,7 @@ class Base64ToOSSMigrator:
             results["failed"] += fa
 
         elif table_name == "scripts":
-            # extra_metadata 是嵌套 JSON，包含 storyboard.frames[].image_url_original 等
+            # extra_metadata is nested JSON and includes storyboard.frames[].image_url_original, etc.
             f, c, fa = await self.migrate_nested_json_field(
                 "scripts", "id", "extra_metadata", "migrated/scripts-storyboard"
             )
@@ -500,16 +500,16 @@ class Base64ToOSSMigrator:
             results["failed"] += fa
 
         else:
-            logger.warning(f"未知的表: {table_name}")
+            logger.warning(f"Unknown table: {table_name}")
 
         return results
 
     async def run(self, tables: Optional[List[str]] = None):
-        """运行迁移"""
+        """Run migration"""
         await self.init_oss_service()
 
         all_tables = [
-            "scripts",  # 最重要，包含 storyboard 的 base64 数据
+            "scripts",  # Most important, contains storyboard base64 data
             "stories",
             "episodes",
             "scenes",
@@ -524,48 +524,48 @@ class Base64ToOSSMigrator:
         if tables:
             all_tables = [t for t in all_tables if t in tables]
 
-        logger.info(f"{'[DRY-RUN] ' if self.dry_run else ''}开始迁移 base64 数据")
-        logger.info(f"处理表: {', '.join(all_tables)}")
-        logger.info(f"批次大小: {self.batch_size}")
+        logger.info(f"{'[DRY-RUN] ' if self.dry_run else ''}Starting base64 data migration")
+        logger.info(f"Processing tables: {', '.join(all_tables)}")
+        logger.info(f"Batch size: {self.batch_size}")
 
         for table in all_tables:
             try:
                 await self.migrate_table(table)
             except Exception as e:
-                logger.error(f"处理表 {table} 失败: {e}")
+                logger.error(f"Failed to process table {table}: {e}")
 
-        # 打印统计
+        # Print statistics
         logger.info("=" * 50)
-        logger.info("迁移统计:")
-        logger.info(f"  扫描记录数: {self.stats['scanned']}")
-        logger.info(f"  发现 base64: {self.stats['base64_found']}")
-        logger.info(f"  成功转换: {self.stats['converted']}")
-        logger.info(f"  转换失败: {self.stats['failed']}")
-        logger.info(f"  跳过: {self.stats['skipped']}")
+        logger.info("Migration statistics:")
+        logger.info(f"  Records scanned: {self.stats['scanned']}")
+        logger.info(f"  Base64 found: {self.stats['base64_found']}")
+        logger.info(f"  Successfully converted: {self.stats['converted']}")
+        logger.info(f"  Conversion failures: {self.stats['failed']}")
+        logger.info(f"  Skipped: {self.stats['skipped']}")
         if self.dry_run:
-            logger.info("(DRY-RUN 模式，未实际修改数据)")
+            logger.info("(DRY-RUN mode, no data was actually modified)")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="将数据库中的 base64 图片数据迁移到 OSS"
+        description="Migrate base64 image data in the database to OSS"
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="只扫描不修改数据",
+        help="Scan only without modifying data",
     )
     parser.add_argument(
         "--table",
         type=str,
         action="append",
-        help="只处理指定的表（可多次指定）",
+        help="Process only the specified table（可多次指定）",
     )
     parser.add_argument(
         "--batch-size",
         type=int,
         default=100,
-        help="每批处理的记录数（默认 100）",
+        help="Number of records to process per batch (default: 100)",
     )
 
     args = parser.parse_args()

@@ -1,0 +1,15 @@
+ai-pic-frontend/src/components/features/script/ScriptScenesTab.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentCreateOverlay.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentReferenceImagesField.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentDetailView.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentVariantModal.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentList.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentDetailViewParts.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentGenerationFields.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentImagesPanel.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentDetailState.ts
+ai-pic-frontend/src/components/features/environments/EnvironmentSidePanel.tsx
+ai-pic-frontend/src/components/features/environments/EnvironmentHeader.tsx
+ai-pic-frontend/src/components/features/canvas/productionCanvasModel.ts
+ai-pic-frontend/src/components/features/canvas/ProductionCanvasBoard.tsx
+ai-pic-frontend/src/components/features/canvas/ProductionCanvasElements.tsx

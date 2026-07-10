@@ -1,0 +1,15 @@
+ai-pic-frontend/src/components/features/virtual-ip-images/categoryLabel.ts
+ai-pic-frontend/src/components/features/virtual-ip-images/VirtualIPImageManager.tsx
+ai-pic-frontend/src/components/features/virtual-ip-images/ImageGenerationFormParts.tsx
+ai-pic-frontend/src/components/features/virtual-ip-images/ImageUploadForm.tsx
+ai-pic-frontend/src/components/features/virtual-ip-images/ImageGenerationForm.tsx
+ai-pic-frontend/src/components/features/virtual-ip-images/CategoryFilter.tsx
+ai-pic-frontend/src/components/features/virtual-ip-detail/VirtualIPEnvironmentPanel.tsx
+ai-pic-frontend/src/components/features/virtual-ip-detail/VoiceSettingsPanel.tsx
+ai-pic-frontend/src/components/features/virtual-ip-detail/VirtualIPInfoSection.tsx
+ai-pic-frontend/src/components/features/virtual-ip-detail/VirtualIPReadinessWarnings.tsx
+ai-pic-frontend/src/components/features/virtual-ip-detail/VirtualIPAdditionalInfoSection.tsx
+ai-pic-frontend/src/components/features/hooks/HookTagBadge.tsx
+ai-pic-frontend/src/components/features/stories/StoryBasicsSection.tsx
+ai-pic-frontend/src/components/features/stories/StoryProductionBoard.tsx
+ai-pic-frontend/src/components/features/stories/CharacterSelector.tsx

@@ -1,0 +1,15 @@
+ai-pic-frontend/src/components/features/stories/StoryProductionDetailParts.tsx
+ai-pic-frontend/src/components/features/stories/StoryProductionModel.ts
+ai-pic-frontend/src/components/features/stories/StoryGenerateForm.tsx
+ai-pic-frontend/src/components/features/stories/StorySettingSection.tsx
+ai-pic-frontend/src/components/features/stories/StoryProductionDetail.tsx
+ai-pic-frontend/src/components/features/stories/StoryListSection.tsx
+ai-pic-frontend/src/components/features/episode/WorkspaceStoryboardPromptLayerSummary.tsx
+ai-pic-frontend/src/components/features/episode/CommercialScriptOptions.tsx
+ai-pic-frontend/src/components/features/episode/useTimelineResolvedVideos.ts
+ai-pic-frontend/src/components/features/episode/TimelineClipProviderReworkControls.tsx
+ai-pic-frontend/src/components/features/episode/EpisodeTimelineRenderPanelParts.tsx
+ai-pic-frontend/src/components/features/episode/TimelineClipGenerationChain.tsx
+ai-pic-frontend/src/components/features/episode/CharacterCommonFields.tsx
+ai-pic-frontend/src/components/features/episode/EpisodeTimelineClipSupportPanel.tsx
+ai-pic-frontend/src/components/features/episode/WorkspaceStoryboardSupportModel.ts

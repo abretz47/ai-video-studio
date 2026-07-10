@@ -62,17 +62,17 @@ def _rules() -> list[BackfillRule]:
             label="story_generation",
             target=TaskType.STORY_GENERATION,
             condition=or_(
-                Task.title.like("生成故事%"),
+                Task.title.like("Generate story%"),
                 Task.prompt.like("Story outline:%"),
-                Task.description.like("%故事生成%"),
+                Task.description.like("%story generation%"),
             ),
         ),
         BackfillRule(
             label="episode_generation",
             target=TaskType.EPISODE_GENERATION,
             condition=or_(
-                Task.title.like("生成剧集%"),
-                Task.title.like("重新生成剧集%"),
+                Task.title.like("Generate episode%"),
+                Task.title.like("重新Generate episode%"),
                 Task.prompt.like("Episode plan for story %"),
                 Task.prompt.like("Regenerate episode %"),
             ),
@@ -81,8 +81,8 @@ def _rules() -> list[BackfillRule]:
             label="script_generation",
             target=TaskType.SCRIPT_GENERATION,
             condition=or_(
-                Task.title.like("生成剧本%"),
-                Task.title.like("剧本重新生成%"),
+                Task.title.like("Generate script%"),
+                Task.title.like("Script regeneration%"),
                 Task.prompt.like("Script for episode %"),
                 Task.prompt.like("Script regeneration for script %"),
             ),
@@ -91,7 +91,7 @@ def _rules() -> list[BackfillRule]:
             label="text_generation",
             target=TaskType.TEXT_GENERATION,
             condition=or_(
-                Task.title.like("导出知乎体小说%"),
+                Task.title.like("Export Zhihu-style novel%"),
                 Task.prompt.like("Zhihu novel export:%"),
             ),
         ),
@@ -99,7 +99,7 @@ def _rules() -> list[BackfillRule]:
             label="dialogue_audio_generation",
             target=TaskType.DIALOGUE_AUDIO_GENERATION,
             condition=or_(
-                Task.title.like("对白音轨生成%"),
+                Task.title.like("Dialogue audio generation%"),
                 Task.prompt.like("Dialogue audio generation for script %"),
             ),
         ),
@@ -107,7 +107,7 @@ def _rules() -> list[BackfillRule]:
             label="timeline_generation",
             target=TaskType.TIMELINE_GENERATION,
             condition=or_(
-                Task.title.like("时间轴生成%"),
+                Task.title.like("Timeline generation%"),
                 Task.prompt.like("Episode audio timeline generation for script %"),
             ),
         ),
@@ -115,7 +115,7 @@ def _rules() -> list[BackfillRule]:
             label="timeline_pipeline",
             target=TaskType.TIMELINE_PIPELINE,
             condition=or_(
-                Task.title.like("一键时间轴流水线%"),
+                Task.title.like("One-click timeline pipeline%"),
                 Task.prompt.like("Timeline pipeline for script %"),
             ),
         ),
@@ -123,8 +123,8 @@ def _rules() -> list[BackfillRule]:
             label="storyboard_generation",
             target=TaskType.STORYBOARD_GENERATION,
             condition=or_(
-                Task.title.like("分镜生成%"),
-                Task.title.like("分镜占位生成%"),
+                Task.title.like("Storyboard generation%"),
+                Task.title.like("Storyboard placeholder generation%"),
                 Task.prompt.like("Storyboard generation for script %"),
                 Task.prompt.like(
                     "Storyboard placeholder generation from audio timeline for script %"
@@ -135,7 +135,7 @@ def _rules() -> list[BackfillRule]:
             label="storyboard_image_generation",
             target=TaskType.STORYBOARD_IMAGE_GENERATION,
             condition=or_(
-                Task.title.like("分镜图像生成%"),
+                Task.title.like("Storyboard image generation%"),
                 Task.prompt.like("Storyboard image generation for script %"),
             ),
         ),
@@ -143,17 +143,17 @@ def _rules() -> list[BackfillRule]:
             label="virtual_ip_image_generation",
             target=TaskType.VIRTUAL_IP_IMAGE_GENERATION,
             condition=or_(
-                Task.title.like("虚拟IP文生图%"),
+                Task.title.like("Virtual IP text-to-image%"),
                 Task.prompt.like("VirtualIP image gen for %"),
-                Task.prompt.like('为虚拟IP "%'),
-                Task.prompt.like("为虚拟IP %生成%图像%"),
+                Task.prompt.like('Generate for virtual IP "%'),
+                Task.prompt.like("Generate % image% for virtual IP %"),
             ),
         ),
         BackfillRule(
             label="virtual_ip_image_variant_generation",
             target=TaskType.VIRTUAL_IP_IMAGE_VARIANT_GENERATION,
             condition=or_(
-                Task.title.like("虚拟IP图生图%"),
+                Task.title.like("Virtual IP image-to-image%"),
                 Task.prompt.like("VirtualIP img2img for image %"),
             ),
         ),
@@ -161,21 +161,21 @@ def _rules() -> list[BackfillRule]:
             label="environment_image_generation",
             target=TaskType.ENVIRONMENT_IMAGE_GENERATION,
             condition=or_(
-                Task.title.like("环境文生图%"),
+                Task.title.like("Environment text-to-image%"),
             ),
         ),
         BackfillRule(
             label="environment_image_variant_generation",
             target=TaskType.ENVIRONMENT_IMAGE_VARIANT_GENERATION,
             condition=or_(
-                Task.title.like("环境图生图%"),
+                Task.title.like("Environment image-to-image%"),
             ),
         ),
         BackfillRule(
             label="video_generation",
             target=TaskType.VIDEO_GENERATION,
             condition=or_(
-                Task.title.like("分镜视频生成%"),
+                Task.title.like("Storyboard video generation%"),
                 Task.prompt.like("Storyboard video generation for script %"),
             ),
         ),

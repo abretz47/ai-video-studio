@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-简化版AI图像生成诊断脚本
+Simplified AI image generation diagnostic script
 
-不依赖完整的FastAPI应用，直接测试核心功能
+Tests core features directly without depending on the full FastAPI app
 """
 
 import asyncio
@@ -13,7 +13,7 @@ from datetime import datetime
 
 import httpx
 
-# 使用与FastAPI相同的配置加载机制
+# Use the same config loading mechanism as FastAPI
 try:
     from pydantic_settings import BaseSettings
 
@@ -28,26 +28,26 @@ try:
         class Config:
             env_file = ".env"
             case_sensitive = True
-            extra = "ignore"  # 忽略额外的环境变量
+            extra = "ignore"  # Ignore extra environment variables
 
     config = DiagnosticSettings()
-    print("✅ 已使用FastAPI配置机制加载.env文件")
+    print("✅ Loaded .env using the FastAPI config mechanism")
 
 except ImportError:
-    print("⚠️  pydantic_settings未安装，使用环境变量")
-    print("   安装命令: pip install pydantic-settings")
+    print("⚠️  pydantic_settings is not installed, using environment variables")
+    print("   Install command: pip install pydantic-settings")
     config = None
 
 
 class SimpleDiagnostic:
-    """简化诊断工具"""
+    """Simplified diagnostic tool"""
 
     def __init__(self):
         self.results = {}
         self.errors = []
 
         if config:
-            # 使用pydantic配置
+            # Use pydantic config
             self.openai_api_key = config.OPENAI_API_KEY
             self.upload_dir = config.UPLOAD_DIR
             self.oss_access_key = config.ALIYUN_ACCESS_KEY_ID
@@ -55,7 +55,7 @@ class SimpleDiagnostic:
             self.oss_endpoint = config.ALIYUN_OSS_ENDPOINT
             self.oss_bucket = config.ALIYUN_OSS_BUCKET
         else:
-            # 回退到环境变量
+            # Fall back to environment variables
             self.openai_api_key = os.getenv("OPENAI_API_KEY")
             self.upload_dir = os.getenv("UPLOAD_DIR", "./uploads")
             self.oss_access_key = os.getenv("ALIYUN_ACCESS_KEY_ID")
@@ -66,7 +66,7 @@ class SimpleDiagnostic:
     def log_result(
         self, test_name: str, success: bool, details: str = "", error: str = ""
     ):
-        """记录测试结果"""
+        """Record test result"""
         self.results[test_name] = {
             "success": success,
             "details": details,
@@ -77,14 +77,14 @@ class SimpleDiagnostic:
         status = "✅" if success else "❌"
         print(f"{status} {test_name}")
         if details:
-            print(f"    详情: {details}")
+            print(f"    Details: {details}")
         if error:
-            print(f"    错误: {error}")
+            print(f"    Error: {error}")
             self.errors.append(f"{test_name}: {error}")
 
     async def test_environment_config(self):
-        """测试环境配置"""
-        print("\n🔍 检查环境配置...")
+        """Test environment config"""
+        print("\n🔍 检查Environment config...")
 
         configs = {
             "OPENAI_API_KEY": self.openai_api_key,
@@ -104,22 +104,22 @@ class SimpleDiagnostic:
             else:
                 missing.append(name)
 
-        details = f"已配置: {len(configured)}, 缺失: {len(missing)}"
+        details = f"Configured: {len(configured)}, Missing: {len(missing)}"
         if missing:
-            details += f" (缺失: {', '.join(missing)})"
+            details += f" (missing: {', '.join(missing)})"
 
-        success = self.openai_api_key is not None  # 至少需要OpenAI配置
-        error = "缺少OPENAI_API_KEY" if not success else ""
+        success = self.openai_api_key is not None  # At least OpenAI config is required
+        error = "Missing OPENAI_API_KEY" if not success else ""
 
-        self.log_result("环境配置检查", success, details, error)
+        self.log_result("Environment config check", success, details, error)
         return success
 
     async def test_openai_api(self):
-        """测试OpenAI API"""
-        print("\n🔍 测试OpenAI API...")
+        """Test OpenAI API"""
+        print("\n🔍 Test OpenAI API...")
 
         if not self.openai_api_key:
-            self.log_result("OpenAI API", False, error="API密钥未配置")
+            self.log_result("OpenAI API", False, error="API key not configured")
             return False
 
         try:
@@ -141,62 +141,62 @@ class SimpleDiagnostic:
                     result = response.json()
                     usage = result.get("usage", {})
                     details = (
-                        f"API正常，使用tokens: {usage.get('total_tokens', 'unknown')}"
+                        f"API OK, tokens used: {usage.get('total_tokens', 'unknown')}"
                     )
                     self.log_result("OpenAI API", True, details)
                     return True
                 else:
                     error = (
-                        f"API返回错误: {response.status_code} - {response.text[:200]}"
+                        f"API returned error: {response.status_code} - {response.text[:200]}"
                     )
                     self.log_result("OpenAI API", False, error=error)
                     return False
 
         except Exception as e:
-            self.log_result("OpenAI API", False, error=f"连接异常: {str(e)}")
+            self.log_result("OpenAI API", False, error=f"Connection error: {str(e)}")
             return False
 
     async def test_file_system(self):
-        """测试文件系统"""
-        print("\n🔍 测试文件系统...")
+        """Test file system"""
+        print("\n🔍 Test file system...")
 
         try:
-            # 创建上传目录
+            # Create upload directory
             os.makedirs(self.upload_dir, exist_ok=True)
 
-            # 测试写入权限
+            # Test write permission
             test_file = os.path.join(self.upload_dir, "test.txt")
             test_content = f"Test at {datetime.now().isoformat()}"
 
             with open(test_file, "w") as f:
                 f.write(test_content)
 
-            # 测试读取
+            # Test read
             with open(test_file, "r") as f:
                 read_content = f.read()
 
-            # 清理
+            # Clean up
             if os.path.exists(test_file):
                 os.remove(test_file)
 
             success = read_content == test_content
             details = (
-                f"目录: {self.upload_dir}, 读写测试: {'通过' if success else '失败'}"
+                f"Directory: {self.upload_dir}, read/write test: {'passed' if success else 'failed'}"
             )
 
-            self.log_result("文件系统", success, details)
+            self.log_result("File system", success, details)
             return success
 
         except Exception as e:
-            self.log_result("文件系统", False, error=str(e))
+            self.log_result("File system", False, error=str(e))
             return False
 
     async def test_image_generation(self):
-        """测试图像生成"""
-        print("\n🔍 测试图像生成...")
+        """Test image generation"""
+        print("\n🔍 Test image generation...")
 
         if not self.openai_api_key:
-            self.log_result("图像生成", False, error="需要OpenAI API密钥")
+            self.log_result("Image generation", False, error="OpenAI API key required")
             return False
 
         try:
@@ -227,7 +227,7 @@ class SimpleDiagnostic:
                     if "b64_json" in result["data"][0]:
                         base64_data = result["data"][0]["b64_json"]
 
-                        # 保存图像
+                        # Save image
                         import uuid
 
                         filename = f"test_{uuid.uuid4().hex}.png"
@@ -240,56 +240,56 @@ class SimpleDiagnostic:
 
                         file_size = os.path.getsize(file_path)
                         details = (
-                            f"图像生成成功，文件: {filename}, 大小: {file_size} bytes"
+                            f"Image generation成功，文件: {filename}, 大小: {file_size} bytes"
                         )
 
-                        # 清理测试文件
+                        # Clean up测试文件
                         try:
                             os.remove(file_path)
                         except:
                             pass
 
-                        self.log_result("图像生成", True, details)
+                        self.log_result("Image generation", True, details)
                         return True
                     else:
-                        self.log_result("图像生成", False, error="未收到base64数据")
+                        self.log_result("Image generation", False, error="No base64 data received")
                         return False
                 else:
                     error = (
-                        f"API返回错误: {response.status_code} - {response.text[:200]}"
+                        f"API returned error: {response.status_code} - {response.text[:200]}"
                     )
-                    self.log_result("图像生成", False, error=error)
+                    self.log_result("Image generation", False, error=error)
                     return False
 
         except Exception as e:
-            self.log_result("图像生成", False, error=str(e))
+            self.log_result("Image generation", False, error=str(e))
             return False
 
     async def run_all_tests(self):
-        """运行所有测试"""
-        print("🚀 开始AI图像生成诊断测试")
+        """Run all tests"""
+        print("🚀 开始AIImage generation诊断测试")
         print("=" * 50)
 
         tests = [
-            ("环境配置", self.test_environment_config()),
-            ("文件系统", self.test_file_system()),
+            ("Environment config", self.test_environment_config()),
+            ("File system", self.test_file_system()),
             ("OpenAI API", self.test_openai_api()),
-            ("图像生成", self.test_image_generation()),
+            ("Image generation", self.test_image_generation()),
         ]
 
         for test_name, test_coro in tests:
             try:
                 await test_coro
             except Exception as e:
-                self.log_result(test_name, False, error=f"测试异常: {str(e)}")
+                self.log_result(test_name, False, error=f"Test exception: {str(e)}")
 
-        # 生成报告
+        # Generate report
         self.generate_report()
 
     def generate_report(self):
-        """生成测试报告"""
+        """Generate test report"""
         print("\n" + "=" * 50)
-        print("📊 诊断结果总结")
+        print("📊 Diagnostic results summary")
         print("=" * 50)
 
         total_tests = len(self.results)
@@ -297,11 +297,11 @@ class SimpleDiagnostic:
         failed_tests = total_tests - passed_tests
         success_rate = (passed_tests / total_tests * 100) if total_tests > 0 else 0
 
-        print(f"总体状态: {'✅ PASS' if failed_tests == 0 else '❌ FAIL'}")
-        print(f"测试总数: {total_tests}")
-        print(f"通过测试: {passed_tests}")
-        print(f"失败测试: {failed_tests}")
-        print(f"成功率: {success_rate:.1f}%")
+        print(f"Overall status: {'✅ PASS' if failed_tests == 0 else '❌ FAIL'}")
+        print(f"Total tests: {total_tests}")
+        print(f"Passed tests: {passed_tests}")
+        print(f"Failed tests: {failed_tests}")
+        print(f"Success rate: {success_rate:.1f}%")
 
         if self.errors:
             print("\n❌ 发现的问题:")
@@ -310,16 +310,16 @@ class SimpleDiagnostic:
 
             print("\n🔧 修复建议:")
             if any("OPENAI_API_KEY" in error for error in self.errors):
-                print("  • 配置OPENAI_API_KEY环境变量")
-                print("  • 验证OpenAI账户余额和API权限")
+                print("  • Configure the OPENAI_API_KEY environment variable")
+                print("  • Verify OpenAI account balance and API permissions")
 
-            if any("文件系统" in error for error in self.errors):
-                print("  • 检查uploads目录权限")
-                print("  • 确保磁盘空间充足")
+            if any("File system" in error for error in self.errors):
+                print("  • Check uploads directory permissions")
+                print("  • Ensure sufficient disk space")
         else:
-            print("\n🎉 所有测试通过！AI图像生成功能应该正常工作")
+            print("\n🎉 所有测试通过！AIImage generation功能应该正常工作")
 
-        # 保存报告
+        # Save report
         report = {
             "summary": {
                 "total_tests": total_tests,
@@ -341,7 +341,7 @@ class SimpleDiagnostic:
 
 
 async def main():
-    """主函数"""
+    """Main function"""
     diagnostic = SimpleDiagnostic()
     success = await diagnostic.run_all_tests()
 

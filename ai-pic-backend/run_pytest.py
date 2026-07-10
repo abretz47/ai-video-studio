@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-pytest运行脚本
+pytest runner script
 
-提供多种测试运行选项和便捷命令
+Provides multiple test run options and convenience commands
 """
 
 import argparse
@@ -12,18 +12,18 @@ from pathlib import Path
 
 
 class PytestRunner:
-    """pytest运行器"""
+    """pytest runner"""
 
     def __init__(self):
         self.project_root = Path(__file__).parent
 
     def run_command(self, cmd, description=None):
-        """运行命令并显示结果"""
+        """Run a command and display the result"""
         if description:
             print(f"\n🚀 {description}")
             print("=" * 50)
 
-        print(f"执行命令: {' '.join(cmd)}")
+        print(f"Running command: {' '.join(cmd)}")
 
         try:
             result = subprocess.run(cmd, cwd=self.project_root, check=False)
@@ -32,144 +32,144 @@ class PytestRunner:
             print("\n⏹️  测试被用户中断")
             return False
         except Exception as e:
-            print(f"❌ 命令执行失败: {e}")
+            print(f"❌ Command execution failed: {e}")
             return False
 
     def run_all_tests(self):
-        """运行所有测试"""
+        """Run all tests"""
         cmd = ["python", "-m", "pytest"]
-        return self.run_command(cmd, "运行所有测试")
+        return self.run_command(cmd, "Run all tests")
 
     def run_unit_tests(self):
-        """运行单元测试"""
+        """Run unit tests"""
         cmd = ["python", "-m", "pytest", "-m", "unit"]
-        return self.run_command(cmd, "运行单元测试")
+        return self.run_command(cmd, "Run unit tests")
 
     def run_integration_tests(self):
-        """运行集成测试"""
+        """Run integration tests"""
         cmd = ["python", "-m", "pytest", "-m", "integration"]
-        return self.run_command(cmd, "运行集成测试")
+        return self.run_command(cmd, "Run integration tests")
 
     def run_diagnostic_tests(self):
-        """运行诊断测试"""
+        """Run diagnostic tests"""
         cmd = ["python", "-m", "pytest", "-m", "diagnostic", "-v"]
-        return self.run_command(cmd, "运行诊断测试")
+        return self.run_command(cmd, "Run diagnostic tests")
 
     def run_api_tests(self):
-        """运行API测试"""
+        """Run API tests"""
         cmd = ["python", "-m", "pytest", "-m", "api", "-v"]
-        return self.run_command(cmd, "运行API测试")
+        return self.run_command(cmd, "Run API tests")
 
     def run_external_tests(self):
-        """运行外部服务测试"""
+        """Run external service tests"""
         cmd = ["python", "-m", "pytest", "-m", "external", "-v", "-s"]
-        return self.run_command(cmd, "运行外部服务测试（需要API密钥）")
+        return self.run_command(cmd, "Run external service tests（需要API密钥）")
 
     def run_quick_tests(self):
-        """运行快速测试（跳过慢速和外部测试）"""
+        """Run quick tests (skip slow and external tests)"""
         cmd = ["python", "-m", "pytest", "-m", "not slow and not external"]
-        return self.run_command(cmd, "运行快速测试")
+        return self.run_command(cmd, "Run quick tests")
 
     def run_coverage_tests(self):
-        """运行覆盖率测试"""
+        """Run coverage tests"""
         cmd = ["python", "-m", "pytest", "--cov-report=html", "--cov-report=term"]
-        success = self.run_command(cmd, "运行覆盖率测试")
+        success = self.run_command(cmd, "Run coverage tests")
 
         if success:
             print("\n📊 覆盖率报告已生成:")
-            print("  HTML报告: htmlcov/index.html")
-            print("  打开命令: open htmlcov/index.html")
+            print("  HTML report: htmlcov/index.html")
+            print("  Open command: open htmlcov/index.html")
 
         return success
 
     def run_specific_test(self, test_path):
-        """运行特定测试"""
+        """Run a specific test"""
         cmd = ["python", "-m", "pytest", test_path, "-v"]
-        return self.run_command(cmd, f"运行特定测试: {test_path}")
+        return self.run_command(cmd, f"Run a specific test: {test_path}")
 
     def check_environment(self):
-        """检查测试环境"""
-        print("🔍 检查测试环境...")
+        """Check test environment"""
+        print("🔍 Check test environment...")
 
-        # 检查pytest是否安装
+        # Check whether pytest is installed
         try:
             import pytest
 
-            print(f"✅ pytest版本: {pytest.__version__}")
+            print(f"✅ pytest version: {pytest.__version__}")
         except ImportError:
-            print("❌ pytest未安装")
+            print("❌ pytest is not installed")
             return False
 
-        # 检查测试目录
+        # Check the tests directory
         tests_dir = self.project_root / "tests"
         if tests_dir.exists():
-            print(f"✅ 测试目录存在: {tests_dir}")
+            print(f"✅ Tests directory exists: {tests_dir}")
         else:
-            print(f"❌ 测试目录不存在: {tests_dir}")
+            print(f"❌ Tests directory does not exist: {tests_dir}")
             return False
 
-        # 检查配置文件
+        # Check the configuration file
         pytest_ini = self.project_root / "pytest.ini"
         if pytest_ini.exists():
-            print(f"✅ pytest配置文件存在: {pytest_ini}")
+            print(f"✅ pytest configuration file exists: {pytest_ini}")
         else:
-            print(f"⚠️  pytest配置文件不存在: {pytest_ini}")
+            print(f"⚠️  pytest configuration file does not exist: {pytest_ini}")
 
-        # 检查依赖
+        # Check dependencies
         required_packages = ["pytest-asyncio", "pytest-cov"]
         for package in required_packages:
             try:
                 __import__(package.replace("-", "_"))
-                print(f"✅ {package} 已安装")
+                print(f"✅ {package} is installed")
             except ImportError:
-                print(f"❌ {package} 未安装")
-                print(f"   安装命令: pip install {package}")
+                print(f"❌ {package} is not installed")
+                print(f"   Install command: pip install {package}")
 
-        print("✅ 环境检查完成")
+        print("✅ Environment check complete")
         return True
 
     def show_test_info(self):
-        """显示测试信息"""
+        """Show test information"""
         cmd = ["python", "-m", "pytest", "--collect-only", "-q"]
-        self.run_command(cmd, "收集测试信息")
+        self.run_command(cmd, "Collect test information")
 
     def run_failed_tests(self):
-        """重新运行失败的测试"""
+        """Re-run failed tests"""
         cmd = ["python", "-m", "pytest", "--lf", "-v"]
-        return self.run_command(cmd, "重新运行失败的测试")
+        return self.run_command(cmd, "Re-run failed tests")
 
 
 def main():
     """主函数"""
-    parser = argparse.ArgumentParser(description="pytest测试运行器")
-    parser.add_argument("--all", action="store_true", help="运行所有测试")
-    parser.add_argument("--unit", action="store_true", help="运行单元测试")
-    parser.add_argument("--integration", action="store_true", help="运行集成测试")
-    parser.add_argument("--diagnostic", action="store_true", help="运行诊断测试")
-    parser.add_argument("--api", action="store_true", help="运行API测试")
-    parser.add_argument("--external", action="store_true", help="运行外部服务测试")
-    parser.add_argument("--quick", action="store_true", help="运行快速测试")
-    parser.add_argument("--coverage", action="store_true", help="运行覆盖率测试")
-    parser.add_argument("--failed", action="store_true", help="重新运行失败的测试")
-    parser.add_argument("--info", action="store_true", help="显示测试信息")
-    parser.add_argument("--check", action="store_true", help="检查测试环境")
-    parser.add_argument("--test", type=str, help="运行特定测试文件或函数")
+    parser = argparse.ArgumentParser(description="pytest test runner")
+    parser.add_argument("--all", action="store_true", help="Run all tests")
+    parser.add_argument("--unit", action="store_true", help="Run unit tests")
+    parser.add_argument("--integration", action="store_true", help="Run integration tests")
+    parser.add_argument("--diagnostic", action="store_true", help="Run diagnostic tests")
+    parser.add_argument("--api", action="store_true", help="Run API tests")
+    parser.add_argument("--external", action="store_true", help="Run external service tests")
+    parser.add_argument("--quick", action="store_true", help="Run quick tests")
+    parser.add_argument("--coverage", action="store_true", help="Run coverage tests")
+    parser.add_argument("--failed", action="store_true", help="Re-run failed tests")
+    parser.add_argument("--info", action="store_true", help="Show test information")
+    parser.add_argument("--check", action="store_true", help="Check test environment")
+    parser.add_argument("--test", type=str, help="Run a specific test文件或函数")
 
     args = parser.parse_args()
 
     runner = PytestRunner()
 
-    # 如果没有指定任何选项，显示帮助
+    # Show help if no options are provided
     if not any(vars(args).values()):
-        print("🧪 pytest测试运行器")
+        print("🧪 pytest test runner")
         print("=" * 50)
-        print("使用 --help 查看所有选项")
+        print("Use --help to view all options")
         print("\n常用命令:")
-        print("  --check      检查测试环境")
-        print("  --diagnostic 运行诊断测试")
-        print("  --quick      运行快速测试")
-        print("  --all        运行所有测试")
-        print("  --coverage   运行覆盖率测试")
+        print("  --check      Check test environment")
+        print("  --diagnostic Run diagnostic tests")
+        print("  --quick      Run quick tests")
+        print("  --all        Run all tests")
+        print("  --coverage   Run coverage tests")
         return
 
     success = True
@@ -210,7 +210,7 @@ def main():
     if args.all:
         success &= runner.run_all_tests()
 
-    # 显示最终结果
+    # Show final result
     if success:
         print("\n🎉 测试完成！")
         sys.exit(0)

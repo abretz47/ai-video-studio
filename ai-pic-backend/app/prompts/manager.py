@@ -8,287 +8,198 @@ from typing import Any, Dict, List, Optional
 
 import yaml
 from app.prompts.template_resolver import resolve_template_name
-from jinja2 import Environment, FileSystemLoader, Template
+from jinja2 import Environment, FileSystemLoader, Template, meta
 
 logger = logging.getLogger(__name__)
 
 
 class PromptManager:
-    """Prompt manager"""
+    """Prompt manager."""
 
     def __init__(self, prompts_dir: Optional[str] = None):
-        """
-        Initialize the prompt manager
+        """Initialize the prompt manager."""
+        if prompts_dir is None:
+            prompts_dir = os.path.join(os.path.dirname(__file__), "templates")
 
-        Args:
-            prompts_dir: Prompt file directory, defaults to the templates folder under the current directory
-            """
-            if prompts_dir is None:
-                prompts_dir = os.path.join(os.path.dirname(__file__), "templates")
+        self.prompts_dir = Path(prompts_dir)
+        self.prompts_dir.mkdir(parents=True, exist_ok=True)
 
-                self.prompts_dir = Path(prompts_dir)
-                self.prompts_dir.mkdir(parents=True, exist_ok=True)
+        self.jinja_env = Environment(
+            loader=FileSystemLoader(str(self.prompts_dir)),
+            trim_blocks=True,
+            lstrip_blocks=True,
+        )
+        self.jinja_env.filters["tojson"] = lambda value: json.dumps(
+            value, ensure_ascii=False
+        )
 
-                # Initialize the Jinja2 environment
-                self.jinja_env = Environment(
-                    loader=FileSystemLoader(str(self.prompts_dir)),
-                    trim_blocks=True,
-                    lstrip_blocks=True,
-                    )
-                # Override the default tojson filter to avoid \uXXXX escapes in prompts and logs,
-                # and consistently output UTF-8 text directly for readability.
-                self.jinja_env.filters["tojson"] = lambda value: json.dumps(
-                    value, ensure_ascii=False
-                    )
-
-                # Cache loaded prompt templates
-                self._template_cache: Dict[str, Template] = {}
-                self._metadata_cache: Dict[str, Dict] = {}
+        self._template_cache: Dict[str, Template] = {}
+        self._metadata_cache: Dict[str, Dict[str, Any]] = {}
 
     def load_template(self, template_name: str) -> Template:
-        """
-        Load a prompt template
+        """Load a prompt template."""
+        if template_name in self._template_cache:
+            return self._template_cache[template_name]
 
-        Args:
-            template_name: Template name (without extension)
+        try:
+            template = self.jinja_env.get_template(f"{template_name}.txt")
+        except Exception as exc:
+            logger.error("Failed to load template %s: %s", template_name, exc)
+            raise ValueError(f"Template {template_name} not found or invalid") from exc
 
-            Returns:
-                Jinja2 template object
-                """
-                if template_name in self._template_cache:
-                    return self._template_cache[template_name]
-
-                    try:
-                        template_file = f"{template_name}.txt"
-                        template = self.jinja_env.get_template(template_file)
-                        self._template_cache[template_name] = template
-                        return template
-                    except Exception as e:
-                        logger.error(f"Failed to load template {template_name}: {e}")
-                        raise ValueError(f"Template {template_name} not found or invalid")
+        self._template_cache[template_name] = template
+        return template
 
     def load_metadata(self, template_name: str) -> Dict[str, Any]:
-        """
-        Load template metadata
+        """Load template metadata."""
+        if template_name in self._metadata_cache:
+            return self._metadata_cache[template_name]
 
-        Args:
-            template_name: Template name
+        metadata_file = self.prompts_dir / f"{template_name}.yaml"
+        if metadata_file.exists():
+            try:
+                with open(metadata_file, "r", encoding="utf-8") as f:
+                    metadata = yaml.safe_load(f) or {}
+                self._metadata_cache[template_name] = metadata
+                return metadata
+            except Exception as exc:
+                logger.warning(
+                    "Failed to load metadata for %s: %s", template_name, exc
+                )
 
-            Returns:
-                Template metadata dictionary
-                """
-                if template_name in self._metadata_cache:
-                    return self._metadata_cache[template_name]
-
-                    metadata_file = self.prompts_dir / f"{template_name}.yaml"
-                    if metadata_file.exists():
-                        try:
-                            with open(metadata_file, "r", encoding="utf-8") as f:
-                                metadata = yaml.safe_load(f) or {}
-                                self._metadata_cache[template_name] = metadata
-                                return metadata
-                            except Exception as e:
-                                logger.warning(f"Failed to load metadata for {template_name}: {e}")
-
-                                return {}
+        return {}
 
     def render_prompt(self, template_name: str, variables: Dict[str, Any]) -> str:
-        """
-        Render prompt
-
-        Args:
-            template_name: Template name
-            variables: Template variables
-
-            Returns:
-                Rendered prompt text
-                """
-                try:
-                    resolved_name = resolve_template_name(
-                        template_name, variables, self.prompts_dir
-                        )
-                    template = self.load_template(resolved_name)
-                    return template.render(**variables)
-                except Exception as e:
-                    logger.error(f"Failed to render template {template_name}: {e}")
-                    raise ValueError(f"Failed to render template {template_name}: {str(e)}")
+        """Render a prompt."""
+        try:
+            resolved_name = resolve_template_name(
+                template_name, variables, self.prompts_dir
+            )
+            template = self.load_template(resolved_name)
+            return template.render(**variables)
+        except Exception as exc:
+            logger.error("Failed to render template %s: %s", template_name, exc)
+            raise ValueError(f"Failed to render template {template_name}: {exc}") from exc
 
     def get_template_info(self, template_name: str) -> Dict[str, Any]:
-        """
-        Get template information
+        """Get template metadata and variable information."""
+        metadata = self.load_metadata(template_name)
+        variable_names: List[str] = []
 
-        Args:
-            template_name: Template name
+        template_file = self.prompts_dir / f"{template_name}.txt"
+        if template_file.exists():
+            try:
+                source = template_file.read_text(encoding="utf-8")
+                parsed = self.jinja_env.parse(source)
+                variable_names = sorted(meta.find_undeclared_variables(parsed))
+            except Exception:
+                variable_names = []
 
-            Returns:
-                Dictionary containing template metadata and variable information
-                """
-                metadata = self.load_metadata(template_name)
-
-                # Analyze variables in the template
-                try:
-                    template = self.load_template(template_name)
-                    variables = list(
-                        template.environment.parse(template.source).find_all(
-                        lambda node: hasattr(node, "name")
-                        )
-                        )
-                    variable_names = list(
-                        set([var.name for var in variables if hasattr(var, "name")])
-                        )
-                except:
-                    variable_names = []
-
-                    return {
-                        "name": template_name,
-                        "metadata": metadata,
-                        "variables": variable_names,
-                        "description": metadata.get("description", ""),
-                        "category": metadata.get("category", "general"),
-                        "version": metadata.get("version", "1.0"),
-                        "author": metadata.get("author", ""),
-                        "created_at": metadata.get("created_at", ""),
-                        "updated_at": metadata.get("updated_at", ""),
-                        }
+        return {
+            "name": template_name,
+            "metadata": metadata,
+            "variables": variable_names,
+            "description": metadata.get("description", ""),
+            "category": metadata.get("category", "general"),
+            "version": metadata.get("version", "1.0"),
+            "author": metadata.get("author", ""),
+            "created_at": metadata.get("created_at", ""),
+            "updated_at": metadata.get("updated_at", ""),
+        }
 
     def list_templates(self, category: Optional[str] = None) -> List[Dict[str, Any]]:
-        """
-        List all available templates
+        """List all available templates."""
+        templates: List[Dict[str, Any]] = []
+        for template_file in self.prompts_dir.glob("*.txt"):
+            template_name = template_file.stem
+            try:
+                info = self.get_template_info(template_name)
+                if category is None or info.get("category") == category:
+                    templates.append(info)
+            except Exception as exc:
+                logger.warning("Failed to get info for template %s: %s", template_name, exc)
 
-        Args:
-            category: Optional category filter
-
-            Returns:
-                Template info list
-                """
-                templates = []
-
-                for template_file in self.prompts_dir.glob("*.txt"):
-                    template_name = template_file.stem
-                    try:
-                        info = self.get_template_info(template_name)
-                        if category is None or info.get("category") == category:
-                            templates.append(info)
-                        except Exception as e:
-                            logger.warning(f"Failed to get info for template {template_name}: {e}")
-
-                            return sorted(templates, key=lambda x: x["name"])
+        return sorted(templates, key=lambda item: item["name"])
 
     def get_categories(self) -> List[str]:
-        """
-        Get all template categories
-
-        Returns:
-            Category name list
-            """
-            categories = set()
-            for template in self.list_templates():
-                categories.add(template.get("category", "general"))
-                return sorted(list(categories))
+        """Get all template categories."""
+        categories = {template.get("category", "general") for template in self.list_templates()}
+        return sorted(categories)
 
     def validate_template(
         self, template_name: str, variables: Dict[str, Any]
-        ) -> Dict[str, Any]:
-    """
-    Validate template variables
+    ) -> Dict[str, Any]:
+        """Validate template variables."""
+        resolved_name = resolve_template_name(template_name, variables, self.prompts_dir)
+        info = self.get_template_info(resolved_name)
+        required_vars = info["variables"]
+        metadata = info["metadata"]
+        required_vars_config = metadata.get("variables", {})
 
-    Args:
-        template_name: Template name
-        variables: Variables to validate
+        result = {
+            "valid": True,
+            "missing_vars": [],
+            "extra_vars": [],
+            "type_errors": [],
+            "validation_errors": [],
+        }
 
-        Returns:
-            Validation result
-            """
-            resolved_name = resolve_template_name(
-                template_name, variables, self.prompts_dir
-                )
-            info = self.get_template_info(resolved_name)
-            required_vars = info["variables"]
-            metadata = info["metadata"]
+        for var_name in required_vars:
+            var_config = required_vars_config.get(var_name, {})
+            if var_name not in variables and var_config.get("required", True):
+                result["missing_vars"].append(var_name)
+                result["valid"] = False
 
-            result = {
-                "valid": True,
-                "missing_vars": [],
-                "extra_vars": [],
-                "type_errors": [],
-                "validation_errors": [],
-                }
+        for var_name in variables:
+            if var_name not in required_vars:
+                result["extra_vars"].append(var_name)
 
-            # Check required variables
-            required_vars_config = metadata.get("variables", {})
-            for var_name in required_vars:
-                if var_name not in variables:
-                    var_config = required_vars_config.get(var_name, {})
-                    if var_config.get("required", True):
-                        result["missing_vars"].append(var_name)
-                        result["valid"] = False
+        for var_name, var_value in variables.items():
+            var_config = required_vars_config.get(var_name, {})
+            expected_type = var_config.get("type")
+            if expected_type == "string" and not isinstance(var_value, str):
+                result["type_errors"].append(f"{var_name} should be string")
+                result["valid"] = False
+            elif expected_type == "number" and not isinstance(var_value, (int, float)):
+                result["type_errors"].append(f"{var_name} should be number")
+                result["valid"] = False
+            elif expected_type == "list" and not isinstance(var_value, list):
+                result["type_errors"].append(f"{var_name} should be list")
+                result["valid"] = False
+            elif expected_type == "dict" and not isinstance(var_value, dict):
+                result["type_errors"].append(f"{var_name} should be dict")
+                result["valid"] = False
 
-                        # Check additional variables
-                        for var_name in variables:
-                            if var_name not in required_vars:
-                                result["extra_vars"].append(var_name)
+            if isinstance(var_value, str):
+                min_length = var_config.get("min_length")
+                max_length = var_config.get("max_length")
+                if min_length is not None and len(var_value) < min_length:
+                    result["validation_errors"].append(f"{var_name} too short")
+                    result["valid"] = False
+                if max_length is not None and len(var_value) > max_length:
+                    result["validation_errors"].append(f"{var_name} too long")
+                    result["valid"] = False
 
-                                # Check variable types and values
-                                for var_name, var_value in variables.items():
-                                    var_config = required_vars_config.get(var_name, {})
-
-                                    # Type check
-                                    expected_type = var_config.get("type")
-                                    if expected_type:
-                                        if expected_type == "string" and not isinstance(var_value, str):
-                                            result["type_errors"].append(f"{var_name} should be string")
-                                            result["valid"] = False
-                                        elif expected_type == "number" and not isinstance(
-                                            var_value, (int, float)
-                                            ):
-                                        result["type_errors"].append(f"{var_name} should be number")
-                                        result["valid"] = False
-                                    elif expected_type == "list" and not isinstance(var_value, list):
-                                        result["type_errors"].append(f"{var_name} should be list")
-                                        result["valid"] = False
-                                    elif expected_type == "dict" and not isinstance(var_value, dict):
-                                        result["type_errors"].append(f"{var_name} should be dict")
-                                        result["valid"] = False
-
-                                        # Value range check
-                                        if "min_length" in var_config and isinstance(var_value, str):
-                                            if len(var_value) < var_config["min_length"]:
-                                                result["validation_errors"].append(f"{var_name} too short")
-                                                result["valid"] = False
-
-                                                if "max_length" in var_config and isinstance(var_value, str):
-                                                    if len(var_value) > var_config["max_length"]:
-                                                        result["validation_errors"].append(f"{var_name} too long")
-                                                        result["valid"] = False
-
-                                                        return result
+        return result
 
     def create_template(
         self, template_name: str, content: str, metadata: Dict[str, Any]
-        ) -> bool:
-    """create new De template file."""
-    try:
-        # Write template file
-        template_file = self.prompts_dir / f"{template_name}.txt"
-        with open(template_file, "w", encoding="utf-8") as f:
-            f.write(content)
+    ) -> bool:
+        """Create a new template file."""
+        try:
+            template_file = self.prompts_dir / f"{template_name}.txt"
+            template_file.write_text(content, encoding="utf-8")
 
-            # Write metadata file
             metadata_file = self.prompts_dir / f"{template_name}.yaml"
             with open(metadata_file, "w", encoding="utf-8") as f:
                 yaml.dump(metadata, f, default_flow_style=False, allow_unicode=True)
 
-                # Clear caches
-                if template_name in self._template_cache:
-                    del self._template_cache[template_name]
-                    if template_name in self._metadata_cache:
-                        del self._metadata_cache[template_name]
-
-                        return True
-                    except Exception as e:
-                        logger.error(f"Failed to create template {template_name}: {e}")
-                        return False
+            self._template_cache.pop(template_name, None)
+            self._metadata_cache.pop(template_name, None)
+            return True
+        except Exception as exc:
+            logger.error("Failed to create template %s: %s", template_name, exc)
+            return False
 
 
-                        # Global prompt manager instance
-                        prompt_manager = PromptManager()
+prompt_manager = PromptManager()

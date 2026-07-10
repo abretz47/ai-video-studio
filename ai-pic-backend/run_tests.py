@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-测试运行脚本
+Test runner script
 
-使用方法:
-    python run_tests.py                    # 运行所有测试
-    python run_tests.py unit              # 只运行单元测试
-    python run_tests.py integration       # 只运行集成测试
-    python run_tests.py migration         # 只运行迁移测试
-    python run_tests.py coverage          # 运行测试并生成覆盖率报告
-    python run_tests.py quick             # 快速测试（跳过慢速测试）
-    python run_tests.py parallel          # 并行运行测试
+Usage:
+    python run_tests.py                    # Run all tests
+    python run_tests.py unit              # Run unit tests only
+    python run_tests.py integration       # Run integration tests only
+    python run_tests.py migration         # Run migration tests only
+    python run_tests.py coverage          # Run tests and generate a coverage report
+    python run_tests.py quick             # Quick test (skip slow tests)
+    python run_tests.py parallel          # Run tests in parallel
 """
 
 import argparse
@@ -20,13 +20,13 @@ from pathlib import Path
 
 
 def run_command(cmd, description=""):
-    """运行命令并返回结果"""
+    """Run a command and return the result"""
     if description:
         print(f"\n{'='*60}")
         print(f"🔄 {description}")
         print(f"{'='*60}")
 
-    print(f"执行命令: {cmd}")
+    print(f"Running command: {cmd}")
 
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -35,38 +35,38 @@ def run_command(cmd, description=""):
             print(result.stdout)
 
         if result.stderr:
-            print(f"错误输出: {result.stderr}")
+            print(f"Error output: {result.stderr}")
 
         if result.returncode != 0:
-            print(f"❌ 命令执行失败，退出码: {result.returncode}")
+            print(f"❌ Command failed with exit code: {result.returncode}")
             return False
         else:
-            print("✅ 命令执行成功")
+            print("✅ Command succeeded")
             return True
 
     except Exception as e:
-        print(f"❌ 执行命令时出错: {e}")
+        print(f"❌ Error while running command: {e}")
         return False
 
 
 def setup_test_environment():
-    """设置测试环境"""
-    print("🔧 设置测试环境...")
+    """Set up test environment"""
+    print("🔧 Set up test environment...")
 
-    # 确保在正确的目录中
+    # Ensure we are in the correct directory
     script_dir = Path(__file__).parent
     os.chdir(script_dir)
 
-    # 检查虚拟环境
+    # Check virtual environment
     if not Path(".venv").exists():
-        print("❌ 虚拟环境不存在，请先创建虚拟环境")
+        print("❌ Virtual environment does not exist, please create it first")
         return False
 
-    # 安装测试依赖
-    if not run_command("pip install -r requirements-test.txt", "安装测试依赖"):
+    # Install test dependencies
+    if not run_command("pip install -r requirements-test.txt", "Install test dependencies"):
         return False
 
-    # 设置测试数据库
+    # Set up test database
     setup_test_database_cmd = (
         'python -c "import importlib.util;'
         " name='app.core.test_database' if importlib.util.find_spec('app.core.test_database')"
@@ -74,114 +74,114 @@ def setup_test_environment():
         " mod=__import__(name, fromlist=['setup_test_database']);"
         ' mod.setup_test_database()"'
     )
-    if not run_command(setup_test_database_cmd, "设置测试数据库"):
+    if not run_command(setup_test_database_cmd, "Set up test database"):
         return False
 
     return True
 
 
 def run_unit_tests():
-    """运行单元测试"""
+    """Run unit tests"""
     cmd = "pytest tests/ -m unit -v"
-    return run_command(cmd, "运行单元测试")
+    return run_command(cmd, "Run unit tests")
 
 
 def run_integration_tests():
-    """运行集成测试"""
+    """Run integration tests"""
     cmd = "pytest tests/ -m integration -v"
-    return run_command(cmd, "运行集成测试")
+    return run_command(cmd, "Run integration tests")
 
 
 def run_migration_tests():
-    """运行迁移测试"""
+    """Run migration tests"""
     cmd = "pytest tests/test_migrations.py -v"
-    return run_command(cmd, "运行迁移测试")
+    return run_command(cmd, "Run migration tests")
 
 
 def run_api_tests():
-    """运行API测试"""
+    """Run API tests"""
     cmd = "pytest tests/test_api.py -v"
-    return run_command(cmd, "运行API测试")
+    return run_command(cmd, "Run API tests")
 
 
 def run_model_tests():
-    """运行模型测试"""
+    """Run model tests"""
     cmd = "pytest tests/test_models.py -v"
-    return run_command(cmd, "运行模型测试")
+    return run_command(cmd, "Run model tests")
 
 
 def run_e2e_tests():
-    """运行端到端测试"""
+    """Run end-to-end tests"""
     cmd = "pytest tests/ -m e2e -v"
-    return run_command(cmd, "运行端到端测试")
+    return run_command(cmd, "Run end-to-end tests")
 
 
 def run_all_tests():
-    """运行所有测试"""
+    """Run all tests"""
     cmd = "pytest tests/ -v"
-    return run_command(cmd, "运行所有测试")
+    return run_command(cmd, "Run all tests")
 
 
 def run_quick_tests():
-    """运行快速测试（跳过慢速测试）"""
+    """Run quick tests (skip slow tests)"""
     cmd = "pytest tests/ -m 'not slow' -v"
-    return run_command(cmd, "运行快速测试")
+    return run_command(cmd, "Run quick tests")
 
 
 def run_parallel_tests():
-    """并行运行测试"""
+    """Run tests in parallel"""
     cmd = "pytest tests/ -n auto -v"
-    return run_command(cmd, "并行运行测试")
+    return run_command(cmd, "Run tests in parallel")
 
 
 def run_coverage_tests():
-    """运行测试并生成覆盖率报告"""
+    """Run tests and generate a coverage report"""
     cmd = "pytest tests/ --cov=app --cov-report=html --cov-report=term-missing --cov-report=xml"
-    success = run_command(cmd, "运行测试并生成覆盖率报告")
+    success = run_command(cmd, "Run tests and generate a coverage report")
 
     if success:
         print("\n📊 覆盖率报告已生成:")
-        print("  - HTML报告: htmlcov/index.html")
-        print("  - XML报告: coverage.xml")
-        print("  - 终端报告: 已显示在上方")
+        print("  - HTML report: htmlcov/index.html")
+        print("  - XML report: coverage.xml")
+        print("  - Terminal report: shown above")
 
     return success
 
 
 def run_specific_test(test_path):
-    """运行特定测试"""
+    """Run a specific test"""
     cmd = f"pytest {test_path} -v"
-    return run_command(cmd, f"运行特定测试: {test_path}")
+    return run_command(cmd, f"Run a specific test: {test_path}")
 
 
 def lint_code():
-    """代码质量检查"""
-    print("\n🔍 代码质量检查...")
+    """Code quality check"""
+    print("\n🔍 Code quality check...")
 
-    # 安装linting工具
-    run_command("pip install flake8 black isort", "安装代码质量工具")
+    # Install linting tools
+    run_command("pip install flake8 black isort", "Install code quality tools")
 
-    # 运行flake8
+    # Run flake8
     if not run_command(
         "flake8 app/ tests/ --max-line-length=88 --extend-ignore=E203,W503",
-        "运行flake8检查",
+        "Run flake8 checks",
     ):
-        print("⚠️  flake8检查发现问题")
+        print("⚠️  flake8 found issues")
 
-    # 运行black检查
-    if not run_command("black --check app/ tests/", "运行black格式检查"):
-        print("⚠️  black格式检查发现问题")
-        print("💡 运行 'black app/ tests/' 自动格式化代码")
+    # Run black checks
+    if not run_command("black --check app/ tests/", "Run black formatting checks"):
+        print("⚠️  black formatting issues found")
+        print("💡 Run 'black app/ tests/' to format the code automatically")
 
-    # 运行isort检查
-    if not run_command("isort --check-only app/ tests/", "运行isort导入检查"):
-        print("⚠️  isort导入检查发现问题")
-        print("💡 运行 'isort app/ tests/' 自动排序导入")
+    # Run isort checks
+    if not run_command("isort --check-only app/ tests/", "Run isort import checks"):
+        print("⚠️  isort import issues found")
+        print("💡 Run 'isort app/ tests/' to sort imports automatically")
 
 
 def clean_test_artifacts():
-    """清理测试产物"""
-    print("\n🧹 清理测试产物...")
+    """Clean test artifacts"""
+    print("\n🧹 Clean test artifacts...")
 
     artifacts = [
         "htmlcov/",
@@ -197,16 +197,16 @@ def clean_test_artifacts():
 
     for artifact in artifacts:
         if "*" in artifact:
-            run_command(f"find . -name '{artifact}' -delete", f"删除 {artifact}")
+            run_command(f"find . -name '{artifact}' -delete", f"Delete {artifact}")
         else:
-            run_command(f"rm -rf {artifact}", f"删除 {artifact}")
+            run_command(f"rm -rf {artifact}", f"Delete {artifact}")
 
-    print("✅ 测试产物清理完成")
+    print("✅ Test artifact cleanup complete")
 
 
 def main():
     """主函数"""
-    parser = argparse.ArgumentParser(description="测试运行脚本")
+    parser = argparse.ArgumentParser(description="Test runner script")
     parser.add_argument(
         "command",
         nargs="?",
@@ -226,20 +226,20 @@ def main():
             "clean",
             "setup",
         ],
-        help="要运行的测试类型",
+        help="Test type to run",
     )
-    parser.add_argument("--test", "-t", help="运行特定测试文件或函数")
-    parser.add_argument("--no-setup", action="store_true", help="跳过环境设置")
+    parser.add_argument("--test", "-t", help="Run a specific test文件或函数")
+    parser.add_argument("--no-setup", action="store_true", help="Skip environment setup")
 
     args = parser.parse_args()
 
-    # 设置测试环境
+    # Set up test environment
     if not args.no_setup and args.command != "clean":
         if not setup_test_environment():
-            print("❌ 测试环境设置失败")
+            print("❌ Test environment setup failed")
             sys.exit(1)
 
-    # 执行相应的命令
+    # Execute the corresponding command
     success = True
 
     if args.test:

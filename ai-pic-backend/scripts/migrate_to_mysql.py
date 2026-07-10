@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-数据库迁移脚本：从SQLite迁移到MySQL
+Database migration script: migrate from SQLite to MySQL
 
-此脚本用于将现有的SQLite数据迁移到MySQL数据库
+This script migrates existing SQLite data to a MySQL database
 """
 
 import logging
@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict
 
-# 添加项目根目录到Python路径
+# Add the project root to the Python path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
@@ -19,7 +19,7 @@ import sqlite3
 from app.core.config import settings
 from sqlalchemy import create_engine, text
 
-# 配置日志
+# Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -27,14 +27,14 @@ logger = logging.getLogger(__name__)
 
 
 def parse_mysql_url(database_url: str) -> Dict[str, Any]:
-    """解析MySQL数据库URL"""
+    """Parse MySQL database URL"""
     import re
 
     pattern = r"mysql\+pymysql://([^:]+):([^@]+)@([^:]+):(\d+)/([^?]+)"
     match = re.match(pattern, database_url)
 
     if not match:
-        raise ValueError(f"无法解析数据库URL: {database_url}")
+        raise ValueError(f"Unable to parse database URL: {database_url}")
 
     return {
         "user": match.group(1),
@@ -46,7 +46,7 @@ def parse_mysql_url(database_url: str) -> Dict[str, Any]:
 
 
 def find_sqlite_db() -> str:
-    """查找SQLite数据库文件"""
+    """Find the SQLite database file"""
     possible_paths = [
         project_root / "ai_pic.db",
         project_root / "app.db",
@@ -57,11 +57,11 @@ def find_sqlite_db() -> str:
         if path.exists():
             return str(path)
 
-    raise FileNotFoundError("找不到SQLite数据库文件")
+    raise FileNotFoundError("SQLite database file not found")
 
 
 def get_sqlite_tables(db_path: str) -> list:
-    """获取SQLite数据库中的表列表"""
+    """Get the list of tables in the SQLite database"""
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
@@ -75,47 +75,47 @@ def get_sqlite_tables(db_path: str) -> list:
 
 
 def migrate_table_data(sqlite_path: str, table_name: str, mysql_engine):
-    """迁移单个表的数据"""
-    logger.info(f"开始迁移表: {table_name}")
+    """Migrate data from a single table"""
+    logger.info(f"Starting migration for table: {table_name}")
 
-    # 连接SQLite
+    # Connect to SQLite
     sqlite_conn = sqlite3.connect(sqlite_path)
     sqlite_conn.row_factory = sqlite3.Row
     sqlite_cursor = sqlite_conn.cursor()
 
     try:
-        # 获取SQLite表数据
+        # Get SQLite table data
         sqlite_cursor.execute(f"SELECT * FROM {table_name}")
         rows = sqlite_cursor.fetchall()
 
         if not rows:
-            logger.info(f"表 {table_name} 无数据，跳过")
+            logger.info(f"Table {table_name} has no data, skipping")
             return
 
-        # 获取列名
+        # Get column names
         column_names = [description[0] for description in sqlite_cursor.description]
 
-        # 构建MySQL插入语句
+        # Build MySQL insert statement
         placeholders = ", ".join(["%s"] * len(column_names))
         columns = ", ".join([f"`{col}`" for col in column_names])
         insert_sql = f"INSERT INTO `{table_name}` ({columns}) VALUES ({placeholders})"
 
-        # 将Row对象转换为元组
+        # Convert Row objects to tuples
         data_tuples = [tuple(row) for row in rows]
 
-        # 插入到MySQL
+        # Insert into MySQL
         with mysql_engine.connect() as mysql_conn:
-            # 清空目标表（可选）
+            # Clear the target table (optional)
             mysql_conn.execute(text(f"DELETE FROM `{table_name}`"))
 
-            # 批量插入数据
+            # Insert data in batches
             mysql_conn.execute(text(insert_sql), data_tuples)
             mysql_conn.commit()
 
-        logger.info(f"表 {table_name} 迁移完成，共迁移 {len(data_tuples)} 条记录")
+        logger.info(f"Table {table_name} migration complete, migrated {len(data_tuples)} records")
 
     except Exception as e:
-        logger.error(f"迁移表 {table_name} 失败: {str(e)}")
+        logger.error(f"Failed to migrate table {table_name}: {str(e)}")
         raise
 
     finally:
@@ -123,56 +123,56 @@ def migrate_table_data(sqlite_path: str, table_name: str, mysql_engine):
 
 
 def main():
-    """主函数"""
+    """Main function"""
     print("=" * 60)
-    print("SQLite到MySQL数据迁移脚本")
+    print("SQLite to MySQL data migration script")
     print("=" * 60)
 
     try:
-        # 查找SQLite数据库
+        # Find the SQLite database
         sqlite_path = find_sqlite_db()
-        logger.info(f"找到SQLite数据库: {sqlite_path}")
+        logger.info(f"Found SQLite database: {sqlite_path}")
 
-        # 创建MySQL引擎
+        # Create MySQL engine
         mysql_engine = create_engine(settings.DATABASE_URL)
-        logger.info(f"连接到MySQL: {settings.DATABASE_URL}")
+        logger.info(f"Connected to MySQL: {settings.DATABASE_URL}")
 
-        # 测试MySQL连接
+        # Test MySQL connection
         with mysql_engine.connect() as conn:
             result = conn.execute(text("SELECT VERSION()"))
             version = result.fetchone()[0]
-            logger.info(f"MySQL版本: {version}")
+            logger.info(f"MySQL version: {version}")
 
-        # 获取SQLite表列表
+        # Get SQLite table list
         tables = get_sqlite_tables(sqlite_path)
-        logger.info(f"发现 {len(tables)} 个表: {', '.join(tables)}")
+        logger.info(f"Found {len(tables)} tables: {', '.join(tables)}")
 
-        # 确认是否继续
+        # Confirm whether to continue
         response = input(
             "\n是否继续迁移数据到MySQL？这将清空现有MySQL表中的数据。(y/N): "
         )
         if response.lower() != "y":
-            logger.info("迁移已取消")
+            logger.info("Migration cancelled")
             return
 
-        # 迁移每个表
+        # Migrate each table
         success_count = 0
         for table in tables:
             try:
                 migrate_table_data(sqlite_path, table, mysql_engine)
                 success_count += 1
             except Exception as e:
-                logger.error(f"跳过表 {table}: {str(e)}")
+                logger.error(f"Skipping table {table}: {str(e)}")
                 continue
 
         print()
         print("=" * 60)
-        print("✅ 数据迁移完成!")
-        print(f"成功迁移 {success_count}/{len(tables)} 个表")
+        print("✅ Data migration complete!")
+        print(f"Successfully migrated {success_count}/{len(tables)} tables")
         print("=" * 60)
 
     except Exception as e:
-        logger.error(f"迁移失败: {str(e)}")
+        logger.error(f"Migration failed: {str(e)}")
         sys.exit(1)
 
 

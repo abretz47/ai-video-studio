@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-MySQL数据库迁移管理脚本
+MySQL database migration management script
 
-提供数据库创建、迁移、回滚等功能
+Provides database creation, migration, rollback, and related features
 """
 
 import argparse
@@ -11,13 +11,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-# 添加项目根目录到Python路径
+# Add the project root to the Python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 import logging
 
-# 配置日志
+# Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -25,13 +25,13 @@ logger = logging.getLogger(__name__)
 
 
 def run_command(cmd: str, description: str = "") -> bool:
-    """运行命令并返回结果"""
+    """Run a command and return the result"""
     if description:
         print(f"\n{'='*60}")
         print(f"🔄 {description}")
         print(f"{'='*60}")
 
-    print(f"执行命令: {cmd}")
+    print(f"Running command: {cmd}")
 
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -40,112 +40,112 @@ def run_command(cmd: str, description: str = "") -> bool:
             print(result.stdout)
 
         if result.stderr:
-            print(f"错误输出: {result.stderr}")
+            print(f"Error output: {result.stderr}")
 
         if result.returncode != 0:
-            print(f"❌ 命令执行失败，退出码: {result.returncode}")
+            print(f"❌ Command failed with exit code: {result.returncode}")
             return False
         else:
-            print("✅ 命令执行成功")
+            print("✅ Command succeeded")
             return True
 
     except Exception as e:
-        print(f"❌ 执行命令时出错: {e}")
+        print(f"❌ Error while running command: {e}")
         return False
 
 
 def init_database():
-    """初始化数据库"""
+    """Initialize database"""
     try:
         print("=" * 60)
-        print("初始化MySQL数据库")
+        print("Initialize MySQL database")
         print("=" * 60)
 
-        # 运行数据库初始化脚本
+        # Run the database initialization script
         if not os.path.exists("scripts/init_mysql_db.py"):
-            print("❌ 找不到数据库初始化脚本")
+            print("❌ Database initialization script not found")
             return False
 
-        return run_command("python scripts/init_mysql_db.py", "初始化数据库")
+        return run_command("python scripts/init_mysql_db.py", "Initialize database")
 
     except Exception as e:
-        logger.error(f"数据库初始化失败: {str(e)}")
+        logger.error(f"Database initialization failed: {str(e)}")
         return False
 
 
 def create_migration(message: str):
-    """创建新的迁移文件"""
+    """Create a new migration file"""
     if not message:
-        print("❌ 请提供迁移消息")
+        print("❌ Please provide a migration message")
         return False
 
     cmd = f'alembic revision --autogenerate -m "{message}"'
-    return run_command(cmd, f"创建迁移: {message}")
+    return run_command(cmd, f"Create migration: {message}")
 
 
 def upgrade_database(revision: str = "head"):
-    """升级数据库到指定版本"""
+    """Upgrade the database to the specified revision"""
     cmd = f"alembic upgrade {revision}"
-    return run_command(cmd, f"升级数据库到版本: {revision}")
+    return run_command(cmd, f"Upgrade database to revision: {revision}")
 
 
 def downgrade_database(revision: str):
-    """降级数据库到指定版本"""
+    """Downgrade the database to the specified revision"""
     if not revision:
-        print("❌ 请提供要降级到的版本")
+        print("❌ Please provide the target downgrade revision")
         return False
 
     cmd = f"alembic downgrade {revision}"
-    return run_command(cmd, f"降级数据库到版本: {revision}")
+    return run_command(cmd, f"Downgrade database to revision: {revision}")
 
 
 def show_current_revision():
-    """显示当前数据库版本"""
-    return run_command("alembic current", "显示当前数据库版本")
+    """Show current database revision"""
+    return run_command("alembic current", "Show current database revision")
 
 
 def show_migration_history():
-    """显示迁移历史"""
-    return run_command("alembic history", "显示迁移历史")
+    """Show migration history"""
+    return run_command("alembic history", "Show migration history")
 
 
 def show_migration_heads():
-    """显示迁移头"""
-    return run_command("alembic heads", "显示迁移头")
+    """Show migration heads"""
+    return run_command("alembic heads", "Show migration heads")
 
 
 def test_connection():
-    """测试数据库连接"""
+    """Test database connection"""
     if not os.path.exists("test_mysql_connection.py"):
-        print("❌ 找不到数据库连接测试脚本")
+        print("❌ Database connection test script not found")
         return False
 
-    return run_command("python test_mysql_connection.py", "测试数据库连接")
+    return run_command("python test_mysql_connection.py", "Test database connection")
 
 
 def migrate_from_sqlite():
-    """从SQLite迁移数据"""
+    """Migrate data from SQLite"""
     if not os.path.exists("scripts/migrate_to_mysql.py"):
-        print("❌ 找不到SQLite迁移脚本")
+        print("❌ SQLite migration script not found")
         return False
 
-    return run_command("python scripts/migrate_to_mysql.py", "从SQLite迁移数据")
+    return run_command("python scripts/migrate_to_mysql.py", "Migrate data from SQLite")
 
 
 def reset_database():
-    """重置数据库（危险操作）"""
-    response = input("⚠️  这将删除所有数据并重新创建表结构，确定要继续吗？(y/N): ")
+    """Reset database (dangerous operation)"""
+    response = input("⚠️  This will delete all data and recreate the schema. Are you sure you want to continue? (y/N): ")
     if response.lower() != "y":
-        print("操作已取消")
+        print("Operation cancelled")
         return False
 
     success = True
 
-    # 降级到base
+    # Downgrade to base
     if not downgrade_database("base"):
         success = False
 
-    # 重新升级到head
+    # Upgrade back to head
     if success and not upgrade_database("head"):
         success = False
 
@@ -153,8 +153,8 @@ def reset_database():
 
 
 def main():
-    """主函数"""
-    parser = argparse.ArgumentParser(description="MySQL数据库迁移管理脚本")
+    """Main function"""
+    parser = argparse.ArgumentParser(description="MySQL database migration management script")
     parser.add_argument(
         "command",
         choices=[
@@ -169,20 +169,20 @@ def main():
             "migrate",
             "reset",
         ],
-        help="要执行的命令",
+        help="Command to execute",
     )
-    parser.add_argument("--message", "-m", help="迁移消息（用于create命令）")
+    parser.add_argument("--message", "-m", help="Migration message (for the create command)")
     parser.add_argument(
-        "--revision", "-r", help="目标版本（用于upgrade/downgrade命令）"
+        "--revision", "-r", help="Target revision (for the upgrade/downgrade commands)"
     )
 
     args = parser.parse_args()
 
     print("=" * 60)
-    print("MySQL数据库迁移管理")
+    print("MySQL database migration management")
     print("=" * 60)
-    print(f"项目目录: {project_root}")
-    print(f"执行命令: {args.command}")
+    print(f"Project directory: {project_root}")
+    print(f"Command: {args.command}")
     print()
 
     success = True
@@ -191,7 +191,7 @@ def main():
         success = init_database()
     elif args.command == "create":
         if not args.message:
-            print("❌ 创建迁移需要提供消息，使用 --message 或 -m 参数")
+            print("❌ Creating a migration requires a message. Use --message or -m")
             success = False
         else:
             success = create_migration(args.message)
@@ -200,7 +200,7 @@ def main():
         success = upgrade_database(revision)
     elif args.command == "downgrade":
         if not args.revision:
-            print("❌ 降级需要提供目标版本，使用 --revision 或 -r 参数")
+            print("❌ Downgrade requires a target revision. Use --revision or -r")
             success = False
         else:
             success = downgrade_database(args.revision)
