@@ -42,8 +42,8 @@ export function StoryGenerateForm({
   return (
     <CreationOverlay
       open={open}
-      title="AI生成故事"
-      subtitle="与环境/虚拟IP一致的创建面板，补充角色与设定后提交生成"
+      title="AI Story Generation"
+      subtitle="A creation panel aligned with environments and Virtual IP. Add characters and settings, then submit to generate."
       onClose={onClose}
       widthClassName="max-w-5xl"
     >
@@ -67,7 +67,7 @@ export function StoryGenerateForm({
             onClick={onPreviewPrompt}
             className={operatorButtonClass("secondary")}
           >
-            生成提示词预览
+            Generate Prompt Preview
           </button>
           {showPromptPreview && (
             <div className="mt-3 max-h-64 overflow-auto rounded-md border border-gray-200 bg-gray-50 p-3">
@@ -87,7 +87,7 @@ export function StoryGenerateForm({
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
           />
           <label htmlFor="asyncToggle" className="text-sm text-gray-700">
-            使用异步任务（推荐，支持队列）
+            Use an async task (recommended, supports queueing)
           </label>
         </div>
 
@@ -97,7 +97,7 @@ export function StoryGenerateForm({
             onClick={onClose}
             className={operatorButtonClass("secondary")}
           >
-            取消
+            Cancel
           </button>
           <button
             type="button"
@@ -105,7 +105,11 @@ export function StoryGenerateForm({
             disabled={generating}
             className={operatorButtonClass("primary")}
           >
-            {generating ? "生成中..." : useAsync ? "创建异步任务" : "开始生成"}
+            {generating
+              ? "Generating..."
+              : useAsync
+                ? "Create Async Task"
+                : "Start Generation"}
           </button>
         </div>
       </form>

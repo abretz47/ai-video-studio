@@ -26,20 +26,20 @@ export function OperatorAuthFrame({
               <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gray-950 text-sm font-semibold text-white">
                 AI
               </div>
-              <h1 className="mt-5 text-2xl font-semibold">IP 中心制作台</h1>
+              <h1 className="mt-5 text-2xl font-semibold">IP Center Studio</h1>
               <p className="mt-2 max-w-xl text-sm leading-6 text-gray-600">
-                统一管理 IP、环境、故事、剧集、时间轴与生成任务。
+                Manage IPs, environments, stories, episodes, timelines, and generation tasks in one place.
               </p>
             </div>
             <div className="grid max-w-xl grid-cols-3 gap-3 text-xs text-gray-500">
               <span className="rounded-md border border-gray-200 bg-white px-3 py-2">
-                IP 资产
+                IP Assets
               </span>
               <span className="rounded-md border border-gray-200 bg-white px-3 py-2">
                 Timeline
               </span>
               <span className="rounded-md border border-gray-200 bg-white px-3 py-2">
-                任务审计
+                Task Audit
               </span>
             </div>
           </section>

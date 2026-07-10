@@ -35,25 +35,25 @@ import { episodeWorkspaceHref } from "../src/utils/routes";
 const tracks: TimelineTrack[] = [
   {
     id: "dialogue",
-    label: "对白",
+    label: "Dialogue",
     items: [
       {
         id: "beat-1",
         startMs: 0,
         endMs: 1200,
-        label: "开场对白",
+        label: "Opening dialogue",
       },
     ],
   },
   {
     id: "storyboard",
-    label: "分镜",
+    label: "Storyboard",
     items: [
       {
         id: "frame-1",
         startMs: 0,
         endMs: 1200,
-        label: "主角推门",
+        label: "Protagonist pushes the door",
       },
     ],
   },
@@ -92,7 +92,7 @@ describe("timeline workspace helpers", () => {
     const selection = resolveTimelineSelection(tracks, "frame-1");
 
     assert.equal(firstTimelineItemId(tracks), "beat-1");
-    assert.equal(selection.item?.label, "主角推门");
+    assert.equal(selection.item?.label, "Protagonist pushes the door");
     assert.equal(selection.track?.id, "storyboard");
     assert.deepEqual(resolveTimelineSelection(tracks, "missing"), {
       item: null,
@@ -105,13 +105,13 @@ describe("timeline workspace helpers", () => {
       tracks[0],
       {
         id: "video",
-        label: "视频",
+        label: "Video",
         items: [
           {
             id: "legacy-video-item",
             startMs: 0,
             endMs: 1200,
-            label: "视频片段",
+            label: "Video clip",
             type: "clip",
           },
         ],
@@ -134,7 +134,7 @@ describe("timeline workspace helpers", () => {
         [
           {
             id: "storyboard",
-            label: "分镜",
+            label: "Storyboard",
             items: [
               {
                 id: "storyboard-video_scene_1_beat_1_001",
@@ -159,7 +159,7 @@ describe("timeline workspace helpers", () => {
         {
           id: 7,
           scene_number: "2",
-          slug_line: "INT. 公寓 - 夜",
+          slug_line: "INT. Apartment - Night",
           status: "draft",
           environment_id: 11,
         },
@@ -263,9 +263,9 @@ describe("timeline workspace helpers", () => {
         beats: [
           {
             beat_id: 3991,
-            speaker_name: "老拐",
-            characters_involved: ["老拐", "阿盖儿"],
-            dialogue_action: "打开手机",
+            speaker_name: "Lao Guai",
+            characters_involved: ["Lao Guai", "A Gaier"],
+            dialogue_action: "Opens phone",
             dialogue_emotion: "confident",
           },
         ],
@@ -275,9 +275,9 @@ describe("timeline workspace helpers", () => {
 
     const videoItem = result[0].items[0];
     assert.equal(videoItem.type, "video");
-    assert.equal(videoItem.meta?.speaker_name, "老拐");
-    assert.deepEqual(videoItem.meta?.characters_involved, ["老拐", "阿盖儿"]);
-    assert.equal(videoItem.meta?.dialogue_action, "打开手机");
+    assert.equal(videoItem.meta?.speaker_name, "Lao Guai");
+    assert.deepEqual(videoItem.meta?.characters_involved, ["Lao Guai", "A Gaier"]);
+    assert.equal(videoItem.meta?.dialogue_action, "Opens phone");
     assert.equal(videoItem.meta?.dialogue_emotion, "confident");
   });
 
@@ -533,17 +533,17 @@ describe("timeline workspace helpers", () => {
           scene_number: "1",
           start_ms: 0,
           end_ms: 1800,
-          description: "主角推门进入实验室",
+          description: "Protagonist pushes open the lab door",
           prompt_description: "2D cartoon, vertical short drama shot",
           shot_plan_prompt_layers: {
-            direction_anchor: "朝向实验室门口的悬疑进入",
+            direction_anchor: "Suspenseful entrance toward the lab doorway",
             aesthetic_reference: "IMAX film, Panavision C lens",
-            composition_geometry: "门在中心线，主角位于左三分线",
+            composition_geometry: "Door on the center line, protagonist on the left third",
             motion_timeline: [
-              { at_ms: 0, action: "主角伸手推门" },
-              { at_ms: 1800, action: "门缝透出冷光" },
+              { at_ms: 0, action: "Protagonist reaches out to push the door" },
+              { at_ms: 1800, action: "Cold light spills through the crack in the door" },
             ],
-            emotional_landing: "冷光里的紧张停顿",
+            emotional_landing: "A tense pause in the cold light",
           },
           image_url: "https://example.com/frame.png",
           video_url: "https://example.com/clip.mp4",
@@ -557,7 +557,7 @@ describe("timeline workspace helpers", () => {
       {
         id: 1,
         scene_number: "1",
-        slug_line: "INT. 实验室 - 夜",
+        slug_line: "INT. Laboratory - Night",
         status: "draft",
       },
     ]);
@@ -574,13 +574,13 @@ describe("timeline workspace helpers", () => {
       gridGeneratedAt: null,
     });
     assert.equal(frames[0].clipId, "dialogue_scene_1_beat_1_001");
-    assert.equal(frames[0].sceneLabel, "1 · INT. 实验室 - 夜");
+    assert.equal(frames[0].sceneLabel, "1 · INT. Laboratory - Night");
     assert.equal(frames[0].imageUrl, "https://example.com/frame.png");
     assert.equal(frames[0].videoUrl, "https://example.com/clip.mp4");
     assert.equal(frames[0].sourceKind, "timeline_clip");
     assert.equal(
       frames[0].promptLayers?.compositionGeometry,
-      "门在中心线，主角位于左三分线",
+      "Door on the center line, protagonist on the left third",
     );
     assert.equal(frames[0].promptLayers?.motionTimeline[1].atMs, 1800);
   });
@@ -618,16 +618,16 @@ describe("timeline workspace helpers", () => {
                 clip_id: "video_scene_1_beat_1_001",
                 start_ms: 0,
                 end_ms: 1200,
-                visual_prompt: "主角推门",
-                video_prompt: "镜头推近",
-                direction_anchor: "朝向门口的动作起势",
+                visual_prompt: "Protagonist pushes the door",
+                video_prompt: "Camera pushes in",
+                direction_anchor: "Opening motion toward the doorway",
                 aesthetic_reference: "analog film still",
-                composition_geometry: "门框居中，主角从右侧入画",
+                composition_geometry: "Doorframe centered, protagonist enters from the right",
                 motion_timeline: [
-                  { at_ms: 0, action: "主角推门" },
-                  { at_ms: 1200, action: "众人回头" },
+                  { at_ms: 0, action: "Protagonist pushes the door" },
+                  { at_ms: 1200, action: "Everyone turns back" },
                 ],
-                emotional_landing: "突然被注视的压迫感",
+                emotional_landing: "The oppressive feeling of suddenly being watched",
               },
             ],
           },
@@ -646,7 +646,7 @@ describe("timeline workspace helpers", () => {
     assert.equal(grid.panels[0].timeLabel, "0:00.000 - 0:01.200");
     assert.equal(
       grid.panels[0].promptLayers?.directionAnchor,
-      "朝向门口的动作起势",
+      "Opening motion toward the doorway",
     );
     assert.equal(grid.panels[0].promptLayers?.motionTimeline[1].atMs, 1200);
   });
@@ -712,7 +712,7 @@ describe("timeline workspace helpers", () => {
 
     assert.equal(overview?.timelineLabel, "Timeline 10 · v5");
     assert.equal(overview?.durationLabel, "4.6s");
-    assert.equal(overview?.trackSummary, "2 轨 · 3 clips");
+    assert.equal(overview?.trackSummary, "2 tracks · 3 clips");
     assert.equal(overview?.dialogueClipCount, 1);
     assert.equal(overview?.videoClipCount, 2);
     assert.equal(overview?.audioUrl, "https://example.com/episode.mp3");
@@ -770,16 +770,16 @@ describe("timeline workspace helpers", () => {
       timeline,
       "video_scene_1_beat_1_001",
       {
-        directionAnchor: "朝向门口的动作起势",
+        directionAnchor: "Opening motion toward the doorway",
         aestheticReference: "analog film still",
         shotType: "low angle medium shot",
         cameraMovement: "slow push-in",
-        compositionGeometry: "门框居中，主角从右侧入画",
+        compositionGeometry: "Doorframe centered, protagonist enters from the right",
         motionTimeline: [
-          { atMs: 0, action: "主角推门" },
-          { atMs: 1200, action: "众人回头" },
+          { atMs: 0, action: "Protagonist pushes the door" },
+          { atMs: 1200, action: "Everyone turns back" },
         ],
-        emotionalLanding: "突然被注视的压迫感",
+        emotionalLanding: "The oppressive feeling of suddenly being watched",
         promptMethod: "direction_reference_geometry_timeline_emotion_v1",
       },
     );
@@ -792,10 +792,10 @@ describe("timeline workspace helpers", () => {
     const refs = clip.source_refs as Record<string, unknown>;
     assert.equal(refs.grid_storyboard_panel, undefined);
     const shotPlan = refs.timeline_shot_plan as Record<string, unknown>;
-    assert.equal(shotPlan.direction_anchor, "朝向门口的动作起势");
+    assert.equal(shotPlan.direction_anchor, "Opening motion toward the doorway");
     assert.deepEqual(shotPlan.motion_timeline, [
-      { at_ms: 0, action: "主角推门" },
-      { at_ms: 1200, action: "众人回头" },
+      { at_ms: 0, action: "Protagonist pushes the door" },
+      { at_ms: 1200, action: "Everyone turns back" },
     ]);
     assert.equal(patched.support_views?.storyboard_grid, undefined);
   });

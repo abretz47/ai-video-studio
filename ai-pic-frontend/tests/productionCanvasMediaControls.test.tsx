@@ -41,9 +41,9 @@ describe("ProductionCanvasMediaControls", () => {
               skill_result: {
                 skill: body.skill,
                 label: body.skill === "image.candidates" ? "Image Skill" : "Video Skill",
-                title: "已提交媒体任务",
+                title: "Media task submitted",
                 status: "running",
-                detail: "后台已提交媒体任务。",
+                detail: "Media task submitted in the backend.",
                 outputs: {
                   script_id: body.script_id,
                   dispatched_task_id: body.skill === "image.candidates" ? 91 : 92,
@@ -65,14 +65,14 @@ describe("ProductionCanvasMediaControls", () => {
               {
                 id: "skill-image",
                 label: "Image Candidates",
-                title: "图片候选执行入口",
+                title: "Image candidate execution entry",
                 status: "blocked",
                 x: 120,
                 y: 320,
                 width: 220,
                 kind: "skill_result",
                 skill: "image.candidates",
-                detail: "复用现有分镜图片候选任务。",
+                detail: "Reuses the existing storyboard image candidate task.",
                 outputs: {
                   script_id: 321,
                   required_inputs: ["manual_media_controls"],
@@ -81,14 +81,14 @@ describe("ProductionCanvasMediaControls", () => {
               {
                 id: "skill-video",
                 label: "Video Candidates",
-                title: "视频候选执行入口",
+                title: "Video candidate execution entry",
                 status: "blocked",
                 x: 380,
                 y: 320,
                 width: 220,
                 kind: "skill_result",
                 skill: "video.candidates",
-                detail: "复用现有分镜视频候选任务。",
+                detail: "Reuses the existing storyboard video candidate task.",
                 outputs: {
                   script_id: 321,
                   required_inputs: ["manual_media_controls"],
@@ -108,55 +108,55 @@ describe("ProductionCanvasMediaControls", () => {
         <ProductionCanvasContent storageKey={null} autosaveDelayMs={null} />,
         { container: dom.window.document.body },
       );
-      fireEvent.input(utils.getByLabelText("生产目标"), {
-        target: { value: "生成媒体候选" },
+      fireEvent.input(utils.getByLabelText("Production goal"), {
+        target: { value: "Generate media candidates" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create all" }));
       await waitFor(() =>
-        assert.ok(utils.getAllByText("图片候选执行入口").length),
+        assert.ok(utils.getAllByText("Image candidate execution entry").length),
       );
 
-      fireEvent.click(utils.getByLabelText("Image Candidates 图片候选执行入口"));
-      fireEvent.input(utils.getByLabelText("媒体帧索引"), {
+      fireEvent.click(utils.getByLabelText("Image Candidates Image candidate execution entry"));
+      fireEvent.input(utils.getByLabelText("Media frame indexes"), {
         target: { value: "1" },
       });
-      fireEvent.input(utils.getByLabelText("媒体模型"), {
+      fireEvent.input(utils.getByLabelText("Media model"), {
         target: { value: "codex:gpt-image-2" },
       });
-      fireEvent.input(utils.getByLabelText("图片画幅"), {
+      fireEvent.input(utils.getByLabelText("Image aspect ratio"), {
         target: { value: "16:9" },
       });
-      fireEvent.click(utils.getByLabelText("要求参考图"));
+      fireEvent.click(utils.getByLabelText("Require reference images"));
       await waitFor(() => assert.ok(utils.getByText("frame_indexes: 1")));
-      fireEvent.click(utils.getByRole("button", { name: "后台执行" }));
+      fireEvent.click(utils.getByRole("button", { name: "Run in background" }));
       await waitFor(() => assert.equal(executeRequests[0]?.skill, "image.candidates"));
       assert.deepEqual(executeRequests[0]?.frame_indexes, [1]);
       assert.equal(executeRequests[0]?.model, "codex:gpt-image-2");
       assert.equal(executeRequests[0]?.aspect_ratio, "16:9");
       assert.equal(executeRequests[0]?.require_reference_images, false);
 
-      fireEvent.click(utils.getByLabelText("Video Candidates 视频候选执行入口"));
-      fireEvent.input(utils.getByLabelText("媒体帧索引"), {
+      fireEvent.click(utils.getByLabelText("Video Candidates Video candidate execution entry"));
+      fireEvent.input(utils.getByLabelText("Media frame indexes"), {
         target: { value: "1" },
       });
-      fireEvent.input(utils.getByLabelText("媒体模型"), {
+      fireEvent.input(utils.getByLabelText("Media model"), {
         target: { value: "minimax:video-01" },
       });
-      fireEvent.input(utils.getByLabelText("视频时长"), {
+      fireEvent.input(utils.getByLabelText("Video duration"), {
         target: { value: "6" },
       });
-      fireEvent.input(utils.getByLabelText("视频 FPS"), {
+      fireEvent.input(utils.getByLabelText("Video FPS"), {
         target: { value: "30" },
       });
-      fireEvent.input(utils.getByLabelText("视频分辨率"), {
+      fireEvent.input(utils.getByLabelText("Video resolution"), {
         target: { value: "1080p" },
       });
-      fireEvent.input(utils.getByLabelText("视频画幅"), {
+      fireEvent.input(utils.getByLabelText("Video aspect ratio"), {
         target: { value: "16:9" },
       });
-      fireEvent.click(utils.getByLabelText("固定镜头"));
+      fireEvent.click(utils.getByLabelText("Fixed camera"));
       await waitFor(() => assert.ok(utils.getByText("duration: 6")));
-      fireEvent.click(utils.getByRole("button", { name: "后台执行" }));
+      fireEvent.click(utils.getByRole("button", { name: "Run in background" }));
       await waitFor(() => assert.equal(executeRequests[1]?.skill, "video.candidates"));
       assert.deepEqual(executeRequests[1]?.frame_indexes, [1]);
       assert.equal(executeRequests[1]?.model, "minimax:video-01");

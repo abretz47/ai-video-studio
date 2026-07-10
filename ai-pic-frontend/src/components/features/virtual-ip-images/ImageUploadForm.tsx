@@ -18,11 +18,11 @@ export function ImageUploadForm({
 }: ImageUploadFormProps) {
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-gray-950">上传图片</h3>
+      <h3 className="text-sm font-semibold text-gray-950">Upload Image</h3>
       <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            选择文件
+            Select File
           </label>
           <input
             type="file"
@@ -38,7 +38,7 @@ export function ImageUploadForm({
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            图片类别
+            Image Category
           </label>
           <select
             value={uploadForm.category}
@@ -50,16 +50,16 @@ export function ImageUploadForm({
             }
             className="h-8 w-full rounded-md border border-gray-200 bg-white px-2 text-xs focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
           >
-            <option value="portrait">肖像</option>
-            <option value="full_body">全身</option>
-            <option value="scene">场景</option>
-            <option value="action">动作</option>
-            <option value="emotion">情绪</option>
+            <option value="portrait">Portrait</option>
+            <option value="full_body">Full Body</option>
+            <option value="scene">Scene</option>
+            <option value="action">Action</option>
+            <option value="emotion">Emotion</option>
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            标签（可选，逗号分隔）
+            Tags (optional, comma-separated)
           </label>
           <input
             type="text"
@@ -67,7 +67,7 @@ export function ImageUploadForm({
             onChange={(e) =>
               setUploadForm((prev) => ({ ...prev, tags: e.target.value }))
             }
-            placeholder="例如：微笑、晴天、户外"
+            placeholder="e.g. smiling, sunny, outdoors"
             className="h-8 w-full rounded-md border border-gray-200 px-3 text-xs focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
           />
         </div>
@@ -84,7 +84,7 @@ export function ImageUploadForm({
               }
               className="mr-2"
             />
-            <span className="text-sm text-gray-700">设为默认图片</span>
+            <span className="text-sm text-gray-700">Set as default image</span>
           </label>
         </div>
       </div>
@@ -94,7 +94,7 @@ export function ImageUploadForm({
           disabled={uploading || !uploadForm.file}
           className={operatorButtonClass("primary")}
         >
-          {uploading ? "上传中..." : "上传图片"}
+          {uploading ? "Uploading..." : "Upload Image"}
         </button>
       </div>
     </div>

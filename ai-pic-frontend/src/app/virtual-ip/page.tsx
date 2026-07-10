@@ -40,14 +40,14 @@ function VirtualIPListContent() {
 
   return (
     <OperatorShell
-      title="IP 项目"
-      subtitle="IP 资产是故事、剧集和生成任务的入口"
-      breadcrumb={["IP 中心", "IP 项目"]}
+      title="Virtual IP Projects"
+      subtitle="Virtual IP assets are the entry point for stories, episodes, and generation tasks"
+      breadcrumb={["IP Hub", "Virtual IP Projects"]}
     >
       <OperatorPanel className="mb-5 p-4">
-        <h2 className="text-sm font-semibold text-gray-950">生产入口</h2>
+        <h2 className="text-sm font-semibold text-gray-950">Production Entry Point</h2>
         <p className="mt-1 text-xs text-gray-500">
-          IP 资产用于组织角色、故事和剧集；新故事优先从这里选择角色资产。
+          Virtual IP assets organize characters, stories, and episodes; select character assets here first when creating a new story.
         </p>
       </OperatorPanel>
 

@@ -19,9 +19,9 @@ import { PRODUCTION_CANVAS_STORAGE_KEY } from "./productionCanvasViewModel";
 export function ProductionCanvasBoard() {
   return (
     <OperatorShell
-      title="创作画布"
-      subtitle="从现有项目编排剧本、分镜、图片候选、视频候选和时间线"
-      breadcrumb={["IP 中心", "创作画布"]}
+      title="Production Canvas"
+      subtitle="Orchestrate scripts, storyboards, image candidates, video candidates, and timelines from existing projects"
+      breadcrumb={["IP Center", "Production Canvas"]}
       showGlobalSearch={false}
       rightSlot={
         <div className="hidden sm:block">
@@ -29,7 +29,7 @@ export function ProductionCanvasBoard() {
             href="/stories"
             className={operatorButtonClass("secondary", "whitespace-nowrap")}
           >
-            返回故事生产
+            Back to Story Production
           </Link>
         </div>
       }
@@ -82,11 +82,11 @@ export function ProductionCanvasContent({
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
         <OperatorPanel className="overflow-hidden">
           <OperatorSectionHeader
-            title="短剧生产链路"
+            title="Short Drama Production Pipeline"
             subtitle="Brief -> Script -> Storyboard -> Image Candidates -> Video Candidates -> Timeline -> Report"
             action={
               <Link href="/tasks" className={operatorButtonClass("ghost")}>
-                查看任务
+                View Tasks
               </Link>
             }
           />
@@ -105,7 +105,7 @@ export function ProductionCanvasContent({
               className={operatorButtonClass("primary")}
               onClick={handleAddNote}
             >
-              添加便签
+              Add Note
             </button>
             <ProductionCanvasRunControls
               busy={persistence.busy}
@@ -117,8 +117,8 @@ export function ProductionCanvasContent({
             />
             <button
               type="button"
-              aria-label="缩小"
-              title="缩小"
+              aria-label="Zoom out"
+              title="Zoom out"
               className={operatorButtonClass("secondary", "w-8 px-0")}
               onClick={() => handleZoomButton(-1)}
             >
@@ -129,8 +129,8 @@ export function ProductionCanvasContent({
             </div>
             <button
               type="button"
-              aria-label="放大"
-              title="放大"
+              aria-label="Zoom in"
+              title="Zoom in"
               className={operatorButtonClass("secondary", "w-8 px-0")}
               onClick={() => handleZoomButton(1)}
             >
@@ -141,14 +141,14 @@ export function ProductionCanvasContent({
               className={operatorButtonClass("secondary")}
               onClick={handleFit}
             >
-              适配
+              Fit
             </button>
             <button
               type="button"
               className={operatorButtonClass("ghost")}
               onClick={handleReset}
             >
-              重置
+              Reset
             </button>
           </div>
           <div
@@ -211,11 +211,11 @@ export function ProductionCanvasContent({
             onUpdateNodeOutputs={handleUpdateNodeOutputs}
           />
           <OperatorPanel className="p-4">
-            <div className="text-xs font-semibold text-gray-950">画布操作</div>
+            <div className="text-xs font-semibold text-gray-950">Canvas Actions</div>
             <div className="mt-2 space-y-1 text-xs leading-5 text-gray-500">
-              <p>拖拽节点调整链路位置。</p>
-              <p>拖拽空白区域移动画布。</p>
-              <p>滚轮或工具栏缩放视图。</p>
+              <p>Drag nodes to adjust pipeline positions.</p>
+              <p>Drag empty space to move the canvas.</p>
+              <p>Use the mouse wheel or toolbar to zoom the view.</p>
             </div>
           </OperatorPanel>
         </div>
@@ -223,19 +223,19 @@ export function ProductionCanvasContent({
 
       <div className="grid gap-3 lg:grid-cols-3">
         <OperatorPanel className="p-4">
-          <div className="text-xs font-semibold text-gray-950">引用对象</div>
+          <div className="text-xs font-semibold text-gray-950">Referenced Objects</div>
           <p className="mt-2 text-xs leading-5 text-gray-600">
             IP / Story / Episode / Task / Artifact
           </p>
         </OperatorPanel>
         <OperatorPanel className="p-4">
-          <div className="text-xs font-semibold text-gray-950">执行层</div>
+          <div className="text-xs font-semibold text-gray-950">Execution Layer</div>
           <p className="mt-2 text-xs leading-5 text-gray-600">
             Existing API / Skill Invocation / Artifact Run
           </p>
         </OperatorPanel>
         <OperatorPanel className="p-4">
-          <div className="text-xs font-semibold text-gray-950">证据出口</div>
+          <div className="text-xs font-semibold text-gray-950">Evidence Outputs</div>
           <p className="mt-2 text-xs leading-5 text-gray-600">
             Quality Gate / Cost / Failure / Provider Lineage
           </p>

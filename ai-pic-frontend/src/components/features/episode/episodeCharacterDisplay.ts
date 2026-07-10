@@ -2,7 +2,7 @@ import type { EpisodeCharacter } from "@/utils/api/types";
 
 export function episodeCharacterDisplayName(
   character: EpisodeCharacter,
-  fallback = "未命名角色",
+  fallback = "Unnamed character",
 ) {
   return (
     [

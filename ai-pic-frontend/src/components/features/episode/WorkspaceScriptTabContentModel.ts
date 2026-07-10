@@ -78,5 +78,5 @@ export const sceneViewsFromNodes = (scenes: SceneNode[]): ScriptScene[] =>
     location: scene.location,
     time: scene.time_of_day,
     description:
-      scene.slug_line || scene.status || `场景 ${scene.scene_number}`,
+      scene.slug_line || scene.status || `Scene ${scene.scene_number}`,
   }));

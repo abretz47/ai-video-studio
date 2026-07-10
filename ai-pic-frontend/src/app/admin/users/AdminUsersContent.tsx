@@ -48,10 +48,10 @@ export function AdminUsersContent() {
     try {
       const response = await adminAPI.getUsers(filters);
       if (response.success && response.data) setUserList(response.data);
-      else setError(response.error || "获取用户列表失败");
+      else setError(response.error || "Failed to load user list");
     } catch (err) {
-      console.error("加载用户列表失败:", err);
-      setError("网络错误，请稍后重试");
+      console.error("Failed to load user list:", err);
+      setError("Network error. Please try again later");
     } finally {
       setLoading(false);
     }
@@ -68,7 +68,7 @@ export function AdminUsersContent() {
         email_verified: true,
       });
       if (response.success) await loadUsers();
-      else setError(response.error || "操作失败");
+      else setError(response.error || "Operation failed");
     } finally {
       setProcessingUsers((prev) => {
         const next = new Set(prev);
@@ -88,19 +88,19 @@ export function AdminUsersContent() {
   };
 
   return (
-    <OperatorAdminShell title="用户管理" subtitle="注册、审批和权限状态">
+    <OperatorAdminShell title="User Management" subtitle="Registration, approvals, and permission status">
       <div className="space-y-4">
         <OperatorPanel>
           <OperatorSectionHeader
-            title="筛选"
-            subtitle={userList ? `共 ${userList.total} 个用户` : "加载用户数据"}
+            title="Filters"
+            subtitle={userList ? `${userList.total} users total` : "Loading user data"}
             action={
               <button
                 type="button"
                 onClick={() => void loadUsers()}
                 className={operatorButtonClass("secondary")}
               >
-                刷新
+                Refresh
               </button>
             }
           />
@@ -111,7 +111,7 @@ export function AdminUsersContent() {
                 setFilters((prev) => ({ ...prev, page: 1, search: event.target.value || undefined }))
               }
               className={operatorInputClass("w-full")}
-              placeholder="搜索用户名、邮箱或姓名"
+              placeholder="Search username, email, or name"
             />
             <select
               value={filters.status_filter || ""}
@@ -120,11 +120,11 @@ export function AdminUsersContent() {
               }
               className={operatorSelectClass("w-full")}
             >
-              <option value="">所有状态</option>
-              <option value="pending">待审批</option>
-              <option value="approved">已审批</option>
-              <option value="suspended">已暂停</option>
-              <option value="locked">已锁定</option>
+              <option value="">All statuses</option>
+              <option value="pending">Pending Approval</option>
+              <option value="approved">Approved</option>
+              <option value="suspended">Suspended</option>
+              <option value="locked">Locked</option>
             </select>
             <select
               value={filters.role_filter || ""}
@@ -133,19 +133,19 @@ export function AdminUsersContent() {
               }
               className={operatorSelectClass("w-full")}
             >
-              <option value="">所有角色</option>
-              <option value="admin">管理员</option>
-              <option value="superuser">超级用户</option>
-              <option value="user">普通用户</option>
+              <option value="">All roles</option>
+              <option value="admin">Administrator</option>
+              <option value="superuser">Superuser</option>
+              <option value="user">Regular User</option>
             </select>
           </div>
         </OperatorPanel>
 
         {error ? <OperatorState title={error} tone="red" /> : null}
-        {loading && !userList ? <OperatorState title="加载用户列表..." /> : null}
+        {loading && !userList ? <OperatorState title="Loading user list..." /> : null}
 
         <OperatorPanel>
-          <OperatorSectionHeader title="用户列表" subtitle="审批、邮箱验证和详情管理" />
+          <OperatorSectionHeader title="User List" subtitle="Approval, email verification, and detail management" />
           <div className="divide-y divide-gray-100">
             {userList?.users.length ? (
               userList.users.map((user) => (
@@ -159,7 +159,7 @@ export function AdminUsersContent() {
                 />
               ))
             ) : (
-              <div className="p-6 text-sm text-gray-500">没有符合条件的用户。</div>
+              <div className="p-6 text-sm text-gray-500">No users match the current filters.</div>
             )}
           </div>
           {userList && userList.pages > 1 ? (

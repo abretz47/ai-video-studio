@@ -17,30 +17,30 @@ export function TimelineClipGenerationChain({
 }) {
   const steps: ChainStep[] = [
     {
-      label: "选参考/绑定",
+      label: "Select References / Bind",
       state: "ready",
-      detail: "IP、环境和手动参考会随任务提交",
+      detail: "IP, environment, and manual references are submitted with the task",
     },
     {
-      label: "生图：分镜图",
+      label: "Generate Image: Storyboard",
       state: readiness.storyboardReady ? "ready" : "pending",
-      detail: readiness.storyboardReady ? "已生成" : "先生成片段分镜图",
+      detail: readiness.storyboardReady ? "Generated" : "Generate the clip storyboard first",
     },
     {
-      label: "生图：首尾帧",
+      label: "Generate Image: Start/End Frames",
       state: readiness.keyframesReady ? "ready" : "pending",
       detail: readiness.keyframeStatus.label,
     },
     {
-      label: "生视频：片段视频",
+      label: "Generate Video: Clip Video",
       state: readiness.canGenerateVideo ? "ready" : "blocked",
-      detail: readiness.videoGateMessage || "可以生成片段视频",
+      detail: readiness.videoGateMessage || "Ready to generate clip video",
     },
   ];
 
   return (
     <section
-      aria-label="片段生图生视频链路"
+      aria-label="Clip image/video generation chain"
       data-clip-generation-chain="true"
       className="mb-2 grid gap-1.5 rounded-md border border-blue-100 bg-blue-50/60 p-2 text-[11px] text-slate-700 min-[760px]:grid-cols-4"
     >

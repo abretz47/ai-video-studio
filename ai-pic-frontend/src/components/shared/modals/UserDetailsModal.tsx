@@ -236,27 +236,27 @@ export default function UserDetailsModal({
     if (!user.is_active) {
       return (
         <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-          已停用
+          Disabled
         </span>
       );
     }
     if (!user.is_approved) {
       return (
         <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-          待审批
+          Pending Approval
         </span>
       );
     }
     if (!user.email_verified) {
       return (
         <span className="px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
-          邮箱未验证
+          Email Unverified
         </span>
       );
     }
     return (
       <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-        正常
+        Active
       </span>
     );
   };
@@ -265,13 +265,13 @@ export default function UserDetailsModal({
     if (user.is_admin) {
       return (
         <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
-          管理员
+          Admin
         </span>
       );
     }
     return (
       <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-        用户
+        User
       </span>
     );
   };
@@ -293,9 +293,9 @@ export default function UserDetailsModal({
   if (!isOpen || !user) return null;
 
   const tabs = [
-    { id: "details", name: "基本信息" },
-    { id: "audit", name: "操作记录" },
-    { id: "security", name: "安全信息" },
+    { id: "details", name: "Basic Info" },
+    { id: "audit", name: "Activity Log" },
+    { id: "security", name: "Security" },
   ] as const;
 
   return (
@@ -311,7 +311,7 @@ export default function UserDetailsModal({
               <h3 className="text-lg font-medium text-gray-900">
                 {user.full_name || user.username}
               </h3>
-              <p className="text-sm text-gray-500">用户ID: {user.id}</p>
+              <p className="text-sm text-gray-500">User ID: {user.id}</p>
             </div>
           </div>
           <button
@@ -346,15 +346,15 @@ export default function UserDetailsModal({
           {activeTab === "details" && (
             <div className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* 基本信息 */}
+                {/* Basic information */}
                 <div className="space-y-4">
                   <h4 className="text-md font-medium text-gray-900">
-                    基本信息
+                    Basic Info
                   </h4>
                   <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        用户名
+                        Username
                       </label>
                       <p className="mt-1 text-sm text-gray-900">
                         {user.username}
@@ -362,13 +362,13 @@ export default function UserDetailsModal({
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        邮箱地址
+                        Email Address
                       </label>
                       <p className="mt-1 text-sm text-gray-900">{user.email}</p>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        全名
+                        Full Name
                       </label>
                       <p className="mt-1 text-sm text-gray-900">
                         {user.full_name || "-"}
@@ -376,28 +376,28 @@ export default function UserDetailsModal({
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        用户状态
+                        User Status
                       </label>
                       <div className="mt-1">{getStatusBadge(user)}</div>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        用户角色
+                        User Role
                       </label>
                       <div className="mt-1">{getRoleBadge(user)}</div>
                     </div>
                   </div>
                 </div>
 
-                {/* 时间信息 */}
+                {/* Time information */}
                 <div className="space-y-4">
                   <h4 className="text-md font-medium text-gray-900">
-                    时间信息
+                    Time Information
                   </h4>
                   <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        注册时间
+                        Registered
                       </label>
                       <p className="mt-1 text-sm text-gray-900">
                         {formatDateTime(user.created_at)}
@@ -405,7 +405,7 @@ export default function UserDetailsModal({
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        最后更新
+                        Last Updated
                       </label>
                       <p className="mt-1 text-sm text-gray-900">
                         {formatDateTime(user.updated_at)}
@@ -413,19 +413,19 @@ export default function UserDetailsModal({
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-500">
-                        最后登录
+                        Last Login
                       </label>
                       <p className="mt-1 text-sm text-gray-900">
                         {user.last_login_at
                           ? formatDateTime(user.last_login_at)
-                          : "从未登录"}
+                          : "Never logged in"}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 操作按钮 */}
+              {/* Action buttons */}
               <div className="mt-8 flex flex-wrap gap-3">
                 {!user.is_approved && (
                   <>
@@ -434,14 +434,14 @@ export default function UserDetailsModal({
                       disabled={isPerformingAction}
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
                     >
-                      批准用户
+                      Approve User
                     </button>
                     <button
                       onClick={handleRejectUser}
                       disabled={isPerformingAction}
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
                     >
-                      拒绝用户
+                      Reject User
                     </button>
                   </>
                 )}
@@ -452,7 +452,7 @@ export default function UserDetailsModal({
                     disabled={isPerformingAction}
                     className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                   >
-                    暂停用户
+                    Suspend User
                   </button>
                 )}
 
@@ -462,7 +462,7 @@ export default function UserDetailsModal({
                     disabled={isPerformingAction}
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
                   >
-                    重新激活
+                    Reactivate
                   </button>
                 )}
 
@@ -472,7 +472,7 @@ export default function UserDetailsModal({
                   className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                 >
                   <ShieldIcon className="h-4 w-4 mr-2" />
-                  管理角色
+                  Manage Roles
                 </button>
               </div>
             </div>
@@ -481,7 +481,7 @@ export default function UserDetailsModal({
           {activeTab === "audit" && (
             <div className="p-6">
               <h4 className="text-md font-medium text-gray-900 mb-4">
-                操作记录
+                Activity Log
               </h4>
 
               {loading ? (
@@ -490,7 +490,7 @@ export default function UserDetailsModal({
                 </div>
               ) : auditLogs.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
-                  暂无操作记录
+                  No activity yet
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -512,15 +512,15 @@ export default function UserDetailsModal({
                           </p>
                         </div>
                         <p className="text-sm text-gray-600">
-                          操作人:{" "}
+                          Performed by:{" "}
                           {log.admin_user_id
-                            ? `管理员 ID: ${log.admin_user_id}`
-                            : "系统"}
+                            ? `Admin ID: ${log.admin_user_id}`
+                            : "System"}
                         </p>
                         {(log.old_values || log.new_values) && (
                           <p className="text-sm text-gray-500 mt-1">
-                            {log.old_values && `原值: ${log.old_values}`}
-                            {log.new_values && ` → 新值: ${log.new_values}`}
+                            {log.old_values && `Previous: ${log.old_values}`}
+                            {log.new_values && ` → New: ${log.new_values}`}
                           </p>
                         )}
                         {log.ip_address && (
@@ -539,23 +539,23 @@ export default function UserDetailsModal({
           {activeTab === "security" && (
             <div className="p-6">
               <h4 className="text-md font-medium text-gray-900 mb-4">
-                安全信息
+                Security
               </h4>
 
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="text-sm font-medium text-gray-500">
-                      邮箱验证状态
+                      Email Verification
                     </label>
                     <div className="mt-1">
                       {user.email_verified ? (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          ✓ 已验证
+                          ✓ Verified
                         </span>
                       ) : (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                          ✗ 未验证
+                          ✗ Unverified
                         </span>
                       )}
                     </div>
@@ -563,30 +563,30 @@ export default function UserDetailsModal({
 
                   <div>
                     <label className="text-sm font-medium text-gray-500">
-                      登录失败次数
+                      Failed Login Attempts
                     </label>
                     <p className="mt-1 text-sm text-gray-900">
-                      {user.failed_login_attempts || 0} 次
+                      {user.failed_login_attempts || 0} times
                     </p>
                   </div>
 
                   <div>
                     <label className="text-sm font-medium text-gray-500">
-                      账户锁定状态
+                      Account Lock Status
                     </label>
                     <div className="mt-1">
                       {user.account_locked_until ? (
                         <div>
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            🔒 已锁定
+                            🔒 Locked
                           </span>
                           <p className="text-xs text-gray-500 mt-1">
-                            锁定至: {formatDateTime(user.account_locked_until)}
+                            Locked until: {formatDateTime(user.account_locked_until)}
                           </p>
                         </div>
                       ) : (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          🔓 正常
+                          🔓 Normal
                         </span>
                       )}
                     </div>
@@ -594,22 +594,22 @@ export default function UserDetailsModal({
 
                   <div>
                     <label className="text-sm font-medium text-gray-500">
-                      账户权限
+                      Account Permissions
                     </label>
                     <div className="mt-1 space-x-2">
                       {user.is_active && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          活跃
+                          Active
                         </span>
                       )}
                       {user.is_approved && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          已审批
+                          Approved
                         </span>
                       )}
                       {user.is_admin && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                          管理员
+                          Admin
                         </span>
                       )}
                     </div>
@@ -626,12 +626,12 @@ export default function UserDetailsModal({
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
           >
-            关闭
+            Close
           </button>
         </div>
       </div>
 
-      {/* 角色管理模态框 */}
+      {/* Role management modal */}
       <RoleManagementModal
         user={user}
         isOpen={showRoleModal}

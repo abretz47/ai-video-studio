@@ -19,7 +19,7 @@ export function CharacterCommonFields<
     <>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          角色名称 <span className="text-red-500">*</span>
+          Character Name <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
@@ -29,14 +29,14 @@ export function CharacterCommonFields<
             setFormData({ ...formData, character_name: e.target.value })
           }
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="例如：快递员、医生、路人甲"
+          placeholder="e.g. Courier, doctor, passerby"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            角色类型
+            Character Type
           </label>
           <select
             value={formData.role_type || "temporary"}
@@ -45,15 +45,15 @@ export function CharacterCommonFields<
             }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="temporary">临时角色</option>
-            <option value="guest">客串</option>
-            <option value="extra">群众演员</option>
+            <option value="temporary">Temporary Character</option>
+            <option value="guest">Cameo</option>
+            <option value="extra">Extra</option>
           </select>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            重要度 (1-5)
+            Importance (1-5)
           </label>
           <input
             type="number"
@@ -73,7 +73,7 @@ export function CharacterCommonFields<
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          性格描述
+          Personality Description
         </label>
         <textarea
           value={formData.personality || ""}
@@ -82,13 +82,13 @@ export function CharacterCommonFields<
           }
           rows={2}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="例如：热情、乐观、工作认真"
+          placeholder="e.g. enthusiastic, optimistic, conscientious"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          背景故事
+          Backstory
         </label>
         <textarea
           value={formData.background || ""}
@@ -97,13 +97,13 @@ export function CharacterCommonFields<
           }
           rows={2}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="例如：快递公司员工，负责本小区配送"
+          placeholder="e.g. A courier company employee responsible for deliveries in this neighborhood"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          外观补充描述
+          Additional Appearance Notes
         </label>
         <textarea
           value={formData.appearance_override || ""}
@@ -112,7 +112,7 @@ export function CharacterCommonFields<
           }
           rows={2}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="例如：穿着统一制服，背着快递包"
+          placeholder="e.g. Wearing a standard uniform and carrying a delivery bag"
         />
       </div>
     </>

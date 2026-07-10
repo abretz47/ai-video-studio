@@ -39,22 +39,22 @@ export function VirtualIPListSection({
     <div className="space-y-5">
       <OperatorPanel>
         <OperatorSectionHeader
-          title="IP 资产筛选"
-          subtitle={`${virtualIPs.length} 个可用 IP 项目`}
+          title="IP asset filters"
+          subtitle={`${virtualIPs.length} available IP items`}
           action={
             <button
               type="button"
               onClick={onOpenCreate}
               className={operatorButtonClass("primary")}
             >
-              创建 IP
+              Create IP
             </button>
           }
         />
         <div className="space-y-3 p-4">
           <input
             type="text"
-            placeholder="搜索 IP 名称、标签、创作者"
+            placeholder="Search IP names, tags, or creators"
             value={searchTerm}
             onChange={(event) => onSearchTermChange(event.target.value)}
             className={operatorInputClass("w-full md:w-80")}
@@ -81,18 +81,18 @@ export function VirtualIPListSection({
       </OperatorPanel>
 
       {loading ? (
-        <OperatorState title="加载 IP 资产..." />
+        <OperatorState title="Loading IP assets..." />
       ) : virtualIPs.length === 0 ? (
         <OperatorState
-          title="暂无 IP 项目"
-          detail="先创建一个 IP，再从故事生产链路选择角色资产。"
+          title="No IP items yet"
+          detail="Create an IP first, then choose character assets from the story production workflow."
           action={
             <button
               type="button"
               onClick={onOpenCreate}
               className={operatorButtonClass("primary")}
             >
-              创建 IP
+              Create IP
             </button>
           }
         />
@@ -134,14 +134,14 @@ function IPProjectCard({
             href={`/virtual-ip/${ip.business_id}`}
             className={operatorButtonClass("ghost")}
           >
-            详情
+            Details
           </Link>
           <button
             type="button"
             onClick={() => onDelete(ip.business_id)}
             className="h-8 rounded-md px-2 text-xs font-medium text-red-600 hover:bg-red-50 whitespace-nowrap"
           >
-            删除
+            Delete
           </button>
         </div>
       </div>
@@ -151,18 +151,18 @@ function IPProjectCard({
           {ip.description}
         </p>
       ) : (
-        <p className="mt-4 text-sm text-gray-400">暂无 IP 简介</p>
+        <p className="mt-4 text-sm text-gray-400">No IP summary yet</p>
       )}
 
       <TagList tags={ip.tags ?? []} />
 
       <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
-        <span>{ip.background_story ? "背景故事已补充" : "背景故事待补充"}</span>
+        <span>{ip.background_story ? "Background story added" : "Background story missing"}</span>
         <Link
           href={`/virtual-ip/${ip.business_id}`}
           className="font-medium text-blue-600 hover:text-blue-700"
         >
-          查看详情
+          View details
         </Link>
       </div>
     </article>

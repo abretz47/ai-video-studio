@@ -133,7 +133,7 @@ export function Modal({
               type="button"
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-              aria-label="关闭对话框"
+              aria-label="Close dialog"
             >
               <svg
                 className="h-6 w-6"

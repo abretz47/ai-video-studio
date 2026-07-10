@@ -132,6 +132,6 @@ export function productionCanvasSkillResultToTaskNode(
     },
     reuseTargets: result.reuse_targets,
     actionHref: "/tasks",
-    actionLabel: "查看任务",
+    actionLabel: "View task",
   };
 }

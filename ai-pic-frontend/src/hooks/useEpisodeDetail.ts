@@ -95,8 +95,8 @@ export function useEpisodeDetail({
         setScripts(sortScriptsNewestFirst(scriptsResponse.data));
       }
     } catch (error) {
-      console.error("加载数据失败:", error);
-      showAlert({ message: "加载数据失败", variant: "error" });
+      console.error("Failed to load data:", error);
+      showAlert({ message: "Failed to load data", variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -116,7 +116,7 @@ export function useEpisodeDetail({
         setLanguages(languagesResponse.data);
       }
     } catch (error) {
-      console.error("加载选项失败:", error);
+      console.error("Failed to load options:", error);
     }
   }, []);
 
@@ -142,7 +142,7 @@ export function useEpisodeDetail({
       if (res.success && res.data) return res.data;
       return null;
     } catch (error) {
-      console.error("加载任务失败:", error);
+      console.error("Failed to load task:", error);
       return null;
     }
   }, []);

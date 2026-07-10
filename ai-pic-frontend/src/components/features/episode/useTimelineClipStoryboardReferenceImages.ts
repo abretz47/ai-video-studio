@@ -149,7 +149,7 @@ export function useTimelineClipStoryboardReferenceImages({
       .catch((error: unknown) => {
         if (cancelled) return;
         setCharacterImagesError(
-          error instanceof Error ? error.message : "角色图片加载失败",
+          error instanceof Error ? error.message : "Failed to load character images",
         );
       })
       .finally(() => {

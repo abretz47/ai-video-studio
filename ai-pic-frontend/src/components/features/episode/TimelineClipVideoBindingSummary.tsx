@@ -25,12 +25,12 @@ export function TimelineClipVideoBindingSummary({
 
   return (
     <div
-      aria-label="视频生成绑定上下文"
+      aria-label="Video generation binding context"
       className="rounded-md border border-blue-100 bg-blue-50/60 px-2.5 py-2 text-[11px] text-gray-700"
     >
       <div className="flex items-center justify-between gap-2">
         <div className="text-xs font-semibold text-gray-900">
-          视频生成绑定上下文
+          Video generation binding context
         </div>
         <span
           className={[
@@ -40,30 +40,30 @@ export function TimelineClipVideoBindingSummary({
               : "bg-gray-100 text-gray-600",
           ].join(" ")}
         >
-          {hasAnyBinding ? "已携带绑定" : "待绑定"}
+          {hasAnyBinding ? "Bindings included" : "Pending"}
         </span>
       </div>
       <div className="mt-2 grid gap-1">
         <BindingLine
-          label="角色 IP"
-          value={characterLabels.length ? characterLabels.join("、") : "未绑定"}
+          label="Character IP"
+          value={characterLabels.length ? characterLabels.join(", ") : "Not bound"}
           ready={characterLabels.length > 0}
         />
         <BindingLine
-          label="IP 图"
-          value={`${selectedCharacterReferenceUrls.length} 张`}
+          label="IP images"
+          value={`${selectedCharacterReferenceUrls.length} images`}
           ready={selectedCharacterReferenceUrls.length > 0}
         />
         <BindingLine
-          label="环境图"
-          value={`${selectedEnvironmentReferenceUrls.length} 张`}
+          label="Environment images"
+          value={`${selectedEnvironmentReferenceUrls.length} images`}
           ready={selectedEnvironmentReferenceUrls.length > 0}
         />
       </div>
       <div className="mt-2 leading-4 text-gray-500">
         {hasAnyBinding
-          ? "视频任务会携带上方已选 IP 和环境图。"
-          : "先在上方片段分镜里绑定角色 IP 和环境图，视频任务会一并携带。"}
+          ? "The video task will include the selected IPs and environment images above."
+          : "Bind character IPs and environment images in the clip storyboard above first, and the video task will include them."}
       </div>
     </div>
   );
@@ -81,10 +81,10 @@ function BindingLine({
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
       <span className="truncate">
-        {label}：{value}
+        {label}: {value}
       </span>
       <span className={ready ? "text-blue-700" : "text-gray-500"}>
-        {ready ? "已绑定" : "待绑定"}
+        {ready ? "Bound" : "Pending"}
       </span>
     </div>
   );

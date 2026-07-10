@@ -47,12 +47,12 @@ export function useEnvironmentDetailState(envKey: string) {
       if (envRes.success && envRes.data) {
         setEnv(envRes.data);
       } else {
-        showAlert({ message: envRes.error || "加载环境失败", variant: "error" });
+        showAlert({ message: envRes.error || "Failed to load environment", variant: "error" });
       }
       setImages(imgRes.success && imgRes.data ? imgRes.data.images || [] : []);
     } catch (error) {
       console.error(error);
-      showAlert({ message: "加载环境详情失败", variant: "error" });
+      showAlert({ message: "Failed to load environment details", variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -75,17 +75,17 @@ export function useEnvironmentDetailState(envKey: string) {
     (url: string) => {
       if (!envKey) return;
       showAlert({
-        title: "确认删除",
-        message: "确定要删除该参考图吗？",
+        title: "Confirm Deletion",
+        message: "Are you sure you want to delete this reference image?",
         variant: "warning",
-        confirmText: "删除",
+        confirmText: "Delete",
         onConfirm: async () => {
           const res = await storyStructureAPI.deleteEnvironmentImage(envKey, url);
           if (res.success && res.data) {
             setImages(res.data.images ?? []);
-            showAlert({ message: "删除成功", variant: "success" });
+            showAlert({ message: "Deleted successfully", variant: "success" });
           } else {
-            showAlert({ message: res.error || "删除失败", variant: "error" });
+            showAlert({ message: res.error || "Delete failed", variant: "error" });
           }
         },
       });
@@ -133,13 +133,13 @@ export function useEnvironmentDetailState(envKey: string) {
       if (res.success && res.data) {
         setEnv(res.data);
         setEditingMeta(false);
-        showAlert({ message: "环境信息已更新", variant: "success" });
+        showAlert({ message: "Environment details updated", variant: "success" });
       } else {
-        showAlert({ message: res.error || "更新失败", variant: "error" });
+        showAlert({ message: res.error || "Update failed", variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "更新失败", variant: "error" });
+      showAlert({ message: "Update failed", variant: "error" });
     } finally {
       setSavingMeta(false);
     }

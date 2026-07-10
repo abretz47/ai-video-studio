@@ -26,13 +26,13 @@ export function EnvironmentImagesPanel({
   return (
     <div className={containerClassName}>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-gray-950">图片池</h3>
-        <span className="text-xs text-gray-500">共 {images.length} 张</span>
+        <h3 className="text-sm font-semibold text-gray-950">Image Library</h3>
+        <span className="text-xs text-gray-500">{images.length} total</span>
       </div>
       {images.length === 0 ? (
         <OperatorState
-          title="暂无参考图"
-          detail="上传或创建生成任务后，图片会进入环境资产池。"
+          title="No reference images yet"
+          detail="Images will be added to the environment asset library after you upload them or create generation tasks."
         />
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">

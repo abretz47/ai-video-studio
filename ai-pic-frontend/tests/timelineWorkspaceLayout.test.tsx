@@ -69,15 +69,15 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText("选中片段生产"));
-      assert.ok(utils.getByText("片段分镜管理"));
-      assert.ok(utils.getByLabelText("步骤 1 · 片段分镜图"));
-      assert.ok(utils.getByLabelText("步骤 3 · 片段视频"));
-      assert.ok(utils.getByLabelText("在时间轴中选择 视频 1"));
+      assert.ok(utils.getByText("Selected clip production"));
+      assert.ok(utils.getByText("Clip storyboard management"));
+      assert.ok(utils.getByLabelText("Step 1 · Clip storyboard images"));
+      assert.ok(utils.getByLabelText("Step 3 · Clip video"));
+      assert.ok(utils.getByLabelText("Select Video 1 on the timeline"));
     });
-    assert.equal(utils.queryByText("片段检查器"), null);
-    assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
-    assert.ok(utils.getByRole("button", { name: "生成/重做此片段视频" }));
+    assert.equal(utils.queryByText("Clip inspector"), null);
+    assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
+    assert.ok(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
     const commandCards = Array.from(
       dom.window.document.querySelectorAll("[data-clip-command-card]"),
     ) as HTMLElement[];
@@ -93,7 +93,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
     assert.match(storyboardCard?.className || "", /max-\[719px\]:order-1/);
     assert.doesNotMatch(videoCard?.className || "", /max-\[719px\]:order-1/);
-    const video = utils.getByLabelText("播放选中片段视频");
+    const video = utils.getByLabelText("Play selected clip video");
     assert.equal(
       video.getAttribute("src"),
       "https://example.com/clip-ready.mp4",
@@ -102,66 +102,66 @@ describe("EpisodeTimelineWorkspace layout", () => {
 
   it("falls back to story IP characters and images for selected timeline clips", async () => {
     const calls = mockWorkspaceFetch({
-      environments: [environment("老拐的家", 5)],
+      environments: [environment("Lao Guai's House", 5)],
       environmentDetails: {
         5: environment(
-          "老拐的家",
+          "Lao Guai's House",
           5,
           "https://cdn.example/laoguai-home.png",
         ),
       },
       storyCharacters: [
-        storyCharacter("老拐", 1),
-        storyCharacter("阿盖儿", 15),
+        storyCharacter("Lao Guai", 1),
+        storyCharacter("A Gaier", 15),
       ],
       virtualIPs: {
-        1: virtualIP("老拐", 1, "https://cdn.example/laoguai.png"),
-        15: virtualIP("阿盖儿", 15, "https://cdn.example/agaier.png"),
+        1: virtualIP("Lao Guai", 1, "https://cdn.example/laoguai.png"),
+        15: virtualIP("A Gaier", 15, "https://cdn.example/agaier.png"),
       },
     });
 
     const utils = render(
-      workspace(videoTimelineWithCharacterNames(["老拐"]), undefined, undefined, {
-        normalizedScenes: [normalizedScene("INT. 老拐的客厅 - DAY", 90)],
+      workspace(videoTimelineWithCharacterNames(["Lao Guai"]), undefined, undefined, {
+        normalizedScenes: [normalizedScene("INT. Lao Guai's living room - DAY", 90)],
       }),
       { container: dom.window.document.body },
     );
 
     await waitFor(() =>
       assert.equal(
-        (utils.getByLabelText("绑定角色 IP 老拐") as HTMLInputElement)
+        (utils.getByLabelText("Bind character IP Lao Guai") as HTMLInputElement)
           .checked,
         true,
       ),
     );
     assert.equal(
-      (utils.getByLabelText("绑定角色 IP 阿盖儿") as HTMLInputElement)
+      (utils.getByLabelText("Bind character IP A Gaier") as HTMLInputElement)
         .checked,
       false,
     );
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
-    await waitFor(() => assert.ok(hasText(utils, "环境图：1 张")));
-    assert.equal(utils.queryByLabelText("选择 IP 图 老拐 portrait"), null);
-    const ipDialog = openReferencePicker(utils, "选择 IP 图");
-    assert.ok(within(ipDialog).getByText("老拐"));
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
+    await waitFor(() => assert.ok(hasText(utils, "Environment images: 1")));
+    assert.equal(utils.queryByLabelText("Choose IP image Lao Guai portrait"), null);
+    const ipDialog = openReferencePicker(utils, "Choose IP images");
+    assert.ok(within(ipDialog).getByText("Lao Guai"));
     assert.ok(within(ipDialog).getByText("portrait"));
     assert.equal(
       within(ipDialog)
-        .getByLabelText("选择 IP 图 老拐 portrait")
+        .getByLabelText("Choose IP image Lao Guai portrait")
         .getAttribute("aria-pressed"),
       "true",
     );
-    fireEvent.click(within(ipDialog).getByRole("button", { name: "应用选择" }));
-    const envDialog = openReferencePicker(utils, "选择环境图");
+    fireEvent.click(within(ipDialog).getByRole("button", { name: "Apply selection" }));
+    const envDialog = openReferencePicker(utils, "Choose environment images");
     assert.equal(
       within(envDialog)
-        .getByLabelText("选择环境图 老拐的家 1")
+        .getByLabelText("Choose environment image Lao Guai's House 1")
         .getAttribute("aria-pressed"),
       "true",
     );
-    fireEvent.click(within(envDialog).getByRole("button", { name: "应用选择" }));
+    fireEvent.click(within(envDialog).getByRole("button", { name: "Apply selection" }));
 
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() =>
       assert.ok(
         calls.some((call) => String(call.url).includes("/storyboard/generate")),
@@ -228,10 +228,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      const video = utils.getByLabelText("播放渲染成片");
+      const video = utils.getByLabelText("Play rendered final cut");
       assert.equal(video.getAttribute("src"), "https://example.com/final.mp4");
-      assert.ok(utils.getByRole("button", { name: "渲染预览" }));
-      assert.ok(utils.getByRole("button", { name: "导出成片" }));
+      assert.ok(utils.getByRole("button", { name: "Render preview" }));
+      assert.ok(utils.getByRole("button", { name: "Export final cut" }));
     });
   });
 
@@ -260,13 +260,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByLabelText("生产主线"));
-    assert.ok(utils.getByLabelText("当前剧本"));
-    const scriptSelect = utils.getByLabelText("当前剧本") as HTMLSelectElement;
+    assert.ok(utils.getByLabelText("Production path"));
+    assert.ok(utils.getByLabelText("Current script"));
+    const scriptSelect = utils.getByLabelText("Current script") as HTMLSelectElement;
     assert.equal(scriptSelect.value, String(selectedScript.id));
     assert.equal(
       scriptSelect.selectedOptions[0]?.textContent,
-      "第1集剧本 (v1.0)",
+      "Episode 1 Script (v1.0)",
     );
     assert.equal(
       scriptSelect.selectedOptions[0]?.textContent?.includes("ID:"),
@@ -314,13 +314,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       productionStepRail.getAttribute("data-production-step-rail-layout"),
       "segments",
     );
-    assert.equal(productionStepRail.getAttribute("aria-label"), "生产主线");
+    assert.equal(productionStepRail.getAttribute("aria-label"), "Production path");
     assert.ok(
       productionStepRail.querySelector(
         '[data-production-step-pills="compact"]',
       ),
     );
-    assert.match(productionStepRail.textContent || "", /生产主线/);
+    assert.match(productionStepRail.textContent || "", /Production path/);
     assert.match(
       productionStepRail.querySelector("span")?.className || "",
       /sr-only/,
@@ -329,10 +329,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
       productionStepRail.querySelector("span")?.className || "",
       /not-sr-only/,
     );
-    assert.doesNotMatch(productionStepRail.textContent || "", /时间轴\s*待/);
-    assert.doesNotMatch(productionStepRail.textContent || "", /片段\s*待/);
-    assert.doesNotMatch(productionStepRail.textContent || "", /导出\s*待/);
-    assert.doesNotMatch(productionStepRail.textContent || "", /剧本\s*就绪/);
+    assert.doesNotMatch(productionStepRail.textContent || "", /Timeline\s*pending/);
+    assert.doesNotMatch(productionStepRail.textContent || "", /Clip\s*pending/);
+    assert.doesNotMatch(productionStepRail.textContent || "", /Export\s*pending/);
+    assert.doesNotMatch(productionStepRail.textContent || "", /Script\s*ready/);
     const stepPills = Array.from(
       productionStepRail.querySelectorAll("[data-production-step-pill]"),
     ) as HTMLElement[];
@@ -344,10 +344,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
       stepPills.map((pill) => pill.getAttribute("data-production-step-status")),
       ["ready", "pending", "pending", "pending"],
     );
-    assert.equal(stepPills[0].getAttribute("aria-label"), "剧本 已就绪");
-    assert.equal(stepPills[1].getAttribute("aria-label"), "时间轴 待处理");
-    assert.equal(stepPills[2].getAttribute("aria-label"), "片段视频 待处理");
-    assert.equal(stepPills[3].getAttribute("aria-label"), "渲染/导出 待处理");
+    assert.equal(stepPills[0].getAttribute("aria-label"), "Script ready");
+    assert.equal(stepPills[1].getAttribute("aria-label"), "Timeline pending");
+    assert.equal(stepPills[2].getAttribute("aria-label"), "Clip video pending");
+    assert.equal(stepPills[3].getAttribute("aria-label"), "Render/export pending");
     assert.equal(
       stepPills[0].getAttribute("data-production-step-compact"),
       "segment",
@@ -379,29 +379,29 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.doesNotMatch(stepPills[1].className, /border-gray-300/);
     assert.doesNotMatch(stepPills[1].className, /bg-white/);
     assert.equal(stepPills[0].querySelector("span"), null);
-    assert.match(utils.getByLabelText("当前剧本").className, /bg-gray-50/);
-    assert.match(utils.getByLabelText("当前剧本").className, /!h-6/);
+    assert.match(utils.getByLabelText("Current script").className, /bg-gray-50/);
+    assert.match(utils.getByLabelText("Current script").className, /!h-6/);
     assert.match(
-      utils.getByLabelText("当前剧本").className,
+      utils.getByLabelText("Current script").className,
       /min-\[760px\]:!h-8/,
     );
     assert.equal(
-      utils.getAllByRole("button", { name: "生成 Timeline" }).length,
+      utils.getAllByRole("button", { name: "Generate Timeline" }).length,
       1,
     );
     assert.match(
-      utils.getAllByRole("button", { name: "生成 Timeline" })[0].className,
+      utils.getAllByRole("button", { name: "Generate Timeline" })[0].className,
       /!h-6/,
     );
     assert.match(
-      utils.getAllByRole("button", { name: "生成 Timeline" })[0].className,
+      utils.getAllByRole("button", { name: "Generate Timeline" })[0].className,
       /min-\[760px\]:!h-8/,
     );
-    assert.equal(utils.queryByText("步骤 1"), null);
-    assert.equal(utils.queryByRole("button", { name: "剧集概要" }), null);
-    const supportButton = utils.getByRole("button", { name: "支持视图" });
+    assert.equal(utils.queryByText("Step 1"), null);
+    assert.equal(utils.queryByRole("button", { name: "Episode overview" }), null);
+    const supportButton = utils.getByRole("button", { name: "Support views" });
     assert.equal(supportButton.textContent?.trim(), "");
-    assert.equal(supportButton.getAttribute("title"), "支持视图");
+    assert.equal(supportButton.getAttribute("title"), "Support views");
     assert.equal(
       supportButton.getAttribute("data-support-view-trigger"),
       "icon",
@@ -411,18 +411,18 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.match(supportButton.className, /w-6/);
     assert.match(supportButton.className, /min-\[760px\]:w-8/);
     assert.equal(supportButton.getAttribute("aria-expanded"), "false");
-    assert.equal(utils.queryByRole("button", { name: "剧本设置" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Script settings" }), null);
 
     fireEvent.click(supportButton);
     assert.equal(supportButton.getAttribute("aria-expanded"), "true");
-    assert.ok(utils.getByRole("button", { name: "剧本设置" }));
-    assert.ok(utils.getByRole("button", { name: "分镜参考" }));
-    assert.ok(utils.getByRole("button", { name: "临时角色/IP 绑定" }));
+    assert.ok(utils.getByRole("button", { name: "Script settings" }));
+    assert.ok(utils.getByRole("button", { name: "Storyboard references" }));
+    assert.ok(utils.getByRole("button", { name: "Temporary character/IP bindings" }));
 
-    fireEvent.click(utils.getByRole("button", { name: "分镜参考" }));
+    fireEvent.click(utils.getByRole("button", { name: "Storyboard references" }));
     assert.deepEqual(tabChanges, ["storyboard"]);
     assert.equal(supportButton.getAttribute("aria-expanded"), "false");
-    assert.equal(utils.queryByRole("button", { name: "剧本设置" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Script settings" }), null);
   });
 
   it("uses the compact workspace header on storyboard support tabs", () => {
@@ -447,7 +447,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
         onGenerateScript={() => {}}
         onGenerateTimeline={() => {}}
         onSelectScript={() => {}}
-        storyboardActionLabel="进入片段分镜"
+        storyboardActionLabel="Enter clip storyboard"
         onOpenStoryboard={() => {}}
       />,
       { container: dom.window.document.body },
@@ -458,19 +458,19 @@ describe("EpisodeTimelineWorkspace layout", () => {
         '[data-episode-workspace-timeline-header="compact"]',
       ),
     );
-    assert.equal(utils.queryByText("IP 剧集工作台"), null);
-    assert.equal(utils.queryByText(/Timeline-first 生产控制台/), null);
-    assert.ok(utils.getByRole("button", { name: "处理缺失片段" }));
-    assert.ok(utils.getByLabelText("当前剧本"));
+    assert.equal(utils.queryByText("IP Episode Workspace"), null);
+    assert.equal(utils.queryByText(/Timeline-first production console/), null);
+    assert.ok(utils.getByRole("button", { name: "Handle missing clips" }));
+    assert.ok(utils.getByLabelText("Current script"));
     assert.ok(
       dom.window.document.querySelector(
         '[data-production-step-rail="compact"]',
       ),
     );
 
-    const supportButton = utils.getByRole("button", { name: "支持视图" });
+    const supportButton = utils.getByRole("button", { name: "Support views" });
     fireEvent.click(supportButton);
-    fireEvent.click(utils.getByRole("button", { name: "剧本设置" }));
+    fireEvent.click(utils.getByRole("button", { name: "Script settings" }));
     assert.deepEqual(tabChanges, ["script"]);
   });
 
@@ -483,7 +483,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
 
     await waitFor(() => {
       const settingsButton = utils.getByRole("button", {
-        name: "Timeline 生成设置",
+        name: "Timeline generation settings",
       });
       assert.ok(settingsButton);
       assert.equal(settingsButton.textContent?.trim(), "");
@@ -493,14 +493,14 @@ describe("EpisodeTimelineWorkspace layout", () => {
         ),
       );
       assert.equal(
-        utils.queryByRole("button", { name: "生成 Timeline" }),
+        utils.queryByRole("button", { name: "Generate Timeline" }),
         null,
       );
       assert.ok(utils.getAllByText("00:01.200").length >= 1);
-      assert.equal(utils.queryByText("全片 00:01.200"), null);
-      assert.equal(utils.queryByText("生成设置"), null);
-      assert.equal(utils.queryByText("视图"), null);
-      assert.equal(utils.queryByText("适配"), null);
+      assert.equal(utils.queryByText("Full episode 00:01.200"), null);
+      assert.equal(utils.queryByText("Generation settings"), null);
+      assert.equal(utils.queryByText("View"), null);
+      assert.equal(utils.queryByText("Fit"), null);
     });
     const toolbar = dom.window.document.querySelector(
       '[data-timeline-toolbar="compact"]',
@@ -542,10 +542,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(navigationLabel);
     assert.ok(visibleTimelineKind);
     assert.ok(visibleTimelineTitle);
-    assert.equal(navigationLabel.textContent?.trim(), "时间轴导航");
+    assert.equal(navigationLabel.textContent?.trim(), "Timeline navigation");
     assert.match(navigationLabel.className, /sr-only/);
-    assert.equal(visibleTimelineKind.textContent, "时间轴");
-    assert.equal(visibleTimelineTitle.textContent, "全片");
+    assert.equal(visibleTimelineKind.textContent, "Timeline");
+    assert.equal(visibleTimelineTitle.textContent, "Full episode");
     assert.match(visibleTimelineTitle.className, /bg-slate-100/);
     assert.match(visibleTimelineTitle.className, /text-slate-600/);
     assert.match(visibleTimelineTitle.className, /font-semibold/);
@@ -572,11 +572,11 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.equal(
       moduleLabel?.querySelector('[data-timeline-header-title-text="visible"]')
         ?.textContent,
-      "全片",
+      "Full episode",
     );
     assert.match(
       moduleLabel?.textContent?.replace(/\s+/g, "") || "",
-      /时间轴全片/,
+      /TimelineFull episode/,
     );
     assert.equal(
       moduleLabel?.getAttribute("data-timeline-module-label-style"),
@@ -589,30 +589,30 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.doesNotMatch(moduleLabel?.className || "", /bg-blue-700/);
     assert.doesNotMatch(moduleLabel?.className || "", /text-white/);
     assert.doesNotMatch(moduleLabel?.className || "", /bg-slate-900/);
-    assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
+    assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
     assert.equal(
       `${visibleTimelineTitle.textContent}${visibleTimelineKind.textContent}`,
-      "全片时间轴",
+      "Full episode timeline",
     );
-    assert.equal(toolbar.textContent?.includes("Timeline全片时间轴"), false);
+    assert.equal(toolbar.textContent?.includes("TimelineFull episode timeline"), false);
     assert.equal(
       utils
-        .getByRole("heading", { name: "全片时间轴" })
+        .getByRole("heading", { name: "Full episode timeline" })
         .getAttribute("data-timeline-header-title"),
       "compact",
     );
     assert.equal(
       utils
-        .getByRole("heading", { name: "全片时间轴" })
+        .getByRole("heading", { name: "Full episode timeline" })
         .querySelector('[data-timeline-header-title-text="visible"]')
         ?.textContent,
-      "全片",
+      "Full episode",
     );
     const timelineWindowSummary = dom.window.document.querySelector(
       '[data-timeline-window-summary="visible"]',
     );
     assert.ok(timelineWindowSummary);
-    assert.match(timelineWindowSummary.textContent || "", /1 段/);
+    assert.match(timelineWindowSummary.textContent || "", /1 clip/);
     assert.match(timelineWindowSummary.textContent || "", /00:01/);
     assert.match(timelineWindowSummary.className, /bg-white/);
     assert.match(timelineWindowSummary.className, /font-bold/);
@@ -633,7 +633,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.doesNotMatch(toolbarControls.className, /bg-white/);
     assert.doesNotMatch(toolbarControls.className, /shadow-sm/);
     const settingsButton = utils.getByRole("button", {
-      name: "Timeline 生成设置",
+      name: "Timeline generation settings",
     });
     assert.match(settingsButton.className, /h-7/);
     assert.match(settingsButton.className, /w-7/);
@@ -661,9 +661,9 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
     assert.ok(viewPanel);
     const resetButton = utils.getByRole("button", {
-      name: "重置为全片适配视图",
+      name: "Reset to fit full episode view",
     });
-    assert.equal(resetButton.textContent?.trim(), "适配全片");
+    assert.equal(resetButton.textContent?.trim(), "Fit full episode");
     assert.equal(
       resetButton.getAttribute("data-timeline-reset-placement"),
       "view-panel",
@@ -679,10 +679,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-timeline-zoom-range="compact"]',
     );
     assert.ok(zoomRange);
-    assert.equal(zoomRange.getAttribute("aria-label"), "视图缩放");
-    fireEvent.click(utils.getByRole("button", { name: "Timeline 生成设置" }));
+    assert.equal(zoomRange.getAttribute("aria-label"), "View zoom");
+    fireEvent.click(utils.getByRole("button", { name: "Timeline generation settings" }));
     await waitFor(() =>
-      assert.ok(utils.getByRole("button", { name: "生成 Timeline" })),
+      assert.ok(utils.getByRole("button", { name: "Generate Timeline" })),
     );
   });
 
@@ -694,10 +694,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByText("成片"));
-      assert.ok(utils.getByText("渲染/导出"));
-      assert.ok(utils.getByText("待补 1 段"));
-      assert.ok(utils.getByText("查看"));
+      assert.ok(utils.getByText("Final cut"));
+      assert.ok(utils.getByText("Render/Export"));
+      assert.ok(utils.getByText("1 clip missing"));
+      assert.ok(utils.getByText("View"));
     });
     const renderHeader = dom.window.document.querySelector(
       '[data-timeline-render-status-header="compact"]',
@@ -707,13 +707,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-timeline-render-label="final-output"]',
     );
     assert.ok(renderLabel);
-    assert.equal(renderLabel.textContent?.trim(), "成片");
-    assert.equal(renderLabel.getAttribute("title"), "渲染/导出状态");
+    assert.equal(renderLabel.textContent?.trim(), "Final cut");
+    assert.equal(renderLabel.getAttribute("title"), "Render/export status");
     assert.match(renderLabel.className, /text-\[11px\]/);
     assert.match(renderLabel.className, /text-slate-900/);
     assert.doesNotMatch(renderLabel.className, /text-gray-950/);
     assert.doesNotMatch(renderLabel.className, /text-sm/);
-    assert.equal(utils.queryByText("导出状态"), null);
+    assert.equal(utils.queryByText("Export status"), null);
     const renderReadiness = renderHeader.querySelector(
       "[data-timeline-render-readiness]",
     );
@@ -723,8 +723,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
     assert.match(renderReadiness?.className || "", /text-slate-500/);
     assert.doesNotMatch(renderReadiness?.className || "", /text-amber-700/);
-    assert.match(renderHeader.textContent || "", /待补 1 段/);
-    assert.doesNotMatch(renderHeader.textContent || "", /渲染输出/);
+    assert.match(renderHeader.textContent || "", /1 clip missing/);
+    assert.doesNotMatch(renderHeader.textContent || "", /Render output/);
     const summary = renderHeader.closest("summary");
     assert.ok(summary);
     assert.equal(
@@ -757,8 +757,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-timeline-render-readiness-meter="inline-count"]',
     ) as HTMLElement | null;
     assert.ok(readinessMeter);
-    assert.equal(readinessMeter.textContent?.trim(), "0/1 已备");
-    assert.equal(readinessMeter.getAttribute("title"), "0/1 个片段就绪");
+    assert.equal(readinessMeter.textContent?.trim(), "0/1 ready");
+    assert.equal(readinessMeter.getAttribute("title"), "0/1 clips ready");
     assert.match(readinessMeter.className, /text-slate-600/);
     assert.match(readinessMeter.className, /inline-flex/);
     assert.match(readinessMeter.className, /ml-1/);
@@ -784,8 +784,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-timeline-render-missing-action="inline-link"]',
     );
     assert.ok(missingAction);
-    assert.equal(missingAction.textContent?.trim(), "查看");
-    assert.equal(missingAction.getAttribute("title"), "查看缺失片段");
+    assert.equal(missingAction.textContent?.trim(), "View");
+    assert.equal(missingAction.getAttribute("title"), "View missing clips");
     assert.match(missingAction.className, /text-slate-600/);
     assert.match(missingAction.className, /whitespace-nowrap/);
     assert.doesNotMatch(missingAction.className, /justify-end/);
@@ -829,14 +829,14 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.doesNotMatch(renderStrip.className, /shadow-sm/);
     assert.match(renderStrip.className, /shadow-none/);
     assert.doesNotMatch(renderStrip.className, /bg-amber/);
-    assert.equal(utils.queryByRole("button", { name: "渲染预览" }), null);
-    assert.equal(utils.queryByRole("button", { name: "导出成片" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Render preview" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Export final cut" }), null);
 
     fireEvent.click(summary);
     assert.equal(details.hasAttribute("open"), true);
-    assert.ok(utils.getByText("缺失片段清单（1）"));
-    assert.equal(utils.queryByRole("button", { name: "渲染预览" }), null);
-    assert.equal(utils.queryByRole("button", { name: "导出成片" }), null);
+    assert.ok(utils.getByText("Missing clips list (1)"));
+    assert.equal(utils.queryByRole("button", { name: "Render preview" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Export final cut" }), null);
   });
 
   it("falls back to the Timeline spec while resolved videos are loading", async () => {
@@ -847,14 +847,14 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByText("成片"));
-      assert.ok(utils.getByText("待补 1 段"));
-      assert.ok(utils.getByText("0/1 已备"));
+      assert.ok(utils.getByText("Final cut"));
+      assert.ok(utils.getByText("1 clip missing"));
+      assert.ok(utils.getByText("0/1 ready"));
     });
 
-    assert.equal(utils.queryByText("无视频轨"), null);
-    assert.equal(utils.queryByRole("button", { name: "渲染预览" }), null);
-    assert.equal(utils.queryByRole("button", { name: "导出成片" }), null);
+    assert.equal(utils.queryByText("No video track"), null);
+    assert.equal(utils.queryByRole("button", { name: "Render preview" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Export final cut" }), null);
   });
 
   it("defaults to the first video clip so production entries are visible on deep links", async () => {
@@ -865,9 +865,9 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByText("选中片段生产"));
-      assert.ok(utils.getByText("片段分镜管理"));
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
+      assert.ok(utils.getByText("Selected clip production"));
+      assert.ok(utils.getByText("Clip storyboard management"));
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
       const selectedContext = dom.window.document.querySelector(
         "[data-timeline-selected-context]",
       );
@@ -877,15 +877,15 @@ describe("EpisodeTimelineWorkspace layout", () => {
         "inline",
       );
       assert.match(selectedContext.className, /max-\[560px\]:sr-only/);
-      assert.match(selectedContext.textContent || "", /当前/);
-      assert.match(selectedContext.textContent || "", /视频 1/);
+      assert.match(selectedContext.textContent || "", /Current/);
+      assert.match(selectedContext.textContent || "", /Video 1/);
       assert.doesNotMatch(selectedContext.className, /bg-blue-50/);
       assert.doesNotMatch(selectedContext.className, /border-blue-100/);
-      assert.ok(utils.getAllByText("视频 1").length >= 1);
-      assert.ok(utils.getByLabelText("在时间轴中选择 视频 1"));
+      assert.ok(utils.getAllByText("Video 1").length >= 1);
+      assert.ok(utils.getByLabelText("Select Video 1 on the timeline"));
     });
-    assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
-    assert.ok(utils.getByRole("button", { name: "生成/重做此片段视频" }));
+    assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
+    assert.ok(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
   });
 
   it("honors a clip deep link when opening the Timeline workspace", async () => {
@@ -902,9 +902,9 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText("选中片段生产"));
-      assert.ok(utils.getByLabelText("在时间轴中选择 第二个视频"));
-      assert.ok(utils.getAllByText("视频 2").length >= 1);
+      assert.ok(utils.getByText("Selected clip production"));
+      assert.ok(utils.getByLabelText("Select Second video on the timeline"));
+      assert.ok(utils.getAllByText("Video 2").length >= 1);
     });
     assert.deepEqual(syncedClipIds, ["video_scene_1_beat_2_002"]);
 
@@ -931,7 +931,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
               timeline_clip_id: "video_scene_old",
               start_ms: 0,
               end_ms: 1200,
-              description: "旧 support item",
+              description: "Old support item",
             },
           ],
         },
@@ -943,11 +943,11 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText("选中片段生产"));
-      assert.ok(utils.getByLabelText("在时间轴中选择 第一个视频"));
-      assert.ok(utils.getAllByText("视频 1").length >= 1);
-      assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
-      assert.ok(utils.getByRole("button", { name: "生成/重做此片段视频" }));
+      assert.ok(utils.getByText("Selected clip production"));
+      assert.ok(utils.getByLabelText("Select First video on the timeline"));
+      assert.ok(utils.getAllByText("Video 1").length >= 1);
+      assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
+      assert.ok(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
     });
     assert.deepEqual(syncedClipIds, ["video_scene_1_beat_1_001"]);
   });
@@ -966,10 +966,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText("选中片段生产"));
-      assert.ok(utils.getByLabelText("在时间轴中选择 历史 id 视频"));
-      assert.ok(utils.getAllByText("视频 1").length >= 1);
-      assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
+      assert.ok(utils.getByText("Selected clip production"));
+      assert.ok(utils.getByLabelText("Select Legacy ID video on the timeline"));
+      assert.ok(utils.getAllByText("Video 1").length >= 1);
+      assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     });
     assert.deepEqual(syncedClipIds, ["video_scene_legacy_id_001"]);
   });
@@ -988,13 +988,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
-      assert.ok(utils.getByRole("button", { name: "生成 Timeline" }));
-      assert.ok(utils.getByLabelText("在时间轴中选择 native dialogue"));
-      assert.ok(utils.getAllByText("对白 1").length >= 1);
-      assert.equal(utils.queryByText("请选择时间轴片段。"), null);
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
+      assert.ok(utils.getByRole("button", { name: "Generate Timeline" }));
+      assert.ok(utils.getByLabelText("Select native dialogue on the timeline"));
+      assert.ok(utils.getAllByText("Dialogue 1").length >= 1);
+      assert.equal(utils.queryByText("Select a timeline clip."), null);
       assert.equal(
-        utils.queryByRole("button", { name: "生成片段分镜图" }),
+        utils.queryByRole("button", { name: "Generate clip storyboard images" }),
         null,
       );
     });
@@ -1014,8 +1014,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
-      assert.ok(utils.getByRole("button", { name: "生成 Timeline" }));
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
+      assert.ok(utils.getByRole("button", { name: "Generate Timeline" }));
     });
     const timelineCanvas = dom.window.document.querySelector(
       '[data-timeline="workspace"]',
@@ -1028,7 +1028,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(
       timelineCanvas.querySelector('[data-timeline-track-row="video"]'),
     );
-    assert.equal(utils.queryByText("请选择时间轴片段。"), null);
+    assert.equal(utils.queryByText("Select a timeline clip."), null);
   });
 
   it("keeps storyboard support clicks mapped to the matching video clip", async () => {
@@ -1050,24 +1050,24 @@ describe("EpisodeTimelineWorkspace layout", () => {
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(utils.getByText("片段分镜管理")));
+    await waitFor(() => assert.ok(utils.getByText("Clip storyboard management")));
     await waitFor(() =>
       assert.ok(
         utils.getAllByRole("button", {
-          name: "在时间轴中选择 Storyboard support",
+          name: "Select Storyboard support on the timeline",
         }),
       ),
     );
     fireEvent.click(
       utils.getAllByRole("button", {
-        name: "在时间轴中选择 Storyboard support",
+        name: "Select Storyboard support on the timeline",
       })[0],
     );
 
     await waitFor(() => {
-      assert.ok(utils.getAllByText("视频 1").length >= 1);
-      assert.ok(utils.getByText("片段分镜管理"));
-      assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
+      assert.ok(utils.getAllByText("Video 1").length >= 1);
+      assert.ok(utils.getByText("Clip storyboard management"));
+      assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     });
   });
 
@@ -1076,7 +1076,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       environments: [
         {
           id: 21,
-          name: "哈尔滨科技公司开放式办公区（夜）",
+          name: "Harbin Tech Company Open Office Area (Night)",
           created_at: "2026-06-12T00:00:00Z",
           updated_at: "2026-06-12T00:00:00Z",
         },
@@ -1089,7 +1089,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
           {
             id: 580,
             scene_number: "2",
-            slug_line: "SCENE 2 - 升级推进",
+            slug_line: "SCENE 2 - Escalation push",
             status: "draft",
             environment_id: 21,
           },
@@ -1099,16 +1099,16 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText("场景 2 · 升级推进"));
-      assert.ok(utils.getByRole("button", { name: "保存场景环境" }));
+      assert.ok(utils.getByText("Scene 2 · Escalation push"));
+      assert.ok(utils.getByRole("button", { name: "Save scene environment" }));
     });
-    assert.equal(utils.queryByText("场景 2 · SCENE 2 - 升级推进"), null);
+    assert.equal(utils.queryByText("Scene 2 · SCENE 2 - Escalation push"), null);
     assert.equal(
-      utils.queryByText("未匹配规范化场景，当前环境仅用于片段生成参考。"),
+      utils.queryByText("No normalized scene matched; the current environment is only used as clip generation reference."),
       null,
     );
     assert.equal(
-      (utils.getByLabelText("片段环境") as HTMLSelectElement).value,
+      (utils.getByLabelText("Clip environment") as HTMLSelectElement).value,
       "21",
     );
   });
@@ -1118,7 +1118,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       environments: [
         {
           id: 21,
-          name: "哈尔滨科技公司开放式办公区（夜）",
+          name: "Harbin Tech Company Open Office Area (Night)",
           created_at: "2026-06-12T00:00:00Z",
           updated_at: "2026-06-12T00:00:00Z",
         },
@@ -1131,7 +1131,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
           {
             id: 580,
             scene_number: "2",
-            slug_line: "SCENE 2 - 升级推进",
+            slug_line: "SCENE 2 - Escalation push",
             status: "draft",
             environment_id: null,
           },
@@ -1141,9 +1141,9 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText("场景 2 · 升级推进"));
+      assert.ok(utils.getByText("Scene 2 · Escalation push"));
     });
-    assert.equal(utils.queryByText("场景 2 · SCENE 2 - 升级推进"), null);
+    assert.equal(utils.queryByText("Scene 2 · SCENE 2 - Escalation push"), null);
     const environmentRow = dom.window.document.querySelector(
       "[data-clip-environment-row]",
     );
@@ -1164,10 +1164,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-clip-environment-summary="compact"]',
     ) as HTMLElement | null;
     assert.ok(environmentSummary);
-    assert.ok(environmentSummary.textContent?.includes("场景环境"));
-    assert.ok(environmentSummary.textContent?.includes("环境"));
-    assert.ok(environmentSummary.textContent?.includes("未设置"));
-    assert.ok(environmentSummary.textContent?.includes("更换"));
+    assert.ok(environmentSummary.textContent?.includes("Scene environment"));
+    assert.ok(environmentSummary.textContent?.includes("Environment"));
+    assert.ok(environmentSummary.textContent?.includes("Not set"));
+    assert.ok(environmentSummary.textContent?.includes("Change"));
     assert.doesNotMatch(environmentSummary.className, /flex-wrap/);
     assert.match(environmentSummary.className, /overflow-hidden/);
     assert.match(environmentSummary.className, /min-h-6/);
@@ -1179,8 +1179,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
     ) as HTMLElement | null;
     assert.ok(environmentLabel);
     assert.ok(environmentKind);
-    assert.equal(environmentLabel.textContent?.trim(), "场景环境");
-    assert.equal(environmentKind.textContent?.trim(), "环境");
+    assert.equal(environmentLabel.textContent?.trim(), "Scene environment");
+    assert.equal(environmentKind.textContent?.trim(), "Environment");
     assert.match(environmentLabel.className, /sr-only/);
     assert.match(environmentKind.className, /text-slate-700/);
     assert.doesNotMatch(environmentKind.className, /sr-only/);
@@ -1192,13 +1192,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-clip-environment-scene="inline"]',
     ) as HTMLElement | null;
     assert.ok(environmentScene);
-    assert.equal(environmentScene.getAttribute("title"), "场景 2 · 升级推进");
+    assert.equal(environmentScene.getAttribute("title"), "Scene 2 · Escalation push");
     const hiddenSceneLabel = environmentScene.querySelector(".sr-only");
-    assert.equal(hiddenSceneLabel?.textContent, "场景 2 · 升级推进");
+    assert.equal(hiddenSceneLabel?.textContent, "Scene 2 · Escalation push");
     const visibleSceneLabel = environmentScene.querySelector(
       '[aria-hidden="true"]',
     );
-    assert.equal(visibleSceneLabel?.textContent, "升级推进");
+    assert.equal(visibleSceneLabel?.textContent, "Escalation push");
     assert.match(environmentScene.className || "", /font-medium/);
     assert.match(environmentScene.className || "", /text-slate-500/);
     assert.doesNotMatch(environmentScene.className || "", /bg-slate-100/);
@@ -1216,34 +1216,34 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-clip-environment-action="inline"]',
     );
     assert.ok(environmentAction);
-    assert.equal(environmentAction.textContent, "更换");
+    assert.equal(environmentAction.textContent, "Change");
     assert.match(environmentAction.className || "", /text-blue-700/);
     assert.doesNotMatch(environmentChoice.className || "", /ml-auto/);
     assert.match(environmentChoice.className || "", /max-w-\[10rem\]/);
     assert.doesNotMatch(environmentChoice.className || "", /border-slate-200/);
     assert.doesNotMatch(environmentChoice.className || "", /bg-white/);
-    assert.doesNotMatch(utils.getByLabelText("片段环境").className, /flex-1/);
+    assert.doesNotMatch(utils.getByLabelText("Clip environment").className, /flex-1/);
     assert.equal(
       utils.queryByRole("button", {
-        name: "保存场景环境",
+        name: "Save scene environment",
       }),
       null,
     );
-    assert.equal(environmentRow.textContent?.includes("保存场景环境"), false);
+    assert.equal(environmentRow.textContent?.includes("Save scene environment"), false);
 
     fireEvent.click(environmentSummary);
     assert.equal((environmentRow as HTMLDetailsElement).open, true);
-    fireEvent.change(utils.getByLabelText("片段环境"), {
+    fireEvent.change(utils.getByLabelText("Clip environment"), {
       target: { value: "21" },
     });
 
     await waitFor(
       () => {
         const activeButton = utils.getByRole("button", {
-          name: "保存场景环境",
+          name: "Save scene environment",
         }) as HTMLButtonElement;
         assert.equal(activeButton.disabled, false);
-        assert.equal(activeButton.textContent, "保存场景环境");
+        assert.equal(activeButton.textContent, "Save scene environment");
         assert.match(activeButton.className, /bg-blue-600/);
         assert.match(activeButton.className, /w-16/);
       },
@@ -1276,7 +1276,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(environmentRow);
     assert.equal(environmentRow.open, false);
     assert.ok(supportSummary.closest("[data-clip-environment-controls]"));
-    assert.equal(supportSummary.getAttribute("aria-label"), "更多片段支持操作");
+    assert.equal(supportSummary.getAttribute("aria-label"), "More clip support actions");
     assert.equal(supportSummary.textContent?.trim(), "");
     assert.ok(
       supportSummary.querySelector('[data-clip-support-more-icon="dots"]'),
@@ -1304,7 +1304,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("button", { name: "剧本" }));
+      assert.ok(utils.getByRole("button", { name: "Script" }));
       assert.ok(
         dom.window.document.querySelector(
           '[data-clip-support-overflow="compact"]',
@@ -1312,7 +1312,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       );
     });
 
-    const scriptButton = utils.getByRole("button", { name: "剧本" });
+    const scriptButton = utils.getByRole("button", { name: "Script" });
     assert.ok(scriptButton.closest('[data-clip-script-support="visible"]'));
     assert.equal(
       scriptButton.closest('[data-clip-support-overflow="compact"]'),
@@ -1323,7 +1323,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     ) as HTMLDetailsElement;
     assert.ok(supportDetails);
     assert.equal(supportDetails.open, false);
-    assert.equal(supportDetails.textContent?.includes("剧本"), false);
+    assert.equal(supportDetails.textContent?.includes("Script"), false);
 
     fireEvent.click(scriptButton);
     assert.deepEqual(navigations, ["script"]);
@@ -1338,7 +1338,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
           {
             id: 580,
             scene_number: "2",
-            slug_line: "SCENE 2 - 升级推进",
+            slug_line: "SCENE 2 - Escalation push",
             status: "draft",
             environment_id: 21,
           },
@@ -1349,7 +1349,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
 
     await waitFor(() => {
       const activeButton = utils.getByRole("button", {
-        name: "保存场景环境",
+        name: "Save scene environment",
       }) as HTMLButtonElement;
       assert.equal(activeButton.disabled, false);
       assert.match(activeButton.className, /bg-blue-600/);
@@ -1442,7 +1442,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       assert.match(timelineCanvas.className, /rounded-lg/);
       assert.equal(
         timelineCanvas.getAttribute("aria-label"),
-        "时间轴导航：片段时间轴定位区",
+        "Timeline navigation: clip timeline navigation area",
       );
       assert.match(timelineCanvas.className, /\bborder\b/);
       assert.match(timelineCanvas.className, /border-slate-300/);
@@ -1506,18 +1506,18 @@ describe("EpisodeTimelineWorkspace layout", () => {
         "visible",
       );
       assert.doesNotMatch(overviewLabel.className, /sr-only/);
-      assert.match(overviewLabel.textContent || "", /总览/);
+      assert.match(overviewLabel.textContent || "", /Overview/);
       assert.match(
         overviewLabel.getAttribute("title") || "",
-        /^全片时间轴 · 视频/,
+        /^Full episode timeline · Video/,
       );
       assert.ok(
         dom.window.document.querySelector(
           '[data-timeline-navigation-label="sr-only"]',
         ),
       );
-      assert.ok(utils.getByText("全片概览"));
-      assert.ok(utils.getByText("总览"));
+      assert.ok(utils.getByText("Full episode overview"));
+      assert.ok(utils.getByText("Overview"));
       const timelineViewport = dom.window.document.querySelector(
         "[data-timeline-viewport]",
       ) as HTMLElement | null;
@@ -1579,7 +1579,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
           '[data-timeline-ruler-origin-secondary="true"]',
         ),
       );
-      assert.equal(utils.queryByText("时间尺"), null);
+      assert.equal(utils.queryByText("Time ruler"), null);
       const rulerOrigin = dom.window.document.querySelector(
         "[data-timeline-ruler-origin]",
       ) as HTMLElement | null;
@@ -1606,8 +1606,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
       ) as HTMLElement | null;
       assert.ok(rulerOriginPrimary);
       assert.ok(rulerOriginSecondary);
-      assert.equal(rulerOriginPrimary.textContent, "时间轴");
-      assert.equal(rulerOriginSecondary.textContent, "刻度");
+      assert.equal(rulerOriginPrimary.textContent, "Timeline");
+      assert.equal(rulerOriginSecondary.textContent, "Scale");
       assert.doesNotMatch(rulerOriginSecondary.className, /sr-only/);
       assert.match(rulerOriginPrimary.className, /font-extrabold/);
       assert.match(rulerOriginSecondary.className, /font-semibold/);
@@ -1668,12 +1668,12 @@ describe("EpisodeTimelineWorkspace layout", () => {
         '[data-timeline-primary-lane-label="visible"]',
       ) as HTMLElement | null;
       assert.ok(videoPrimaryLaneLabel);
-      assert.equal(videoPrimaryLaneLabel.textContent, "主时间轴");
+      assert.equal(videoPrimaryLaneLabel.textContent, "Main timeline");
       assert.match(videoPrimaryLaneLabel.className, /text-\[9px\]/);
       assert.match(videoPrimaryLaneLabel.className, /text-slate-500/);
       assert.doesNotMatch(videoPrimaryLaneLabel.className, /sr-only/);
-      assert.match(videoTrackLabel.textContent || "", /视频/);
-      assert.match(videoTrackLabel.textContent || "", /主时间轴/);
+      assert.match(videoTrackLabel.textContent || "", /Video/);
+      assert.match(videoTrackLabel.textContent || "", /Main timeline/);
       const videoTrackRow = dom.window.document.querySelector(
         '[data-timeline-track-row="video"]',
       ) as HTMLElement | null;
@@ -1698,12 +1698,12 @@ describe("EpisodeTimelineWorkspace layout", () => {
           '[data-timeline-video-clip-frame="filmstrip"]',
         ),
       );
-      assert.ok(utils.getByText("主线"));
+      assert.ok(utils.getByText("Main lane"));
       assert.ok(
         dom.window.document.querySelector('[data-timeline-item-type="video"]'),
       );
-      assert.ok(utils.getByText("选中片段生产"));
-      assert.equal(utils.queryByText("当前片段"), null);
+      assert.ok(utils.getByText("Selected clip production"));
+      assert.equal(utils.queryByText("Current clip"), null);
       const currentBar = dom.window.document.querySelector(
         '[data-clip-current-bar="identity"]',
       );
@@ -1721,13 +1721,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       assert.doesNotMatch(currentBar.className, /rounded-md/);
       assert.doesNotMatch(currentBar.className, /bg-slate-50\/80/);
       assert.doesNotMatch(currentBar.className, /bg-slate-50\/70/);
-      assert.match(currentBar.textContent || "", /视频 1/);
+      assert.match(currentBar.textContent || "", /Video 1/);
       assert.match(
         dom.window.document.body.textContent || "",
-        /时间轴窗口\s*00:00/,
+        /Timeline window\s*00:00/,
       );
-      assert.match(dom.window.document.body.textContent || "", /全片\s*时间轴/);
-      assert.match(dom.window.document.body.textContent || "", /全片概览/);
+      assert.match(dom.window.document.body.textContent || "", /Full episode\s*Timeline/);
+      assert.match(dom.window.document.body.textContent || "", /Full episode overview/);
       assert.ok(
         dom.window.document.querySelector(
           '[data-timeline-reset-placement="view-panel"]',
@@ -1752,7 +1752,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       "compact",
     );
     const text = dom.window.document.body.textContent || "";
-    assert.ok(text.indexOf("时间轴窗口") < text.indexOf("选中片段生产"));
+    assert.ok(text.indexOf("Timeline window") < text.indexOf("Selected clip production"));
     assert.ok(mainChildren[0]?.nextElementSibling === mainChildren[1]);
     assert.ok(mainChildren[1]?.nextElementSibling === mainChildren[2]);
   });
@@ -1956,13 +1956,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
         dom.window.document.querySelector(
           '[data-timeline-overview-track-label="video"]',
         )?.textContent || "",
-        /总览/,
+        /Overview/,
       );
       assert.equal(
         dom.window.document
           .querySelector('[data-timeline-overview-track-label="video"]')
           ?.getAttribute("title"),
-        "全片时间轴 · 视频",
+        "Full episode timeline · Video",
       );
       assert.equal(
         overview.getAttribute("data-timeline-overview-layout"),
@@ -2014,7 +2014,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
         '[data-clip-type-badge="neutral"]',
       ) as HTMLElement | null;
       assert.ok(clipTypeBadge);
-      assert.equal(clipTypeBadge.textContent?.trim(), "当前视频");
+      assert.equal(clipTypeBadge.textContent?.trim(), "Current video");
       assert.equal(
         clipTypeBadge.getAttribute("data-clip-type-badge-visibility"),
         "sr-only",
@@ -2045,12 +2045,12 @@ describe("EpisodeTimelineWorkspace layout", () => {
         ),
         null,
       );
-      assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
+      assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
       assert.equal(
-        utils.getByText("缺视频").getAttribute("title"),
-        "缺少视频素材",
+        utils.getByText("Missing video").getAttribute("title"),
+        "Missing video media",
       );
-      const videoStatus = utils.getByText("缺视频");
+      const videoStatus = utils.getByText("Missing video");
       const productionMeta = dom.window.document.querySelector(
         '[data-clip-production-meta="true"]',
       ) as HTMLElement | null;
@@ -2059,24 +2059,24 @@ describe("EpisodeTimelineWorkspace layout", () => {
       assert.doesNotMatch(productionMeta.className, /mt-0\.5/);
       assert.equal(
         productionMeta.getAttribute("title"),
-        "片段时间 00:00 - 00:01 · 待复核",
+        "Clip time 00:00 - 00:01 · Pending review",
       );
       assert.equal(
         productionMeta.textContent?.replace(/\s+/g, " ").trim(),
-        "00:00 - 00:01待复核",
+        "00:00 - 00:01 Pending review",
       );
       const reviewStatus = productionMeta.querySelector(
         '[data-clip-production-review-status="sr-only"]',
       ) as HTMLElement | null;
       assert.ok(reviewStatus);
-      assert.equal(reviewStatus.textContent, "待复核");
+      assert.equal(reviewStatus.textContent, "Pending review");
       assert.match(reviewStatus.className, /sr-only/);
       const mobileLabel = dom.window.document.querySelector(
         '[data-clip-production-mobile-label="true"]',
       ) as HTMLElement | null;
       assert.ok(mobileLabel);
-      assert.equal(mobileLabel.textContent, "视频 1");
-      assert.equal(mobileLabel.getAttribute("title"), "视频 1");
+      assert.equal(mobileLabel.textContent, "Video 1");
+      assert.equal(mobileLabel.getAttribute("title"), "Video 1");
       assert.match(mobileLabel.className, /max-\[760px\]:inline/);
       assert.match(mobileLabel.className, /truncate/);
       const mobileTime = dom.window.document.querySelector(
@@ -2089,7 +2089,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
         '[data-clip-production-title="full"]',
       ) as HTMLElement | null;
       assert.ok(visibleLabel);
-      assert.equal(visibleLabel.getAttribute("title"), "视频 1");
+      assert.equal(visibleLabel.getAttribute("title"), "Video 1");
       assert.match(visibleLabel.className, /max-\[760px\]:sr-only/);
       assert.match(visibleLabel.className, /shrink-0/);
       assert.match(visibleLabel.className, /max-w-\[4\.5rem\]/);
@@ -2118,7 +2118,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       assert.match(videoStatus.className, /text-amber-700/);
       assert.doesNotMatch(videoStatus.className, /border/);
       assert.doesNotMatch(videoStatus.className, /bg-amber-50/);
-      assert.equal(utils.queryByText("缺少视频素材"), null);
+      assert.equal(utils.queryByText("Missing video media"), null);
     });
 
     const productionPanel = dom.window.document.querySelector(
@@ -2391,8 +2391,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
       ),
     );
     const storyboardParameterSummary =
-      utils.getByLabelText("展开分镜参数与参考");
-    const videoParameterSummary = utils.getByLabelText("展开视频绑定与参数");
+      utils.getByLabelText("Expand storyboard parameters and references");
+    const videoParameterSummary = utils.getByLabelText("Expand video bindings and parameters");
     parameterSummaries.forEach((summary) => {
       assert.equal(summary.textContent?.trim(), "");
       assert.equal(
@@ -2436,31 +2436,31 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.match(videoParameterSummary.className, /bg-blue-600/);
     assert.match(videoParameterSummary.className, /text-white/);
     assert.match(videoParameterSummary.className, /border-blue-600/);
-    assert.equal(utils.queryByText("绑定与参数"), null);
-    assert.equal(utils.queryByText(/参数与参考/), null);
-    assert.equal(utils.queryByText("参数"), null);
+    assert.equal(utils.queryByText("Bindings and parameters"), null);
+    assert.equal(utils.queryByText(/Parameters and references/), null);
+    assert.equal(utils.queryByText("Parameters"), null);
     const summary = dom.window.document.querySelector(
       "[data-clip-production-summary]",
     );
     const storyboardButton = utils.getByRole("button", {
-      name: "生成片段分镜图",
+      name: "Generate clip storyboard images",
     });
     const keyframeButton = utils.getByRole("button", {
-      name: "生成首尾帧",
+      name: "Generate start/end frames",
     });
     const videoButton = utils.getByRole("button", {
-      name: "生成/重做此片段视频",
+      name: "Generate/regenerate this clip video",
     });
-    assert.equal(storyboardButton.textContent?.trim(), "生成片段分镜图");
-    assert.equal(storyboardButton.getAttribute("title"), "生成片段分镜图");
-    assert.equal(keyframeButton.textContent?.trim(), "生成首尾帧");
-    assert.equal(videoButton.textContent?.trim(), "生成/重做此片段视频");
+    assert.equal(storyboardButton.textContent?.trim(), "Generate clip storyboard images");
+    assert.equal(storyboardButton.getAttribute("title"), "Generate clip storyboard images");
+    assert.equal(keyframeButton.textContent?.trim(), "Generate start/end frames");
+    assert.equal(videoButton.textContent?.trim(), "Generate/regenerate this clip video");
     assert.equal(
       videoButton.getAttribute("title"),
-      "先完成片段分镜图和首尾帧后才能生视频",
+      "Complete clip storyboard images and start/end frames before generating video",
     );
-    assert.doesNotMatch(storyboardButton.textContent || "", /分镜图分镜图/);
-    assert.doesNotMatch(keyframeButton.textContent || "", /首尾帧首尾帧/);
+    assert.doesNotMatch(storyboardButton.textContent || "", /Storyboard imagesStoryboard images/);
+    assert.doesNotMatch(keyframeButton.textContent || "", /Start\/end framesStart\/end frames/);
     assert.ok(storyboardButton.querySelector("svg"));
     assert.ok(keyframeButton.querySelector("svg"));
     assert.ok(videoButton.querySelector("svg"));
@@ -2496,7 +2496,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(summary);
     assert.ok(Boolean(summary.compareDocumentPosition(storyboardButton) & 4));
     const text = dom.window.document.body.textContent || "";
-    assert.ok(text.indexOf("首尾帧") < text.indexOf("场景环境"));
+    assert.ok(text.indexOf("Start/end frames") < text.indexOf("Scene environment"));
   });
 
   it("keeps engineering clip ids out of the default asset audit header", async () => {
@@ -2525,13 +2525,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(supportOverflow.closest("[data-clip-environment-row]"));
     const assetAuditSummary = Array.from(
       supportOverflow.querySelectorAll("summary"),
-    ).find((summary) => summary.textContent?.includes("资产审计"));
+    ).find((summary) => summary.textContent?.includes("Asset audit"));
     assert.ok(assetAuditSummary);
     assert.equal(
       assetAuditSummary.textContent?.includes("video_scene_1_beat_1_001"),
       false,
     );
-    assert.ok(assetAuditSummary.textContent?.includes("0 条"));
+    assert.ok(assetAuditSummary.textContent?.includes("0 items"));
 
     const assetAuditDetails = assetAuditSummary.closest("details");
     const supportLayout = supportOverflow.closest("[data-clip-support-layout]");
@@ -2539,12 +2539,12 @@ describe("EpisodeTimelineWorkspace layout", () => {
       supportLayout?.getAttribute("data-clip-support-layout"),
       "compact",
     );
-    assert.ok(supportOverflow.textContent?.includes("辅助"));
-    assert.ok(supportOverflow.textContent?.includes("辅助操作"));
-    assert.ok(supportOverflow.textContent?.includes("资产审计"));
+    assert.ok(supportOverflow.textContent?.includes("Support"));
+    assert.ok(supportOverflow.textContent?.includes("Support actions"));
+    assert.ok(supportOverflow.textContent?.includes("Asset audit"));
     assert.ok(
       assetAuditDetails?.textContent?.includes(
-        "片段 ID：video_scene_1_beat_1_001",
+        "Clip ID: video_scene_1_beat_1_001",
       ),
     );
   });
@@ -2585,13 +2585,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       ),
     );
 
-    const assetAuditLabel = utils.getByText("资产审计");
+    const assetAuditLabel = utils.getByText("Asset audit");
     const supportLayout = assetAuditLabel.closest("[data-clip-support-layout]");
     assert.equal(
       supportLayout?.getAttribute("data-clip-support-layout"),
       "split",
     );
-    assert.ok(dom.window.document.body.textContent?.includes("1 条"));
+    assert.ok(dom.window.document.body.textContent?.includes("1 item"));
   });
 
   it("keeps secondary clip navigation behind a collapsed support disclosure", async () => {
@@ -2620,10 +2620,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(
       supportSummary?.querySelector('[data-clip-support-more-icon="dots"]'),
     );
-    assert.ok(supportDetails.textContent?.includes("辅助操作"));
-    assert.equal(supportDetails.textContent?.includes("剧本"), false);
-    assert.ok(supportDetails.textContent?.includes("替换片段"));
-    assert.ok(supportDetails.textContent?.includes("任务"));
+    assert.ok(supportDetails.textContent?.includes("Support actions"));
+    assert.equal(supportDetails.textContent?.includes("Script"), false);
+    assert.ok(supportDetails.textContent?.includes("Replace clip"));
+    assert.ok(supportDetails.textContent?.includes("Tasks"));
   });
 
   it("keeps long episode Timeline lanes readable instead of squeezing them into one screen", async () => {
@@ -2634,7 +2634,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
     });
 
     const timelineCanvas = dom.window.document.querySelector(
@@ -2648,7 +2648,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       timelineCanvas?.getAttribute("data-timeline-scale-mode"),
       "readable-window",
     );
-    assert.ok(utils.getByRole("button", { name: "重置为可读时间轴视图" }));
+    assert.ok(utils.getByRole("button", { name: "Reset to readable timeline view" }));
     const timelineViewport = dom.window.document.querySelector(
       "[data-timeline-viewport]",
     );
@@ -2666,15 +2666,15 @@ describe("EpisodeTimelineWorkspace layout", () => {
     assert.ok(Number.parseFloat(timelineContent?.style.width || "0") > 1000);
 
     const firstClipButton = utils.getByLabelText(
-      "在时间轴中选择 视频 1",
+      "Select Video 1 on the timeline",
     ) as HTMLButtonElement;
     const lastClipButton = utils.getByLabelText(
-      "在时间轴中选择 视频 2",
+      "Select Video 2 on the timeline",
     ) as HTMLButtonElement;
     const firstClipWidth = Number.parseFloat(firstClipButton.style.width);
     const firstClipLeft = Number.parseFloat(firstClipButton.style.left);
     const lastClipLeft = Number.parseFloat(lastClipButton.style.left);
-    assert.equal(firstClipButton.textContent?.trim(), "视频 1");
+    assert.equal(firstClipButton.textContent?.trim(), "Video 1");
     assert.equal(firstClipWidth, 54);
     assert.equal(
       firstClipButton.getAttribute("data-timeline-item-visual"),
@@ -2731,19 +2731,19 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
     });
 
     const secondClipButton = utils.getByLabelText(
-      "在时间轴中选择 视频 2",
+      "Select Video 2 on the timeline",
     ) as HTMLButtonElement;
     const shortClipButton = utils.getByLabelText(
-      "在时间轴中选择 视频 3",
+      "Select Video 3 on the timeline",
     ) as HTMLButtonElement;
     const finalShortClipButton = utils.getByLabelText(
-      "在时间轴中选择 视频 4",
+      "Select Video 4 on the timeline",
     ) as HTMLButtonElement;
-    assert.equal(secondClipButton.textContent?.trim(), "视频 2");
+    assert.equal(secondClipButton.textContent?.trim(), "Video 2");
     assert.equal(
       secondClipButton.getAttribute("data-timeline-label-visibility"),
       "visible",
@@ -2758,11 +2758,11 @@ describe("EpisodeTimelineWorkspace layout", () => {
       finalShortClipButton.getAttribute("data-timeline-label-visibility"),
       "hidden",
     );
-    assert.match(shortClipButton.getAttribute("aria-label") || "", /视频 3/);
-    assert.match(shortClipButton.getAttribute("title") || "", /视频 3/);
+    assert.match(shortClipButton.getAttribute("aria-label") || "", /Video 3/);
+    assert.match(shortClipButton.getAttribute("title") || "", /Video 3/);
     assert.match(
       finalShortClipButton.getAttribute("aria-label") || "",
-      /视频 4/,
+      /Video 4/,
     );
     assert.equal(
       shortClipButton
@@ -2782,8 +2782,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
             id: "selected",
             startMs: 0,
             endMs: 3320,
-            label: "视频 1",
-            displayLabel: "视频 1",
+            label: "Video 1",
+            displayLabel: "Video 1",
             type: "video",
           }}
           minStart={0}
@@ -2800,8 +2800,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
             id: "readable",
             startMs: 9000,
             endMs: 15500,
-            label: "视频 4",
-            displayLabel: "视频 4",
+            label: "Video 4",
+            displayLabel: "Video 4",
             type: "video",
           }}
           minStart={0}
@@ -2818,8 +2818,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
             id: "cramped",
             startMs: 6800,
             endMs: 7600,
-            label: "视频 5",
-            displayLabel: "视频 5",
+            label: "Video 5",
+            displayLabel: "Video 5",
             type: "video",
           }}
           minStart={0}
@@ -2835,12 +2835,12 @@ describe("EpisodeTimelineWorkspace layout", () => {
       { container: dom.window.document.body },
     );
 
-    const selected = utils.getByLabelText("在时间轴中选择 视频 1");
-    const readable = utils.getByLabelText("在时间轴中选择 视频 4");
-    const cramped = utils.getByLabelText("在时间轴中选择 视频 5");
+    const selected = utils.getByLabelText("Select Video 1 on the timeline");
+    const readable = utils.getByLabelText("Select Video 4 on the timeline");
+    const cramped = utils.getByLabelText("Select Video 5 on the timeline");
 
-    assert.equal(selected.textContent?.trim(), "视频 1");
-    assert.equal(readable.textContent?.trim(), "视频 4");
+    assert.equal(selected.textContent?.trim(), "Video 1");
+    assert.equal(readable.textContent?.trim(), "Video 4");
     assert.equal(cramped.textContent?.trim(), "");
     assert.equal(
       readable.getAttribute("data-timeline-label-visibility"),
@@ -2864,20 +2864,20 @@ describe("EpisodeTimelineWorkspace layout", () => {
         tracks={[
           {
             id: "video",
-            label: "视频",
+            label: "Video",
             items: [
               {
                 id: "video-1",
                 startMs: 0,
                 endMs: 3000,
-                label: "视频 1",
+                label: "Video 1",
                 type: "video",
               },
               {
                 id: "video-2",
                 startMs: 3000,
                 endMs: 10000,
-                label: "视频 2",
+                label: "Video 2",
                 type: "video",
               },
             ],
@@ -2909,8 +2909,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
       "visible",
     );
     assert.doesNotMatch(label.className, /sr-only/);
-    assert.match(label.textContent || "", /总览/);
-    assert.equal(label.getAttribute("title"), "全片时间轴 · 视频");
+    assert.match(label.textContent || "", /Overview/);
+    assert.equal(label.getAttribute("title"), "Full episode timeline · Video");
     assert.equal(
       range.getAttribute("data-timeline-overview-range-visibility"),
       "sr-only",
@@ -2941,32 +2941,32 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
-      assert.ok(utils.getByLabelText("在时间轴中选择 长对白提示"));
-      assert.ok(utils.getByLabelText("在时间轴中选择 长分镜提示"));
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
+      assert.ok(utils.getByLabelText("Select Long dialogue prompt on the timeline"));
+      assert.ok(utils.getByLabelText("Select Long storyboard prompt on the timeline"));
     });
 
     const dialogueClipButton = utils.getByLabelText(
-      "在时间轴中选择 长对白提示",
+      "Select Long dialogue prompt on the timeline",
     ) as HTMLButtonElement;
     const storyboardClipButton = utils.getByLabelText(
-      "在时间轴中选择 长分镜提示",
+      "Select Long storyboard prompt on the timeline",
     ) as HTMLButtonElement;
     const videoClipButton = utils.getByLabelText(
-      "在时间轴中选择 视频 2",
+      "Select Video 2 on the timeline",
     ) as HTMLButtonElement;
     assert.equal(dialogueClipButton.textContent?.trim(), "");
     assert.equal(storyboardClipButton.textContent?.trim(), "");
     assert.match(
       dialogueClipButton.getAttribute("aria-label") || "",
-      /长对白提示/,
+      /Long dialogue prompt/,
     );
     assert.match(
       storyboardClipButton.getAttribute("aria-label") || "",
-      /长分镜提示/,
+      /Long storyboard prompt/,
     );
-    assert.equal(videoClipButton.textContent?.trim(), "视频 2");
-    assert.match(videoClipButton.getAttribute("aria-label") || "", /视频 2/);
+    assert.equal(videoClipButton.textContent?.trim(), "Video 2");
+    assert.match(videoClipButton.getAttribute("aria-label") || "", /Video 2/);
     assert.equal(
       dialogueClipButton.getAttribute("data-timeline-item-visual"),
       "support-context",
@@ -3080,19 +3080,19 @@ describe("EpisodeTimelineWorkspace layout", () => {
       '[data-timeline-primary-lane-label="visible"]',
     ) as HTMLElement | null;
     assert.ok(primaryLaneLabel);
-    assert.equal(primaryLaneLabel.textContent, "主时间轴");
+    assert.equal(primaryLaneLabel.textContent, "Main timeline");
     assert.match(primaryLaneLabel.className, /text-\[9px\]/);
     assert.match(primaryLaneLabel.className, /text-slate-500/);
     assert.doesNotMatch(primaryLaneLabel.className, /sr-only/);
     assert.match(
       videoTrack.querySelector('[data-timeline-track-label="video"]')
         ?.textContent || "",
-      /视频/,
+      /Video/,
     );
     assert.match(
       videoTrack.querySelector('[data-timeline-track-label="video"]')
         ?.textContent || "",
-      /主时间轴/,
+      /Main timeline/,
     );
     const videoTrackMarker = videoTrack.querySelector(
       '[data-timeline-track-marker="primary"]',
@@ -3144,7 +3144,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       "timeline-bar",
     );
     assert.equal(Number.parseFloat(videoClipButton.style.height), 44);
-    assert.equal(videoClipButton.textContent?.trim(), "视频 1");
+    assert.equal(videoClipButton.textContent?.trim(), "Video 1");
     assert.ok(
       videoClipButton.querySelector(
         '[data-timeline-video-clip-frame="filmstrip"]',
@@ -3176,21 +3176,21 @@ describe("EpisodeTimelineWorkspace layout", () => {
 
   it("renders compact video labels on the Timeline while preserving full clip text", async () => {
     mockWorkspaceFetch();
-    const longText = "懒惰是第一动力，但爱是最终目的";
+    const longText = "Laziness is the first driver, but love is the ultimate purpose";
 
     const utils = render(workspace(longLabelVideoTimeline(longText)), {
       container: dom.window.document.body,
     });
 
     const timelineButton = await waitFor(() =>
-      utils.getByLabelText(`在时间轴中选择 ${longText}`),
+      utils.getByLabelText(`Select ${longText} on the timeline`),
     );
-    assert.equal(timelineButton.textContent?.trim(), "视频 1");
+    assert.equal(timelineButton.textContent?.trim(), "Video 1");
     const productionTitle = dom.window.document.querySelector(
       '[data-clip-production-title="full"]',
     ) as HTMLElement | null;
     assert.ok(productionTitle);
-    assert.equal(productionTitle.textContent, "视频 1");
+    assert.equal(productionTitle.textContent, "Video 1");
     assert.equal(productionTitle.getAttribute("title"), longText);
     assert.match(productionTitle.className, /shrink-0/);
     assert.equal(utils.queryByText(longText), null);
@@ -3204,10 +3204,10 @@ describe("EpisodeTimelineWorkspace layout", () => {
     });
 
     await waitFor(() => {
-      assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
-      assert.ok(utils.getByLabelText("在时间轴中选择 native dialogue"));
-      assert.ok(utils.getAllByText("对白 1").length >= 1);
-      assert.ok(utils.getAllByText("视频 1").length >= 1);
+      assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
+      assert.ok(utils.getByLabelText("Select native dialogue on the timeline"));
+      assert.ok(utils.getAllByText("Dialogue 1").length >= 1);
+      assert.ok(utils.getAllByText("Video 1").length >= 1);
     });
 
     assert.equal(utils.queryByText("native dialogue"), null);
@@ -3220,13 +3220,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
       container: dom.window.document.body,
     });
 
-    await waitFor(() => assert.ok(utils.getByText("选中片段生产")));
-    assert.ok(utils.getByLabelText("在时间轴中选择 native dialogue"));
-    assert.ok(utils.getAllByText("对白 1").length >= 1);
-    assert.equal(utils.queryByText("片段检查器"), null);
-    assert.equal(utils.queryByRole("button", { name: "生成片段分镜图" }), null);
+    await waitFor(() => assert.ok(utils.getByText("Selected clip production")));
+    assert.ok(utils.getByLabelText("Select native dialogue on the timeline"));
+    assert.ok(utils.getAllByText("Dialogue 1").length >= 1);
+    assert.equal(utils.queryByText("Clip inspector"), null);
+    assert.equal(utils.queryByRole("button", { name: "Generate clip storyboard images" }), null);
     assert.equal(
-      utils.queryByRole("button", { name: "生成/重做此片段视频" }),
+      utils.queryByRole("button", { name: "Generate/regenerate this clip video" }),
       null,
     );
   });
@@ -3236,7 +3236,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       environments: [
         {
           id: 1,
-          name: "办公室",
+          name: "Office",
           created_at: "2026-06-09T00:00:00Z",
           updated_at: "2026-06-09T00:00:00Z",
         },
@@ -3244,7 +3244,7 @@ describe("EpisodeTimelineWorkspace layout", () => {
       environmentDetails: {
         1: {
           id: 1,
-          name: "办公室",
+          name: "Office",
           reference_images: ["https://cdn.example/office-env.png"],
           created_at: "2026-06-09T00:00:00Z",
           updated_at: "2026-06-09T00:00:00Z",
@@ -3258,28 +3258,28 @@ describe("EpisodeTimelineWorkspace layout", () => {
 
     await waitFor(() => {
       assert.ok(
-        utils.getByText("未匹配规范化场景，当前环境仅用于片段生成参考。"),
+        utils.getByText("No normalized scene matched; the current environment is only used as clip generation reference."),
       );
-      assert.ok(utils.getByLabelText("片段环境"));
-      assert.ok(utils.getByText("去临时角色绑定 IP"));
+      assert.ok(utils.getByLabelText("Clip environment"));
+      assert.ok(utils.getByText("Go bind temporary character IPs"));
     });
 
-    fireEvent.change(utils.getByLabelText("片段环境"), {
+    fireEvent.change(utils.getByLabelText("Clip environment"), {
       target: { value: "1" },
     });
 
-    await waitFor(() => assert.ok(utils.getByAltText("已选环境图 办公室 1")));
-    const envDialog = openReferencePicker(utils, "选择环境图");
+    await waitFor(() => assert.ok(utils.getByAltText("Selected environment image Office 1")));
+    const envDialog = openReferencePicker(utils, "Choose environment images");
     assert.equal(
       within(envDialog)
-        .getByLabelText("选择环境图 办公室 1")
+        .getByLabelText("Choose environment image Office 1")
         .getAttribute("aria-pressed"),
       "true",
     );
-    fireEvent.click(within(envDialog).getByRole("button", { name: "应用选择" }));
+    fireEvent.click(within(envDialog).getByRole("button", { name: "Apply selection" }));
 
-    assert.ok(utils.getByLabelText("视频生成绑定上下文"));
-    assert.ok(utils.getAllByText("环境图：1 张").length >= 1);
+    assert.ok(utils.getByLabelText("Video generation binding context"));
+    assert.ok(utils.getAllByText("Environment images: 1").length >= 1);
   });
 
   it("labels the header primary action from clip-video readiness", () => {
@@ -3304,15 +3304,15 @@ describe("EpisodeTimelineWorkspace layout", () => {
         onGenerateScript={() => {}}
         onGenerateTimeline={() => {}}
         onSelectScript={() => {}}
-        storyboardActionLabel="进入片段分镜"
+        storyboardActionLabel="Enter clip storyboard"
         onOpenStoryboard={() => {}}
       />,
       { container: dom.window.document.body },
     );
     const missingAction = missing.getByRole("button", {
-      name: "处理缺失片段",
+      name: "Handle missing clips",
     });
-    assert.equal(missingAction.getAttribute("title"), "处理缺失片段");
+    assert.equal(missingAction.getAttribute("title"), "Handle missing clips");
     assert.equal(
       missingAction.querySelector('[data-missing-clips-icon="warning"]')
         ?.textContent,
@@ -3326,8 +3326,8 @@ describe("EpisodeTimelineWorkspace layout", () => {
     );
     assert.ok(desktopLabel);
     assert.ok(mobileLabel);
-    assert.equal(desktopLabel.textContent, "处理缺失片段");
-    assert.equal(mobileLabel.textContent, "缺片段");
+    assert.equal(desktopLabel.textContent, "Handle missing clips");
+    assert.equal(mobileLabel.textContent, "Missing clips");
     assert.match(desktopLabel.className, /hidden/);
     assert.match(desktopLabel.className, /min-\[760px\]:inline/);
     assert.match(mobileLabel.className, /min-\[760px\]:hidden/);
@@ -3370,13 +3370,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
         onGenerateScript={() => {}}
         onGenerateTimeline={() => {}}
         onSelectScript={() => {}}
-        storyboardActionLabel="进入片段分镜"
+        storyboardActionLabel="Enter clip storyboard"
         onOpenStoryboard={() => {}}
       />,
       { container: dom.window.document.body },
     );
     assert.match(
-      ready.getByRole("button", { name: "渲染/导出" }).className,
+      ready.getByRole("button", { name: "Render/Export" }).className,
       /bg-blue-600/,
     );
     cleanup();
@@ -3400,13 +3400,13 @@ describe("EpisodeTimelineWorkspace layout", () => {
         onGenerateScript={() => {}}
         onGenerateTimeline={() => {}}
         onSelectScript={() => {}}
-        storyboardActionLabel="打开分镜辅助"
+        storyboardActionLabel="Open storyboard support"
         onOpenStoryboard={() => {}}
       />,
       { container: dom.window.document.body },
     );
     assert.match(
-      dialogueOnlyTimeline.getByRole("button", { name: "生成 Timeline" })
+      dialogueOnlyTimeline.getByRole("button", { name: "Generate Timeline" })
         .className,
       /bg-blue-600/,
     );
@@ -3468,7 +3468,7 @@ function episode(): Episode {
     business_id: "episode_1",
     story_id: 7,
     episode_number: 1,
-    title: "末日安全屋",
+    title: "Doomsday Safehouse",
     duration_minutes: 3,
     status: "draft",
     created_at: "2026-06-11T00:00:00Z",
@@ -3481,7 +3481,7 @@ function script(): Script {
     id: 128,
     business_id: "script_128",
     episode_id: 1,
-    title: "第1集剧本",
+    title: "Episode 1 Script",
     format_type: "screenplay",
     language: "zh-CN",
     status: "draft",
@@ -3629,7 +3629,7 @@ function videoTimeline() {
           track_type: "video",
           start_ms: 0,
           end_ms: 1200,
-          text: "视频 1",
+          text: "Video 1",
         },
       ],
     },
@@ -3732,14 +3732,14 @@ function longEpisodeTimeline() {
             track_type: "video",
             start_ms: 0,
             end_ms: 3200,
-            text: "视频 1",
+            text: "Video 1",
           },
           {
             clip_id: "video_scene_1_beat_2_002",
             track_type: "video",
             start_ms: 148800,
             end_ms: 152000,
-            text: "视频 2",
+            text: "Video 2",
           },
         ],
       },
@@ -3761,28 +3761,28 @@ function denseFittedVideoTimeline() {
             track_type: "video",
             start_ms: 0,
             end_ms: 3320,
-            text: "视频 1",
+            text: "Video 1",
           },
           {
             clip_id: "video_scene_1_beat_2_002",
             track_type: "video",
             start_ms: 8000,
             end_ms: 32000,
-            text: "视频 2",
+            text: "Video 2",
           },
           {
             clip_id: "video_scene_1_beat_3_003",
             track_type: "video",
             start_ms: 40000,
             end_ms: 43000,
-            text: "视频 3",
+            text: "Video 3",
           },
           {
             clip_id: "video_scene_1_beat_4_004",
             track_type: "video",
             start_ms: 148800,
             end_ms: 152000,
-            text: "视频 4",
+            text: "Video 4",
           },
         ],
       },
@@ -3804,14 +3804,14 @@ function longEpisodeWithSupportTimeline() {
             track_type: "video",
             start_ms: 0,
             end_ms: 3200,
-            text: "视频 1",
+            text: "Video 1",
           },
           {
             clip_id: "video_scene_1_beat_2_002",
             track_type: "video",
             start_ms: 128000,
             end_ms: 152000,
-            text: "视频 2",
+            text: "Video 2",
           },
         ],
       },
@@ -3823,7 +3823,7 @@ function longEpisodeWithSupportTimeline() {
             track_type: "dialogue",
             start_ms: 148800,
             end_ms: 152000,
-            text: "长对白提示",
+            text: "Long dialogue prompt",
           },
         ],
       },
@@ -3835,7 +3835,7 @@ function longEpisodeWithSupportTimeline() {
             track_type: "storyboard",
             start_ms: 148800,
             end_ms: 152000,
-            text: "长分镜提示",
+            text: "Long storyboard prompt",
           },
         ],
       },
@@ -3900,7 +3900,7 @@ function dialogueBeforeVideoTimeline() {
           track_type: "video",
           start_ms: 0,
           end_ms: 1200,
-          text: "视频 1",
+          text: "Video 1",
         },
       ],
     },
@@ -3917,14 +3917,14 @@ function twoVideoTimeline() {
           track_type: "video",
           start_ms: 0,
           end_ms: 1200,
-          text: "第一个视频",
+          text: "First video",
         },
         {
           clip_id: "video_scene_1_beat_2_002",
           track_type: "video",
           start_ms: 1300,
           end_ms: 2400,
-          text: "第二个视频",
+          text: "Second video",
         },
       ],
     },
@@ -3941,7 +3941,7 @@ function idOnlyVideoTimeline() {
           track_type: "video",
           start_ms: 0,
           end_ms: 1200,
-          text: "历史 id 视频",
+          text: "Legacy ID video",
         } as unknown as NonNullable<
           TimelineResponse["spec"]
         >["tracks"][number]["clips"][number],

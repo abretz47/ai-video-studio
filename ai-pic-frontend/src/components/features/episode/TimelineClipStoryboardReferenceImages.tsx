@@ -57,29 +57,31 @@ export function StoryboardReferenceImageSelectors({
   return (
     <>
       <ReferenceImageSummary
-        title="IP 图"
-        ariaPrefix="选择 IP 图"
-        altPrefix="IP 图"
-        selectedAltPrefix="已选 IP 图"
+        title="IP Images"
+        ariaPrefix="Select IP Images"
+        altPrefix="IP image"
+        selectedAltPrefix="Selected IP image"
         options={selectedCharacterOptions}
         groups={characterGroups}
         selectedUrls={selectedCharacterUrls}
         loading={characterImagesLoading}
         error={characterImagesError}
         emptyText={
-          selectedVirtualIpIds.length ? "暂无可选 IP 图" : "先绑定角色 IP"
+          selectedVirtualIpIds.length
+            ? "No IP images are available"
+            : "Bind Character IPs first"
         }
         onReplace={onCharacterImagesReplace}
       />
       <ReferenceImageSummary
-        title="环境图"
-        ariaPrefix="选择环境图"
-        altPrefix="环境图"
-        selectedAltPrefix="已选环境图"
+        title="Environment Images"
+        ariaPrefix="Select Environment Images"
+        altPrefix="Environment image"
+        selectedAltPrefix="Selected environment image"
         options={environmentImageOptions}
         groups={environmentGroups}
         selectedUrls={selectedEnvironmentUrls}
-        emptyText="暂无可选环境图"
+        emptyText="No environment images are available"
         onReplace={onEnvironmentImagesReplace}
       />
     </>
@@ -125,27 +127,29 @@ function ReferenceImageSummary({
     >
       <legend className="text-[11px] font-medium text-gray-700">{title}</legend>
       {loading ? (
-        <div className="text-[11px] text-gray-500">图片加载中...</div>
+        <div className="text-[11px] text-gray-500">Loading images...</div>
       ) : error ? (
-        <div className="text-[11px] text-red-600">图片加载失败：{error}</div>
+        <div className="text-[11px] text-red-600">
+          Failed to load images: {error}
+        </div>
       ) : options.length ? (
         <div className="grid gap-2">
           <div className="flex items-center justify-between gap-2 text-[11px]">
             <span className="truncate text-gray-500">
-              {title}：{selectedCount} 张
+              {title}: {selectedCount} images
             </span>
             <span className="flex shrink-0 items-center gap-2">
               <span className="text-gray-400">
-                已选 {selectedCount}/{options.length}
+                Selected {selectedCount}/{options.length}
               </span>
               {onReplace && selectedCount > 0 ? (
                 <button
                   type="button"
-                  aria-label={`${title}清空`}
+                  aria-label={`Clear ${title}`}
                   className="text-gray-500 hover:underline"
                   onClick={() => onReplace([])}
                 >
-                  清空
+                  Clear
                 </button>
               ) : null}
               {onReplace ? (
@@ -182,7 +186,7 @@ function ReferenceImageSummary({
               ) : null}
             </div>
           ) : (
-            <div className="text-[11px] text-gray-500">未选择图片</div>
+            <div className="text-[11px] text-gray-500">No images selected</div>
           )}
           <ReferenceImagePickerModal
             title={ariaPrefix}

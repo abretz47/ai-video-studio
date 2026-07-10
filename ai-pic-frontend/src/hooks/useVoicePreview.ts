@@ -88,11 +88,11 @@ export function useVoicePreview({
       voiceOptions[0]?.value;
 
     if (!fallbackProvider) {
-      showAlert({ message: "请先选择服务商", variant: "error" });
+      showAlert({ message: "Please select a provider first", variant: "error" });
       return;
     }
     if (!fallbackModel) {
-      showAlert({ message: "请先选择语音模型", variant: "error" });
+      showAlert({ message: "Please select a voice model first", variant: "error" });
       return;
     }
 
@@ -129,16 +129,19 @@ export function useVoicePreview({
         } else {
           setPreviewUrls(null, null);
         }
-        showAlert({ message: "试听已生成", variant: "success" });
+        showAlert({ message: "Voice preview is ready", variant: "success" });
       } else {
         showAlert({
-          message: `试听失败：${res.error || "未知错误"}`,
+          message: `Voice preview failed: ${res.error || "Unknown error"}`,
           variant: "error",
         });
       }
     } catch (error) {
       console.error("Preview failed", error);
-      showAlert({ message: "试听失败，请稍后重试", variant: "error" });
+      showAlert({
+        message: "Voice preview failed. Please try again later",
+        variant: "error",
+      });
     } finally {
       setPreviewLoading(false);
     }

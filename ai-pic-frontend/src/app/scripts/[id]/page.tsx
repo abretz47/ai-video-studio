@@ -55,7 +55,7 @@ export default function ScriptDetailPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-100">
-        <OperatorState title="加载剧本..." />
+        <OperatorState title="Loading script..." />
       </div>
     );
   }
@@ -64,14 +64,14 @@ export default function ScriptDetailPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-100">
         <OperatorState
-          title="未找到剧本"
+          title="Script not found"
           tone="red"
           action={
             <button
               onClick={() => router.push("/stories")}
               className="text-xs font-medium text-red-700 underline"
             >
-              返回故事列表
+              Back to Stories
             </button>
           }
         />
@@ -81,9 +81,9 @@ export default function ScriptDetailPage() {
 
   return (
     <OperatorShell
-      title="剧本详情"
+      title="Script Details"
       subtitle={script.title}
-      breadcrumb={["IP 中心", "剧本", script.title]}
+      breadcrumb={["IP Hub", "Scripts", script.title]}
     >
       <div className="space-y-4">
         <ScriptHeader

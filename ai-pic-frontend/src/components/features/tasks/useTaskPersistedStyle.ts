@@ -24,7 +24,7 @@ export function useTaskPersistedStyle() {
     if (Object.keys(envCache).length > 0) return envCache;
     const res = await storyStructureAPI.listEnvironments();
     if (!res.success || !Array.isArray(res.data)) {
-      throw new Error(res.error || "加载环境资产失败");
+      throw new Error(res.error || "Failed to load environment assets");
     }
     const next: Record<number, Environment> = {};
     res.data.forEach((env) => {
@@ -52,7 +52,7 @@ export function useTaskPersistedStyle() {
           if (vipId && imageId) {
             const res = await virtualIPImageAPI.getImage(vipId, imageId);
             if (!res.success || !res.data) {
-              throw new Error(res.error || "加载虚拟IP图像失败");
+              throw new Error(res.error || "Failed to load Virtual IP image");
             }
             const generationParams = (res.data.generation_params ||
               {}) as Record<string, unknown>;
@@ -92,7 +92,7 @@ export function useTaskPersistedStyle() {
         if (scriptId) {
           const sb = await scriptAPI.getStoryboard(scriptId);
           if (!sb.success || !sb.data) {
-            throw new Error(sb.error || "加载分镜数据失败");
+            throw new Error(sb.error || "Failed to load storyboard data");
           }
           const meta = (sb.data.meta || {}) as Record<string, unknown>;
           setPersistedStyle((prev) => ({
@@ -111,7 +111,7 @@ export function useTaskPersistedStyle() {
           ...prev,
           [taskId]: {
             source: "unknown",
-            error: "未能识别可读取的落库风格来源",
+            error: "Could not identify a readable persisted style source",
           },
         }));
       } catch (error) {
@@ -120,7 +120,7 @@ export function useTaskPersistedStyle() {
           [taskId]: {
             source: "error",
             error:
-              error instanceof Error ? error.message : "加载落库风格信息失败",
+              error instanceof Error ? error.message : "Failed to load persisted style information",
           },
         }));
       } finally {

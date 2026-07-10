@@ -29,11 +29,11 @@ export function useVirtualIPImageUpload({
 
   const handleUploadImage = async () => {
     if (!uploadForm.file) {
-      showAlert({ message: "请选择文件", variant: "warning" });
+      showAlert({ message: "Please select a file", variant: "warning" });
       return;
     }
     if (!virtualIPId) {
-      showAlert({ message: "虚拟IP尚未加载", variant: "error" });
+      showAlert({ message: "Virtual IP has not loaded yet", variant: "error" });
       return;
     }
 
@@ -55,15 +55,15 @@ export function useVirtualIPImageUpload({
           tags: "",
           is_default: false,
         });
-        showAlert({ message: "图片上传成功！", variant: "success" });
+        showAlert({ message: "Image uploaded successfully!", variant: "success" });
       } else {
-        throw new Error(response.error || "图片上传失败");
+        throw new Error(response.error || "Image upload failed");
       }
     } catch (error) {
       console.error("Image upload failed:", error);
       showAlert({
-        message: `图片上传失败：${
-          error instanceof Error ? error.message : "未知错误"
+        message: `Image upload failed: ${
+          error instanceof Error ? error.message : "Unknown error"
         }`,
         variant: "error",
       });

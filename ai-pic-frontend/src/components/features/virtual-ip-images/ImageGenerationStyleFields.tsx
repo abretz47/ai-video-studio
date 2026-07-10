@@ -37,7 +37,7 @@ export function ImageGenerationStyleFields({
       {showStylePreset ? (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            风格预设
+            Style preset
           </label>
           <select
             value={generateForm.style_preset_id || ""}
@@ -49,7 +49,7 @@ export function ImageGenerationStyleFields({
             }
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">（不使用预设）</option>
+            <option value="">(No preset)</option>
             {stylePresets.map((preset) => (
               <option key={preset.preset_id} value={preset.preset_id}>
                 {preset.label || preset.preset_id}

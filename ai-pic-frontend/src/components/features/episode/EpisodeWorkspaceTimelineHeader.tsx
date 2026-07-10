@@ -51,16 +51,16 @@ export function EpisodeWorkspaceTimelineHeader({
       >
         <div className="order-1 min-w-0 min-[760px]:order-none">
           <h1 className="truncate text-[13px] font-semibold leading-6 text-gray-950 min-[760px]:text-sm min-[760px]:leading-8">
-            第{episode.episode_number}集: {episode.title}
+            Episode {episode.episode_number}: {episode.title}
           </h1>
         </div>
         <label
           data-workspace-script-select-slot="compact"
           className="order-3 min-w-0 min-[760px]:order-none"
         >
-          <span className="sr-only">当前剧本</span>
+          <span className="sr-only">Current script</span>
           <select
-            aria-label="当前剧本"
+            aria-label="Current script"
             value={selectedScriptId ?? ""}
             onChange={(event) => {
               const next = Number(event.target.value);
@@ -72,7 +72,7 @@ export function EpisodeWorkspaceTimelineHeader({
             )}
           >
             {scripts.length === 0 ? (
-              <option value="">未生成剧本</option>
+              <option value="">No script generated</option>
             ) : (
               scripts.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -85,11 +85,11 @@ export function EpisodeWorkspaceTimelineHeader({
         <div
           data-production-step-rail="compact"
           data-production-step-rail-layout="segments"
-          aria-label="生产主线"
+          aria-label="Production flow"
           className="order-4 flex min-w-0 items-center overflow-hidden text-[11px] min-[760px]:order-none min-[760px]:text-xs"
         >
           <span className="sr-only shrink-0 font-semibold text-gray-600">
-            生产主线
+            Production flow
           </span>
           <ProductionStepRail steps={productionState.steps} />
         </div>
@@ -123,7 +123,7 @@ export function EpisodeWorkspaceTimelineHeader({
                   data-workspace-primary-action-label="mobile-short"
                   className="min-[760px]:hidden"
                 >
-                  缺片段
+                  Missing clips
                 </span>
               </>
             ) : (

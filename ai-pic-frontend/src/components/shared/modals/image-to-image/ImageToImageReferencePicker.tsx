@@ -49,7 +49,7 @@ export function ImageToImageReferencePicker({
                     <div className="relative h-28 w-full">
                       <Image
                         src={url}
-                        alt={section.title || "参考图"}
+                        alt={section.title || "Reference image"}
                         fill
                         sizes="100%"
                         className="object-cover"
@@ -58,7 +58,7 @@ export function ImageToImageReferencePicker({
                     </div>
                     {selected ? (
                       <div className="absolute inset-0 bg-blue-500/30 flex items-center justify-center text-white text-xs">
-                        已选
+                        Selected
                       </div>
                     ) : null}
                   </button>
@@ -67,7 +67,7 @@ export function ImageToImageReferencePicker({
                     onClick={() => onPreview(url)}
                     className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1 text-[11px] text-white hover:bg-black/80"
                   >
-                    预览
+                    Preview
                   </button>
                 </div>
               );

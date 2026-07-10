@@ -169,14 +169,14 @@ describe("timeline clip rework controls", () => {
     assert.deepEqual(timelineClipStartEndFrameStatus(null), {
       startReady: false,
       endReady: false,
-      label: "首尾帧待生成",
+      label: "Start/end frames pending",
     });
     assert.deepEqual(
       timelineClipStartEndFrameStatus(videoClipWithStoryboardPanel()),
       {
         startReady: true,
         endReady: true,
-        label: "首尾帧已生成",
+        label: "Start/end frames generated",
       },
     );
     assert.deepEqual(
@@ -184,7 +184,7 @@ describe("timeline clip rework controls", () => {
       {
         startReady: false,
         endReady: false,
-        label: "首尾帧待生成",
+        label: "Start/end frames pending",
       },
     );
   });
@@ -207,36 +207,36 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByLabelText("步骤 1 · 片段分镜图"));
-    assert.ok(utils.getByLabelText("步骤 3 · 片段视频"));
-    const chain = utils.getByLabelText("片段生图生视频链路");
-    assert.ok(within(chain).getByText("选参考/绑定"));
-    assert.ok(within(chain).getByText("生图：分镜图"));
-    assert.ok(within(chain).getByText("生图：首尾帧"));
-    assert.ok(within(chain).getByText("生视频：片段视频"));
-    assert.ok(utils.getByRole("button", { name: "生成片段分镜图" }));
-    assert.ok(utils.getByRole("button", { name: "生成/重做此片段视频" }));
-    assert.ok(utils.getByLabelText("视频参考来源"));
-    assert.ok(utils.getByRole("option", { name: "分镜 Panel 4" }));
-    assert.ok(utils.getByLabelText("附加参考图 URL"));
-    assert.ok(utils.getByLabelText("画面风格"));
-    assert.ok(utils.getByLabelText("分镜 panel 数"));
-    const storyboardModelSelect = utils.getByLabelText("分镜生图模型");
+    assert.ok(utils.getByLabelText("Step 1 · Clip storyboard images"));
+    assert.ok(utils.getByLabelText("Step 3 · Clip video"));
+    const chain = utils.getByLabelText("Clip image/video generation flow");
+    assert.ok(within(chain).getByText("Choose refs/bindings"));
+    assert.ok(within(chain).getByText("Image: storyboard"));
+    assert.ok(within(chain).getByText("Image: start/end frames"));
+    assert.ok(within(chain).getByText("Video: clip video"));
+    assert.ok(utils.getByRole("button", { name: "Generate clip storyboard images" }));
+    assert.ok(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
+    assert.ok(utils.getByLabelText("Video reference source"));
+    assert.ok(utils.getByRole("option", { name: "Storyboard Panel 4" }));
+    assert.ok(utils.getByLabelText("Additional reference image URLs"));
+    assert.ok(utils.getByLabelText("Visual style"));
+    assert.ok(utils.getByLabelText("Storyboard panel count"));
+    const storyboardModelSelect = utils.getByLabelText("Storyboard image model");
     assert.ok(
       within(storyboardModelSelect).getByRole("option", {
-        name: "自动选择模型",
+        name: "Auto-select model",
       }),
     );
-    const videoModelSelect = utils.getByLabelText("视频模型");
+    const videoModelSelect = utils.getByLabelText("Video model");
     assert.ok(
-      within(videoModelSelect).getByRole("option", { name: "自动选择模型" }),
+      within(videoModelSelect).getByRole("option", { name: "Auto-select model" }),
     );
     assert.ok(within(videoModelSelect).getByRole("option", { name: "Seedance 2.0" }));
-    assert.ok(utils.getByLabelText("画面比例"));
+    assert.ok(utils.getByLabelText("Aspect ratio"));
     assert.ok(utils.getByRole("option", { name: "9:16" }));
-    assert.ok(utils.getByLabelText("重做动作"));
-    assert.ok(utils.getByLabelText("运动提示词覆盖"));
-    assert.ok(utils.getByText("留空则使用 Timeline 镜头运动规划"));
+    assert.ok(utils.getByLabelText("Rework action"));
+    assert.ok(utils.getByLabelText("Motion prompt override"));
+    assert.ok(utils.getByText("Leave blank to use the Timeline camera motion plan"));
   });
 
   it("shows shared references as a visible clip production context", async () => {
@@ -246,29 +246,29 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
         storyboardEnvironmentImageOptions: [
-          { url: "https://cdn.example/interior-env.png", label: "室内环境" },
+          { url: "https://cdn.example/interior-env.png", label: "Indoor environment" },
         ],
       }),
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(utils.getByLabelText("片段共享参考上下文")));
-    const sharedContext = utils.getByLabelText("片段共享参考上下文");
+    await waitFor(() => assert.ok(utils.getByLabelText("Shared clip reference context")));
+    const sharedContext = utils.getByLabelText("Shared clip reference context");
     assert.equal(sharedContext.closest("[data-clip-parameter-details]"), null);
-    assert.ok(within(sharedContext).getByText("会用于分镜、首尾帧和视频任务"));
-    assert.ok(within(sharedContext).getByText("角色 IP：快递员"));
-    assert.ok(within(sharedContext).getByText("IP 图：1 张"));
-    assert.ok(within(sharedContext).getByText("环境图：1 张"));
+    assert.ok(within(sharedContext).getByText("Used for storyboard, start/end frame, and video tasks"));
+    assert.ok(within(sharedContext).getByText("Character IP: Courier"));
+    assert.ok(within(sharedContext).getByText("IP images: 1"));
+    assert.ok(within(sharedContext).getByText("Environment images: 1"));
   });
 
   it("disables start-end video reference when keyframes are missing", () => {
@@ -282,20 +282,20 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getAllByText("首尾帧待生成").length >= 1);
+    assert.ok(utils.getAllByText("Start/end frames pending").length >= 1);
     assert.ok(
-      utils.getAllByText("先完成片段分镜图和首尾帧后才能生视频").length >= 1,
+      utils.getAllByText("Complete clip storyboard images and start/end frames before generating video").length >= 1,
     );
     assert.equal(
       (
         utils.getByRole("button", {
-          name: "生成/重做此片段视频",
+          name: "Generate/regenerate this clip video",
         }) as HTMLButtonElement
       ).disabled,
       true,
     );
     assert.equal(
-      (utils.getByRole("option", { name: /首尾帧/ }) as HTMLOptionElement)
+      (utils.getByRole("option", { name: /Start\/end frames/ }) as HTMLOptionElement)
         .disabled,
       true,
     );
@@ -322,11 +322,11 @@ describe("timeline clip rework controls", () => {
     );
 
     const videoButton = utils.getByRole("button", {
-      name: "生成/重做此片段视频",
+      name: "Generate/regenerate this clip video",
     }) as HTMLButtonElement;
     assert.equal(videoButton.disabled, true);
     assert.ok(
-      utils.getAllByText("先完成片段分镜图和首尾帧后才能生视频").length >= 1,
+      utils.getAllByText("Complete clip storyboard images and start/end frames before generating video").length >= 1,
     );
     fireEvent.submit(videoButton.closest("form")!);
     await waitFor(() => assert.equal(calls.length, 0));
@@ -352,14 +352,14 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    fireEvent.input(utils.getByLabelText("附加参考图 URL"), {
+    fireEvent.input(utils.getByLabelText("Additional reference image URLs"), {
       target: { value: "https://manual.example/ref.png" },
     });
-    fireEvent.change(utils.getByLabelText("视频参考来源"), {
+    fireEvent.change(utils.getByLabelText("Video reference source"), {
       target: { value: "manual_refs" },
     });
     const videoButton = utils.getByRole("button", {
-      name: "生成/重做此片段视频",
+      name: "Generate/regenerate this clip video",
     }) as HTMLButtonElement;
     assert.equal(videoButton.disabled, true);
     fireEvent.submit(videoButton.closest("form")!);
@@ -387,7 +387,7 @@ describe("timeline clip rework controls", () => {
     );
 
     const videoButton = utils.getByRole("button", {
-      name: "生成/重做此片段视频",
+      name: "Generate/regenerate this clip video",
     }) as HTMLButtonElement;
     assert.equal(videoButton.disabled, false);
     fireEvent.click(videoButton);
@@ -429,10 +429,10 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    fireEvent.input(utils.getByLabelText("附加参考图 URL"), {
+    fireEvent.input(utils.getByLabelText("Additional reference image URLs"), {
       target: { value: "https://manual.example/ref.png" },
     });
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
     assert.equal(
       calls[0].url,
@@ -451,10 +451,10 @@ describe("timeline clip rework controls", () => {
       }),
     );
 
-    fireEvent.change(utils.getByLabelText("视频参考来源"), {
+    fireEvent.change(utils.getByLabelText("Video reference source"), {
       target: { value: "clip_storyboard_panel" },
     });
-    fireEvent.click(utils.getByRole("button", { name: "生成/重做此片段视频" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
     await waitFor(() => assert.equal(calls.length, 2));
     assert.equal(
       calls[1].url,
@@ -493,16 +493,16 @@ describe("timeline clip rework controls", () => {
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
         episodeCharacters: [
-          episodeCharacter("林晚", 31),
-          episodeCharacter("快递员", 32),
+          episodeCharacter("Lin Wan", 31),
+          episodeCharacter("Courier", 32),
         ],
       }),
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByText("绑定角色 IP"));
-    fireEvent.click(utils.getByLabelText("绑定角色 IP 快递员"));
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    assert.ok(utils.getByText("Bind character IP"));
+    fireEvent.click(utils.getByLabelText("Bind character IP Courier"));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -547,10 +547,10 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    fireEvent.change(utils.getByLabelText("分镜生图模型"), {
+    fireEvent.change(utils.getByLabelText("Storyboard image model"), {
       target: { value: "volcengine:doubao-seedream-4-5-251128" },
     });
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -582,10 +582,10 @@ describe("timeline clip rework controls", () => {
         timelineId: 8,
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
-        item: videoClipWithCharacterNames(["快递员"]),
+        item: videoClipWithCharacterNames(["Courier"]),
         episodeCharacters: [
-          episodeCharacter("林晚", 31),
-          episodeCharacter("快递员", 32),
+          episodeCharacter("Lin Wan", 31),
+          episodeCharacter("Courier", 32),
         ],
       }),
       { container: dom.window.document.body },
@@ -593,16 +593,16 @@ describe("timeline clip rework controls", () => {
 
     await waitFor(() =>
       assert.equal(
-        (utils.getByLabelText("绑定角色 IP 快递员") as HTMLInputElement)
+        (utils.getByLabelText("Bind character IP Courier") as HTMLInputElement)
           .checked,
         true,
       ),
     );
     assert.equal(
-      (utils.getByLabelText("绑定角色 IP 林晚") as HTMLInputElement).checked,
+      (utils.getByLabelText("Bind character IP Lin Wan") as HTMLInputElement).checked,
       false,
     );
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -635,38 +635,38 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
         storyboardEnvironmentImageOptions: [
           {
             url: "https://cdn.example/interior-env.png",
-            label: "室内环境",
+            label: "Indoor environment",
           },
         ],
       }),
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
-    assert.ok(utils.getByAltText("已选 IP 图 快递员 正面"));
-    assert.ok(utils.getByAltText("已选环境图 室内环境"));
-    assert.equal(utils.queryByLabelText("选择 IP 图 快递员 正面"), null);
-    const ipDialog = openReferencePicker(utils, "选择 IP 图");
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
+    assert.ok(utils.getByAltText("Selected IP image Courier front view"));
+    assert.ok(utils.getByAltText("Selected environment image Indoor environment"));
+    assert.equal(utils.queryByLabelText("Choose IP image Courier front view"), null);
+    const ipDialog = openReferencePicker(utils, "Choose IP images");
     assert.equal(
       within(ipDialog)
-        .getByLabelText("选择 IP 图 快递员 正面")
+        .getByLabelText("Choose IP image Courier front view")
         .getAttribute("aria-pressed"),
       "true",
     );
-    fireEvent.click(within(ipDialog).getByRole("button", { name: "应用选择" }));
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(within(ipDialog).getByRole("button", { name: "Apply selection" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -692,19 +692,19 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
         storyboardEnvironmentImageOptions: [
           {
             url: "https://cdn.example/interior-env.png",
-            label: "室内环境",
+            label: "Indoor environment",
           },
         ],
       }),
@@ -712,14 +712,14 @@ describe("timeline clip rework controls", () => {
     );
 
     await waitFor(() =>
-      assert.ok(utils.getByRole("button", { name: "选择 IP 图" })),
+      assert.ok(utils.getByRole("button", { name: "Choose IP images" })),
     );
 
     const referenceControls = [
-      utils.getByRole("button", { name: "选择 IP 图" }),
-      utils.getByRole("button", { name: "选择环境图" }),
-      utils.getByLabelText("附加参考图 URL"),
-      utils.getByLabelText("视频参考来源"),
+      utils.getByRole("button", { name: "Choose IP images" }),
+      utils.getByRole("button", { name: "Choose environment images" }),
+      utils.getByLabelText("Additional reference image URLs"),
+      utils.getByLabelText("Video reference source"),
     ];
 
     for (const control of referenceControls) {
@@ -743,32 +743,32 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
         storyboardEnvironmentImageOptions: [
           {
             url: "https://cdn.example/interior-env.png",
-            label: "室内环境",
+            label: "Indoor environment",
           },
         ],
       }),
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
-    assert.equal(utils.getAllByText("已选 1/1").length, 2);
-    const ipDialog = openReferencePicker(utils, "选择 IP 图");
-    fireEvent.click(within(ipDialog).getByLabelText("选择 IP 图 快递员 正面"));
-    fireEvent.click(within(ipDialog).getByRole("button", { name: "应用选择" }));
-    fireEvent.click(utils.getByLabelText("环境图清空"));
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
+    assert.equal(utils.getAllByText("Selected 1/1").length, 2);
+    const ipDialog = openReferencePicker(utils, "Choose IP images");
+    fireEvent.click(within(ipDialog).getByLabelText("Choose IP image Courier front view"));
+    fireEvent.click(within(ipDialog).getByRole("button", { name: "Apply selection" }));
+    fireEvent.click(utils.getByLabelText("Clear environment images"));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -801,12 +801,12 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
@@ -814,13 +814,13 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
-    const ipDialog = openReferencePicker(utils, "选择 IP 图");
-    fireEvent.click(within(ipDialog).getByLabelText("选择 IP 图 快递员 正面"));
-    fireEvent.click(within(ipDialog).getByRole("button", { name: "取消" }));
-    assert.ok(hasText(utils, "IP 图：1 张"));
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
+    const ipDialog = openReferencePicker(utils, "Choose IP images");
+    fireEvent.click(within(ipDialog).getByLabelText("Choose IP image Courier front view"));
+    fireEvent.click(within(ipDialog).getByRole("button", { name: "Cancel" }));
+    assert.ok(hasText(utils, "IP images: 1"));
 
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
     assert.equal(
       calls[0].init?.body,
@@ -853,12 +853,12 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
@@ -866,13 +866,13 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
-    const ipDialog = openReferencePicker(utils, "选择 IP 图");
-    fireEvent.click(within(ipDialog).getByRole("button", { name: "清空" }));
-    fireEvent.click(within(ipDialog).getByRole("button", { name: "应用选择" }));
-    assert.ok(hasText(utils, "IP 图：0 张"));
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
+    const ipDialog = openReferencePicker(utils, "Choose IP images");
+    fireEvent.click(within(ipDialog).getByRole("button", { name: "Clear" }));
+    fireEvent.click(within(ipDialog).getByRole("button", { name: "Apply selection" }));
+    assert.ok(hasText(utils, "IP images: 0"));
 
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() => assert.equal(calls.length, 1));
     assert.equal(
       calls[0].init?.body,
@@ -904,39 +904,39 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
         storyboardEnvironmentImageOptions: [
           {
             url: "https://cdn.example/interior-env.png",
-            label: "室内环境",
+            label: "Indoor environment",
           },
         ],
       }),
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
 
-    const videoBinding = utils.getByLabelText("视频生成绑定上下文");
+    const videoBinding = utils.getByLabelText("Video generation binding context");
     assert.ok(videoBinding);
-    assert.ok(within(videoBinding).getByText("视频生成绑定上下文"));
-    assert.ok(within(videoBinding).getByText("已携带绑定"));
-    assert.ok(within(videoBinding).getByText("角色 IP：快递员"));
-    assert.ok(within(videoBinding).getByText("IP 图：1 张"));
-    assert.ok(within(videoBinding).getByText("环境图：1 张"));
+    assert.ok(within(videoBinding).getByText("Video generation binding context"));
+    assert.ok(within(videoBinding).getByText("Bindings included"));
+    assert.ok(within(videoBinding).getByText("Character IP: Courier"));
+    assert.ok(within(videoBinding).getByText("IP images: 1"));
+    assert.ok(within(videoBinding).getByText("Environment images: 1"));
     assert.ok(
-      within(videoBinding).getByText("视频任务会携带上方已选 IP 和环境图。"),
+      within(videoBinding).getByText("The video task will include the selected IP and environment images above."),
     );
 
-    fireEvent.click(utils.getByRole("button", { name: "生成/重做此片段视频" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -971,27 +971,27 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         storyboardCharacterImageOptions: {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
         storyboardEnvironmentImageOptions: [
           {
             url: "https://cdn.example/interior-env.png",
-            label: "室内环境",
+            label: "Indoor environment",
           },
         ],
       }),
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(hasText(utils, "IP 图：1 张")));
-    fireEvent.click(utils.getByRole("button", { name: "生成首尾帧" }));
+    await waitFor(() => assert.ok(hasText(utils, "IP images: 1")));
+    fireEvent.click(utils.getByRole("button", { name: "Generate start/end frames" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(
@@ -1019,7 +1019,7 @@ describe("timeline clip rework controls", () => {
         return new Response(
           JSON.stringify({
             id: 1,
-            name: "办公室",
+            name: "Office",
             reference_images: ["https://cdn.example/office-env.png"],
             created_at: "2026-06-09T00:00:00Z",
             updated_at: "2026-06-09T00:00:00Z",
@@ -1039,11 +1039,11 @@ describe("timeline clip rework controls", () => {
         timelineVersion: 3,
         clipId: "video_scene_1_beat_1_001",
         item: videoClipWithStoryboardPanel(),
-        episodeCharacters: [episodeCharacter("快递员", 32)],
+        episodeCharacters: [episodeCharacter("Courier", 32)],
         environments: [
           {
             id: 1,
-            name: "办公室",
+            name: "Office",
             created_at: "2026-06-09T00:00:00Z",
             updated_at: "2026-06-09T00:00:00Z",
           },
@@ -1053,7 +1053,7 @@ describe("timeline clip rework controls", () => {
           32: [
             {
               url: "https://cdn.example/courier-pose.png",
-              label: "快递员 正面",
+              label: "Courier front view",
             },
           ],
         },
@@ -1061,16 +1061,16 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    await waitFor(() => assert.ok(utils.getByAltText("已选环境图 办公室 1")));
-    const envDialog = openReferencePicker(utils, "选择环境图");
+    await waitFor(() => assert.ok(utils.getByAltText("Selected environment image Office 1")));
+    const envDialog = openReferencePicker(utils, "Choose environment images");
     assert.equal(
       within(envDialog)
-        .getByLabelText("选择环境图 办公室 1")
+        .getByLabelText("Choose environment image Office 1")
         .getAttribute("aria-pressed"),
       "true",
     );
-    fireEvent.click(within(envDialog).getByRole("button", { name: "应用选择" }));
-    fireEvent.click(utils.getByRole("button", { name: "生成片段分镜图" }));
+    fireEvent.click(within(envDialog).getByRole("button", { name: "Apply selection" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate clip storyboard images" }));
     await waitFor(() =>
       assert.ok(
         calls.some((call) => String(call.url).includes("/storyboard/generate")),
@@ -1116,15 +1116,15 @@ describe("timeline clip rework controls", () => {
       { container: dom.window.document.body },
     );
 
-    fireEvent.change(utils.getByLabelText("视频参考来源"), {
+    fireEvent.change(utils.getByLabelText("Video reference source"), {
       target: { value: "manual_refs" },
     });
-    fireEvent.input(utils.getByLabelText("附加参考图 URL"), {
+    fireEvent.input(utils.getByLabelText("Additional reference image URLs"), {
       target: {
         value: "https://manual.example/a.png\nhttps://manual.example/b.png",
       },
     });
-    fireEvent.click(utils.getByRole("button", { name: "生成/重做此片段视频" }));
+    fireEvent.click(utils.getByRole("button", { name: "Generate/regenerate this clip video" }));
     await waitFor(() => assert.equal(calls.length, 1));
 
     assert.equal(

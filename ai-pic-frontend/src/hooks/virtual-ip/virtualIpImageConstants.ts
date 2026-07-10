@@ -8,13 +8,13 @@ export const VIRTUAL_IP_STYLE_SPEC_FIELDS: Array<{
   key: StyleSpecKey;
   label: string;
 }> = [
-  { key: "style_universe", label: "世界观 / 画风体系" },
-  { key: "character_proportion", label: "人物比例" },
-  { key: "character_face_style", label: "五官与人物风格" },
-  { key: "line_art_style", label: "线稿风格" },
-  { key: "color_render_style", label: "上色方式" },
-  { key: "lighting_style", label: "阴影与光影" },
-  { key: "color_mood", label: "色彩情绪" },
+  { key: "style_universe", label: "World Setting / Art Style System" },
+  { key: "character_proportion", label: "Character Proportions" },
+  { key: "character_face_style", label: "Facial Features & Character Style" },
+  { key: "line_art_style", label: "Line Art Style" },
+  { key: "color_render_style", label: "Coloring Method" },
+  { key: "lighting_style", label: "Shadows & Lighting" },
+  { key: "color_mood", label: "Color Mood" },
 ];
 
 export function resolveImageUrl(image: VirtualIPImage): string {

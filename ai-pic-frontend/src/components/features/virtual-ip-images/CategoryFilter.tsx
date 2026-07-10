@@ -15,7 +15,7 @@ export function CategoryFilter({
 }: CategoryFilterProps) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-3">
-      <h3 className="mb-3 text-sm font-semibold text-gray-950">图片分类</h3>
+      <h3 className="mb-3 text-sm font-semibold text-gray-950">Image Categories</h3>
       <div className="space-y-1">
         <button
           type="button"
@@ -26,7 +26,7 @@ export function CategoryFilter({
               : "text-gray-600 hover:bg-gray-50"
           }`}
         >
-          全部
+          All
         </button>
         {categories.map((category) => (
           <button

@@ -30,7 +30,7 @@ export function EnvironmentDetailActions({
         onClick={onEdit}
         className={operatorButtonClass("primary")}
       >
-        编辑资料
+        Edit Details
       </button>
     );
   }
@@ -42,7 +42,7 @@ export function EnvironmentDetailActions({
         onClick={onCancel}
         className={operatorButtonClass("secondary")}
       >
-        取消
+        Cancel
       </button>
       <button
         type="button"
@@ -50,7 +50,7 @@ export function EnvironmentDetailActions({
         disabled={saving}
         className={operatorButtonClass("primary")}
       >
-        {saving ? "保存中..." : "保存"}
+        {saving ? "Saving..." : "Save"}
       </button>
     </div>
   );
@@ -60,8 +60,8 @@ export function EnvironmentProductionNotice() {
   return (
     <OperatorState
       tone="blue"
-      title="环境已接入 IP 中心"
-      detail="环境可作为 IP 资产池的一部分，并在剧集 Timeline 中绑定到具体场景。"
+      title="Environment connected to the IP Center"
+      detail="This environment can be used as part of the IP asset library and bound to specific scenes in the episode timeline."
     />
   );
 }
@@ -86,11 +86,11 @@ export function EnvironmentAuditPanels({
   return (
     <div className="space-y-3">
       <GenerationAuditWarnings
-        title="环境文生图提示"
+        title="Environment Text-to-Image Warnings"
         warnings={textToImageWarnings}
       />
       <GenerationAuditWarnings
-        title="环境图生图提示"
+        title="Environment Image-to-Image Warnings"
         warnings={imageToImageWarnings}
       />
     </div>
@@ -110,24 +110,24 @@ export function EnvironmentReadinessPanel({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="关联与生成状态"
-        subtitle="IP 关联、图片池和生成任务"
+        title="Association & Generation Status"
+        subtitle="IP associations, image library, and generation tasks"
       />
       <div className="space-y-4 p-4">
         <div className="flex items-center justify-between gap-3 text-xs">
-          <span className="text-gray-500">IP 关联</span>
+          <span className="text-gray-500">IP Association</span>
           <StatusPill tone={linkedCount > 0 ? "green" : "amber"}>
-            {linkedCount > 0 ? `${linkedCount} 个 IP` : "未关联"}
+            {linkedCount > 0 ? `${linkedCount} IPs` : "Not linked"}
           </StatusPill>
         </div>
         <div className="flex items-center justify-between gap-3 text-xs">
-          <span className="text-gray-500">环境图片</span>
+          <span className="text-gray-500">Environment Images</span>
           <StatusPill tone={imageCount > 0 ? "green" : "gray"}>
             {imageCount > 0 ? "ready" : "empty"}
           </StatusPill>
         </div>
         <div className="flex items-center justify-between gap-3 text-xs">
-          <span className="text-gray-500">生成入口</span>
+          <span className="text-gray-500">Generation Access</span>
           <StatusPill tone="blue">available</StatusPill>
         </div>
         <button
@@ -135,7 +135,7 @@ export function EnvironmentReadinessPanel({
           onClick={onBack}
           className={operatorButtonClass("secondary", "w-full")}
         >
-          返回环境列表
+          Back to Environment List
         </button>
       </div>
     </OperatorPanel>
@@ -145,15 +145,15 @@ export function EnvironmentReadinessPanel({
 export function EnvironmentNotFound({ onBack }: { onBack: () => void }) {
   return (
     <OperatorState
-      title="环境不存在或已删除"
-      detail="返回列表后可以重新选择环境资产。"
+      title="Environment not found or deleted"
+      detail="Go back to the list to select another environment asset."
       action={
         <button
           type="button"
           onClick={onBack}
           className={operatorButtonClass("secondary")}
         >
-          返回列表
+          Back to List
         </button>
       }
     />

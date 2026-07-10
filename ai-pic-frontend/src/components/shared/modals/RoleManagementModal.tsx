@@ -80,43 +80,43 @@ interface RoleManagementModalProps {
 const ROLES = [
   {
     key: "user",
-    name: "普通用户",
-    description: "基础用户权限，可使用平台核心功能",
+    name: "Standard User",
+    description: "Basic user permissions with access to the platform's core features",
     icon: UserIcon,
     color: "text-gray-600 bg-gray-100",
     permissions: [
-      "创建和管理虚拟IP",
-      "生成AI图片和视频",
-      "创建故事和剧本",
-      "查看个人数据统计",
+      "Create and manage Virtual IPs",
+      "Generate AI images and videos",
+      "Create stories and scripts",
+      "View personal analytics",
     ],
   },
   {
     key: "admin",
-    name: "管理员",
-    description: "系统管理权限，可管理用户和系统设置",
+    name: "Administrator",
+    description: "System management permissions with access to user management and system settings",
     icon: ShieldIcon,
     color: "text-blue-600 bg-blue-100",
     permissions: [
-      "所有普通用户权限",
-      "用户管理和审批",
-      "系统设置配置",
-      "查看系统统计",
-      "审计日志查看",
+      "All standard user permissions",
+      "User management and approvals",
+      "System settings configuration",
+      "View system analytics",
+      "View audit logs",
     ],
   },
   {
     key: "superuser",
-    name: "超级管理员",
-    description: "最高权限，可执行所有系统操作",
+    name: "Super Administrator",
+    description: "Highest level of access with permission to perform all system operations",
     icon: CrownIcon,
     color: "text-purple-600 bg-purple-100",
     permissions: [
-      "所有管理员权限",
-      "系统级配置修改",
-      "数据库直接操作",
-      "系统维护和备份",
-      "其他管理员权限管理",
+      "All administrator permissions",
+      "System-level configuration changes",
+      "Direct database operations",
+      "System maintenance and backups",
+      "Manage other administrators' permissions",
     ],
   },
 ];
@@ -132,13 +132,13 @@ export default function RoleManagementModal({
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Reset form when modal opens/closes
+  // Reset form when the modal opens/closes
   React.useEffect(() => {
     if (isOpen && user) {
       // Determine current role
       let currentRole = "user";
       if (user.is_admin && user.username === "admin") {
-        currentRole = "superuser"; // Special case for main admin user
+        currentRole = "superuser"; // Special case for the main admin user
       } else if (user.is_admin) {
         currentRole = "admin";
       }
@@ -164,12 +164,12 @@ export default function RoleManagementModal({
 
     const currentRole = getCurrentRole(user);
     if (currentRole.key === selectedRole) {
-      setError("用户角色未发生变化");
+      setError("The user role has not changed");
       return;
     }
 
     if (!reason.trim()) {
-      setError("请输入角色变更原因");
+      setError("Please enter a reason for the role change");
       return;
     }
 
@@ -188,11 +188,11 @@ export default function RoleManagementModal({
         onRoleUpdate(response.data);
         onClose();
       } else {
-        setError(response.error || "角色更新失败");
+        setError(response.error || "Failed to update the role");
       }
     } catch (err) {
-      setError("操作失败，请稍后重试");
-      console.error("角色更新失败:", err);
+      setError("Operation failed. Please try again later");
+      console.error("Failed to update role:", err);
     } finally {
       setIsProcessing(false);
     }
@@ -216,8 +216,8 @@ export default function RoleManagementModal({
               <ShieldIcon className="h-6 w-6 text-purple-600" />
             </div>
             <div>
-              <h3 className="text-lg font-medium text-gray-900">角色管理</h3>
-              <p className="text-sm text-gray-500">管理用户权限和角色</p>
+              <h3 className="text-lg font-medium text-gray-900">Role Management</h3>
+              <p className="text-sm text-gray-500">Manage user permissions and roles</p>
             </div>
           </div>
           <button
@@ -233,23 +233,23 @@ export default function RoleManagementModal({
         <div className="flex-1 overflow-y-auto p-6">
           {/* User Information */}
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h4 className="text-md font-medium text-gray-900 mb-3">用户信息</h4>
+            <h4 className="text-md font-medium text-gray-900 mb-3">User Information</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  用户名
+                  Username
                 </label>
                 <p className="mt-1 text-sm text-gray-900">{user.username}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  邮箱地址
+                  Email Address
                 </label>
                 <p className="mt-1 text-sm text-gray-900">{user.email}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  当前角色
+                  Current Role
                 </label>
                 <div className="mt-1">
                   <span
@@ -262,7 +262,7 @@ export default function RoleManagementModal({
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  注册时间
+                  Registration Time
                 </label>
                 <p className="mt-1 text-sm text-gray-900">
                   {formatDateTime(user.created_at)}
@@ -281,10 +281,10 @@ export default function RoleManagementModal({
             {/* Role Selection */}
             <div>
               <label className="text-base font-medium text-gray-900">
-                选择新角色
+                Select New Role
               </label>
               <p className="text-sm leading-5 text-gray-500 mb-4">
-                请谨慎选择用户角色，这将影响用户的系统权限
+                Please choose the user role carefully, as it affects the user&apos;s system permissions
               </p>
 
               <div className="space-y-4">
@@ -316,7 +316,7 @@ export default function RoleManagementModal({
                           </span>
                           {currentRole.key === role.key && (
                             <span className="text-xs text-blue-600 font-medium ml-1">
-                              (当前)
+                              (Current)
                             </span>
                           )}
                         </label>
@@ -327,7 +327,7 @@ export default function RoleManagementModal({
                         {/* Permissions List */}
                         <div className="mt-2">
                           <p className="text-xs font-medium text-gray-600 mb-1">
-                            权限包括:
+                            Permissions include:
                           </p>
                           <ul className="text-xs text-gray-500 list-disc list-inside space-y-0.5 ml-2">
                             {role.permissions.map((permission, index) => (
@@ -348,7 +348,7 @@ export default function RoleManagementModal({
                 htmlFor="reason"
                 className="block text-sm font-medium text-gray-700"
               >
-                角色变更原因
+                Reason for Role Change
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <textarea
@@ -357,11 +357,11 @@ export default function RoleManagementModal({
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
-                placeholder="请说明角色变更的原因和必要性..."
+                placeholder="Please explain the reason and necessity for this role change..."
                 disabled={isProcessing}
               />
               <p className="mt-1 text-xs text-gray-500">
-                角色变更将被记录到审计日志中，请详细说明变更原因
+                Role changes will be recorded in the audit log. Please provide a detailed explanation.
               </p>
             </div>
 
@@ -385,13 +385,17 @@ export default function RoleManagementModal({
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-yellow-800">
-                        重要提醒
+                        Important Reminder
                       </h3>
                       <div className="mt-2 text-sm text-yellow-700">
                         <p>
-                          您正在将普通用户提升为
-                          {selectedRole === "admin" ? "管理员" : "超级管理员"}。
-                          此操作将授予该用户重要的系统权限，请确保用户可信且有相应的管理能力。
+                          You are promoting a standard user to
+                          {selectedRole === "admin"
+                            ? " Administrator"
+                            : " Super Administrator"}
+                          . This action will grant the user significant system
+                          permissions. Please ensure the user is trustworthy and
+                          capable of handling administrative responsibilities.
                         </p>
                       </div>
                     </div>
@@ -417,12 +421,14 @@ export default function RoleManagementModal({
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-blue-800">
-                      权限降级说明
+                      Permission Downgrade Notice
                     </h3>
                     <div className="mt-2 text-sm text-blue-700">
                       <p>
-                        此操作将撤销用户的管理权限，用户将只能访问普通用户功能。
-                        请确保此变更不会影响正在进行的管理工作。
+                        This action will revoke the user&apos;s administrative
+                        permissions, and the user will only be able to access
+                        standard user features. Please ensure this change will
+                        not affect ongoing administrative work.
                       </p>
                     </div>
                   </div>
@@ -440,7 +446,7 @@ export default function RoleManagementModal({
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
             disabled={isProcessing}
           >
-            取消
+            Cancel
           </button>
           <button
             onClick={handleSubmit}
@@ -474,10 +480,10 @@ export default function RoleManagementModal({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                更新中...
+                Updating...
               </span>
             ) : (
-              "确认更新角色"
+              "Confirm Role Update"
             )}
           </button>
         </div>

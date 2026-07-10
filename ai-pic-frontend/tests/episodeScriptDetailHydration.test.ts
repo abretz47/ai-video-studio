@@ -11,7 +11,7 @@ const baseScript = {
   id: 131,
   business_id: "script-business-id",
   episode_id: 142,
-  title: "雨夜证据链 - 剧本",
+  title: "Rainy Night Evidence Chain - Script",
   format_type: "screenplay",
   language: "zh-CN",
   status: "draft",
@@ -26,10 +26,10 @@ describe("episode script detail hydration", () => {
     assert.equal(
       scriptNeedsDetail({
         ...baseScript,
-        content: "正文",
+        content: "Body text",
         scenes: [{ scene_number: 1 }],
-        dialogues: [{ scene_number: 1, character: "林", content: "警报？" }],
-        stage_directions: [{ scene_number: 1, content: "手机震动" }],
+        dialogues: [{ scene_number: 1, character: "Lin", content: "Alarm?" }],
+        stage_directions: [{ scene_number: 1, content: "Phone vibrates" }],
       }),
       false,
     );
@@ -38,10 +38,10 @@ describe("episode script detail hydration", () => {
   it("merges a fetched script detail into the existing list", () => {
     const detail = {
       ...baseScript,
-      content: "正文",
-      scenes: [{ scene_number: 1, description: "开场" }],
-      dialogues: [{ scene_number: 1, character: "林", content: "警报？" }],
-      stage_directions: [{ scene_number: 1, content: "手机震动" }],
+      content: "Body text",
+      scenes: [{ scene_number: 1, description: "Opening" }],
+      dialogues: [{ scene_number: 1, character: "Lin", content: "Alarm?" }],
+      stage_directions: [{ scene_number: 1, content: "Phone vibrates" }],
     } satisfies Script;
 
     const merged = mergeScriptDetail([baseScript], detail);

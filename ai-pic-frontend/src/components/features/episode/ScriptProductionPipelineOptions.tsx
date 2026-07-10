@@ -17,8 +17,8 @@ export function ScriptProductionPipelineOptions({
   return (
     <div className="mb-4">
       <OperatorState
-        title="生产级异步链路"
-        detail="异步生成将执行剧本评分、自动返修，并可继续生成音轨时间轴与分镜占位。"
+        title="Production Async Pipeline"
+        detail="Asynchronous generation will run script scoring and automatic rework, then continue generating the audio timeline and storyboard placeholders."
         action={
         <label className="flex items-center gap-2 text-sm font-medium">
           <input
@@ -33,7 +33,7 @@ export function ScriptProductionPipelineOptions({
               }))
             }
           />
-          自动生成时间轴与分镜占位
+          Automatically generate timeline and storyboard placeholders
         </label>
         }
       />

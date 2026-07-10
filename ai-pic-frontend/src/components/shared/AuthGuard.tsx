@@ -33,23 +33,23 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     checkAuth();
   }, [router]);
 
-  // 显示加载状态
+  // Show loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">检查登录状态...</p>
+          <p className="mt-4 text-gray-600">Checking sign-in status...</p>
         </div>
       </div>
     );
   }
 
-  // 未认证状态不渲染子组件
+  // Do not render child components when unauthenticated
   if (!authenticated) {
     return null;
   }
 
-  // 已认证，渲染子组件
+  // Authenticated, render child components
   return <>{children}</>;
 }

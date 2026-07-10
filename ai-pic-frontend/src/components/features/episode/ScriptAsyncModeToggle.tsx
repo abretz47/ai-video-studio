@@ -30,7 +30,7 @@ export function ScriptAsyncModeToggle({
           }));
         }}
       />{" "}
-      异步任务
+      Async task
     </label>
   );
 }

@@ -10,9 +10,9 @@ function StoryDetailPageContent() {
 
   return (
     <OperatorShell
-      title="故事生产"
-      subtitle="故事详情、剧集和生成准备"
-      breadcrumb={["IP 中心", "故事生产", storyKey]}
+      title="Story Production"
+      subtitle="Story details, episodes, and generation prep"
+      breadcrumb={["IP Center", "Story Production", storyKey]}
     >
       <StoryProductionDetail storyKey={storyKey} />
     </OperatorShell>

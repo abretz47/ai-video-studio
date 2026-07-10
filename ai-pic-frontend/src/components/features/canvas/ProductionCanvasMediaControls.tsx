@@ -82,67 +82,67 @@ export function ProductionCanvasMediaControls({
 
   return (
     <div className="border-t border-gray-100 pt-3">
-      <div className="text-xs font-semibold text-gray-700">媒体执行参数</div>
+      <div className="text-xs font-semibold text-gray-700">Media execution settings</div>
       <div className="mt-2 grid gap-2">
         <TextField
-          label="媒体帧索引"
+          label="Media frame indexes"
           value={frameIndexesText(outputs)}
           onChange={(value) => update({ frame_indexes: parseFrameIndexes(value) })}
         />
         <TextField
-          label="媒体模型"
+          label="Media model"
           value={stringOutput(outputs, "model")}
           onChange={(value) => update({ model: value.trim() || undefined })}
         />
         {isImage ? (
           <>
             <TextField
-              label="图片画幅"
+              label="Image aspect ratio"
               value={stringOutput(outputs, "aspect_ratio")}
               onChange={(value) => update({ aspect_ratio: value.trim() || undefined })}
             />
             <label className="flex items-center gap-2 text-xs text-gray-600">
               <input
-                aria-label="要求参考图"
+                aria-label="Require reference images"
                 type="checkbox"
                 checked={boolOutput(outputs, "require_reference_images", true)}
                 onChange={(event) =>
                   update({ require_reference_images: event.currentTarget.checked })
                 }
               />
-              要求参考图
+              Require reference images
             </label>
           </>
         ) : (
           <>
             <TextField
-              label="视频时长"
+              label="Video duration"
               value={numberOutput(outputs, "duration")}
               onChange={(value) => update({ duration: parseNumber(value) })}
             />
             <TextField
-              label="视频 FPS"
+              label="Video FPS"
               value={numberOutput(outputs, "fps")}
               onChange={(value) => update({ fps: parseNumber(value) })}
             />
             <TextField
-              label="视频分辨率"
+              label="Video resolution"
               value={stringOutput(outputs, "resolution")}
               onChange={(value) => update({ resolution: value.trim() || undefined })}
             />
             <TextField
-              label="视频画幅"
+              label="Video aspect ratio"
               value={stringOutput(outputs, "ratio")}
               onChange={(value) => update({ ratio: value.trim() || undefined })}
             />
             <label className="flex items-center gap-2 text-xs text-gray-600">
               <input
-                aria-label="固定镜头"
+                aria-label="Lock camera"
                 type="checkbox"
                 checked={boolOutput(outputs, "camera_fixed", false)}
                 onChange={(event) => update({ camera_fixed: event.currentTarget.checked })}
               />
-              固定镜头
+              Lock camera
             </label>
           </>
         )}

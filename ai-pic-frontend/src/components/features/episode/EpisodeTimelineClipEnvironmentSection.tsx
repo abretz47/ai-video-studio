@@ -39,13 +39,13 @@ export function ClipEnvironmentSection({
   const environmentSummary = selectedEnvironment
     ? selectedEnvironment.name
     : effectiveEnvironmentId !== null
-    ? `环境 ${effectiveEnvironmentId}`
-    : "未设置";
-  const environmentActionLabel = environments.length ? "更换" : "无可选";
+    ? `Environment ${effectiveEnvironmentId}`
+    : "Not set";
+  const environmentActionLabel = environments.length ? "Change" : "None available";
   const sceneSlugLabel = scene ? cleanSceneSlugLine(scene.slug_line) : "";
   const sceneLabel = scene
-    ? `场景 ${scene.scene_number} · ${sceneSlugLabel}`
-    : "未匹配规范化场景，当前环境仅用于片段生成参考。";
+    ? `Scene ${scene.scene_number} · ${sceneSlugLabel}`
+    : "No normalized scene matched. The current environment is only used as a clip generation reference.";
 
   return (
     <section className="px-0 pb-0 pt-0">
@@ -60,13 +60,13 @@ export function ClipEnvironmentSection({
           className="flex min-h-6 cursor-pointer list-none items-center gap-1 overflow-hidden marker:hidden [&::-webkit-details-marker]:hidden"
         >
           <span data-clip-environment-label="sr-only" className="sr-only">
-            场景环境
+            Scene Environment
           </span>
           <span
             data-clip-environment-kind="visible"
             className="inline-flex shrink-0 text-[11px] font-semibold text-slate-700"
           >
-            环境
+            Environment
           </span>
           <span aria-hidden="true" className="text-[11px] text-slate-300">
             ·
@@ -97,13 +97,13 @@ export function ClipEnvironmentSection({
             </span>
           </span>
         </summary>
-        {!hasScene ? <StatusPill tone="gray">片段生成参考</StatusPill> : null}
+        {!hasScene ? <StatusPill tone="gray">Clip generation reference</StatusPill> : null}
         <div
           data-clip-environment-controls="expanded"
           className="mt-1 grid grid-cols-1 items-center gap-2 min-[860px]:grid-cols-[minmax(14rem,24rem)_auto]"
         >
           <select
-            aria-label="片段环境"
+            aria-label="Clip environment"
             value={effectiveEnvironmentId ?? ""}
             onChange={(event) =>
               onEnvironmentChange(
@@ -113,17 +113,17 @@ export function ClipEnvironmentSection({
             className={operatorSelectClass("w-full")}
           >
             <option value="" disabled>
-              {environments.length ? "选择场景环境" : "暂无可选环境"}
+              {environments.length ? "Select scene environment" : "No environments available"}
             </option>
             {effectiveEnvironmentId !== null && !selectedEnvironment ? (
               <option value={effectiveEnvironmentId}>
-                环境 {effectiveEnvironmentId}
+                Environment {effectiveEnvironmentId}
               </option>
             ) : null}
             {environments.map((env) => (
               <option key={env.id} value={env.id}>
                 {env.name}
-                {(env.linked_virtual_ip_count || 0) > 0 ? " · IP资产" : ""}
+                {(env.linked_virtual_ip_count || 0) > 0 ? " · IP assets" : ""}
               </option>
             ))}
           </select>
@@ -140,10 +140,10 @@ export function ClipEnvironmentSection({
                   )}
                 >
                   {environmentSaving ? (
-                    "保存中..."
+                    "Saving..."
                   ) : (
                     <>
-                      保存<span className="sr-only">场景环境</span>
+                      Save<span className="sr-only"> scene environment</span>
                     </>
                   )}
                 </button>

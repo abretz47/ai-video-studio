@@ -45,7 +45,7 @@ export function EpisodeWorkspaceHeader({
   onGenerateScript,
   onGenerateTimeline,
   onSelectScript,
-  storyboardActionLabel = "打开分镜辅助",
+  storyboardActionLabel = "Open Storyboard Support",
   onOpenStoryboard,
 }: EpisodeWorkspaceHeaderProps) {
   const productionState = buildEpisodeProductionState({

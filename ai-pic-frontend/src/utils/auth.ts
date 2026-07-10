@@ -1,8 +1,8 @@
-// 认证工具函数
+// Authentication utility functions
 import type { User } from "@/utils/api/types";
 
 /**
- * 检查用户是否已登录
+ * Check whether the user is signed in
  */
 export function isAuthenticated(): boolean {
   if (typeof window === "undefined") return false;
@@ -14,34 +14,34 @@ export function isAuthenticated(): boolean {
 }
 
 /**
- * 检查用户是否有管理员权限
+ * Check whether the user has admin privileges
  */
 export const isAdmin = (user: User | null): boolean => {
   return user ? user.is_admin || user.is_superuser : false;
 };
 
 /**
- * 获取用户状态显示文本
+ * Get the display text for user status
  */
 export const getUserStatus = (user: User): string => {
-  if (!user.email_verified) return "待验证邮箱";
-  if (!user.is_approved) return "待审批";
-  if (!user.is_active) return "已停用";
-  if (user.is_account_locked) return "已锁定";
-  return "正常";
+  if (!user.email_verified) return "Pending email verification";
+  if (!user.is_approved) return "Pending approval";
+  if (!user.is_active) return "Disabled";
+  if (user.is_account_locked) return "Locked";
+  return "Active";
 };
 
 /**
- * 获取用户角色显示文本
+ * Get the display text for user role
  */
 export const getUserRole = (user: User): string => {
-  if (user.is_superuser) return "超级管理员";
-  if (user.is_admin) return "管理员";
-  return "普通用户";
+  if (user.is_superuser) return "Super Admin";
+  if (user.is_admin) return "Admin";
+  return "Standard User";
 };
 
 /**
- * 格式化时间显示
+ * Format the time for display
  */
 const formatDateTime = (dateString?: string): string => {
   if (!dateString) return "-";
@@ -57,7 +57,7 @@ const formatDateTime = (dateString?: string): string => {
 };
 
 /**
- * 格式化相对时间
+ * Format relative time
  */
 export const formatRelativeTime = (dateString?: string): string => {
   if (!dateString) return "-";
@@ -70,16 +70,16 @@ export const formatRelativeTime = (dateString?: string): string => {
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-  if (diffInMinutes < 1) return "刚刚";
-  if (diffInMinutes < 60) return `${diffInMinutes}分钟前`;
-  if (diffInHours < 24) return `${diffInHours}小时前`;
-  if (diffInDays < 7) return `${diffInDays}天前`;
+  if (diffInMinutes < 1) return "Just now";
+  if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
+  if (diffInHours < 24) return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
+  if (diffInDays < 7) return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
 
   return formatDateTime(dateString);
 };
 
 /**
- * 检查是否有待处理的用户审批
+ * Check whether there are pending user approvals
  */
 export const hasPendingApprovals = (
   stats: { pending_approval: number } | null,

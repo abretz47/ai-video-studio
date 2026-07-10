@@ -93,7 +93,7 @@ export function TimelineClipVideoReworkCard({
     <ClipProductionActionShell
       kind="video"
       step="3"
-      title="片段视频"
+      title="Clip Video"
       tone="primary"
     >
       <div
@@ -102,8 +102,8 @@ export function TimelineClipVideoReworkCard({
       >
         <button
           type="submit"
-          aria-label="生成/重做此片段视频"
-          title={disabledReason || "生成/重做此片段视频"}
+          aria-label="Generate/regenerate this clip video"
+          title={disabledReason || "Generate/regenerate this clip video"}
           disabled={!canSubmit}
           className={operatorButtonClass(
             "primary",
@@ -111,28 +111,28 @@ export function TimelineClipVideoReworkCard({
           )}
         >
           <ClipProductionActionIcon kind="video" />
-          <span>{submitting ? "提交中..." : "生成/重做此片段视频"}</span>
+          <span>{submitting ? "Submitting..." : "Generate/regenerate this clip video"}</span>
         </button>
         <CompactProductionDetails
           label="..."
-          ariaLabel="展开视频绑定与参数"
+          ariaLabel="Expand video bindings and parameters"
           tone="primary"
           attached
         >
           <div className="grid gap-2">
             <VideoActionSelect value={action} onChange={onActionChange} />
             <label className={VIDEO_LABEL_CLASS}>
-              <span>运动提示词覆盖</span>
+              <span>Motion prompt override</span>
               <textarea
-                aria-label="运动提示词覆盖"
+                aria-label="Motion prompt override"
                 value={prompt}
                 onChange={(event) => onPromptChange(event.target.value)}
-                placeholder="留空则使用 Timeline 镜头运动规划"
+                placeholder="Leave blank to use the Timeline camera motion plan"
                 rows={3}
                 className={`resize-none ${VIDEO_FIELD_CLASS}`}
               />
               <span className="text-[11px] text-slate-400">
-                留空则使用 Timeline 镜头运动规划
+                Leave blank to use the Timeline camera motion plan
               </span>
             </label>
             <div className={VIDEO_FIELD_GRID_CLASS}>
@@ -143,14 +143,14 @@ export function TimelineClipVideoReworkCard({
                 onChange={onModelChange}
               />
               <label className={VIDEO_LABEL_CLASS}>
-                <span>时长（秒）</span>
+                <span>Duration (seconds)</span>
                 <input
                   type="number"
                   min={0.1}
                   step={0.1}
                   value={duration}
                   onChange={(event) => onDurationChange(event.target.value)}
-                  placeholder="默认用片段时长"
+                  placeholder="Defaults to the clip duration"
                   className={VIDEO_FIELD_CLASS}
                 />
               </label>
@@ -163,12 +163,12 @@ export function TimelineClipVideoReworkCard({
               <VideoRatioSelect value={ratio} onChange={onRatioChange} />
             </div>
             <label className={VIDEO_LABEL_CLASS}>
-              <span>重做原因</span>
+              <span>Rework reason</span>
               <input
                 type="text"
                 value={reason}
                 onChange={(event) => onReasonChange(event.target.value)}
-                placeholder="可选，会记录到该片段的资产履历"
+                placeholder="Optional; recorded in this clip's asset history"
                 className={VIDEO_FIELD_CLASS}
               />
             </label>

@@ -14,10 +14,10 @@ import type {
 const request = async <T>(endpoint: string, options: RequestInit = {}) => {
   const response = await httpClient<T>(endpoint, options);
   if (!response.success) {
-    throw new Error(response.error || response.message || "请求失败");
+    throw new Error(response.error || response.message || "Request failed");
   }
   if (response.data === undefined) {
-    throw new Error("响应为空");
+    throw new Error("Empty response");
   }
   return response.data;
 };

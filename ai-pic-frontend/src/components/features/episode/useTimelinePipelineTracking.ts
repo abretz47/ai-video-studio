@@ -31,11 +31,11 @@ export function useTimelinePipelineTracking(args: {
   }, [episodeId, onTimelineUpdated, selectedScriptId]);
 
   const tracker = useGenerationTaskTracker<"pipeline">({
-    labels: { pipeline: "时间轴流水线" },
+    labels: { pipeline: "Timeline pipeline" },
     onCompleted: handleCompleted,
     onNotify: notify,
     pollIntervalMs,
-    // 流水线包含配音/时间轴/分镜多个阶段，给更长的轮询上限
+    // The pipeline includes dubbing, timeline, and storyboard stages, so allow a longer polling limit.
     maxPollMs: 30 * 60 * 1000,
   });
 

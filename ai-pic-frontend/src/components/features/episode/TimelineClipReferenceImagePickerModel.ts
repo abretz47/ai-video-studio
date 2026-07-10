@@ -30,7 +30,7 @@ export function buildEnvironmentImageGroups(
 ): ReferenceImagePickerGroup[] {
   const sections = groupReferenceOptionsByCategory(environmentImageOptions);
   return sections.some((section) => section.options.length)
-    ? [{ key: "environment", title: "当前环境", sections }]
+    ? [{ key: "environment", title: "Current Environment", sections }]
     : [];
 }
 
@@ -51,10 +51,10 @@ function groupReferenceOptionsByCategory(
 
 function categoryFromLabel(label: string) {
   const normalized = label.toLocaleLowerCase();
-  if (/full[_\s-]?body|全身/.test(normalized)) return "full_body";
-  if (/half[_\s-]?body|半身/.test(normalized)) return "half_body";
-  if (/portrait|头像|正面/.test(normalized)) return "portrait";
-  return "其他";
+  if (/full[_\s-]?body|\u5168\u8eab/.test(normalized)) return "full_body";
+  if (/half[_\s-]?body|\u534a\u8eab/.test(normalized)) return "half_body";
+  if (/portrait|\u5934\u50cf|\u6b63\u9762/.test(normalized)) return "portrait";
+  return "other";
 }
 
 function characterLabelForVirtualIp(

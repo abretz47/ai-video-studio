@@ -213,15 +213,16 @@ export function addProductionCanvasNote(
     ...nodes,
     {
       id: `note-${index}`,
-      label: "便签",
-      title: "记录这个项目下一步的人工判断",
+      label: "Note",
+      title: "Capture the next manual decision for this project",
       status: "review",
       x: Math.round(position.x),
       y: Math.round(position.y),
       width: 190,
       height: 96,
       kind: "note",
-      detail: "便签只保存在当前浏览器，用来临时标注决策、风险或下一步。",
+      detail:
+        "Notes are only stored in this browser and can be used to temporarily mark decisions, risks, or next steps.",
     } satisfies ProductionCanvasNode,
   ];
 }

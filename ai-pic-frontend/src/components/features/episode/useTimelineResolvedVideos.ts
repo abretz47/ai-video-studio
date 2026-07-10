@@ -34,7 +34,7 @@ export function useTimelineResolvedVideos({
         setResolvedVideos(res.data);
         setError(null);
       } else {
-        setError(res.error || "读取片段视频失败");
+        setError(res.error || "Failed to load clip videos");
       }
     } finally {
       setLoading(false);

@@ -31,7 +31,7 @@ export function ReadyCell({ ready }: { ready: boolean }) {
   return (
     <td className="px-4 py-4">
       <StatusPill tone={ready ? "green" : "gray"}>
-        {ready ? "已就绪" : "未开始"}
+        {ready ? "Ready" : "Not Started"}
       </StatusPill>
     </td>
   );

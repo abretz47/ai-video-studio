@@ -85,8 +85,8 @@ export function VirtualIPCreateModal({
   });
 
   const defaultPreviewText = formState.name
-    ? `你好，我是${formState.name}，很高兴认识你。`
-    : "你好，我是你的虚拟角色，很高兴认识你。";
+    ? `Hello, I'm ${formState.name}. Nice to meet you.`
+    : "Hello, I'm your virtual character. Nice to meet you.";
   const {
     previewText,
     setPreviewText,
@@ -121,21 +121,21 @@ export function VirtualIPCreateModal({
   return (
     <CreationOverlay
       open={open}
-      title="创建 IP"
-      subtitle="从角色资产开始组织故事和剧集"
+      title="Create IP"
+      subtitle="Organize stories and episodes starting from character assets"
       onClose={onClose}
       widthClassName="max-w-5xl"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-700">
-          新建 IP 将作为故事生产入口，可继续组织角色资产和剧集内容。
+          A new IP serves as the entry point for story production, where you can keep organizing character assets and episode content.
         </div>
 
         <SmartInputField
-          label="名称 *"
+          label="Name *"
           value={formState.name}
           onChange={(value) => updateField("name", value)}
-          placeholder="输入虚拟IP名称，如：小雅、李教授、小明等"
+          placeholder="Enter a Virtual IP name, such as Xiaoya, Professor Li, or Xiaoming"
           type="input"
           showAIAssist={false}
         />
@@ -149,10 +149,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="角色描述"
+          label="Character description"
           value={formState.description}
           onChange={(value) => updateField("description", value)}
-          placeholder="描述这个角色的基本特征、性格、外貌等"
+          placeholder="Describe this character's core traits, personality, appearance, and more"
           type="textarea"
           rows={3}
           aiSuggestType="description"
@@ -161,10 +161,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="背景故事"
+          label="Background story"
           value={formState.background_story}
           onChange={(value) => updateField("background_story", value)}
-          placeholder="描述角色的成长经历、重要事件、生活背景等"
+          placeholder="Describe the character's upbringing, key events, life background, and more"
           type="textarea"
           rows={4}
           aiSuggestType="background_story"
@@ -176,10 +176,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="人物小传"
+          label="Character biography"
           value={formState.biography}
           onChange={(value) => updateField("biography", value)}
-          placeholder="详细介绍角色的生平、成就、重要关系等"
+          placeholder="Introduce the character's life story, achievements, important relationships, and more"
           type="textarea"
           rows={4}
           aiSuggestType="biography"
@@ -192,10 +192,10 @@ export function VirtualIPCreateModal({
         />
 
         <SmartInputField
-          label="风格提示词"
+          label="Style prompt"
           value={formState.style_prompt}
           onChange={(value) => updateField("style_prompt", value)}
-          placeholder="用于图像生成的风格提示词（可在生成后微调）"
+          placeholder="Style prompt for image generation (can be fine-tuned later)"
           type="textarea"
           rows={4}
           showAIAssist={false}

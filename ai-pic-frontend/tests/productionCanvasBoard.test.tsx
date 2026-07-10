@@ -40,7 +40,7 @@ describe("ProductionCanvasBoard", () => {
       (item) => item.href === "/canvas",
     );
 
-    assert.equal(productionNavItems[canvasIndex]?.label, "创作画布");
+    assert.equal(productionNavItems[canvasIndex]?.label, "Creative Canvas");
     assert.equal(productionNavItems[canvasIndex]?.icon, "canvas");
     assert.equal(
       productionNavItems[canvasIndex - 1]?.href,
@@ -54,7 +54,7 @@ describe("ProductionCanvasBoard", () => {
       container: dom.window.document.body,
     });
 
-    assert.ok(utils.getByText("短剧生产链路"));
+    assert.ok(utils.getByText("Short drama production pipeline"));
     assert.ok(
       utils.getByText(
         "Brief -> Script -> Storyboard -> Image Candidates -> Video Candidates -> Timeline -> Report",
@@ -78,8 +78,8 @@ describe("ProductionCanvasBoard", () => {
     );
     assert.ok(canvas);
     assert.match(canvas.className, /touch-none/);
-    assert.ok(utils.getByRole("button", { name: "添加便签" }));
-    assert.ok(utils.getByRole("button", { name: "适配" }));
+    assert.ok(utils.getByRole("button", { name: "Add note" }));
+    assert.ok(utils.getByRole("button", { name: "Fit" }));
     assert.ok(utils.getByText("100%"));
   });
 
@@ -88,11 +88,11 @@ describe("ProductionCanvasBoard", () => {
       container: dom.window.document.body,
     });
 
-    utils.getByLabelText("Script 短剧节拍、对白和质量门禁").click();
+    utils.getByLabelText("Script Short drama beats, dialogue, and quality gates").click();
 
-    assert.ok(utils.getByText("节点详情"));
+    assert.ok(utils.getByText("Node details"));
     assert.ok(utils.getAllByText("Script").length >= 1);
-    assert.ok(utils.getByText("短剧节拍、对白和质量门禁"));
+    assert.ok(utils.getByText("Short drama beats, dialogue, and quality gates"));
   });
 
   it("updates reusable canvas state for drag, zoom, and notes", () => {
@@ -112,7 +112,7 @@ describe("ProductionCanvasBoard", () => {
     const note = withNote.find((node) => node.id === "note-1");
 
     assert.equal(note?.kind, "note");
-    assert.equal(note?.label, "便签");
+    assert.equal(note?.label, "Note");
   });
 
   it("edits dynamic canvas edges from the selected node", () => {
@@ -144,15 +144,15 @@ describe("ProductionCanvasBoard", () => {
       null,
     );
 
-    fireEvent.change(utils.getByLabelText("连线目标"), {
+    fireEvent.change(utils.getByLabelText("Edge target"), {
       target: { value: "report" },
     });
-    fireEvent.click(utils.getByRole("button", { name: "添加连线" }));
+    fireEvent.click(utils.getByRole("button", { name: "Add edge" }));
 
     assert.ok(
       utils.container.querySelector("[data-canvas-edge='brief-report']"),
     );
-    fireEvent.click(utils.getByRole("button", { name: "移除连线 Report" }));
+    fireEvent.click(utils.getByRole("button", { name: "Remove edge Report" }));
     assert.equal(
       utils.container.querySelector("[data-canvas-edge='brief-report']"),
       null,
@@ -178,10 +178,10 @@ describe("ProductionCanvasBoard", () => {
                 skill_result: {
                   skill: "report.summarize",
                   label: "Report Skill",
-                  title: "已汇总现有任务证据",
+                  title: "Existing task evidence summarized",
                   status: "review",
                   detail:
-                    "任务 #44《生产画布整体创建》当前状态 completed；可继续在任务页检查参数。",
+                    "Task #44 \"Whole canvas creation\" is currently completed; you can keep checking parameters on the Tasks page.",
                   outputs: {
                     task_id: 44,
                     task_type: "text_generation",
@@ -212,10 +212,10 @@ describe("ProductionCanvasBoard", () => {
                 skill_result: {
                   skill: "storyboard.plan",
                   label: "Storyboard Skill",
-                  title: "已提交现有分镜生成任务",
+                  title: "Existing storyboard generation task submitted",
                   status: "running",
                   detail:
-                    "后台已通过现有 STORYBOARD_GENERATION Celery worker 执行。",
+                    "Submitted through the existing STORYBOARD_GENERATION Celery worker.",
                   outputs: {
                     script_id: 321,
                     dispatched_task_id: 88,
@@ -245,9 +245,9 @@ describe("ProductionCanvasBoard", () => {
               skill_result: {
                 skill: "script.generate",
                 label: "Script Skill",
-                title: "已提交现有剧本生成任务",
+                title: "Existing script generation task submitted",
                 status: "running",
-                detail: "后台已通过现有 SCRIPT_GENERATION Celery worker 执行。",
+                detail: "Submitted through the existing SCRIPT_GENERATION Celery worker.",
                 outputs: {
                   episode_id: 123,
                   script_id: 321,
@@ -280,14 +280,14 @@ describe("ProductionCanvasBoard", () => {
               {
                 id: "skill-assets",
                 label: "Asset Selection",
-                title: "已选择林妹妹和共享办公区",
+                title: "Sister Lin and Shared Office Area selected",
                 status: "review",
                 x: 160,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "asset.select",
-                detail: "复用现有 IP：林妹妹；环境：共享办公区",
+                detail: "Reusing existing IP: Sister Lin; environment: Shared Office Area",
                 outputs: {
                   virtual_ip_ids: [1],
                   environment_ids: [2],
@@ -305,14 +305,14 @@ describe("ProductionCanvasBoard", () => {
               {
                 id: "skill-script-generate",
                 label: "Script Skill",
-                title: "现有剧本生成入口已就绪",
+                title: "Existing script generation entry is ready",
                 status: "ready",
                 x: 420,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "script.generate",
-                detail: "后台复用现有剧本生成队列。",
+                detail: "Reuses the existing script generation queue in the backend.",
                 outputs: {
                   episode_id: 123,
                 },
@@ -328,14 +328,14 @@ describe("ProductionCanvasBoard", () => {
               {
                 id: "skill-storyboard-plan",
                 label: "Storyboard Skill",
-                title: "现有分镜生成入口已就绪",
+                title: "Existing storyboard generation entry is ready",
                 status: "ready",
                 x: 680,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "storyboard.plan",
-                detail: "需要先补齐执行上下文，之后才会调用现有生成 worker。",
+                detail: "Complete the execution context first, then it will call the existing generation worker.",
                 outputs: {
                   required_inputs: ["script_id"],
                 },
@@ -351,14 +351,14 @@ describe("ProductionCanvasBoard", () => {
               {
                 id: "skill-report-summarize",
                 label: "Report Skill",
-                title: "等待汇总画布执行证据",
+                title: "Waiting to summarize canvas execution evidence",
                 status: "blocked",
                 x: 960,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "report.summarize",
-                detail: "需要 task_id 后汇总任务证据。",
+                detail: "A task_id is required before task evidence can be summarized.",
                 outputs: {
                   required_inputs: ["task_id"],
                 },
@@ -372,8 +372,8 @@ describe("ProductionCanvasBoard", () => {
               },
             ],
             selected_assets: {
-              virtual_ips: [{ id: 1, name: "林妹妹" }],
-              environments: [{ id: 2, name: "共享办公区" }],
+              virtual_ips: [{ id: 1, name: "Sister Lin" }],
+              environments: [{ id: 2, name: "Shared Office Area" }],
             },
             skill_manifest: { version: "production_canvas.v1" },
           },
@@ -387,39 +387,39 @@ describe("ProductionCanvasBoard", () => {
         container: dom.window.document.body,
       });
 
-      const promptInput = utils.getByLabelText("生产目标");
+      const promptInput = utils.getByLabelText("Production goal");
       fireEvent.input(promptInput, {
-        target: { value: "基于林妹妹做第 4 集，办公室轻喜剧" },
+        target: { value: "Create Episode 4 around Sister Lin, an office rom-com" },
       });
-      fireEvent.input(utils.getByLabelText("剧集 ID"), {
+      fireEvent.input(utils.getByLabelText("Episode ID"), {
         target: { value: "123" },
       });
-      fireEvent.input(utils.getByLabelText("任务 ID"), {
+      fireEvent.input(utils.getByLabelText("Task ID"), {
         target: { value: "44" },
       });
       await waitFor(() =>
         assert.equal(
           utils
-            .getByRole("button", { name: "整体创建" })
+            .getByRole("button", { name: "Create all" })
             .hasAttribute("disabled"),
           false,
         ),
       );
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create all" }));
 
       await waitFor(() => {
         assert.ok(utils.getAllByText("Asset Selection").length >= 1);
       });
       assert.equal(planRequests[0]?.episode_id, 123);
       assert.equal(planRequests[0]?.task_id, 44);
-      assert.ok(utils.getAllByText("已选择林妹妹和共享办公区").length >= 1);
+      assert.ok(utils.getAllByText("Sister Lin and Shared Office Area selected").length >= 1);
       fireEvent.click(
-        utils.getByLabelText("Asset Selection 已选择林妹妹和共享办公区"),
+        utils.getByLabelText("Asset Selection Sister Lin and Shared Office Area selected"),
       );
       assert.ok(
-        utils.getAllByText("复用现有 IP：林妹妹；环境：共享办公区").length >= 1,
+        utils.getAllByText("Reusing existing IP: Sister Lin; environment: Shared Office Area").length >= 1,
       );
-      assert.ok(utils.getByText("后台复用"));
+      assert.ok(utils.getByText("Backend reuse"));
       assert.ok(utils.getByText("Environment repository"));
       assert.ok(utils.getByText("candidate_environment_ids: 2"));
       assert.ok(utils.getByText("canvas_run_id: canvas-run-123"));
@@ -430,17 +430,17 @@ describe("ProductionCanvasBoard", () => {
       assert.equal(executeRequests[0]?.episode_id, 123);
       assert.equal(executeRequests[0]?.task_id, 44);
       assert.equal(executeRequests[0]?.run_id, "canvas-run-123");
-      assert.ok(utils.getByLabelText("Task #77 已提交现有剧本生成任务"));
+      assert.ok(utils.getByLabelText("Task #77 Existing script generation task submitted"));
 
       await waitFor(() => assert.equal(executeRequests.length >= 2, true));
       assert.equal(executeRequests[1]?.skill, "storyboard.plan");
       assert.equal(executeRequests[1]?.script_id, 321);
       assert.equal(executeRequests[1]?.task_id, 77);
       assert.equal(executeRequests[1]?.run_id, "canvas-run-123");
-      assert.ok(utils.getByLabelText("Task #88 已提交现有分镜生成任务"));
+      assert.ok(utils.getByLabelText("Task #88 Existing storyboard generation task submitted"));
 
       await waitFor(() => assert.equal(executeRequests.length >= 3, true));
-      fireEvent.click(utils.getByLabelText("Report Skill 已汇总现有任务证据"));
+      fireEvent.click(utils.getByLabelText("Report Skill Existing task evidence summarized"));
       await waitFor(() =>
         assert.ok(utils.getByText("source_kind: production_canvas_run")),
       );
@@ -470,9 +470,9 @@ describe("ProductionCanvasBoard", () => {
               skill_result: {
                 skill: "script.generate",
                 label: "Script Skill",
-                title: "已提交现有剧本生成任务",
+                title: "Existing script generation task submitted",
                 status: "running",
-                detail: "后台已通过现有 SCRIPT_GENERATION Celery worker 执行。",
+                detail: "Submitted through the existing SCRIPT_GENERATION Celery worker.",
                 outputs: {
                   episode_id: 123,
                   dispatched_task_id: 77,
@@ -502,14 +502,14 @@ describe("ProductionCanvasBoard", () => {
               {
                 id: "skill-script-generate",
                 label: "Script Skill",
-                title: "现有剧本生成入口已就绪",
+                title: "Existing script generation entry is ready",
                 status: "ready",
                 x: 420,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "script.generate",
-                detail: "后台复用现有剧本生成队列。",
+                detail: "Reuses the existing script generation queue in the backend.",
                 outputs: { episode_id: 123 },
                 reuse_targets: [
                   {
@@ -534,17 +534,17 @@ describe("ProductionCanvasBoard", () => {
         container: dom.window.document.body,
       });
 
-      fireEvent.input(utils.getByLabelText("生产目标"), {
-        target: { value: "基于林妹妹整体创建短剧" },
+      fireEvent.input(utils.getByLabelText("Production goal"), {
+        target: { value: "Create a short drama around Sister Lin" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create all" }));
 
       await waitFor(() => {
         assert.equal(executeRequests.length, 1);
       });
       assert.equal(executeRequests[0]?.skill, "script.generate");
       assert.equal(executeRequests[0]?.run_id, "canvas-run-auto");
-      assert.ok(utils.getByLabelText("Task #77 已提交现有剧本生成任务"));
+      assert.ok(utils.getByLabelText("Task #77 Existing script generation task submitted"));
     } finally {
       globalThis.fetch = originalFetch;
     }
@@ -573,10 +573,10 @@ describe("ProductionCanvasBoard", () => {
                     : "Video Candidates",
                 title:
                   executeRequest.skill === "image.candidates"
-                    ? "已提交现有分镜图片候选任务"
-                    : "已提交现有分镜视频候选任务",
+                    ? "Existing storyboard image candidate task submitted"
+                    : "Existing storyboard video candidate task submitted",
                 status: "running",
-                detail: "后台已通过现有 worker 执行。",
+                detail: "Submitted through the existing worker.",
                 outputs: {
                   script_id: 321,
                   dispatched_task_id: taskId,
@@ -600,28 +600,28 @@ describe("ProductionCanvasBoard", () => {
               {
                 id: "skill-image-candidates",
                 label: "Image Candidates",
-                title: "现有分镜图片候选入口已就绪",
+                title: "Existing storyboard image candidate entry is ready",
                 status: "ready",
                 x: 420,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "image.candidates",
-                detail: "后台复用现有分镜图片生成队列。",
+                detail: "Reuses the existing storyboard image generation queue in the backend.",
                 outputs: { script_id: 321, frame_indexes: [1] },
                 reuse_targets: [],
               },
               {
                 id: "skill-video-candidates",
                 label: "Video Candidates",
-                title: "现有分镜视频候选入口已就绪",
+                title: "Existing storyboard video candidate entry is ready",
                 status: "ready",
                 x: 700,
                 y: 360,
                 width: 220,
                 kind: "skill_result",
                 skill: "video.candidates",
-                detail: "后台复用现有分镜视频生成队列。",
+                detail: "Reuses the existing storyboard video generation queue in the backend.",
                 outputs: { script_id: 321, frame_indexes: [1] },
                 reuse_targets: [],
               },
@@ -639,10 +639,10 @@ describe("ProductionCanvasBoard", () => {
         container: dom.window.document.body,
       });
 
-      fireEvent.input(utils.getByLabelText("生产目标"), {
-        target: { value: "基于已有分镜整体生成图片和视频候选" },
+      fireEvent.input(utils.getByLabelText("Production goal"), {
+        target: { value: "Generate image and video candidates from the existing storyboard" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create all" }));
 
       await waitFor(() => {
         assert.equal(executeRequests.length, 2);
@@ -654,8 +654,8 @@ describe("ProductionCanvasBoard", () => {
       assert.equal(executeRequests[0]?.script_id, 321);
       assert.deepEqual(executeRequests[0]?.frame_indexes, [1]);
       assert.equal(executeRequests[0]?.run_id, "canvas-run-media");
-      assert.ok(utils.getByLabelText("Task #91 已提交现有分镜图片候选任务"));
-      assert.ok(utils.getByLabelText("Task #92 已提交现有分镜视频候选任务"));
+      assert.ok(utils.getByLabelText("Task #91 Existing storyboard image candidate task submitted"));
+      assert.ok(utils.getByLabelText("Task #92 Existing storyboard video candidate task submitted"));
     } finally {
       globalThis.fetch = originalFetch;
     }

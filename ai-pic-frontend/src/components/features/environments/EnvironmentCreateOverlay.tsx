@@ -57,7 +57,7 @@ export function EnvironmentCreateOverlay({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!formState.name.trim()) {
-      showAlert({ message: "请填写名称", variant: "warning" });
+      showAlert({ message: "Please enter a name", variant: "warning" });
       return;
     }
 
@@ -72,7 +72,7 @@ export function EnvironmentCreateOverlay({
       };
       const res = await storyStructureAPI.createEnvironment(payload);
       if (!res.success || !res.data) {
-        showAlert({ message: res.error || "创建失败", variant: "error" });
+        showAlert({ message: res.error || "Create failed", variant: "error" });
         return;
       }
 
@@ -99,26 +99,26 @@ export function EnvironmentCreateOverlay({
         );
         if (genRes.success) {
           showAlert({
-            message: "创建成功，已提交参考图生成任务",
+            message: "Created successfully. A reference image generation task has been submitted.",
             variant: "success",
           });
         } else {
           showAlert({
-            message: `创建成功，但生成任务提交失败：${
-              genRes.error || "请稍后重试"
+            message: `Created successfully, but submitting the generation task failed: ${
+              genRes.error || "Please try again later"
             }`,
             variant: "warning",
           });
         }
       } else {
-        showAlert({ message: "创建成功", variant: "success" });
+        showAlert({ message: "Created successfully", variant: "success" });
       }
 
       resetForm();
       onClose();
     } catch (error) {
       console.error(error);
-      showAlert({ message: "创建失败", variant: "error" });
+      showAlert({ message: "Create failed", variant: "error" });
     } finally {
       setCreating(false);
     }
@@ -127,45 +127,45 @@ export function EnvironmentCreateOverlay({
   return (
     <CreationOverlay
       open={open}
-      title="创建环境"
-      subtitle="创建可复用的环境资产"
+      title="Create Environment"
+      subtitle="Create reusable environment assets"
       onClose={onClose}
       widthClassName="max-w-5xl"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
-          创建后将进入环境资产池，可在剧集生产中绑定到具体场景。
+          After creation, it will be added to the environment asset library and can be bound to specific scenes during episode production.
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label className="mb-1 block text-xs font-medium text-gray-700">
-              名称 *
+              Name *
             </label>
             <input
               type="text"
               value={formState.name}
               onChange={(e) => updateField("name", e.target.value)}
               className={operatorInputClass("w-full")}
-              placeholder="如：办公室、校园、商场"
+              placeholder="e.g. Office, Campus, Mall"
             />
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-gray-700">
-              类别
+              Category
             </label>
             <select
               value={formState.category}
               onChange={(e) => updateField("category", e.target.value)}
               className={operatorSelectClass("w-full")}
             >
-              <option value="indoor">室内</option>
-              <option value="outdoor">室外</option>
-              <option value="other">其它</option>
+              <option value="indoor">Indoor</option>
+              <option value="outdoor">Outdoor</option>
+              <option value="other">Other</option>
             </select>
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-gray-700">
-              标签（逗号分隔）
+              Tags (comma-separated)
             </label>
             <input
               type="text"
@@ -180,12 +180,12 @@ export function EnvironmentCreateOverlay({
                 )
               }
               className={operatorInputClass("w-full")}
-              placeholder="现代, 写字楼, 开放式"
+              placeholder="Modern, Office Building, Open Plan"
             />
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-gray-700">
-              参考图 URL（逗号分隔）
+              Reference image URLs (comma-separated)
             </label>
             <input
               type="text"
@@ -206,7 +206,7 @@ export function EnvironmentCreateOverlay({
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-gray-700">
-            描述
+            Description
           </label>
           <textarea
             value={formState.description}
@@ -215,7 +215,7 @@ export function EnvironmentCreateOverlay({
               "h-auto min-h-20 w-full py-2 text-sm",
             )}
             rows={3}
-            placeholder="简述环境特点、光线、风格等"
+            placeholder="Briefly describe the environment, lighting, style, etc."
           />
         </div>
 
@@ -234,14 +234,14 @@ export function EnvironmentCreateOverlay({
             }}
             className={operatorButtonClass("secondary")}
           >
-            取消
+            Cancel
           </button>
           <button
             type="submit"
             disabled={creating}
             className={operatorButtonClass("primary")}
           >
-            {creating ? "创建中..." : "创建环境"}
+            {creating ? "Creating..." : "Create Environment"}
           </button>
         </div>
       </form>

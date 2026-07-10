@@ -23,12 +23,12 @@ type LayerTextKey = Exclude<
 >;
 
 const LAYER_TEXT_FIELDS: Array<{ key: LayerTextKey; label: string }> = [
-  { key: "directionAnchor", label: "方向锚点" },
-  { key: "aestheticReference", label: "风格参照" },
-  { key: "shotType", label: "景别" },
-  { key: "cameraMovement", label: "运镜" },
-  { key: "compositionGeometry", label: "几何构图" },
-  { key: "emotionalLanding", label: "情绪落点" },
+  { key: "directionAnchor", label: "Direction Anchor" },
+  { key: "aestheticReference", label: "Style Reference" },
+  { key: "shotType", label: "Shot Type" },
+  { key: "cameraMovement", label: "Camera Movement" },
+  { key: "compositionGeometry", label: "Geometric Composition" },
+  { key: "emotionalLanding", label: "Emotional Beat" },
 ];
 
 export function PromptLayerEditor({
@@ -61,7 +61,7 @@ export function PromptLayerEditor({
       draft,
     );
     if (!patchedSpec) {
-      showAlert?.({ message: "未找到可编辑的时间轴片段", variant: "warning" });
+      showAlert?.({ message: "No editable timeline clip found", variant: "warning" });
       return;
     }
 
@@ -76,20 +76,20 @@ export function PromptLayerEditor({
       );
       if (!response.success || !response.data) {
         showAlert?.({
-          message: response.error || "五层提示词保存失败",
+          message: response.error || "Failed to save the five-layer prompt",
           variant: "error",
         });
         return;
       }
       onTimelineUpdated?.(response.data);
-      showAlert?.({ message: "五层提示词已保存", variant: "success" });
+      showAlert?.({ message: "Five-layer prompt saved", variant: "success" });
       setOpen(false);
     } catch (error) {
       showAlert?.({
         message:
           error instanceof Error
-            ? `五层提示词保存失败：${error.message}`
-            : "五层提示词保存失败",
+            ? `Failed to save the five-layer prompt: ${error.message}`
+            : "Failed to save the five-layer prompt",
         variant: "error",
       });
     } finally {
@@ -106,7 +106,7 @@ export function PromptLayerEditor({
         className={operatorButtonClass("secondary")}
         onClick={() => setOpen((value) => !value)}
       >
-        {open ? "收起五层编辑" : "编辑五层提示词"}
+        {open ? "Collapse five-layer editor" : "Edit five-layer prompt"}
       </button>
       {open ? (
         <div className="mt-3 grid gap-2 rounded-md border border-gray-200 bg-white p-3">
@@ -142,7 +142,7 @@ export function PromptLayerEditor({
             className={operatorButtonClass("primary")}
             onClick={handleSave}
           >
-            {saving ? "保存中..." : "保存五层提示词"}
+            {saving ? "Saving..." : "Save five-layer prompt"}
           </button>
         </div>
       ) : null}
@@ -183,7 +183,7 @@ function MotionTimelineEditor({
     : emptyShotPlanPromptLayers().motionTimeline;
   return (
     <div className="grid gap-1 text-[11px] font-medium text-gray-700">
-      秒级动作轴
+      Second-by-second motion timeline
       <div className="grid gap-2">
         {rows.map((point, index) => (
           <div

@@ -38,7 +38,7 @@ export function useTimelineRenderJobs({
         setRenderJobs(res.data.items || []);
         setError(null);
       } else {
-        setError(res.error || "读取渲染任务失败");
+        setError(res.error || "Failed to load render tasks");
       }
     } finally {
       setLoading(false);
@@ -74,25 +74,25 @@ export function useTimelineRenderJobs({
     if (!wasActive) return;
     if (latestJob.status === "succeeded") {
       notify(
-        `渲染完成（job #${latestJob.id}），成片已就绪，可在渲染面板下载`,
+        `Render complete (job #${latestJob.id}); the final cut is ready and can be downloaded from the render panel`,
         "success",
       );
     } else if (latestJob.status === "failed") {
-      notify(`渲染失败（job #${latestJob.id}），详情见渲染面板`, "error");
+      notify(`Render failed (job #${latestJob.id}); see the render panel for details`, "error");
     }
   }, [latestJob, notify]);
 
   const queueRender = useCallback(
     async (renderType: TimelineRenderType, forceNewAttempt = false) => {
       if (!selectedTimelineSpec?.id) {
-        showAlert({ message: "请先生成时间轴", variant: "warning" });
+        showAlert({ message: "Please generate the timeline first", variant: "warning" });
         return;
       }
       if (!renderReadiness.ready) {
         showAlert({
           message: renderReadiness.videoClipCount
-            ? `还有 ${renderReadiness.missingClips.length} 个片段缺少视频素材`
-            : "当前时间轴没有可渲染的视频轨",
+            ? `${renderReadiness.missingClips.length} clips are still missing video assets`
+            : "The current timeline has no renderable video track",
           variant: "warning",
         });
         return;
@@ -116,14 +116,14 @@ export function useTimelineRenderJobs({
           ]);
           setError(null);
           showAlert({
-            message: `渲染任务已创建（render_job_id=${res.data.id}）`,
+            message: `Render task created (render_job_id=${res.data.id})`,
             variant: "info",
           });
           void loadRenderJobs();
         } else {
-          setError(res.error || "创建渲染任务失败");
+          setError(res.error || "Failed to create render task");
           showAlert({
-            message: res.error || "创建渲染任务失败",
+            message: res.error || "Failed to create render task",
             variant: "error",
           });
         }

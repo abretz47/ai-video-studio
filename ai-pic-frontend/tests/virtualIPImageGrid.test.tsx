@@ -15,7 +15,7 @@ const dom = new JSDOM("<!doctype html><html><body></body></html>");
 const virtualIP: VirtualIP = {
   id: 1,
   business_id: "vip_test",
-  name: "测试 IP",
+  name: "Test IP",
   tags: [],
   is_active: true,
   is_public: false,

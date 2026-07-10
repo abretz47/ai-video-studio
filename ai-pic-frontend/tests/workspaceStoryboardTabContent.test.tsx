@@ -100,15 +100,15 @@ describe("WorkspaceStoryboardTabContent", () => {
       { container: dom.window.document.body },
     );
 
-    assert.equal(utils.queryByRole("button", { name: "生成宫格分镜" }), null);
-    assert.equal(utils.queryByText("场景宫格分镜"), null);
-    assert.equal(utils.queryByRole("button", { name: "生成宫格分镜图" }), null);
-    assert.equal(utils.queryByRole("button", { name: "宫格图生成成片" }), null);
-    assert.equal(utils.queryByRole("button", { name: "生成故事板" }), null);
-    assert.equal(utils.queryByRole("button", { name: "生成整集故事板" }), null);
-    assert.equal(utils.queryByText("宫格故事板"), null);
-    assert.equal(utils.queryByRole("button", { name: "同步分镜占位" }), null);
-    assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
+    assert.equal(utils.queryByRole("button", { name: "Generate storyboard grid" }), null);
+    assert.equal(utils.queryByText("Scene storyboard grid"), null);
+    assert.equal(utils.queryByRole("button", { name: "Generate storyboard grid images" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Render final cut from grid images" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Generate storyboard" }), null);
+    assert.equal(utils.queryByRole("button", { name: "Generate episode storyboard" }), null);
+    assert.equal(utils.queryByText("Grid storyboard"), null);
+    assert.equal(utils.queryByRole("button", { name: "Sync storyboard placeholders" }), null);
+    assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
     const supportShell = utils.container.querySelector(
       '[data-storyboard-support-shell="unframed"]',
     );
@@ -120,13 +120,13 @@ describe("WorkspaceStoryboardTabContent", () => {
     assert.ok(supportTimeline);
     assert.ok(supportTimeline.querySelector('[data-timeline="workspace"]'));
     assert.ok(supportTimeline.querySelector("[data-timeline-overview]"));
-    assert.ok(utils.getByLabelText("在时间轴中选择 视频 1"));
-    assert.ok(utils.getByText("片段分镜管理"));
-    assert.ok(utils.getAllByText("视频 1").length >= 1);
-    assert.ok(utils.getByText("环境/IP 待绑定"));
-    assert.ok(utils.getByText("分镜待生成"));
+    assert.ok(utils.getByLabelText("Select Video 1 on the timeline"));
+    assert.ok(utils.getByText("Clip storyboard management"));
+    assert.ok(utils.getAllByText("Video 1").length >= 1);
+    assert.ok(utils.getByText("Environment/IP pending binding"));
+    assert.ok(utils.getByText("Storyboard pending generation"));
     const firstClipLink = utils.getByRole("link", {
-      name: "进入第一个片段分镜",
+      name: "Enter first clip storyboard",
     });
     assert.equal(
       firstClipLink.getAttribute("href"),
@@ -134,7 +134,7 @@ describe("WorkspaceStoryboardTabContent", () => {
     );
     assert.match(firstClipLink.className, /border-gray-200/);
     assert.doesNotMatch(firstClipLink.className, /bg-blue-600/);
-    const link = utils.getByRole("link", { name: "进入片段分镜" });
+    const link = utils.getByRole("link", { name: "Enter clip storyboard" });
     assert.equal(
       link.getAttribute("href"),
       "/episodes/episode_7/workspace?tab=timeline&scriptId=131&clipId=video_scene_1_beat_1_001",
@@ -142,7 +142,7 @@ describe("WorkspaceStoryboardTabContent", () => {
     assert.match(link.className, /border-gray-200/);
     assert.doesNotMatch(link.className, /bg-blue-600/);
     const video = await utils.findByLabelText(
-      "播放片段 video_scene_1_beat_1_001",
+      "Play clip video_scene_1_beat_1_001",
     );
     assert.equal(
       video.getAttribute("src"),
@@ -166,7 +166,7 @@ describe("WorkspaceStoryboardTabContent", () => {
     );
 
     assert.equal(utils.getAllByText("Timeline 8 · v3").length, 2);
-    assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
+    assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
     assert.ok(
       utils.container.querySelector(
         '[data-storyboard-support-timeline="true"]',
@@ -191,16 +191,16 @@ describe("WorkspaceStoryboardTabContent", () => {
     assert.match(contextStrip.className || "", /border-t/);
     assert.doesNotMatch(contextStrip.className || "", /rounded-md/);
     assert.doesNotMatch(contextStrip.className || "", /\bgrid\b/);
-    assert.equal(utils.queryByText("时间轴来源"), null);
-    assert.equal(utils.queryByText("关键帧 / 视频"), null);
+    assert.equal(utils.queryByText("Timeline source"), null);
+    assert.equal(utils.queryByText("Keyframes / Video"), null);
     const audioDetails = utils.container.querySelector(
       '[data-storyboard-support-audio="collapsed"]',
     ) as HTMLDetailsElement | null;
     assert.ok(audioDetails);
     assert.equal(audioDetails.open, false);
-    assert.ok(utils.getByText("2 轨 · 2 clips"));
-    assert.ok(utils.getByText("时长 1.2s"));
-    assert.equal(utils.queryByRole("button", { name: "同步分镜占位" }), null);
+    assert.ok(utils.getByText("2 tracks · 2 clips"));
+    assert.ok(utils.getByText("Duration 1.2s"));
+    assert.equal(utils.queryByRole("button", { name: "Sync storyboard placeholders" }), null);
     const audio = utils.container.querySelector("audio");
     assert.equal(
       audio?.getAttribute("src"),
@@ -224,16 +224,16 @@ describe("WorkspaceStoryboardTabContent", () => {
               timeline_clip_id: "video_scene_1_beat_1_001",
               start_ms: 0,
               end_ms: 1200,
-              description: "主角推开实验室门",
+              description: "Protagonist pushes open the lab door",
               shot_plan_prompt_layers: {
-                direction_anchor: "朝向实验室门口的悬疑进入",
+                direction_anchor: "Suspenseful entrance toward the lab doorway",
                 aesthetic_reference: "IMAX film, Panavision C lens",
-                composition_geometry: "门在中心线，主角位于左三分线",
+                composition_geometry: "Door on the center line, protagonist on the left third",
                 motion_timeline: [
-                  { at_ms: 0, action: "主角伸手推门" },
-                  { at_ms: 1200, action: "门缝透出冷光" },
+                  { at_ms: 0, action: "Protagonist reaches out to push the door" },
+                  { at_ms: 1200, action: "Cold light spills through the crack in the door" },
                 ],
-                emotional_landing: "冷光里的紧张停顿",
+                emotional_landing: "A tense pause in the cold light",
               },
             },
           ],
@@ -243,9 +243,9 @@ describe("WorkspaceStoryboardTabContent", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByText("五层提示词"));
-    assert.ok(utils.getByText("朝向实验室门口的悬疑进入"));
-    assert.ok(utils.getByText("0ms 主角伸手推门 / 1200ms 门缝透出冷光"));
+    assert.ok(utils.getByText("Five-layer prompts"));
+    assert.ok(utils.getByText("Suspenseful entrance toward the lab doorway"));
+    assert.ok(utils.getByText("0ms Protagonist reaches out to push the door / 1200ms Cold light spills through the crack in the door"));
   });
 
   it("falls back to audio timeline storyboard sync when native Timeline is absent", () => {
@@ -262,10 +262,10 @@ describe("WorkspaceStoryboardTabContent", () => {
       { container: dom.window.document.body },
     );
 
-    const button = utils.getByRole("button", { name: "同步分镜占位" });
+    const button = utils.getByRole("button", { name: "Sync storyboard placeholders" });
     assert.equal(button.hasAttribute("disabled"), false);
-    assert.ok(utils.getByRole("heading", { name: "全片时间轴" }));
-    assert.ok(utils.getByText("音频时间轴"));
+    assert.ok(utils.getByRole("heading", { name: "Full episode timeline" }));
+    assert.ok(utils.getByText("Audio timeline"));
     const supportTimeline = utils.container.querySelector(
       '[data-storyboard-support-timeline="true"]',
     );

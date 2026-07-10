@@ -72,7 +72,7 @@ export function WorkspaceTimelineTabContent({
 
   const handleGenerateTimelinePipeline = useCallback(async () => {
     if (!selectedScriptId) {
-      showAlert({ message: "请先选择一个剧本", variant: "warning" });
+      showAlert({ message: "Please select a script first", variant: "warning" });
       return;
     }
     try {
@@ -92,18 +92,18 @@ export function WorkspaceTimelineTabContent({
       if (res.success && res.data) {
         trackPipelineTask(res.data.task_id);
         showAlert({
-          message: `一键流水线任务已提交（task_id=${res.data.task_id}），完成后自动刷新时间轴`,
+          message: `One-click pipeline task submitted (task_id=${res.data.task_id}); the timeline will refresh automatically when it completes`,
           variant: "info",
         });
       } else {
         showAlert({
-          message: `创建一键流水线任务失败：${res.error || "未知错误"}`,
+          message: `Failed to create one-click pipeline task: ${res.error || "Unknown error"}`,
           variant: "error",
         });
       }
     } catch (error) {
-      console.error("创建一键流水线任务失败:", error);
-      showAlert({ message: "创建一键流水线任务失败", variant: "error" });
+      console.error("Failed to create one-click pipeline task:", error);
+      showAlert({ message: "Failed to create one-click pipeline task", variant: "error" });
     } finally {
       setPipelineBusy(false);
     }
@@ -193,8 +193,8 @@ export function WorkspaceTimelineTabContent({
   if (scripts.length === 0) {
     return (
       <OperatorState
-        title="暂无剧本"
-        detail="请先生成剧本，然后才能创建时间轴"
+        title="No scripts yet"
+        detail="Generate a script first before creating a timeline"
       />
     );
   }

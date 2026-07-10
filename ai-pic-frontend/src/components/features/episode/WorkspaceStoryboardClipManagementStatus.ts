@@ -71,13 +71,13 @@ export function clipKeyframeStatus(
       getString(clip.end_frame_url) ||
       getString(frame?.end_image_url),
   );
-  if (startReady && endReady) return { ready: true, label: "首尾帧已生成" };
-  if (startReady) return { ready: false, label: "已有首帧" };
-  if (endReady) return { ready: false, label: "已有尾帧" };
+  if (startReady && endReady) return { ready: true, label: "Start/end frames generated" };
+  if (startReady) return { ready: false, label: "Start frame ready" };
+  if (endReady) return { ready: false, label: "End frame ready" };
   if (frame && mediaUrl(frame, IMAGE_KEYS)) {
-    return { ready: false, label: "已有分镜图" };
+    return { ready: false, label: "Storyboard available" };
   }
-  return { ready: false, label: "首尾帧待生成" };
+  return { ready: false, label: "Start/end frames pending" };
 }
 
 export function hasClipVideo(
@@ -152,10 +152,10 @@ function contextStatusLabel(
   environmentReady: boolean,
   virtualIpReady: boolean,
 ) {
-  if (environmentReady && virtualIpReady) return "环境/IP 已绑定";
-  if (environmentReady) return "环境已绑定 · IP 待绑定";
-  if (virtualIpReady) return "环境待绑定 · IP 已绑定";
-  return "环境/IP 待绑定";
+  if (environmentReady && virtualIpReady) return "Environment/IP bound";
+  if (environmentReady) return "Environment bound · IP pending";
+  if (virtualIpReady) return "Environment pending · IP bound";
+  return "Environment/IP pending";
 }
 
 function hasAnyValue(record: Record<string, unknown> | null, keys: string[]) {

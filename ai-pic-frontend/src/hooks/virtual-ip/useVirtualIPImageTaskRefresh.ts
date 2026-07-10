@@ -31,14 +31,14 @@ export function useVirtualIPImageTaskRefresh({
         void refreshImages()
           .then(() => {
             showAlert({
-              message: "图片生成完成，列表已刷新",
+            message: "Image generation completed and the list has been refreshed",
               variant: "success",
             });
           })
           .catch((error) => {
             console.error("Failed to refresh virtual IP images:", error);
             showAlert({
-              message: "图片已生成，但刷新列表失败",
+            message: "Images were generated, but refreshing the list failed",
               variant: "error",
             });
           });
@@ -48,7 +48,9 @@ export function useVirtualIPImageTaskRefresh({
         setPendingTaskId(null);
         showAlert({
           message:
-            task.error_message || task.progress_detail || "图片生成任务未完成",
+            task.error_message ||
+            task.progress_detail ||
+            "Image generation task did not complete",
           variant: "error",
         });
       }

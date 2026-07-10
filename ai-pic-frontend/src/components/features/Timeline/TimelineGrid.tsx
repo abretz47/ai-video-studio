@@ -58,13 +58,13 @@ export function TimelineGrid({
             data-timeline-ruler-origin-primary="true"
             className="text-[10px] font-extrabold"
           >
-            时间轴
+            Timeline
           </span>
           <span
             data-timeline-ruler-origin-secondary="true"
             className="text-[9px] font-semibold text-slate-500"
           >
-            刻度
+            Scale
           </span>
         </div>
         {ticks.map((tick) => {
@@ -177,13 +177,13 @@ export function TimelineTrackRows({
                     data-timeline-primary-lane-label="visible"
                     className="text-[9px] font-semibold text-slate-500"
                   >
-                    主时间轴
+                    Main Timeline
                   </span>
                 </span>
               ) : (
                 track.label
               )}
-              {isVideoTrack ? <span className="sr-only">主线</span> : null}
+              {isVideoTrack ? <span className="sr-only">Main track</span> : null}
             </div>
             <div
               className="absolute bottom-0 top-0 overflow-visible"

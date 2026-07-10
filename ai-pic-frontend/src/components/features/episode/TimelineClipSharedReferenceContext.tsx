@@ -27,24 +27,24 @@ export function TimelineClipSharedReferenceContext({
 
   return (
     <section
-      aria-label="片段共享参考上下文"
+      aria-label="Shared clip reference context"
       className="mb-2 grid gap-2 rounded-md border border-slate-200 bg-white p-2 text-[11px] text-slate-700"
     >
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-semibold text-slate-900">
-          片段共享参考上下文
+          Shared Clip Reference Context
         </span>
-        <span className="text-slate-500">会用于分镜、首尾帧和视频任务</span>
+        <span className="text-slate-500">Used for storyboard, start/end frames, and video tasks</span>
       </div>
       <div className="grid gap-1 min-[720px]:grid-cols-3">
-        <span>角色 IP：{labels.length ? labels.join("、") : "未绑定"}</span>
-        <span>IP 图：{selectedCharacterReferenceUrls.length} 张</span>
-        <span>环境图：{selectedEnvironmentReferenceUrls.length} 张</span>
+        <span>Character IPs: {labels.length ? labels.join(", ") : "Not linked"}</span>
+        <span>IP images: {selectedCharacterReferenceUrls.length}</span>
+        <span>Environment images: {selectedEnvironmentReferenceUrls.length}</span>
       </div>
       <label className="grid gap-1 text-xs text-slate-700">
-        <span>附加参考图 URL（可选，一行一个）</span>
+        <span>Additional reference image URLs (optional, one per line)</span>
         <textarea
-          aria-label="附加参考图 URL"
+          aria-label="Additional reference image URLs"
           value={manualReferenceImages}
           onChange={(event) =>
             onManualReferenceImagesChange(event.currentTarget.value)

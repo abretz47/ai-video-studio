@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI短剧制作工作流平台",
-  description: "AI驱动的虚拟IP短剧生产平台",
+  title: "AI Short Drama Production Workflow Platform",
+  description: "AI-powered Virtual IP short drama production platform",
 };
 
 export default function RootLayout({

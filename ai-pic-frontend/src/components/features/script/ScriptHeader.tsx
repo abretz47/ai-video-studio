@@ -29,8 +29,8 @@ export function ScriptHeader({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="剧本资产"
-        subtitle={`剧本 #${script.id}`}
+        title="Script asset"
+        subtitle={`Script #${script.id}`}
         action={
           <div className="flex gap-2">
             <button
@@ -38,14 +38,14 @@ export function ScriptHeader({
               onClick={onNavigateToEpisode}
               className={operatorButtonClass("secondary")}
             >
-              返回剧集
+              Back to episode
             </button>
             <button
               type="button"
               onClick={onNavigateToTimeline}
               className={operatorButtonClass("secondary")}
             >
-              进入时间轴
+              Go to timeline
             </button>
             <div className="relative">
               <button
@@ -53,7 +53,7 @@ export function ScriptHeader({
                 onClick={() => setShowExportMenu(!showExportMenu)}
                 className={operatorButtonClass("primary")}
               >
-                导出剧本
+                Export script
               </button>
               {showExportMenu && (
                 <div className="absolute right-0 z-10 mt-2 w-36 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg">
@@ -64,7 +64,7 @@ export function ScriptHeader({
                       onClick={() => onExport(format)}
                       className="block w-full px-3 py-2 text-left text-xs text-gray-700 hover:bg-gray-50"
                     >
-                      导出 {format.toUpperCase()}
+                      Export {format.toUpperCase()}
                     </button>
                   ))}
                 </div>
@@ -80,36 +80,36 @@ export function ScriptHeader({
               {script.title}
             </h1>
             <p className="mt-1 text-xs text-gray-500">
-              {script.format_type?.toUpperCase() || "剧本"} ·{" "}
-              {script.language?.toUpperCase()} · 版本 {script.version || "1.0"}
+              {script.format_type?.toUpperCase() || "SCRIPT"} ·{" "}
+              {script.language?.toUpperCase()} · Version {script.version || "1.0"}
             </p>
           </div>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
           <InfoCard
-            label="字数"
+            label="Word count"
             value={script.word_count || 0}
-            hint="字数统计"
+            hint="Word total"
           />
           <InfoCard
-            label="字符数"
+            label="Character count"
             value={script.character_count || 0}
-            hint="字符统计"
+            hint="Character total"
           />
           <InfoCard
-            label="页数"
+            label="Page count"
             value={script.page_count || 0}
-            hint="预计页数"
+            hint="Estimated pages"
           />
           <InfoCard
-            label="状态"
+            label="Status"
             value={
               script.status === "published"
-                ? "已发布"
+                ? "Published"
                 : script.status === "approved"
-                ? "已审核"
-                : "草稿"
+                ? "Approved"
+                : "Draft"
             }
             tone={
               script.status === "published"
@@ -120,16 +120,16 @@ export function ScriptHeader({
             }
             hint={
               script.status === "draft"
-                ? "可编辑"
+                ? "Editable"
                 : script.status === "approved"
-                ? "待发布"
-                : "无需修改"
+                ? "Pending publication"
+                : "No changes needed"
             }
           />
         </div>
         <div className="mt-4 grid grid-cols-1 gap-2 text-xs text-gray-500 md:grid-cols-2">
-          <div>创建时间：{formatDate(script.created_at)}</div>
-          <div>更新时间：{formatDate(script.updated_at)}</div>
+          <div>Created at: {formatDate(script.created_at)}</div>
+          <div>Updated at: {formatDate(script.updated_at)}</div>
         </div>
       </div>
     </OperatorPanel>

@@ -18,7 +18,7 @@ export function VirtualIPStatusSettings({
   return (
     <div>
       <label className="mb-1 block text-sm font-medium text-gray-700">
-        状态设置
+        Status settings
       </label>
       <div className="flex flex-col gap-3 rounded-md border border-gray-200 bg-gray-50 p-3 sm:flex-row">
         <label className="inline-flex items-center gap-2 text-sm text-gray-700">
@@ -28,7 +28,7 @@ export function VirtualIPStatusSettings({
             onChange={(event) => onActiveChange(event.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
-          启用角色
+          Enable character
         </label>
         <label className="inline-flex items-center gap-2 text-sm text-gray-700">
           <input
@@ -37,7 +37,7 @@ export function VirtualIPStatusSettings({
             onChange={(event) => onPublicChange(event.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
-          公开展示
+          Publicly visible
         </label>
       </div>
     </div>
@@ -52,10 +52,10 @@ export function VirtualIPCreateFooter({ onClose }: { onClose: () => void }) {
         onClick={onClose}
         className={operatorButtonClass("secondary")}
       >
-        取消
+        Cancel
       </button>
       <button type="submit" className={operatorButtonClass("primary")}>
-        创建 IP
+        Create IP
       </button>
     </div>
   );

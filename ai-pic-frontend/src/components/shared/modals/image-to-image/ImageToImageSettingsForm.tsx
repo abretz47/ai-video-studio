@@ -58,10 +58,10 @@ interface ImageToImageSettingsFormProps {
 }
 
 const FALLBACK_STYLE_OPTIONS = [
-  { value: "realistic", label: "写实" },
-  { value: "anime", label: "二次元" },
-  { value: "cinematic", label: "电影感" },
-  { value: "sketch", label: "素描" },
+  { value: "realistic", label: "Realistic" },
+  { value: "anime", label: "Anime" },
+  { value: "cinematic", label: "Cinematic" },
+  { value: "sketch", label: "Sketch" },
 ];
 
 export function ImageToImageSettingsForm({
@@ -116,28 +116,28 @@ export function ImageToImageSettingsForm({
 
   const modelHelperText =
     genMode === "image_to_image"
-      ? "仅展示支持参考图图生图的模型（不支持的将隐藏）"
-      : "仅展示支持参考图文生图的模型（不支持的将隐藏）";
+      ? "Only models that support reference-image image-to-image are shown (unsupported models are hidden)."
+      : "Only models that support reference-image text-to-image are shown (unsupported models are hidden).";
 
   return (
     <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="space-y-3">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            提示词
+            Prompt
           </label>
           <textarea
             value={prompt}
             onChange={(e) => onPromptChange(e.target.value)}
             rows={4}
             className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="描述想要的变体效果，例如背面照、全身照、不同光线等"
+            placeholder="Describe the variation you want, such as a back view, full-body shot, or different lighting."
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            模型
+            Model
           </label>
           <MultiModelSelector
             value={modelIds}
@@ -168,7 +168,7 @@ export function ImageToImageSettingsForm({
           />
           {selectedModel?.capabilities?.length ? (
             <p className="mt-1 text-xs text-gray-500">
-              能力：{selectedModel.capabilities.join(", ")}
+              Capabilities: {selectedModel.capabilities.join(", ")}
             </p>
           ) : null}
         </div>
@@ -185,7 +185,7 @@ export function ImageToImageSettingsForm({
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              生成张数
+              Number of Images
             </label>
             <input
               type="number"
@@ -206,12 +206,12 @@ export function ImageToImageSettingsForm({
               className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             <p className="mt-1 text-[11px] text-gray-500">
-              一次最多 {maxCount} 张，部分模型会返回多张候选。
+              Generate up to {maxCount} images at once; some models may return multiple candidates.
             </p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              风格
+              Style
             </label>
             <select
               value={style}

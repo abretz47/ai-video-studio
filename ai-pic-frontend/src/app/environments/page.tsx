@@ -31,11 +31,11 @@ function EnvironmentsPageContent() {
       if (res.success && res.data) {
         setList(res.data);
       } else {
-        showAlert({ message: res.error || "加载环境失败", variant: "error" });
+        showAlert({ message: res.error || "Failed to load environments", variant: "error" });
       }
     } catch (e) {
       console.error(e);
-      showAlert({ message: "加载环境失败", variant: "error" });
+      showAlert({ message: "Failed to load environments", variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -47,22 +47,22 @@ function EnvironmentsPageContent() {
 
   const handleDelete = (env: Environment) => {
     showAlert({
-      title: "确认删除环境",
-      message: "删除后引用该环境的场景将失去关联，确定删除吗？",
+      title: "Confirm Environment Deletion",
+      message: "After deletion, scenes that reference this environment will lose the link. Are you sure you want to delete it?",
       variant: "warning",
-      confirmText: "删除",
+      confirmText: "Delete",
       onConfirm: async () => {
         try {
           const res = await storyStructureAPI.deleteEnvironment(env.id);
           if (res.success) {
             setList((prev) => prev.filter((item) => item.id !== env.id));
-            showAlert({ message: "删除成功", variant: "success" });
+            showAlert({ message: "Deleted successfully", variant: "success" });
           } else {
-            showAlert({ message: res.error || "删除失败", variant: "error" });
+            showAlert({ message: res.error || "Deletion failed", variant: "error" });
           }
         } catch (e) {
           console.error(e);
-          showAlert({ message: "删除失败", variant: "error" });
+          showAlert({ message: "Deletion failed", variant: "error" });
         }
       },
     });
@@ -70,27 +70,27 @@ function EnvironmentsPageContent() {
 
   return (
     <OperatorShell
-      title="环境资产"
-      subtitle="为 IP、故事和剧集场景维护可复用环境"
-      breadcrumb={["IP 中心", "环境资产"]}
+      title="Environment Assets"
+      subtitle="Maintain reusable environments for Virtual IP, story, and episode scenes"
+      breadcrumb={["IP Hub", "Environment Assets"]}
     >
       <OperatorPanel className="mb-5">
         <OperatorSectionHeader
-          title="环境资产"
-          subtitle="可直接接入 IP 环境池，也可在剧集时间轴绑定到场景"
+          title="Environment Assets"
+          subtitle="These can be added directly to the Virtual IP environment pool or bound to scenes on an episode timeline"
           action={
             <div className="flex gap-2">
               <button
                 onClick={() => setShowCreateForm(true)}
                 className={operatorButtonClass("primary")}
               >
-                创建环境
+                Create Environment
               </button>
               <button
                 onClick={() => void load()}
                 className={operatorButtonClass("secondary")}
               >
-                刷新
+                Refresh
               </button>
             </div>
           }

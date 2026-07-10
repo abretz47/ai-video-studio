@@ -159,7 +159,7 @@ export function resolveTimelineItemButtonModel({
   };
 
   return {
-    ariaLabel: `在时间轴中选择 ${item.label || item.id}`,
+    ariaLabel: `Select ${item.label || item.id} on the timeline`,
     canShowAfterSelectedOverlap,
     isMarker,
     isPrimaryProductionClip,

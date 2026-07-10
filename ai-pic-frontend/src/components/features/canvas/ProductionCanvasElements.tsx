@@ -90,9 +90,9 @@ export function CanvasInspector({
   if (!node) {
     return (
       <OperatorPanel className="p-4">
-        <div className="text-sm font-semibold text-gray-950">节点详情</div>
+        <div className="text-sm font-semibold text-gray-950">Node Details</div>
         <p className="mt-2 text-xs leading-5 text-gray-500">
-          选择画布节点后查看当前阶段、入口和备注。
+          Select a canvas node to view its current stage, entry point, and notes.
         </p>
       </OperatorPanel>
     );
@@ -106,7 +106,7 @@ export function CanvasInspector({
     <OperatorPanel className="p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-sm font-semibold text-gray-950">节点详情</div>
+          <div className="text-sm font-semibold text-gray-950">Node Details</div>
           <div className="mt-2 truncate text-xs font-semibold text-gray-700">
             {node.label}
           </div>
@@ -129,7 +129,7 @@ export function CanvasInspector({
       </div>
       {node.reuseTargets?.length ? (
         <div className="mt-4 border-t border-gray-100 pt-3">
-          <div className="text-xs font-semibold text-gray-700">后台复用</div>
+          <div className="text-xs font-semibold text-gray-700">Backend Reuse</div>
           <div className="mt-2 space-y-2">
             {node.reuseTargets.map((target) => (
               <div
@@ -149,7 +149,7 @@ export function CanvasInspector({
       ) : null}
       {outputs.length ? (
         <div className="mt-4 border-t border-gray-100 pt-3">
-          <div className="text-xs font-semibold text-gray-700">执行输出</div>
+          <div className="text-xs font-semibold text-gray-700">Execution Output</div>
           <div className="mt-2 space-y-1 text-[11px] leading-4 text-gray-500">
             {outputs.map(([key, value]) => (
               <div key={key}>
@@ -164,7 +164,7 @@ export function CanvasInspector({
           href={node.actionHref}
           className={operatorButtonClass("secondary", "mt-4 w-full")}
         >
-          {node.actionLabel || "打开入口"}
+          {node.actionLabel || "Open Entry Point"}
         </Link>
       ) : null}
       {canExecute ? (
@@ -174,7 +174,7 @@ export function CanvasInspector({
           disabled={executing}
           onClick={() => onExecuteNode?.(node)}
         >
-          {executing ? "执行中" : "后台执行"}
+          {executing ? "Running" : "Run in Background"}
         </button>
       ) : null}
       {executionError ? (

@@ -70,9 +70,9 @@ describe("SceneStructurePanel permissions and callbacks", () => {
       { container: dom.window.document.body },
     );
 
-    await utils.findByText("结构化场景 / 镜头");
+    await utils.findByText("Structured scenes / shots");
 
-    const badge = await utils.findByText(/只读 · 需管理员权限/i);
+    const badge = await utils.findByText(/Read-only · Admin permission required/i);
     assert.ok(badge);
     assert.strictEqual(createCalls, 0);
   });
@@ -95,7 +95,7 @@ describe("SceneStructurePanel permissions and callbacks", () => {
     );
 
     await waitFor(() => {
-      assert.ok(utils.getByText(/节拍 \(1\)/));
+      assert.ok(utils.getByText(/Beats \(1\)/));
       assert.strictEqual(loadedCount, 1);
     });
   });

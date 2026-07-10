@@ -43,13 +43,13 @@ export function useStyleSchema(options: UseStyleSchemaOptions = {}) {
     try {
       const response = fetcher ? await fetcher() : await styleAPI.getSchema();
       if (!response.success || !response.data) {
-        throw new Error(response.error || "获取风格 schema 失败");
+        throw new Error(response.error || "Failed to load style schema");
       }
       schemaCache.set(effectiveKey, response.data);
       setState({ schema: response.data, loading: false, error: null });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "获取风格 schema 失败";
+        error instanceof Error ? error.message : "Failed to load style schema";
       setState((prev) => ({ ...prev, loading: false, error: message }));
     }
   }, [effectiveKey, enabled, fetcher]);

@@ -33,7 +33,7 @@ export function StorySettingSection({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            时间设定
+            Time Period
           </label>
           <input
             type="text"
@@ -44,14 +44,14 @@ export function StorySettingSection({
                 setting_time: e.target.value,
               }))
             }
-            placeholder="例如：现代、古代、未来"
+            placeholder="e.g. modern, ancient, future"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            默认画幅
+            Default Aspect Ratio
           </label>
           <select
             value={generateForm.default_aspect_ratio}
@@ -71,13 +71,13 @@ export function StorySettingSection({
             ))}
           </select>
           <p className="mt-1 text-xs text-gray-500">
-            默认用于分镜图像/视频，生成时可临时覆盖
+            Used by default for storyboard images/videos and can be overridden during generation
           </p>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            地点设定
+            Location
           </label>
           <input
             type="text"
@@ -88,7 +88,7 @@ export function StorySettingSection({
                 setting_location: e.target.value,
               }))
             }
-            placeholder="例如：学校、城市、乡村"
+            placeholder="e.g. school, city, countryside"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -96,7 +96,7 @@ export function StorySettingSection({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          世界观设定
+          Worldbuilding
         </label>
         <textarea
           value={generateForm.world_building}
@@ -106,7 +106,7 @@ export function StorySettingSection({
               world_building: e.target.value,
             }))
           }
-          placeholder="描述故事的世界观和背景设定"
+          placeholder="Describe the story's world and background"
           rows={3}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -114,7 +114,7 @@ export function StorySettingSection({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          额外要求
+          Additional Requirements
         </label>
         <textarea
           value={generateForm.additional_requirements}
@@ -124,7 +124,7 @@ export function StorySettingSection({
               additional_requirements: e.target.value,
             }))
           }
-          placeholder="其他特殊要求或偏好"
+          placeholder="Other special requirements or preferences"
           rows={2}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

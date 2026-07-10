@@ -14,11 +14,11 @@ export const productionCanvasContextFields: Array<{
   label: string;
   placeholder: string;
 }> = [
-  { key: "virtual_ip_id", label: "IP ID", placeholder: "可选" },
-  { key: "environment_id", label: "环境 ID", placeholder: "可选" },
-  { key: "episode_id", label: "剧集 ID", placeholder: "必填后可生成剧本" },
-  { key: "script_id", label: "剧本 ID", placeholder: "已有剧本可填" },
-  { key: "task_id", label: "任务 ID", placeholder: "报告证据" },
+  { key: "virtual_ip_id", label: "Virtual IP ID", placeholder: "Optional" },
+  { key: "environment_id", label: "Environment ID", placeholder: "Optional" },
+  { key: "episode_id", label: "Episode ID", placeholder: "Required to generate a script" },
+  { key: "script_id", label: "Script ID", placeholder: "Enter if you already have a script" },
+  { key: "task_id", label: "Task ID", placeholder: "Evidence report" },
 ];
 
 export const emptyProductionCanvasContext: ProductionCanvasContextDraft = {

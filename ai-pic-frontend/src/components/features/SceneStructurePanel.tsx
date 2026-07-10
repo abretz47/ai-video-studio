@@ -86,7 +86,7 @@ export function SceneStructurePanel({
     try {
       const sceneRes = await client.getNormalizedScenes(scriptId);
       if (!sceneRes.success || !sceneRes.data) {
-        throw new Error(sceneRes.message || sceneRes.error || "加载场景失败");
+        throw new Error(sceneRes.message || sceneRes.error || "Failed to load scenes");
       }
       const hydrated = await Promise.all(
         sceneRes.data.map(async (scene) => {
@@ -104,7 +104,7 @@ export function SceneStructurePanel({
       setScenes(hydrated);
       onStructureLoaded?.(hydrated);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "加载结构失败";
+      const message = err instanceof Error ? err.message : "Failed to load structure";
       setError(message);
       showAlert({ message, variant: "error" });
     } finally {
@@ -119,7 +119,7 @@ export function SceneStructurePanel({
 
   const addScene = async () => {
     if (!canEdit) {
-      showAlert({ message: "当前为只读模式，需管理员权限", variant: "warning" });
+      showAlert({ message: "This is currently in read-only mode and requires admin access.", variant: "warning" });
       return;
     }
     const sceneNo = String(scenes.length + 1);
@@ -129,7 +129,7 @@ export function SceneStructurePanel({
       slug_line: `SCENE ${sceneNo}`,
       status: "draft",
     });
-    if (!res.success) setError(res.message || "创建场景失败");
+    if (!res.success) setError(res.message || "Failed to create scene");
     await loadStructure();
   };
 
@@ -139,7 +139,7 @@ export function SceneStructurePanel({
     await client.createSceneBeat(scene.id, {
       scene_id: scene.id,
       order_index: order,
-      beat_summary: `节拍 ${order}`,
+      beat_summary: `Beat ${order}`,
     });
     await loadStructure();
   };
@@ -158,13 +158,13 @@ export function SceneStructurePanel({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="结构化场景 / 镜头"
-        subtitle="同步 scenes / beats / shots"
+        title="Structured Scenes / Shots"
+        subtitle="Sync scenes / beats / shots"
         action={
           <div className="flex gap-2">
             {!canEdit ? (
               <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-[11px] text-gray-500">
-                只读 · 需管理员权限
+                Read-only · Admin access required
               </span>
             ) : null}
             <button
@@ -173,7 +173,7 @@ export function SceneStructurePanel({
               disabled={loading}
               className={operatorButtonClass("secondary")}
             >
-              刷新
+              Refresh
             </button>
             {canEdit ? (
               <button
@@ -182,7 +182,7 @@ export function SceneStructurePanel({
                 disabled={loading}
                 className={operatorButtonClass("primary")}
               >
-                新增场景
+                Add Scene
               </button>
             ) : null}
           </div>
@@ -190,33 +190,33 @@ export function SceneStructurePanel({
       />
       <div className="space-y-3 p-4">
         {error ? <OperatorState title={error} tone="red" /> : null}
-        {loading ? <OperatorState title="加载结构中..." /> : null}
-        {!loading && scenes.length === 0 ? <OperatorState title="暂无结构化场景。" /> : null}
+        {loading ? <OperatorState title="Loading structure..." /> : null}
+        {!loading && scenes.length === 0 ? <OperatorState title="No structured scenes yet." /> : null}
         {scenes.map((scene) => (
           <div key={scene.id} className="rounded-md border border-gray-200 bg-gray-50 p-3">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="text-sm font-medium text-gray-950">
-                  场景 {scene.scene_number} · {scene.slug_line || "未命名"}
+                  Scene {scene.scene_number} · {scene.slug_line || "Untitled"}
                 </div>
                 <div className="mt-1 text-xs text-gray-500">
-                  {scene.location || "未设地点"} · {scene.time_of_day || "未设时间"}
+                  {scene.location || "Location not set"} · {scene.time_of_day || "Time not set"}
                 </div>
               </div>
               {canEdit ? (
                 <div className="flex gap-2">
                   <button type="button" onClick={() => void addBeat(scene)} className={operatorButtonClass("secondary")}>
-                    + 节拍
+                    + Beat
                   </button>
                   <button type="button" onClick={() => void addShot(scene)} className={operatorButtonClass("secondary")}>
-                    + 镜头
+                    + Shot
                   </button>
                 </div>
               ) : null}
             </div>
             <div className="mt-3 grid gap-2 md:grid-cols-2">
-              <NodeList title={`节拍 (${scene.beats.length})`} items={scene.beats.map((beat) => `#${beat.order_index} ${beat.beat_summary || ""}`)} />
-              <NodeList title={`镜头 (${scene.shots.length})`} items={scene.shots.map((shot) => `${shot.shot_number} ${shot.shot_type || ""}`)} />
+              <NodeList title={`Beats (${scene.beats.length})`} items={scene.beats.map((beat) => `#${beat.order_index} ${beat.beat_summary || ""}`)} />
+              <NodeList title={`Shots (${scene.shots.length})`} items={scene.shots.map((shot) => `${shot.shot_number} ${shot.shot_type || ""}`)} />
             </div>
           </div>
         ))}
@@ -237,7 +237,7 @@ function NodeList({ title, items }: { title: string; items: string[] }) {
             </div>
           ))
         ) : (
-          <div className="text-xs text-gray-400">暂无数据</div>
+          <div className="text-xs text-gray-400">No data yet</div>
         )}
       </div>
     </div>

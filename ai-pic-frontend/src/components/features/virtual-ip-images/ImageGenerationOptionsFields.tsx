@@ -26,7 +26,7 @@ export function ImageGenerationOptionsFields({
     <>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          图片类别
+          Image category
         </label>
         <select
           value={generateForm.category}
@@ -35,17 +35,17 @@ export function ImageGenerationOptionsFields({
           }
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="portrait">肖像</option>
-          <option value="full_body">全身</option>
-          <option value="scene">场景</option>
-          <option value="action">动作</option>
-          <option value="emotion">情绪</option>
+          <option value="portrait">Portrait</option>
+          <option value="full_body">Full body</option>
+          <option value="scene">Scene</option>
+          <option value="action">Action</option>
+          <option value="emotion">Emotion</option>
         </select>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          生成数量
+          Number to generate
         </label>
         <select
           value={generateForm.count ?? 1}
@@ -63,18 +63,18 @@ export function ImageGenerationOptionsFields({
         >
           {countOptions.map((value) => (
             <option key={value} value={value}>
-              {value} 张
+              {value}
             </option>
           ))}
         </select>
         <p className="mt-1 text-xs text-gray-500">
-          一次最多 {effectiveMaxCount} 张，部分模型会返回多张候选图片。
+          Up to {effectiveMaxCount} at a time; some models return multiple candidate images.
         </p>
       </div>
 
       <div className="md:col-span-3">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          补充提示词（可选，逗号分隔）
+          Additional prompts (optional, comma-separated)
         </label>
         <input
           type="text"
@@ -85,7 +85,7 @@ export function ImageGenerationOptionsFields({
               additional_prompts: e.target.value,
             }))
           }
-          placeholder="例如：微笑、晴天、户外"
+          placeholder="e.g., smiling, sunny day, outdoors"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -103,7 +103,7 @@ export function ImageGenerationOptionsFields({
             }
             className="mr-2"
           />
-          <span className="text-sm text-gray-700">设为默认图片</span>
+          <span className="text-sm text-gray-700">Set as default image</span>
         </label>
       </div>
     </>

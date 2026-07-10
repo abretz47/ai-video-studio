@@ -20,23 +20,23 @@ export function WorkflowSteps({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="生产入口"
-        subtitle="文本、结构和分镜入口统一归档"
+        title="Production entry points"
+        subtitle="Text, structure, and storyboard entry points are organized in one place"
       />
       <div className="grid gap-3 p-4 md:grid-cols-3">
         <StepCard
-          label="场景文本详情"
-          detail="浏览对白与舞台指令。"
+          label="Scene text details"
+          detail="Review dialogue and stage directions."
           onClick={onGoToSceneDetails}
         />
         <StepCard
-          label="结构化场景 / 镜头"
-          detail="调整节拍与镜头顺序。"
+          label="Structured scenes / shots"
+          detail="Adjust pacing and shot order."
           onClick={onGoToSceneStructure}
         />
         <StepCard
-          label="时间轴主链"
-          detail="从时间轴进入分镜辅助与素材替换。"
+          label="Main timeline"
+          detail="Enter storyboard assist and asset replacement from the timeline."
           onClick={onGoToTimelineSupport}
         />
       </div>
@@ -62,7 +62,7 @@ function StepCard({
         onClick={onClick}
         className={operatorButtonClass("secondary", "mt-3")}
       >
-        打开
+        Open
       </button>
     </div>
   );

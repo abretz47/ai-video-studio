@@ -71,11 +71,11 @@ export function useScriptDetail({
       if (scriptRes.success && scriptRes.data) {
         setScript(scriptRes.data);
       } else {
-        showAlert({ message: "加载剧本失败", variant: "error" });
+        showAlert({ message: "Failed to load script", variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "加载数据失败", variant: "error" });
+      showAlert({ message: "Failed to load data", variant: "error" });
     } finally {
       setLoading(false);
     }
@@ -117,7 +117,7 @@ export function useScriptDetail({
       location: scene.location,
       time: scene.time_of_day,
       description:
-        scene.slug_line || scene.status || `场景 ${scene.scene_number}`,
+        scene.slug_line || scene.status || `Scene ${scene.scene_number}`,
     }));
   }, [structuredScenes]);
 
@@ -213,15 +213,15 @@ export function useScriptDetail({
       const response = await scriptAPI.exportScript(scriptIdentifier, format);
       if (response.success) {
         showAlert({
-          message: `剧本已导出为 ${format.toUpperCase()}`,
+          message: `Script exported as ${format.toUpperCase()}`,
           variant: "success",
         });
       } else {
-        showAlert({ message: "导出失败", variant: "error" });
+        showAlert({ message: "Export failed", variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "导出失败", variant: "error" });
+      showAlert({ message: "Export failed", variant: "error" });
     } finally {
       setShowExportMenu(false);
     }

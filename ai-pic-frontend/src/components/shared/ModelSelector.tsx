@@ -30,7 +30,7 @@ export function ModelSelector({
   label,
   helperText,
   allowAuto = true,
-  autoLabel = "自动（推荐）",
+  autoLabel = "Auto (recommended)",
   modelType = "text",
   fetcher,
   cacheKey,
@@ -64,7 +64,7 @@ export function ModelSelector({
   }, [autoSelectDefault, defaultModel, onChange, value]);
 
   const filtered = filterModels ? models.filter(filterModels) : models;
-  // 若过滤后为空，回退到原始列表，避免 UI 出现空下拉
+  // If filtering returns no models, fall back to the original list to avoid an empty dropdown.
   const visibleModels = filtered.length > 0 ? filtered : models;
   const providers = useMemo(() => {
     const ps = new Set<string>();
@@ -75,7 +75,7 @@ export function ModelSelector({
   }, [visibleModels]);
 
   useEffect(() => {
-    // 当 models 或默认值变化时，推断当前 provider
+    // Infer the current provider when models or the default value change.
     if (providers.length === 0) return;
     const valueProvider = value ? value.split(":")[0] : "";
     const defaultProvider = defaultModel ? defaultModel.split(":")[0] : "";
@@ -106,7 +106,7 @@ export function ModelSelector({
           onChange={(event) => {
             const next = event.target.value;
             setProvider(next);
-            // 如果当前模型不属于新 provider，清空选择以防展示溢出
+            // Clear the selection if the current model does not belong to the new provider.
             if (next !== "all" && value && !value.startsWith(`${next}:`)) {
               onChange("");
             }
@@ -114,7 +114,7 @@ export function ModelSelector({
           disabled={disabled || loading || providers.length === 0}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">全部提供商</option>
+          <option value="all">All providers</option>
           {providers.map((p) => (
             <option key={p} value={p}>
               {p}
@@ -138,7 +138,7 @@ export function ModelSelector({
       </div>
       <div className="mt-1 text-xs text-gray-500 space-y-1">
         {helperText ? <p>{helperText}</p> : null}
-        {loading ? <p>模型加载中...</p> : null}
+        {loading ? <p>Loading models...</p> : null}
         {error ? (
           <button
             type="button"
@@ -147,7 +147,7 @@ export function ModelSelector({
             }}
             className="text-red-600 hover:underline"
           >
-            模型加载失败，点击重试
+            Failed to load models. Click to retry.
           </button>
         ) : null}
       </div>

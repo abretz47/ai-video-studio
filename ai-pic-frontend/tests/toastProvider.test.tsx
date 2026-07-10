@@ -66,12 +66,12 @@ describe("toast provider", () => {
 
   it("renders success toasts as status and errors as alert", async () => {
     const { utils, notify } = renderToastHarness();
-    notify("剧本生成任务已提交", "success");
-    notify("生成失败：余额不足", "error");
+    notify("Script generation task submitted", "success");
+    notify("Generation failed: insufficient balance", "error");
 
     await waitFor(() => {
-      assert.ok(utils.getByText("剧本生成任务已提交"));
-      assert.ok(utils.getByText("生成失败：余额不足"));
+      assert.ok(utils.getByText("Script generation task submitted"));
+      assert.ok(utils.getByText("Generation failed: insufficient balance"));
     });
     const statuses = utils.getAllByRole("status");
     const alerts = utils.getAllByRole("alert");
@@ -81,38 +81,38 @@ describe("toast provider", () => {
 
   it("auto-dismisses after the configured duration", async () => {
     const { utils, notify } = renderToastHarness();
-    notify("短暂提示", "info", { durationMs: 30 });
-    await waitFor(() => assert.ok(utils.getByText("短暂提示")));
-    await waitFor(() => assert.equal(utils.queryByText("短暂提示"), null), {
+    notify("Short-lived notice", "info", { durationMs: 30 });
+    await waitFor(() => assert.ok(utils.getByText("Short-lived notice")));
+    await waitFor(() => assert.equal(utils.queryByText("Short-lived notice"), null), {
       timeout: 2000,
     });
   });
 
   it("dismisses on manual close", async () => {
     const { utils, notify } = renderToastHarness();
-    notify("手动关闭我", "warning", { durationMs: 60000 });
-    await waitFor(() => assert.ok(utils.getByText("手动关闭我")));
-    fireEvent.click(utils.getByLabelText("关闭通知"));
-    await waitFor(() => assert.equal(utils.queryByText("手动关闭我"), null));
+    notify("Close me manually", "warning", { durationMs: 60000 });
+    await waitFor(() => assert.ok(utils.getByText("Close me manually")));
+    fireEvent.click(utils.getByLabelText("Close notification"));
+    await waitFor(() => assert.equal(utils.queryByText("Close me manually"), null));
   });
 
   it("caps the visible stack at five toasts", async () => {
     const { utils, notify } = renderToastHarness();
     for (let index = 1; index <= 7; index++) {
-      notify(`提示 ${index}`, "info", { durationMs: 60000 });
+      notify(`Notice ${index}`, "info", { durationMs: 60000 });
     }
-    await waitFor(() => assert.ok(utils.getByText("提示 7")));
+    await waitFor(() => assert.ok(utils.getByText("Notice 7")));
     assert.equal(utils.getAllByRole("status").length, 5);
-    assert.equal(utils.queryByText("提示 1"), null);
-    assert.equal(utils.queryByText("提示 2"), null);
+    assert.equal(utils.queryByText("Notice 1"), null);
+    assert.equal(utils.queryByText("Notice 2"), null);
   });
 
   it("renders an optional title", async () => {
     const { utils, notify } = renderToastHarness();
-    notify("成片已就绪", "success", { title: "渲染完成", durationMs: 60000 });
+    notify("Final cut is ready", "success", { title: "Render complete", durationMs: 60000 });
     await waitFor(() => {
-      assert.ok(utils.getByText("渲染完成"));
-      assert.ok(utils.getByText("成片已就绪"));
+      assert.ok(utils.getByText("Render complete"));
+      assert.ok(utils.getByText("Final cut is ready"));
     });
   });
 });

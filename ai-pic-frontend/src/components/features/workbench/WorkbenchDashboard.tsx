@@ -31,11 +31,11 @@ const formatDateTime = (value: string) =>
   });
 
 const taskStatusLabel = (status: string) => {
-  if (status === "processing") return "生成中";
-  if (status === "pending") return "排队中";
-  if (status === "completed") return "已完成";
-  if (status === "failed") return "失败";
-  if (status === "cancelled") return "已取消";
+  if (status === "processing") return "Generating";
+  if (status === "pending") return "Queued";
+  if (status === "completed") return "Completed";
+  if (status === "failed") return "Failed";
+  if (status === "cancelled") return "Cancelled";
   return status;
 };
 
@@ -53,12 +53,12 @@ export function WorkbenchDashboard() {
 
   return (
     <OperatorShell
-      title="IP 生产工作台"
-      subtitle="以 IP 为中心继续故事、剧集和任务"
-      breadcrumb={["IP 中心", "生产工作台"]}
+      title="IP Production Workbench"
+      subtitle="Continue stories, episodes, and tasks around each IP"
+      breadcrumb={["IP Center", "Production Workbench"]}
     >
       {loading ? (
-        <OperatorState title="加载工作台数据..." />
+        <OperatorState title="Loading workbench data..." />
       ) : error ? (
         <OperatorState
           title={error}
@@ -69,7 +69,7 @@ export function WorkbenchDashboard() {
               onClick={() => void refresh()}
               className={operatorButtonClass("danger")}
             >
-              重试
+              Retry
             </button>
           }
         />
@@ -82,24 +82,24 @@ export function WorkbenchDashboard() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="min-w-0">
                   <h2 className="text-sm font-semibold text-gray-950">
-                    IP / 环境生产状态
+                    IP / Environment Production Status
                   </h2>
                   <p className="mt-1 text-xs text-gray-500">
-                    当前生产围绕 IP、故事、剧集和环境资产推进；新内容优先从 IP 项目进入。
+                    Current production moves forward around IPs, stories, episodes, and environment assets; new content should start from an IP project first.
                   </p>
                 </div>
                 <Link href="/virtual-ip" className={operatorButtonClass("primary")}>
-                  进入 IP 项目
+                  Open IP Project
                 </Link>
               </div>
             </OperatorPanel>
 
             <div className="grid gap-3 md:grid-cols-4">
-              <MetricCard label="今日待处理" value={summary.metrics.pending_tasks} />
-              <MetricCard label="生成中" value={summary.metrics.running_tasks} />
-              <MetricCard label="失败任务" value={summary.metrics.failed_tasks} tone="red" />
+              <MetricCard label="Pending Today" value={summary.metrics.pending_tasks} />
+              <MetricCard label="Generating" value={summary.metrics.running_tasks} />
+              <MetricCard label="Failed Tasks" value={summary.metrics.failed_tasks} tone="red" />
               <MetricCard
-                label="可继续生产"
+                label="Ready to Continue"
                 value={summary.metrics.continuable_episodes}
                 tone="green"
               />
@@ -107,11 +107,11 @@ export function WorkbenchDashboard() {
 
             <OperatorPanel>
               <OperatorSectionHeader
-                title="继续制作"
-                subtitle="从现有内容继续推进到剧集时间轴"
+                title="Continue Production"
+                subtitle="Move forward from existing content to the episode timeline"
                 action={
                   <Link href="/stories" className={operatorButtonClass("secondary")}>
-                    查看全部
+                    View All
                   </Link>
                 }
               />
@@ -120,14 +120,14 @@ export function WorkbenchDashboard() {
                   <thead className={operatorTableHeadClass}>
                     <tr>
                       <th className="w-[280px] px-5 py-3 text-left font-medium">
-                        IP / 故事 / 剧集
+                        IP / Story / Episode
                       </th>
-                      <th className="px-4 py-3 text-left font-medium">当前阶段</th>
-                      <th className="px-4 py-3 text-left font-medium">剧本</th>
-                      <th className="px-4 py-3 text-left font-medium">时间轴</th>
-                      <th className="px-4 py-3 text-left font-medium">分镜</th>
-                      <th className="px-4 py-3 text-left font-medium">最后更新</th>
-                      <th className="px-5 py-3 text-right font-medium">操作</th>
+                      <th className="px-4 py-3 text-left font-medium">Current Stage</th>
+                      <th className="px-4 py-3 text-left font-medium">Script</th>
+                      <th className="px-4 py-3 text-left font-medium">Timeline</th>
+                      <th className="px-4 py-3 text-left font-medium">Storyboard</th>
+                      <th className="px-4 py-3 text-left font-medium">Last Updated</th>
+                      <th className="px-5 py-3 text-right font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -141,7 +141,7 @@ export function WorkbenchDashboard() {
                             {episode.story_title}
                           </div>
                           <div className="mt-1 text-xs text-gray-500">
-                            第{episode.episode_number}集 · {episode.episode_title}
+                            Episode {episode.episode_number} · {episode.episode_title}
                           </div>
                         </td>
                         <td className="px-4 py-4">
@@ -163,7 +163,7 @@ export function WorkbenchDashboard() {
                             })}
                             className={operatorButtonClass("primary", "whitespace-nowrap")}
                           >
-                            进入时间轴
+                            Open Timeline
                           </Link>
                         </td>
                       </tr>
@@ -175,13 +175,13 @@ export function WorkbenchDashboard() {
             </OperatorMainCanvas>
           }
           inspector={
-            <OperatorInspector title="任务与审计">
+            <OperatorInspector title="Tasks & Audit">
               <div className="space-y-5">
                 <div>
                   <div className="mb-3 flex items-center justify-between gap-3">
-                    <h2 className="text-sm font-semibold text-gray-950">任务队列</h2>
+                    <h2 className="text-sm font-semibold text-gray-950">Task Queue</h2>
                     <Link href="/tasks" className={operatorButtonClass("ghost")}>
-                      查看全部
+                      View All
                     </Link>
                   </div>
                   <div className="space-y-4">
@@ -205,7 +205,7 @@ export function WorkbenchDashboard() {
                       <span>{task.progress}%</span>
                       {task.status === "failed" ? (
                         <Link href="/tasks" className="font-medium text-red-600">
-                          重试
+                          Retry
                         </Link>
                       ) : (
                         <span>{formatDateTime(task.updated_at)}</span>
@@ -217,12 +217,12 @@ export function WorkbenchDashboard() {
                 </div>
 
                 <div className="border-t border-gray-200 pt-4">
-                  <h2 className="text-sm font-semibold">运行审计</h2>
+                  <h2 className="text-sm font-semibold">Run Audit</h2>
                   <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-gray-600">
-                    <AuditItem label="脚本校验" value="通过" />
-                    <AuditItem label="分镜校验" value="通过" />
-                    <AuditItem label="时长校验" value="待复核" tone="amber" />
-                    <AuditItem label="敏感内容" value="通过" />
+                    <AuditItem label="Script Check" value="Passed" />
+                    <AuditItem label="Storyboard Check" value="Passed" />
+                    <AuditItem label="Duration Check" value="Pending Review" tone="amber" />
+                    <AuditItem label="Sensitive Content" value="Passed" />
                   </div>
                 </div>
               </div>

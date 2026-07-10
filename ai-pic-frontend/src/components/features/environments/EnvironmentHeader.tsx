@@ -41,7 +41,7 @@ export function EnvironmentHeader({
         <div className="space-y-3">
           <div>
             <h1 className="text-lg font-semibold text-gray-950">{env.name}</h1>
-            <p className="mt-0.5 text-xs text-gray-500">环境详情</p>
+            <p className="mt-0.5 text-xs text-gray-500">Environment Details</p>
           </div>
 
           {!editing ? (
@@ -62,7 +62,7 @@ export function EnvironmentHeader({
               {env.description ? (
                 <CollapsibleText text={env.description} collapsedLines={3} />
               ) : (
-                <p className="text-sm text-gray-400">暂无描述</p>
+                <p className="text-sm text-gray-400">No description yet</p>
               )}
             </>
           ) : null}
@@ -73,20 +73,20 @@ export function EnvironmentHeader({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
-                  类别
+                  Category
                 </label>
                 <input
                   value={form.category}
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, category: e.target.value }))
                   }
-                  placeholder="例如 indoor / outdoor / custom"
+                  placeholder="e.g. indoor / outdoor / custom"
                   className={operatorInputClass("w-full")}
                 />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
-                  标签
+                  Tags
                 </label>
                 <div className="mb-2 flex flex-wrap gap-2">
                   {form.tags.map((tag) => (
@@ -108,7 +108,7 @@ export function EnvironmentHeader({
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="输入标签"
+                    placeholder="Enter a tag"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -129,7 +129,7 @@ export function EnvironmentHeader({
                     }}
                     className={operatorButtonClass("secondary")}
                   >
-                    添加
+                    Add
                   </button>
                 </div>
               </div>
@@ -137,7 +137,7 @@ export function EnvironmentHeader({
 
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-700">
-                描述
+                Description
               </label>
               <textarea
                 value={form.description}
@@ -145,7 +145,7 @@ export function EnvironmentHeader({
                   setForm((prev) => ({ ...prev, description: e.target.value }))
                 }
                 rows={4}
-                placeholder="填写环境描述或使用场景"
+                placeholder="Describe the environment or its usage scenarios"
                 className={operatorInputClass(
                   "h-auto min-h-24 w-full py-2 text-sm",
                 )}
@@ -158,20 +158,20 @@ export function EnvironmentHeader({
       <div className="bg-gray-50/70 p-4">
         <div className="grid grid-cols-1 gap-3 text-xs text-gray-600 sm:grid-cols-2">
           <div>
-            <span className="font-medium">类别：</span>
-            {categoryValue || "未指定"}
+            <span className="font-medium">Category:</span>
+            {categoryValue || "Not specified"}
           </div>
           <div>
-            <span className="font-medium">创建者：</span>
+            <span className="font-medium">Created by:</span>
             {resolveCreatorLabel(env.creator)}
           </div>
           <div>
-            <span className="font-medium">创建时间：</span>
+            <span className="font-medium">Created at:</span>
             {new Date(env.created_at).toLocaleString()}
           </div>
           {env.updated_at && (
             <div>
-              <span className="font-medium">更新时间：</span>
+              <span className="font-medium">Updated at:</span>
               {new Date(env.updated_at).toLocaleString()}
             </div>
           )}

@@ -79,7 +79,7 @@ export function useEpisodeWorkspaceRegenerateScript(args: {
         !Array.isArray(scriptsRes.data) ||
         scriptsRes.data.length === 0
       ) {
-        showAlert({ message: "加载最新剧本列表失败", variant: "warning" });
+        showAlert({ message: "Failed to load the latest script list", variant: "warning" });
         return;
       }
       const ordered = sortScriptsNewestFirst(scriptsRes.data);
@@ -93,7 +93,7 @@ export function useEpisodeWorkspaceRegenerateScript(args: {
         null;
       if (!picked) {
         showAlert({
-          message: "新剧本已生成，但暂未出现在列表中，请稍后刷新",
+          message: "A new script was generated, but it is not in the list yet. Please refresh shortly.",
           variant: "info",
         });
         return;
@@ -103,7 +103,7 @@ export function useEpisodeWorkspaceRegenerateScript(args: {
         ? ` [${picked.business_id.slice(0, 8)}...]`
         : "";
       notify?.(
-        `已生成新剧本（v${picked.version} / ID: ${picked.id}${bizIdHint}）`,
+        `Generated new script (v${picked.version} / ID: ${picked.id}${bizIdHint})`,
         "success",
       );
     },
@@ -118,7 +118,7 @@ export function useEpisodeWorkspaceRegenerateScript(args: {
   );
 
   const tracker = useGenerationTaskTracker<"regenerate">({
-    labels: { regenerate: "剧本新版本" },
+    labels: { regenerate: "New Script Version" },
     onCompleted: handleCompleted,
     onFailed: () => clearPendingRegenerate(),
     onNotify: notify,
@@ -128,7 +128,7 @@ export function useEpisodeWorkspaceRegenerateScript(args: {
   const handleRegenerateScript = useCallback(
     async (model?: string) => {
       if (!regenerateScriptId) {
-        showAlert({ message: "没有可重新生成的剧本", variant: "warning" });
+        showAlert({ message: "No script available to regenerate", variant: "warning" });
         return;
       }
       try {
@@ -146,19 +146,19 @@ export function useEpisodeWorkspaceRegenerateScript(args: {
             createdAtMs: Date.now(),
           });
           notify?.(
-            `剧本重新生成任务已提交 #${res.data.task_id}，完成后自动选中新版本`,
+            `Script regeneration task #${res.data.task_id} has been submitted and will auto-select the new version when complete`,
             "info",
           );
           tracker.track("regenerate", res.data.task_id);
         } else {
           showAlert({
-            message: `剧本重新生成失败：${res.error || "未知错误"}`,
+            message: `Script regeneration failed: ${res.error || "Unknown error"}`,
             variant: "error",
           });
         }
       } catch (error) {
         console.error("Failed to regenerate script:", error);
-        showAlert({ message: "剧本重新生成失败", variant: "error" });
+        showAlert({ message: "Script regeneration failed", variant: "error" });
       } finally {
         setSubmitting(false);
       }

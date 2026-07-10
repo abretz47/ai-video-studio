@@ -34,12 +34,12 @@ export function WorkspaceStoryboardActions({
 
   const handleSyncAudioTimelineStoryboard = async () => {
     if (!selectedScriptId) {
-      showAlert?.({ message: "请先选择一个剧本", variant: "warning" });
+      showAlert?.({ message: "Please select a script first", variant: "warning" });
       return;
     }
     if (!selectedAudioTimeline) {
       showAlert?.({
-        message: "请先生成时间轴，再同步分镜占位",
+        message: "Please generate a timeline before syncing storyboard placeholders",
         variant: "warning",
       });
       return;
@@ -56,21 +56,21 @@ export function WorkspaceStoryboardActions({
       );
       if (!res.success || !res.data) {
         showAlert?.({
-          message: res.error || "分镜占位任务提交失败",
+          message: res.error || "Failed to submit the storyboard placeholder task",
           variant: "error",
         });
         return;
       }
       showAlert?.({
-        message: `分镜占位任务已提交 #${res.data.task_id}`,
+        message: `Storyboard placeholder task submitted #${res.data.task_id}`,
         variant: "success",
       });
     } catch (error) {
       showAlert?.({
         message:
           error instanceof Error
-            ? `分镜占位任务提交失败：${error.message}`
-            : "分镜占位任务提交失败",
+            ? `Failed to submit the storyboard placeholder task: ${error.message}`
+            : "Failed to submit the storyboard placeholder task",
         variant: "error",
       });
     } finally {
@@ -85,7 +85,7 @@ export function WorkspaceStoryboardActions({
           href={clipStoryboardHref}
           className={operatorButtonClass("secondary")}
         >
-          进入第一个片段分镜
+          Open First Clip Storyboard
         </Link>
       ) : null}
       {showAudioStoryboardSync ? (
@@ -97,12 +97,12 @@ export function WorkspaceStoryboardActions({
           )}
           onClick={handleSyncAudioTimelineStoryboard}
         >
-          {syncingAudioStoryboard ? "提交中..." : "同步分镜占位"}
+          {syncingAudioStoryboard ? "Submitting..." : "Sync Storyboard Placeholders"}
         </button>
       ) : null}
       {!clipStoryboardHref ? (
         <Link href={timelineHref} className={operatorButtonClass("secondary")}>
-          进入时间轴
+          Open Timeline
         </Link>
       ) : null}
     </div>

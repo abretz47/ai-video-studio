@@ -23,7 +23,7 @@ const link = (id: number, environmentId: number): VirtualIPEnvironmentLink => ({
   usage_type: "scene_pool",
   sort_order: 0,
   is_default: false,
-  environment: env(environmentId, `环境 ${environmentId}`),
+  environment: env(environmentId, `Environment ${environmentId}`),
   created_at: "2026-05-07T00:00:00Z",
 });
 

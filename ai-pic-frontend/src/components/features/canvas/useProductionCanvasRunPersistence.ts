@@ -44,13 +44,13 @@ export function useProductionCanvasRunPersistence({
       mode: "manual" | "auto",
     ) => {
       if (busy) {
-        setStatus("保存中");
+        setStatus("Saving");
         return;
       }
       const signature = stateSignature(targetRunId, state);
       if (mode === "auto" && signature === lastSavedSignature.current) return;
       setBusy(true);
-      setStatus(mode === "auto" ? "自动保存中" : "保存中");
+      setStatus(mode === "auto" ? "Auto-saving" : "Saving");
       try {
         const savedState = toProductionCanvasSavedState(state);
         const response = await productionCanvasAPI.saveRunState(
@@ -58,13 +58,13 @@ export function useProductionCanvasRunPersistence({
           savedState,
         );
         if (!response.success || !response.data) {
-          setStatus(response.error || "保存失败");
+          setStatus(response.error || "Save failed");
           return;
         }
         const nextRunId = response.data.run_id || targetRunId;
         lastSavedSignature.current = stateSignature(nextRunId, state);
         setRunId(nextRunId);
-        setStatus(mode === "auto" ? "已自动保存" : "已保存");
+        setStatus(mode === "auto" ? "Auto-saved" : "Saved");
       } catch (err) {
         setStatus(err instanceof Error ? err.message : String(err));
       } finally {
@@ -77,7 +77,7 @@ export function useProductionCanvasRunPersistence({
   const saveCanvas = async () => {
     const targetRunId = resolvedRunId();
     if (!targetRunId) {
-      setStatus("缺少 Run ID");
+      setStatus("Missing Run ID");
       return;
     }
     await saveCanvasState(targetRunId, canvasState, "manual");
@@ -107,15 +107,15 @@ export function useProductionCanvasRunPersistence({
   const restoreCanvas = async () => {
     const targetRunId = resolvedRunId();
     if (!targetRunId || busy) {
-      setStatus("缺少 Run ID");
+      setStatus("Missing Run ID");
       return;
     }
     setBusy(true);
-    setStatus("恢复中");
+    setStatus("Restoring");
     try {
       const response = await productionCanvasAPI.getRun(targetRunId);
       if (!response.success || !response.data) {
-        setStatus(response.error || "恢复失败");
+        setStatus(response.error || "Restore failed");
         return;
       }
       const restoredState = productionCanvasStateFromRun(response.data);
@@ -123,7 +123,7 @@ export function useProductionCanvasRunPersistence({
       replaceCanvasState(restoredState);
       lastSavedSignature.current = stateSignature(nextRunId, restoredState);
       setRunId(nextRunId);
-      setStatus("已恢复");
+      setStatus("Restored");
     } catch (err) {
       setStatus(err instanceof Error ? err.message : String(err));
     } finally {

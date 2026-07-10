@@ -28,27 +28,27 @@ export function EnvironmentList({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="环境列表"
-        subtitle="按 IP 项目复用的场景资产池"
+        title="Environment List"
+        subtitle="A scene asset library reused across IP projects"
         action={
           <button
             type="button"
             onClick={onRefresh}
             className={operatorButtonClass("secondary")}
           >
-            刷新
+            Refresh
           </button>
         }
       />
       {loading ? (
         <div className="p-4">
-          <OperatorState title="加载环境资产..." />
+          <OperatorState title="Loading environment assets..." />
         </div>
       ) : list.length === 0 ? (
         <div className="p-4">
           <OperatorState
-            title="暂无环境资产"
-            detail="创建后可在详情内管理图片。"
+            title="No environment assets yet"
+            detail="After creating one, you can manage its images in the detail view."
           />
         </div>
       ) : (
@@ -70,8 +70,8 @@ export function EnvironmentList({
                 </div>
                 <StatusPill tone={(env.linked_virtual_ip_count || 0) > 0 ? "green" : "amber"}>
                   {(env.linked_virtual_ip_count || 0) > 0
-                    ? `已接入 ${env.linked_virtual_ip_count} IP`
-                    : "未关联 IP"}
+                    ? `Linked to ${env.linked_virtual_ip_count} IPs`
+                    : "No IP linked"}
                 </StatusPill>
                 <div className="flex gap-2">
                   <button
@@ -82,20 +82,20 @@ export function EnvironmentList({
                       "whitespace-nowrap",
                     )}
                   >
-                    管理图片
+                    Manage Images
                   </button>
                   <button
                     type="button"
                     onClick={() => onDelete(env)}
                     className="h-8 rounded-md px-2 text-xs font-medium text-red-600 hover:bg-red-50 whitespace-nowrap"
                   >
-                    删除
+                    Delete
                   </button>
                 </div>
               </div>
 
               <div className="mt-3 text-xs text-gray-500">
-                类别：{env.category || "未指定"}
+                Category: {env.category || "Not specified"}
               </div>
               {env.tags && env.tags.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">

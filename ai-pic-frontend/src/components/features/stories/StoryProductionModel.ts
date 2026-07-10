@@ -41,7 +41,7 @@ export function storyDisplayText(...values: Array<string | null | undefined>) {
     const cleaned = unwrapStoryJson(value);
     if (cleaned) return cleaned;
   }
-  return "暂无概要";
+  return "No synopsis available";
 }
 
 function unwrapStoryJson(value: string | null | undefined) {

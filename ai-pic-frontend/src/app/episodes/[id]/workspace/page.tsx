@@ -113,7 +113,7 @@ function EpisodeWorkspacePageContent() {
   if (loading || (timelineSpecLoading && initialTab === "timeline")) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f5f6f8]">
-        <OperatorState title="加载剧集工作台..." />
+        <OperatorState title="Loading episode workspace..." />
       </div>
     );
   }
@@ -121,14 +121,14 @@ function EpisodeWorkspacePageContent() {
   if (!loading && !episode) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f5f6f8]">
-        <OperatorState title="剧集不存在" tone="red" />
+        <OperatorState title="Episode not found" tone="red" />
       </div>
     );
   }
 
   return (
     <OperatorShell
-      breadcrumb={["IP 中心", "故事生产", `第${episode!.episode_number}集`]}
+      breadcrumb={["IP Center", "Story Production", `Episode ${episode!.episode_number}`]}
       compactNavigation
       showGlobalSearch={false}
     >

@@ -40,15 +40,15 @@ describe("ProductionCanvasPersistence", () => {
                 {
                   id: "skill-brief",
                   label: "Brief Skill",
-                  title: "服务端已生成 brief 节点",
+                  title: "Server-generated brief node",
                   status: "review",
                   x: 180,
                   y: 320,
                   width: 220,
                   kind: "skill_result",
                   skill: "brief.compose",
-                  detail: "用于测试服务端状态保存。",
-                  outputs: { prompt: "做一版短剧生产画布" },
+                  detail: "Used to test server-side state persistence.",
+                  outputs: { prompt: "Create a short drama production canvas" },
                 },
               ],
               selected_assets: { virtual_ips: [], environments: [] },
@@ -90,7 +90,7 @@ describe("ProductionCanvasPersistence", () => {
                   {
                     id: "skill-brief",
                     label: "Brief Skill",
-                    title: "服务端 brief",
+                    title: "Server brief",
                     status: "review",
                     x: 120,
                     y: 160,
@@ -100,14 +100,14 @@ describe("ProductionCanvasPersistence", () => {
                   },
                   {
                     id: "note-1",
-                    label: "便签",
-                    title: "服务端备注",
+                    label: "Note",
+                    title: "Server note",
                     status: "review",
                     x: 320,
                     y: 260,
                     width: 190,
                     kind: "note",
-                    detail: "从服务端恢复",
+                    detail: "Restored from server",
                   },
                 ],
                 viewport: { x: 12, y: 34, zoom: 0.8 },
@@ -126,26 +126,26 @@ describe("ProductionCanvasPersistence", () => {
       const utils = render(<ProductionCanvasContent storageKey={null} />, {
         container: dom.window.document.body,
       });
-      fireEvent.input(utils.getByLabelText("生产目标"), {
-        target: { value: "做一版短剧生产画布" },
+      fireEvent.input(utils.getByLabelText("Production goal"), {
+        target: { value: "Create a short drama production canvas" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create all" }));
 
       await waitFor(() => {
         const input = utils.getByLabelText("Run ID") as HTMLInputElement;
         assert.equal(input.value, "canvas-run-123");
       });
 
-      fireEvent.click(utils.getByRole("button", { name: "保存画布" }));
+      fireEvent.click(utils.getByRole("button", { name: "Save canvas" }));
       await waitFor(() => assert.equal(savedBodies.length, 1));
       assert.equal(savedBodies[0]?.selected_node_id, "skill-brief");
       assert.ok(Array.isArray(savedBodies[0]?.nodes));
       assert.ok(Array.isArray(savedBodies[0]?.edges));
-      await waitFor(() => assert.ok(utils.getByText("已保存")));
+      await waitFor(() => assert.ok(utils.getByText("Saved")));
 
-      fireEvent.click(utils.getByRole("button", { name: "恢复画布" }));
+      fireEvent.click(utils.getByRole("button", { name: "Restore canvas" }));
 
-      await waitFor(() => assert.ok(utils.getAllByText("服务端备注").length));
+      await waitFor(() => assert.ok(utils.getAllByText("Server note").length));
       assert.ok(
         utils.container.querySelector("[data-canvas-edge='note-1-skill-brief']"),
       );
@@ -174,14 +174,14 @@ describe("ProductionCanvasPersistence", () => {
                 {
                   id: "skill-brief",
                   label: "Brief Skill",
-                  title: "自动保存 brief",
+                  title: "Autosave brief",
                   status: "review",
                   x: 180,
                   y: 320,
                   width: 220,
                   kind: "skill_result",
                   skill: "brief.compose",
-                  outputs: { prompt: "自动保存画布" },
+                  outputs: { prompt: "Autosave canvas" },
                 },
               ],
               selected_assets: { virtual_ips: [], environments: [] },
@@ -216,14 +216,14 @@ describe("ProductionCanvasPersistence", () => {
         <ProductionCanvasContent storageKey={null} autosaveDelayMs={5} />,
         { container: dom.window.document.body },
       );
-      fireEvent.input(utils.getByLabelText("生产目标"), {
-        target: { value: "自动保存画布" },
+      fireEvent.input(utils.getByLabelText("Production goal"), {
+        target: { value: "Autosave canvas" },
       });
-      fireEvent.click(utils.getByRole("button", { name: "整体创建" }));
+      fireEvent.click(utils.getByRole("button", { name: "Create all" }));
 
       await waitFor(() => assert.equal(savedBodies.length, 1));
-      fireEvent.click(utils.getByRole("button", { name: "添加便签" }));
-      fireEvent.click(utils.getByRole("button", { name: "添加便签" }));
+      fireEvent.click(utils.getByRole("button", { name: "Add note" }));
+      fireEvent.click(utils.getByRole("button", { name: "Add note" }));
 
       await waitFor(() => {
         assert.equal(savedBodies.length, 2);

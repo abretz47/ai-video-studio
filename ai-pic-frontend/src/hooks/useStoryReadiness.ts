@@ -34,7 +34,7 @@ export function useStoryReadiness({
       if (result.success && result.data) {
         setReadiness(result.data);
       } else {
-        setReadinessError(result.error || "检查失败");
+        setReadinessError(result.error || "Check failed");
       }
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
@@ -57,7 +57,7 @@ export function useStoryReadiness({
         if (result.success && result.data) {
           if (!dryRun) {
             showAlert({
-              message: `已修复 ${result.data.improvement.fixed_count} 项问题`,
+              message: `Fixed ${result.data.improvement.fixed_count} issues`,
               variant: "success",
             });
             // Refresh readiness after applying fixes
@@ -67,7 +67,7 @@ export function useStoryReadiness({
           return result.data;
         } else {
           showAlert({
-            message: `一键补齐失败: ${result.error || "未知错误"}`,
+            message: `Quick fix failed: ${result.error || "Unknown error"}`,
             variant: "error",
           });
           return null;
@@ -75,7 +75,7 @@ export function useStoryReadiness({
       } catch (e) {
         const message = e instanceof Error ? e.message : String(e);
         showAlert({
-          message: `一键补齐失败: ${message}`,
+          message: `Quick fix failed: ${message}`,
           variant: "error",
         });
         return null;

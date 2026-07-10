@@ -38,14 +38,16 @@ export function useVirtualIPImageVariants({
 
   const handleOpenVariant = (image: VirtualIPImage) => {
     setVariantTarget(image);
-    setVariantPrompt("为该角色生成不同角度/姿态，例如背面或全身照");
+    setVariantPrompt(
+      "Generate different angles/poses for this character, such as a back view or full-body shot",
+    );
     setVariantModalOpen(true);
   };
 
   const variantReferenceSections = useMemo(() => {
     if (!variantTarget) return [];
     const url = resolveImageUrl(variantTarget);
-    return url ? [{ title: "参考图", images: [url] }] : [];
+    return url ? [{ title: "Reference Image", images: [url] }] : [];
   }, [variantTarget]);
 
   const handleSubmitVariant = async (payload: {
@@ -69,7 +71,7 @@ export function useVirtualIPImageVariants({
     referenceImages: string[];
   }) => {
     if (!variantTarget || !virtualIPId) {
-      showAlert({ message: "虚拟IP尚未加载", variant: "error" });
+      showAlert({ message: "Virtual IP has not loaded yet", variant: "error" });
       return;
     }
     const modelFallback =
@@ -108,15 +110,15 @@ export function useVirtualIPImageVariants({
         },
       );
       if (!res.success || !res.data) {
-        throw new Error(res.error || "图生图生成失败");
+        throw new Error(res.error || "Image-to-image generation failed");
       }
       onTaskCreated?.(res.data.task_id);
       showAlert({
-        title: "图生图任务已创建",
+        title: "Image-to-image task created",
         message:
-          "任务已在后台运行，完成后会自动刷新图片列表。是否前往任务管理页？",
+          "The task is running in the background. The image list will refresh automatically when it finishes. Go to the task management page?",
         variant: "success",
-        confirmText: "前往任务",
+        confirmText: "Go to Tasks",
         onConfirm: () => router.push("/tasks"),
       });
       setVariantTarget(null);
@@ -125,8 +127,8 @@ export function useVirtualIPImageVariants({
     } catch (error) {
       console.error("Image-to-image generation failed:", error);
       showAlert({
-        message: `图生图生成失败：${
-          error instanceof Error ? error.message : "未知错误"
+        message: `Image-to-image generation failed: ${
+          error instanceof Error ? error.message : "Unknown error"
         }`,
         variant: "error",
       });

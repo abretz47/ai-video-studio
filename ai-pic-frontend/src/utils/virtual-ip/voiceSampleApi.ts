@@ -22,7 +22,7 @@ export async function saveVirtualIPVoiceSample({
   HttpResponse<VirtualIPVoiceSampleResult>
 > {
   if (!businessId && !virtualIpId) {
-    return { success: false, error: "缺少虚拟IP标识" };
+    return { success: false, error: "Missing Virtual IP identifier" };
   }
 
   const endpoint = businessId

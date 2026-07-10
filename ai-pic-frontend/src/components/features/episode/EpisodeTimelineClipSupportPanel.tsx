@@ -146,8 +146,8 @@ function ClipSupportOverflow({
     >
       <summary
         data-clip-support-summary="ghost"
-        aria-label="更多片段支持操作"
-        title="辅助操作"
+        aria-label="More clip support actions"
+        title="Support actions"
         className="inline-flex h-6 w-6 cursor-pointer list-none items-center justify-center rounded border border-transparent bg-transparent text-slate-400 hover:border-slate-200 hover:bg-white hover:text-slate-700 marker:hidden [&::-webkit-details-marker]:hidden"
       >
         <svg
@@ -186,13 +186,13 @@ function ClipSupportLinks({
   const actionClass =
     "rounded px-1.5 py-0.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-950";
   const actions = [
-    { label: "替换片段", onClick: onNavigateToStoryboard, active: !videoReady },
-    { label: "任务", onClick: onNavigateToTasks },
+    { label: "Replace Clip", onClick: onNavigateToStoryboard, active: !videoReady },
+    { label: "Tasks", onClick: onNavigateToTasks },
   ];
   return (
     <div className="flex flex-wrap items-center gap-1">
       <span className="mr-1 text-[11px] font-medium text-gray-500">
-        辅助操作
+        Support actions
       </span>
       {actions.map((action) => (
         <button
@@ -218,14 +218,14 @@ function ClipScriptSupportAction({
       data-clip-script-support="visible"
       className="flex min-h-6 min-w-0 items-center gap-1 text-xs"
     >
-      <span className="text-[11px] font-medium text-gray-500">剧本上下文</span>
+      <span className="text-[11px] font-medium text-gray-500">Script Context</span>
       <button
         type="button"
         data-clip-script-support-action="visible"
         onClick={onNavigateToScript}
         className="rounded px-1.5 py-0.5 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-50 hover:text-blue-800"
       >
-        剧本
+        Script
       </button>
     </div>
   );

@@ -26,10 +26,10 @@ export function useVirtualIPList({ showAlert }: UseVirtualIPListOptions) {
       if (response.success && response.data) {
         setVirtualIPs(response.data);
       } else {
-        console.error("获取虚拟IP列表失败:", response.error);
+        console.error("Failed to fetch Virtual IP list:", response.error);
       }
     } catch (error) {
-      console.error("获取虚拟IP列表出错:", error);
+      console.error("Error fetching Virtual IP list:", error);
     } finally {
       setLoading(false);
     }
@@ -60,13 +60,13 @@ export function useVirtualIPList({ showAlert }: UseVirtualIPListOptions) {
           );
         } else {
           showAlert({
-            message: `删除失败: ${response.error || "未知错误"}`,
+            message: `Deletion failed: ${response.error || "Unknown error"}`,
             variant: "error",
           });
         }
       } catch (error) {
-        console.error("删除虚拟IP出错:", error);
-        showAlert({ message: "删除失败，请重试", variant: "error" });
+        console.error("Error deleting Virtual IP:", error);
+        showAlert({ message: "Deletion failed. Please try again.", variant: "error" });
       }
     },
     [showAlert],
@@ -75,10 +75,10 @@ export function useVirtualIPList({ showAlert }: UseVirtualIPListOptions) {
   const handleDeleteIP = useCallback(
     (bizId: string) => {
       showAlert({
-        title: "确认删除虚拟IP",
-        message: "确定要删除这个虚拟IP吗？",
+        title: "Confirm Virtual IP deletion",
+        message: "Are you sure you want to delete this Virtual IP?",
         variant: "warning",
-        confirmText: "删除",
+        confirmText: "Delete",
         onConfirm: () => {
           void deleteVirtualIPById(bizId);
         },

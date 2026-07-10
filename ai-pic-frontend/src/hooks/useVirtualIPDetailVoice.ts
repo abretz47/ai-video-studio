@@ -56,7 +56,7 @@ export function useVirtualIPDetailVoice({
         return mergeVoiceSettings(prev, defaults, incomingVoice);
       });
       if (!voicePreviewText) {
-        setVoicePreviewText(`你好，我是${virtualIP.name}，很高兴认识你。`);
+        setVoicePreviewText(`Hello, I'm ${virtualIP.name}. Nice to meet you.`);
       }
     },
     [voiceEnums, voicePreviewText],
@@ -68,7 +68,7 @@ export function useVirtualIPDetailVoice({
       if (res.success && res.data) {
         setVoiceEnums(res.data);
         if (!voicePreviewText) {
-          setVoicePreviewText("你好，我是你的虚拟角色，很高兴认识你。");
+          setVoicePreviewText("Hello, I'm your virtual character. Nice to meet you.");
         }
         const defaults = buildDefaultVoiceSettings(res.data);
         setVoiceSettings((prev) => mergeVoiceSettings(prev, defaults));
@@ -118,11 +118,11 @@ export function useVirtualIPDetailVoice({
       voiceSettings.provider || voiceEnums?.providers?.[0]?.value;
 
     if (!fallbackProvider) {
-      showAlert({ message: "请先选择服务商", variant: "error" });
+      showAlert({ message: "Please select a provider first", variant: "error" });
       return;
     }
     if (!fallbackModel) {
-      showAlert({ message: "请先选择语音模型", variant: "error" });
+      showAlert({ message: "Please select a voice model first", variant: "error" });
       return;
     }
 
@@ -141,7 +141,7 @@ export function useVirtualIPDetailVoice({
 
     const text =
       voicePreviewText ||
-      `你好，我是${virtualIPName || "角色"}，很高兴认识你。`;
+      `Hello, I'm ${virtualIPName || "this character"}. Nice to meet you.`;
     setPreviewLoading(true);
     try {
       const res = await voiceAPI.preview({
@@ -161,16 +161,19 @@ export function useVirtualIPDetailVoice({
           }
           setPreviewAudioUrl(audioUrl);
         }
-        showAlert({ message: "试听已生成", variant: "success" });
+        showAlert({ message: "Voice preview generated", variant: "success" });
       } else {
         showAlert({
-          message: `试听失败：${res.error || "未知错误"}`,
+          message: `Voice preview failed: ${res.error || "Unknown error"}`,
           variant: "error",
         });
       }
     } catch (error) {
       console.error("Preview failed", error);
-      showAlert({ message: "试听失败，请稍后重试", variant: "error" });
+      showAlert({
+        message: "Voice preview failed. Please try again later.",
+        variant: "error",
+      });
     } finally {
       setPreviewLoading(false);
     }

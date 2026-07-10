@@ -29,7 +29,7 @@ export function EnvironmentGenerationFields({
   generation,
   setGeneration,
   showToggle = true,
-  toggleLabel = "创建后自动生成参考图（可选模型参数）",
+  toggleLabel = "Automatically generate reference images after creation (optional model settings)",
   withDivider = true,
   compact = false,
 }: EnvironmentGenerationFieldsProps) {
@@ -106,7 +106,7 @@ export function EnvironmentGenerationFields({
         <div className={bodyClass}>
           <div className={spanClass}>
             <label className="mb-1 block whitespace-nowrap text-xs font-medium text-gray-700">
-              {compact ? "提示词（可选）" : "补充提示词（可选）"}
+              {compact ? "Prompt (optional)" : "Additional prompt (optional)"}
             </label>
             <textarea
               value={generation.prompt}
@@ -115,7 +115,7 @@ export function EnvironmentGenerationFields({
               className={operatorInputClass(
                 `h-auto w-full py-2 text-sm ${compact ? "min-h-16" : "min-h-20"}`,
               )}
-              placeholder="不填则使用环境名称/描述生成"
+              placeholder="Leave blank to use the environment name/description"
             />
           </div>
           {supportsReferenceImages ? (
@@ -133,7 +133,7 @@ export function EnvironmentGenerationFields({
           ) : null}
           <div className="min-w-0">
             <MultiModelSelector
-              label="AI 模型"
+              label="AI Model"
               value={generation.model ? [generation.model] : []}
               onChange={(ids) => updateField("model", ids[0] || "")}
               modelType={AIModelType.Image}
@@ -143,7 +143,7 @@ export function EnvironmentGenerationFields({
               autoSelectDefault
               helperText={
                 selectedModel?.capabilities?.join(", ") ||
-                "选择用于环境参考图生成的模型"
+                "Choose a model for generating environment reference images"
               }
               className="space-y-1"
               onModelsLoaded={(models, defaultModel) => {
@@ -166,21 +166,21 @@ export function EnvironmentGenerationFields({
           </div>
           <div className="min-w-0">
             <label className="mb-1 block whitespace-nowrap text-xs font-medium text-gray-700">
-              生成风格
+              Style
             </label>
             <select
               value={generation.style}
               onChange={(e) => updateField("style", e.target.value)}
               className={operatorSelectClass("w-full")}
             >
-              <option value="realistic">写实</option>
-              <option value="anime">二次元</option>
-              <option value="cartoon">卡通</option>
+              <option value="realistic">Realistic</option>
+              <option value="anime">Anime</option>
+              <option value="cartoon">Cartoon</option>
             </select>
           </div>
           <div className="min-w-0">
             <label className="mb-1 block whitespace-nowrap text-xs font-medium text-gray-700">
-              生成数量
+              Number of Images
             </label>
             <select
               value={generation.count}
@@ -198,7 +198,7 @@ export function EnvironmentGenerationFields({
             >
               {countOptions.map((value) => (
                 <option key={value} value={value}>
-                  {value} 张
+                  {value} images
                 </option>
               ))}
             </select>

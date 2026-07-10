@@ -60,15 +60,15 @@ export function WorkspaceStoryboardSceneGridPanel({
   return (
     <OperatorPanel>
       <OperatorSectionHeader
-        title="场景宫格分镜"
-        subtitle="按场景生成一张宫格分镜大图，再用 Seedance 参考宫格图生成连续成片"
+        title="Scene Storyboard Grid"
+        subtitle="Generate a storyboard grid image for each scene, then use Seedance to create a continuous final cut from the grid"
         action={
           <button
             type="button"
             className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-800"
             onClick={() => setExpanded((prev) => !prev)}
           >
-            {expanded ? "收起" : "展开"}
+            {expanded ? "Collapse" : "Expand"}
           </button>
         }
       />
@@ -76,7 +76,7 @@ export function WorkspaceStoryboardSceneGridPanel({
         <>
           <div className="mt-4 flex flex-wrap items-end gap-3 text-sm">
             <label className="flex flex-col gap-1 text-xs text-gray-600">
-              场景
+              Scene
               <select
                 className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
                 value={sceneNumber ?? ""}
@@ -84,14 +84,14 @@ export function WorkspaceStoryboardSceneGridPanel({
               >
                 {sceneNumbers.map((value) => (
                   <option key={value} value={value}>
-                    场景 {value}
-                    {grids[String(value)]?.image_url ? " ·已生成" : ""}
+                    Scene {value}
+                    {grids[String(value)]?.image_url ? " · Generated" : ""}
                   </option>
                 ))}
               </select>
             </label>
             <label className="flex flex-col gap-1 text-xs text-gray-600">
-              宫格数
+              Grid Count
               <select
                 className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
                 value={gridSize}
@@ -99,13 +99,13 @@ export function WorkspaceStoryboardSceneGridPanel({
               >
                 {GRID_SIZE_OPTIONS.map((value) => (
                   <option key={value} value={value}>
-                    {value} 格
+                    {value} Panels
                   </option>
                 ))}
               </select>
             </label>
             <label className="flex flex-col gap-1 text-xs text-gray-600">
-              生图模型
+              Image Model
               <select
                 className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
                 value={imageModel}
@@ -113,7 +113,7 @@ export function WorkspaceStoryboardSceneGridPanel({
               >
                 <option value="codex:gpt-image-2">gpt-image-2 (Codex)</option>
                 <option value="gpt-image-2">gpt-image-2 (API key)</option>
-                <option value="">默认路由</option>
+                <option value="">Default Route</option>
               </select>
             </label>
             <button
@@ -122,7 +122,7 @@ export function WorkspaceStoryboardSceneGridPanel({
               disabled={submitting || sheetActive}
               onClick={() => void handleGenerateSheet()}
             >
-              {sheetActive ? "宫格图生成中…" : "生成宫格分镜图"}
+              {sheetActive ? "Generating Grid…" : "Generate Storyboard Grid"}
             </button>
             <button
               type="button"
@@ -130,7 +130,7 @@ export function WorkspaceStoryboardSceneGridPanel({
               disabled={submitting || videoActive || !currentGrid?.image_url}
               onClick={() => void handleGenerateVideo()}
             >
-              {videoActive ? "成片生成中…" : "宫格图生成成片"}
+              {videoActive ? "Generating Final Cut…" : "Generate Final Cut from Grid"}
             </button>
           </div>
 
@@ -147,7 +147,7 @@ export function WorkspaceStoryboardSceneGridPanel({
           />
 
           <label className="mt-3 flex flex-col gap-1 text-xs text-gray-600">
-            环境参考图 URL（可选，逗号或换行分隔；不填则按场景环境自动带入）
+            Environment Reference Image URLs (optional, separated by commas or new lines; leave blank to auto-fill from the scene environment)
             <input
               className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
               placeholder="https://…"

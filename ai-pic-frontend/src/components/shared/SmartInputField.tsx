@@ -47,13 +47,15 @@ export default function SmartInputField({
     try {
       const basicParts = [
         contextData.basicInfo,
-        contextData.description ? `角色描述：${contextData.description}` : "",
-        value ? `${label}：${value}` : "",
+        contextData.description
+          ? `Character Description: ${contextData.description}`
+          : "",
+        value ? `${label}: ${value}` : "",
       ].filter(Boolean);
       const response = await virtualIPAPI.generateAIContent({
         name: contextData.name,
         basic_info: basicParts.join("\n").trim() || undefined,
-        style_preference: "现代风格",
+        style_preference: "Modern Style",
         image_category: "portrait",
       });
       if (response.success && response.data) {
@@ -61,7 +63,7 @@ export default function SmartInputField({
         setShowSuggestion(true);
       }
     } catch (error) {
-      console.error("AI助手失败:", error);
+      console.error("AI assistant failed:", error);
     } finally {
       setIsGenerating(false);
     }
@@ -96,7 +98,7 @@ export default function SmartInputField({
             disabled={isGenerating}
             className={operatorButtonClass("ghost")}
           >
-            {isGenerating ? "生成中..." : "AI 助手"}
+            {isGenerating ? "Generating..." : "AI Assistant"}
           </button>
         ) : null}
       </div>
@@ -104,15 +106,15 @@ export default function SmartInputField({
       {showSuggestion && aiSuggestion ? (
         <OperatorPanel>
           <OperatorSectionHeader
-            title="AI 建议"
-            subtitle="可替换或合并到当前字段"
+            title="AI Suggestion"
+            subtitle="You can replace the current field or merge it"
             action={
               <button
                 type="button"
                 onClick={() => setShowSuggestion(false)}
                 className={operatorButtonClass("ghost")}
               >
-                关闭
+                Close
               </button>
             }
           />
@@ -129,7 +131,7 @@ export default function SmartInputField({
                 }}
                 className={operatorButtonClass("primary", "flex-1")}
               >
-                采用建议
+                Apply Suggestion
               </button>
               {value ? (
                 <button
@@ -140,7 +142,7 @@ export default function SmartInputField({
                   }}
                   className={operatorButtonClass("secondary", "flex-1")}
                 >
-                  合并内容
+                  Merge Content
                 </button>
               ) : null}
               <button
@@ -148,7 +150,7 @@ export default function SmartInputField({
                 onClick={() => setShowSuggestion(false)}
                 className={operatorButtonClass("ghost")}
               >
-                忽略
+                Dismiss
               </button>
             </div>
           </div>

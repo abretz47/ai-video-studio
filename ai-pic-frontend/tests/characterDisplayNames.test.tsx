@@ -36,8 +36,8 @@ describe("character display names", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByText("IP: 林晚模板"));
-    assert.equal(utils.queryByText(/未命名/), null);
+    assert.ok(utils.getByText("IP: Lin Wan Template"));
+    assert.equal(utils.queryByText(/Unnamed/), null);
   });
 
   it("renders episode character rows from the backend display name", () => {
@@ -50,8 +50,8 @@ describe("character display names", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByText("快递员模板"));
-    assert.equal(utils.queryByText(/未命名/), null);
+    assert.ok(utils.getByText("Courier Template"));
+    assert.equal(utils.queryByText(/Unnamed/), null);
   });
 
   it("renders clip storyboard IP selector labels from the backend display name", () => {
@@ -66,8 +66,8 @@ describe("character display names", () => {
       { container: dom.window.document.body },
     );
 
-    assert.ok(utils.getByLabelText("绑定角色 IP 快递员模板"));
-    assert.equal(utils.queryByText("未命名角色"), null);
+    assert.ok(utils.getByLabelText("Bind character IP Courier Template"));
+    assert.equal(utils.queryByText("Unnamed character"), null);
   });
 });
 
@@ -75,7 +75,7 @@ function storyWithIpDisplayName(): Story {
   return {
     id: 1,
     business_id: "story_1",
-    title: "测试故事",
+    title: "Test story",
     genre: "Drama",
     status: "draft",
     is_public: false,
@@ -90,8 +90,8 @@ function storyWithIpDisplayName(): Story {
         virtual_ip_id: 31,
         virtual_ip_business_id: "vip_31",
         character_name: null,
-        virtual_ip_name: "林晚模板",
-        display_name: "林晚模板",
+        virtual_ip_name: "Lin Wan Template",
+        display_name: "Lin Wan Template",
         created_at: "2026-06-09T00:00:00Z",
         updated_at: "2026-06-09T00:00:00Z",
       },
@@ -108,8 +108,8 @@ function episodeCharacterWithIpDisplayName(): EpisodeCharacter {
     virtual_ip_id: 32,
     virtual_ip_business_id: "vip_32",
     character_name: null,
-    virtual_ip_name: "快递员模板",
-    display_name: "快递员模板",
+    virtual_ip_name: "Courier Template",
+    display_name: "Courier Template",
     role_type: "temporary",
     importance: 3,
     created_at: "2026-06-09T00:00:00Z",

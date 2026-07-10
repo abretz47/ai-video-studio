@@ -20,7 +20,7 @@ export function TasksPagination({
   return (
     <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 text-xs text-gray-500">
       <div>
-        共 {total} 个任务，每页 {size} 个，当前第 {page} / {totalPages} 页
+        {total} tasks total, {size} per page, currently on page {page} / {totalPages}
       </div>
       <div className="flex gap-2">
         <button
@@ -28,14 +28,14 @@ export function TasksPagination({
           disabled={page <= 1}
           className={operatorButtonClass("secondary")}
         >
-          上一页
+          Previous
         </button>
         <button
           onClick={onNext}
           disabled={page >= totalPages}
           className={operatorButtonClass("secondary")}
         >
-          下一页
+          Next
         </button>
       </div>
     </div>

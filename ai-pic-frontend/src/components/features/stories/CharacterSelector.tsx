@@ -23,23 +23,23 @@ export function CharacterSelector({
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        选择角色 * (至少选择一个)
+        Select Characters * (choose at least one)
         <span className="text-blue-600 ml-2">
-          已选择: {selectedIds.length} 个
+          Selected: {selectedIds.length}
         </span>
       </label>
 
       {virtualIPs.length === 0 ? (
         <OperatorState
-          title="暂无可用角色"
-          detail="请先创建虚拟 IP 角色，然后再生成故事。"
+          title="No characters available"
+          detail="Create a Virtual IP character before generating a story."
           action={
             <button
               type="button"
               onClick={onNavigateToVirtualIP}
               className={operatorButtonClass("primary")}
             >
-              创建虚拟 IP
+              Create Virtual IP
             </button>
           }
         />
@@ -85,7 +85,7 @@ export function CharacterSelector({
           {selectedIds.length > 0 && (
             <div className="mt-3 rounded-md border border-blue-200 bg-blue-50 p-2">
               <p className="text-sm text-blue-800">
-                已选择角色:{" "}
+                Selected characters:{" "}
                 {selectedIds
                   .map((id) => {
                     const ip = virtualIPs.find((v) => v.id === id);

@@ -64,11 +64,11 @@ export default function VirtualIPDetail() {
   if (loading) {
     return (
       <OperatorShell
-        title="IP 详情"
-        subtitle="加载 IP 资产..."
-        breadcrumb={["IP 中心", "IP 项目", "加载中"]}
+        title="Virtual IP Details"
+        subtitle="Loading Virtual IP assets..."
+        breadcrumb={["IP Hub", "Virtual IP Projects", "Loading"]}
       >
-        <OperatorState title="加载 IP 资产..." />
+        <OperatorState title="Loading Virtual IP assets..." />
       </OperatorShell>
     );
   }
@@ -76,19 +76,19 @@ export default function VirtualIPDetail() {
   if (!virtualIP) {
     return (
       <OperatorShell
-        title="IP 详情"
-        subtitle="IP 资产是故事、剧集和生成任务的入口"
-        breadcrumb={["IP 中心", "IP 项目"]}
+        title="Virtual IP Details"
+        subtitle="Virtual IP assets are the entry point for stories, episodes, and generation tasks"
+        breadcrumb={["IP Hub", "Virtual IP Projects"]}
       >
         <OperatorState
-          title="未找到 IP"
+          title="Virtual IP not found"
           tone="red"
           action={
             <Link
               href="/virtual-ip"
               className={operatorButtonClass("secondary")}
             >
-              返回 IP 项目
+              Back to Virtual IP Projects
             </Link>
           }
         />
@@ -98,9 +98,9 @@ export default function VirtualIPDetail() {
 
   return (
     <OperatorShell
-      title="IP 详情"
-      subtitle="IP 资产是故事、剧集和生成任务的入口"
-      breadcrumb={["IP 中心", "IP 项目", virtualIP.name]}
+      title="Virtual IP Details"
+      subtitle="Virtual IP assets are the entry point for stories, episodes, and generation tasks"
+      breadcrumb={["IP Hub", "Virtual IP Projects", virtualIP.name]}
     >
       <div className="space-y-5">
         <VirtualIPProductionNotice />

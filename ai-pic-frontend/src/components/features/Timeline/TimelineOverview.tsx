@@ -27,10 +27,10 @@ export function TimelineOverview({
   const totalMs = Math.max(1, maxEnd - minStart);
   const totalRangeLabel =
     minStart === 0
-      ? `${formatTimelineLabel(totalMs)} · ${primaryTrack.items.length} 段`
+      ? `${formatTimelineLabel(totalMs)} · ${primaryTrack.items.length} clips`
       : `${formatTimelineLabel(minStart)}-${formatTimelineLabel(maxEnd)} · ${
           primaryTrack.items.length
-        } 段`;
+        } clips`;
   const selectedItem = primaryTrack.items.find(
     (item) => item.id === selectedItemId,
   );
@@ -70,11 +70,11 @@ export function TimelineOverview({
           data-timeline-overview-track-label={primaryTrack.id}
           data-timeline-overview-track-label-visibility="visible"
           className="whitespace-nowrap text-[11px] font-extrabold leading-none text-blue-800"
-          title={`全片时间轴 · ${primaryTrack.label}`}
+          title={`Full-episode timeline · ${primaryTrack.label}`}
         >
-          总览
-          <span className="sr-only">全片概览</span>
-          <span className="sr-only">全片时间轴</span>
+          Overview
+          <span className="sr-only">Full-episode overview</span>
+          <span className="sr-only">Full-episode timeline</span>
         </div>
         <div data-timeline-overview-rail="true" className={railClass}>
           <div
@@ -98,11 +98,11 @@ export function TimelineOverview({
                 key={item.id}
                 type="button"
                 data-timeline-overview-item={item.type || primaryTrack.id}
-                aria-label={`在全片概览中选择 ${
-                  item.label || `片段 ${index + 1}`
-                }`}
+                aria-label={`Select ${
+                  item.label || `Clip ${index + 1}`
+                } in the full-episode overview`}
                 title={`${
-                  item.label || `片段 ${index + 1}`
+                  item.label || `Clip ${index + 1}`
                 } ${formatTimelineLabel(item.startMs)}-${formatTimelineLabel(
                   item.endMs,
                 )}`}
@@ -126,7 +126,7 @@ export function TimelineOverview({
               className="pointer-events-none absolute bottom-0 top-0 w-px bg-blue-700/70"
               style={{ left: `${markerLeft}%` }}
             >
-              <span className="sr-only">当前片段位置</span>
+              <span className="sr-only">Current clip position</span>
             </div>
           ) : null}
         </div>

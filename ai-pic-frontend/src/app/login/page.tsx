@@ -28,7 +28,7 @@ export default function Login() {
         password: formData.password,
       });
       if (!response.success || !response.data) {
-        throw new Error(response.error || "登录失败");
+        throw new Error(response.error || "Login failed");
       }
       localStorage.setItem("auth_token", response.data.access_token);
       localStorage.setItem(
@@ -44,7 +44,7 @@ export default function Login() {
         ),
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "登录失败，请稍后重试");
+      setError(err instanceof Error ? err.message : "Login failed, please try again later");
     } finally {
       setIsLoading(false);
     }
@@ -59,16 +59,16 @@ export default function Login() {
 
   return (
     <OperatorAuthFrame
-      title="登录到制作台"
-      subtitle="使用账号进入 IP 中心生产工作流"
-      switchLabel="没有账户？"
+      title="Sign in to the studio"
+      subtitle="Use your account to enter the IP Center production workflow"
+      switchLabel="No account?"
       switchHref="/register"
-      switchText="注册新账户"
+      switchText="Create an account"
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         {error ? <OperatorState title={error} tone="red" /> : null}
         <label className="block text-xs font-medium text-gray-600">
-          用户名
+          Username
           <input
             id="username"
             name="username"
@@ -76,13 +76,13 @@ export default function Login() {
             autoComplete="username"
             required
             className={operatorInputClass("mt-1 w-full")}
-            placeholder="用户名"
+            placeholder="Username"
             value={formData.username}
             onChange={handleChange}
           />
         </label>
         <label className="block text-xs font-medium text-gray-600">
-          密码
+          Password
           <input
             id="password"
             name="password"
@@ -90,7 +90,7 @@ export default function Login() {
             autoComplete="current-password"
             required
             className={operatorInputClass("mt-1 w-full")}
-            placeholder="密码"
+            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
           />
@@ -100,7 +100,7 @@ export default function Login() {
           disabled={isLoading}
           className={operatorButtonClass("primary", "w-full")}
         >
-          {isLoading ? "登录中..." : "登录"}
+          {isLoading ? "Signing in..." : "Sign in"}
         </button>
       </form>
     </OperatorAuthFrame>

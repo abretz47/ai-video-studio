@@ -33,7 +33,7 @@ function script(id: number, createdAt: string): Script {
     id,
     business_id: `script_${id}`,
     episode_id: 9,
-    title: `剧本 ${id}`,
+    title: `Script ${id}`,
     version: "1.0",
     created_at: createdAt,
     updated_at: createdAt,

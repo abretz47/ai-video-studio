@@ -50,10 +50,10 @@ export function EpisodeGeneratePanel({
 }: EpisodeGeneratePanelProps) {
   return (
     <div className="space-y-4">
-      <GenerationTaskStatusLine label="剧集" task={episodesTask} />
+      <GenerationTaskStatusLine label="Episodes" task={episodesTask} />
       <OperatorSectionHeader
-        title="生成剧集"
-        subtitle="继承当前 IP 和故事上下文"
+        title="Generate Episodes"
+        subtitle="Inherit the current IP and story context"
         className="border border-gray-200 bg-white"
         action={
           <button
@@ -61,7 +61,7 @@ export function EpisodeGeneratePanel({
             onClick={() => setGenOpen(!genOpen)}
             className={operatorButtonClass("ghost")}
           >
-            {genOpen ? "收起" : "展开"}
+            {genOpen ? "Collapse" : "Expand"}
           </button>
         }
       />
@@ -81,7 +81,7 @@ export function EpisodeGeneratePanel({
                 checked={useAsync}
                 onChange={(e) => setUseAsync(e.target.checked)}
               />{" "}
-              异步任务
+              Async Task
             </label>
           </div>
 
@@ -93,16 +93,20 @@ export function EpisodeGeneratePanel({
               onClick={onPreviewPrompt}
               className={operatorButtonClass("secondary")}
             >
-              提示词预览
+              Prompt Preview
             </button>
             <button
               type="button"
               onClick={onGenerate}
               disabled={!canGenerate}
               className={operatorButtonClass("primary")}
-              title={!canGenerate ? "请先修复就绪检查中的严重问题" : undefined}
+              title={
+                !canGenerate
+                  ? "Please fix the critical issues in the readiness check first"
+                  : undefined
+              }
             >
-              开始生成
+              Start Generating
             </button>
           </div>
           {promptPreview && (

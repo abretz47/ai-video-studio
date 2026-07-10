@@ -28,11 +28,11 @@ export function AssetOperationDetails({
   return (
     <details className="mt-2 border-t border-gray-100 pt-2">
       <summary className="cursor-pointer text-xs font-medium text-gray-600 hover:text-gray-950">
-        资产操作
+        Asset operations
       </summary>
       {clipId ? (
         <div className="mt-2 truncate font-mono text-[11px] text-gray-500">
-          片段 ID：{clipId}
+          Clip ID: {clipId}
         </div>
       ) : null}
       <TimelineClipReworkControls
@@ -78,9 +78,9 @@ export function ClipAssetAuditRow({
       <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-500">
         <span>{sourceLabel(asset.source)}</span>
         {asset.replacement_of_id ? (
-          <span>替换 #{asset.replacement_of_id}</span>
+          <span>Replaces #{asset.replacement_of_id}</span>
         ) : null}
-        {asset.render_job_id ? <span>渲染 #{asset.render_job_id}</span> : null}
+        {asset.render_job_id ? <span>Render #{asset.render_job_id}</span> : null}
       </div>
     </div>
   );
@@ -88,22 +88,22 @@ export function ClipAssetAuditRow({
 
 function assetRoleLabel(role: string) {
   const labels: Record<string, string> = {
-    source_audio: "源音频",
-    start_frame: "首帧",
-    end_frame: "尾帧",
-    storyboard_image: "分镜图",
-    storyboard_video: "分镜视频",
-    clip_storyboard_sheet: "片段分镜图",
-    storyboard_grid_sheet: "旧宫格分镜",
-    generated_video: "生成视频",
-    render_output: "渲染输出",
+    source_audio: "Source audio",
+    start_frame: "Start frame",
+    end_frame: "End frame",
+    storyboard_image: "Storyboard image",
+    storyboard_video: "Storyboard video",
+    clip_storyboard_sheet: "Clip storyboard",
+    storyboard_grid_sheet: "Legacy grid storyboard",
+    generated_video: "Generated video",
+    render_output: "Render output",
   };
   return labels[role] || role;
 }
 
 function sourceLabel(source?: string | null) {
-  if (source === "operator_rework") return "人工重做";
-  if (source === "render_job") return "渲染任务";
+  if (source === "operator_rework") return "Manual rework";
+  if (source === "render_job") return "Render task";
   if (source === "timeline_spec") return "Timeline Spec";
-  return source || "未知来源";
+  return source || "Unknown source";
 }

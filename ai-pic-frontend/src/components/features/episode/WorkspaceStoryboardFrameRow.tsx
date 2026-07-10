@@ -34,10 +34,10 @@ export function StoryboardSupportFrameRow({
       <div className="min-w-0">
         <div className="font-medium text-gray-900">{frame.description}</div>
         <div className="mt-1 truncate text-gray-500">
-          {frame.sceneLabel ?? frame.sceneNumber ?? "未关联场景"}
+          {frame.sceneLabel ?? frame.sceneNumber ?? "No linked scene"}
         </div>
         <div className="mt-2 line-clamp-2 text-gray-600">
-          {frame.promptDescription ?? frame.aiPrompt ?? "暂无镜头提示"}
+          {frame.promptDescription ?? frame.aiPrompt ?? "No shot prompt yet"}
         </div>
         <PromptLayerSummary layers={frame.promptLayers} />
         <PromptLayerEditor
@@ -54,13 +54,13 @@ export function StoryboardSupportFrameRow({
         ) : null}
       </div>
       <div className="flex flex-col gap-2">
-        <AssetLink label="关键帧" url={frame.imageUrl} />
-        <AssetLink label="视频" url={frame.videoUrl} />
+        <AssetLink label="Keyframe" url={frame.imageUrl} />
+        <AssetLink label="Video" url={frame.videoUrl} />
         <div className="text-gray-500">
-          来源：{frame.sourceKind ?? "storyboard"}
+          Source: {frame.sourceKind ?? "storyboard"}
         </div>
         {frame.speakerName ? (
-          <div className="text-gray-500">角色：{frame.speakerName}</div>
+          <div className="text-gray-500">Character: {frame.speakerName}</div>
         ) : null}
       </div>
     </div>
@@ -69,7 +69,7 @@ export function StoryboardSupportFrameRow({
 
 function AssetLink({ label, url }: { label: string; url: string | null }) {
   if (!url) {
-    return <span className="text-gray-400">{label}: 未生成</span>;
+    return <span className="text-gray-400">{label}: Not generated</span>;
   }
   return (
     <a
@@ -78,7 +78,7 @@ function AssetLink({ label, url }: { label: string; url: string | null }) {
       rel="noreferrer"
       className="truncate font-medium text-blue-700 hover:text-blue-900"
     >
-      {label}: 已关联
+      {label}: Linked
     </a>
   );
 }

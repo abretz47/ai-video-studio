@@ -69,14 +69,14 @@ function CreateCharacterFormModal({
             onClick={onClose}
             className="px-4 py-2 text-gray-700 hover:text-gray-900"
           >
-            取消
+            Cancel
           </button>
           <button
             type="submit"
             form="character-form"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            保存
+            Save
           </button>
         </>
       }
@@ -97,10 +97,10 @@ function CreateCharacterFormModal({
               })
             }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="输入VirtualIP的ID"
+            placeholder="Enter the VirtualIP ID"
           />
           <p className="text-xs text-gray-500 mt-1">
-            必须绑定一个VirtualIP以提供图片和声音资源
+            A VirtualIP must be linked to provide image and voice assets
           </p>
         </div>
 
@@ -145,14 +145,14 @@ function EditCharacterFormModal({
             onClick={onClose}
             className="px-4 py-2 text-gray-700 hover:text-gray-900"
           >
-            取消
+            Cancel
           </button>
           <button
             type="submit"
             form="character-form"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            保存
+            Save
           </button>
         </>
       }

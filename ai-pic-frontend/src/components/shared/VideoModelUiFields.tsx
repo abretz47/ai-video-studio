@@ -116,7 +116,7 @@ export function VideoModelUiFields({
         {mergeResolutionAndRatio ? (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              画幅/分辨率
+              Aspect Ratio / Resolution
             </label>
             <select
               disabled={disabled}
@@ -148,7 +148,7 @@ export function VideoModelUiFields({
           <>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                分辨率
+                Resolution
               </label>
               <select
                 disabled={disabled}
@@ -170,7 +170,7 @@ export function VideoModelUiFields({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                画幅比例
+                Aspect Ratio
               </label>
               <select
                 disabled={disabled}
@@ -194,7 +194,7 @@ export function VideoModelUiFields({
         )}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            时长（秒）
+            Duration (s)
           </label>
           {durationOptions.length > 0 ? (
             <select

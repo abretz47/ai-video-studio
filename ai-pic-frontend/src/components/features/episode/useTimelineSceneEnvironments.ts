@@ -42,10 +42,10 @@ export function useTimelineSceneEnvironments({
           ...prev,
           [selectedScene.id]: selectedEnvironmentId,
         }));
-        showAlert({ message: "场景环境已保存", variant: "success" });
+        showAlert({ message: "Scene environment saved", variant: "success" });
       } else {
         showAlert({
-          message: res.error || "保存场景环境失败",
+          message: res.error || "Failed to save scene environment",
           variant: "error",
         });
       }

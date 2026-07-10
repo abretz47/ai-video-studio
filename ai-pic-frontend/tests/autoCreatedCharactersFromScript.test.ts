@@ -7,14 +7,14 @@ import type { Script } from "../src/utils/api/types";
 const character = {
   episode_character_id: 11,
   episode_character_business_id: "epc_11",
-  character_name: "快递员",
+  character_name: "Courier",
   virtual_ip_id: 32,
   importance: 2,
   needs_customization: true,
   generated_info: {
-    personality: "热情",
-    background: "片区老熟人",
-    appearance_override: "蓝色制服",
+    personality: "Warm",
+    background: "A familiar face in the neighborhood",
+    appearance_override: "Blue uniform",
     scene_appearances: [1],
     dialogue_count: 4,
   },
@@ -30,7 +30,7 @@ describe("autoCreatedCharactersFromScript", () => {
       script({ auto_created_characters: [character] }),
     );
     assert.equal(result.length, 1);
-    assert.equal(result[0].character_name, "快递员");
+    assert.equal(result[0].character_name, "Courier");
   });
 
   it("filters malformed entries and tolerates missing metadata", () => {

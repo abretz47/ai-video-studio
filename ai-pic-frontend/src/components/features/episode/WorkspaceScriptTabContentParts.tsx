@@ -27,8 +27,8 @@ export function ScriptTabToolbar({
     <OperatorToolbar>
       <OperatorTabs
         tabs={[
-          { key: "overview", label: "概览" },
-          { key: "scenes", label: "场景" },
+          { key: "overview", label: "Overview" },
+          { key: "scenes", label: "Scenes" },
         ]}
         active={activeSubTab}
         onChange={setActiveSubTab}
@@ -40,7 +40,7 @@ export function ScriptTabToolbar({
           disabled={regenerating}
           className={operatorButtonClass("secondary")}
         >
-          {regenerating ? "重新生成中..." : "重新生成剧本"}
+          {regenerating ? "Regenerating..." : "Regenerate script"}
         </button>
       ) : null}
     </OperatorToolbar>
@@ -65,8 +65,8 @@ export function ScriptRegenerateModal({
   if (!open) return null;
   return (
     <OperatorModalFrame
-      title="重新生成剧本"
-      subtitle="使用最新分类优化创建新的剧本内容"
+      title="Regenerate script"
+      subtitle="Create a new script using the latest classification optimizations"
       footer={
         <>
           <button
@@ -74,7 +74,7 @@ export function ScriptRegenerateModal({
             onClick={onCancel}
             className={operatorButtonClass("secondary")}
           >
-            取消
+            Cancel
           </button>
           <button
             type="button"
@@ -82,7 +82,7 @@ export function ScriptRegenerateModal({
             disabled={regenerating}
             className={operatorButtonClass("primary")}
           >
-            确认重新生成
+            Confirm regeneration
           </button>
         </>
       }
@@ -90,10 +90,10 @@ export function ScriptRegenerateModal({
       <ModelSelector
         value={model}
         onChange={setModel}
-        label="选择模型"
-        helperText="留空使用原有模型设置"
+        label="Select model"
+        helperText="Leave blank to use the existing model setting"
         allowAuto
-        autoLabel="使用原有模型"
+        autoLabel="Use existing model"
         modelType="text"
       />
     </OperatorModalFrame>

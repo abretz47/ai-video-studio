@@ -25,9 +25,9 @@ export type ClipGenerationTaskMap = Partial<
 >;
 
 const KIND_LABELS: Record<ClipGenerationTaskKind, string> = {
-  storyboard: "片段分镜图",
-  keyframes: "首尾帧",
-  video: "片段视频",
+  storyboard: "Clip Storyboard",
+  keyframes: "Start/End Frames",
+  video: "Clip Video",
 };
 
 export function clipGenerationTaskKindLabel(

@@ -93,7 +93,7 @@ export function useProductionCanvasSkillPlanner({
       environment_id: firstOutputNumber(node.outputs, "environment_ids"),
     });
     if (!response.success || !response.data) {
-      throw new Error(response.error || "Skill 执行失败");
+      throw new Error(response.error || "Failed to execute skill");
     }
     const skillNode = productionCanvasSkillResultToNode(
       node,
@@ -141,7 +141,7 @@ export function useProductionCanvasSkillPlanner({
         ...requestContext,
       });
       if (!response.success || !response.data) {
-        setError(response.error || "整体创建失败");
+        setError(response.error || "Failed to create full plan");
         return;
       }
       const plan = response.data;

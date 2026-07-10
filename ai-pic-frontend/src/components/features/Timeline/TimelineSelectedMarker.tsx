@@ -44,7 +44,7 @@ export function TimelineSelectedMarker({
 
   return (
     <>
-      <span className="sr-only">当前片段 · {label}</span>
+      <span className="sr-only">Current clip · {label}</span>
       <div
         data-timeline-selected-range="true"
         className="pointer-events-none absolute bottom-2 z-10 rounded-sm border-x border-blue-400/35 bg-blue-50/25"

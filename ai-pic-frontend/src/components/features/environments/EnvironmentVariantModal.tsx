@@ -30,7 +30,7 @@ export function EnvironmentVariantModal({
   const { showAlert } = useAlertModal();
   const [submitting, setSubmitting] = useState(false);
   const defaultPrompt = useMemo(
-    () => env?.description || env?.name || "基于该环境参考图生成一致风格的变体",
+    () => env?.description || env?.name || "Generate style-consistent variants based on this environment reference image",
     [env],
   );
 
@@ -85,17 +85,17 @@ export function EnvironmentVariantModal({
       );
       if (res.success) {
         showAlert({
-          title: "已创建环境图变体任务",
-          message: "任务将在后台生成，完成后刷新即可看到新图片。",
+          title: "Environment image variant task created",
+          message: "The task will run in the background. Refresh when it finishes to see the new images.",
           variant: "success",
         });
         onClose();
       } else {
-        showAlert({ message: res.error || "变体生成失败", variant: "error" });
+        showAlert({ message: res.error || "Failed to generate variants", variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "变体生成失败", variant: "error" });
+      showAlert({ message: "Failed to generate variants", variant: "error" });
     } finally {
       setSubmitting(false);
     }
@@ -107,9 +107,9 @@ export function EnvironmentVariantModal({
     <ImageToImageModal
       open={!!target}
       onClose={onClose}
-      title="环境图生图"
-      description="参考当前环境图，调整模型与参数后提交生成变体。"
-      referenceSections={[{ title: "参考图", images: [referenceImage] }]}
+      title="Environment Image-to-Image"
+      description="Use the current environment image as a reference, then adjust the model and settings before submitting a variant generation task."
+      referenceSections={[{ title: "Reference Image", images: [referenceImage] }]}
       defaultSelected={[referenceImage]}
       defaultPrompt={defaultPrompt}
       defaultCount={1}

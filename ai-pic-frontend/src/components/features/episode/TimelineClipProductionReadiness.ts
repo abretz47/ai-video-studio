@@ -17,7 +17,7 @@ export interface TimelineClipProductionReadiness {
 }
 
 export const VIDEO_IMAGE_GATE_MESSAGE =
-  "先完成片段分镜图和首尾帧后才能生视频";
+  "Complete the clip storyboard and start/end frames before generating video";
 
 export function timelineClipProductionReadiness(
   item: TimelineItem | null,

@@ -77,17 +77,17 @@ export function ScriptTrafficTab({ script }: ScriptTrafficTabProps) {
   return (
     <div className="space-y-4">
       <OperatorPanel>
-        <OperatorSectionHeader title="投流评分" subtitle="市场、微类型和爽点评分" />
+        <OperatorSectionHeader title="Paid traffic score" subtitle="Market, micro-genre, and payoff scoring" />
         <div className="grid gap-3 p-4 md:grid-cols-3">
-          <Metric label="市场/微类型" value={marketRegion || "未指定"} sub={microGenre || "未指定"} />
-          <Metric label="反转密度" value={twistDensity || "—"} />
-          <Metric label="总体评分" value={overallScore != null ? overallScore.toFixed(2) : "—"} />
+          <Metric label="Market / micro-genre" value={marketRegion || "Not specified"} sub={microGenre || "Not specified"} />
+          <Metric label="Twist density" value={twistDensity || "—"} />
+          <Metric label="Overall score" value={overallScore != null ? overallScore.toFixed(2) : "—"} />
         </div>
       </OperatorPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <OperatorPanel>
-          <OperatorSectionHeader title="评分明细" subtitle="维度分和优势" />
+          <OperatorSectionHeader title="Score details" subtitle="Dimension scores and strengths" />
           <div className="space-y-3 p-4">
             {dimensionScores ? (
               Object.entries(dimensionScores).map(([key, value]) => (
@@ -97,42 +97,42 @@ export function ScriptTrafficTab({ script }: ScriptTrafficTabProps) {
                 </div>
               ))
             ) : (
-              <OperatorState title="暂无评分明细" />
+              <OperatorState title="No score details yet" />
             )}
-            <TextList title="优势" items={strengths} />
+            <TextList title="Strengths" items={strengths} />
           </div>
         </OperatorPanel>
         <OperatorPanel>
-          <OperatorSectionHeader title="风险提示" subtitle="风险和修订建议" />
+          <OperatorSectionHeader title="Risk alerts" subtitle="Risks and revision guidance" />
           <div className="space-y-3 p-4">
-            <TextList title="风险" items={risks} empty="暂无风险提示" />
-            <TextList title="修订建议" items={rewriteGuidance} />
+            <TextList title="Risks" items={risks} empty="No risk alerts yet" />
+            <TextList title="Revision guidance" items={rewriteGuidance} />
           </div>
         </OperatorPanel>
       </div>
 
       <OperatorPanel>
-        <OperatorSectionHeader title="Hook/节奏规划" subtitle="生成参数和额外元数据" />
+        <OperatorSectionHeader title="Hook / pacing plan" subtitle="Generation parameters and extra metadata" />
         <div className="grid gap-3 p-4 md:grid-cols-3">
-          <Metric label="开场钩子" value={hookPlan?.opening_hook || hookPlanText || "—"} />
-          <Metric label="情绪升级" value={hookPlan?.escalation_plan || "—"} />
-          <Metric label="释放节点" value={hookPlan?.payoff_plan || "—"} />
+          <Metric label="Opening hook" value={hookPlan?.opening_hook || hookPlanText || "—"} />
+          <Metric label="Emotional escalation" value={hookPlan?.escalation_plan || "—"} />
+          <Metric label="Payoff beat" value={hookPlan?.payoff_plan || "—"} />
         </div>
         <div className="space-y-3 px-4 pb-4">
           <TextList
-            title="关键反转"
+            title="Key reversals"
             items={(hookPlan?.key_reversals || []).map((beat) =>
               `${beat.description}${beat.timing ? ` (${beat.timing})` : ""}`,
             )}
           />
-          <TextList title="悬念/卡点" items={cliffhangerPlan} />
+          <TextList title="Cliffhangers" items={cliffhangerPlan} />
         </div>
       </OperatorPanel>
 
       <OperatorPanel>
         <OperatorSectionHeader
-          title="投流素材清单"
-          subtitle={`共 ${adSnippets.length} 条`}
+          title="Paid traffic asset list"
+          subtitle={`${adSnippets.length} total`}
           action={
             <button
               type="button"
@@ -140,20 +140,20 @@ export function ScriptTrafficTab({ script }: ScriptTrafficTabProps) {
               disabled={adSnippets.length === 0}
               className={operatorButtonClass("secondary")}
             >
-              导出 CSV
+              Export CSV
             </button>
           }
         />
         {adSnippets.length === 0 ? (
-          <div className="p-4"><OperatorState title="暂无投流素材数据" /></div>
+          <div className="p-4"><OperatorState title="No paid traffic asset data yet" /></div>
         ) : (
           <div className="overflow-x-auto p-4">
             <table className={operatorTableClass}>
               <thead className={operatorTableHeadClass}>
                 <tr>
-                  <th className="px-3 py-2 text-left">时长</th>
-                  <th className="px-3 py-2 text-left">核心钩子</th>
-                  <th className="px-3 py-2 text-left">画面摘要</th>
+                  <th className="px-3 py-2 text-left">Duration</th>
+                  <th className="px-3 py-2 text-left">Core hook</th>
+                  <th className="px-3 py-2 text-left">Visual summary</th>
                   <th className="px-3 py-2 text-left">CTA</th>
                 </tr>
               </thead>

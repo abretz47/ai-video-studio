@@ -28,21 +28,21 @@ export function VirtualIPVoiceSettingsForm({
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-sm font-medium text-gray-900">
-            语音配置（可选）
+            Voice settings (optional)
           </h3>
           <p className="text-xs text-gray-500">
-            按“服务商 → 模型 → 声音”绑定角色配音
+            Bind character voice settings in the order “Provider → Model → Voice”
           </p>
         </div>
         {!voiceEnums && (
-          <span className="text-xs text-gray-500">正在加载声音选项...</span>
+          <span className="text-xs text-gray-500">Loading voice options...</span>
         )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            服务商
+            Provider
           </label>
           <select
             value={voiceSettings.provider || ""}
@@ -65,7 +65,7 @@ export function VirtualIPVoiceSettingsForm({
             }}
             className="h-8 w-full rounded-md border border-gray-200 bg-white px-2 text-xs focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
           >
-            <option value="">暂不配置</option>
+            <option value="">Do not configure for now</option>
             {(voiceEnums?.providers || []).map((p) => (
               <option key={p.value} value={p.value}>
                 {p.label_zh || p.label_en}
@@ -76,7 +76,7 @@ export function VirtualIPVoiceSettingsForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            语音模型
+            Voice model
           </label>
           <select
             value={voiceSettings.model || ""}
@@ -89,7 +89,7 @@ export function VirtualIPVoiceSettingsForm({
             disabled={!hasProvider}
             className="h-8 w-full rounded-md border border-gray-200 bg-white px-2 text-xs focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:bg-gray-50"
           >
-            <option value="">选择模型</option>
+            <option value="">Select a model</option>
             {(voiceEnums?.tts_models || []).map((m) => (
               <option key={m.value} value={m.value}>
                 {m.label_zh || m.label_en}
@@ -100,7 +100,7 @@ export function VirtualIPVoiceSettingsForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            声音类型
+            Voice type
           </label>
           <select
             value={voiceTypeFilter}
@@ -118,9 +118,9 @@ export function VirtualIPVoiceSettingsForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center justify-between">
-            声音
+            Voice
             {voiceLoading && (
-              <span className="text-xs text-gray-500">加载中...</span>
+              <span className="text-xs text-gray-500">Loading...</span>
             )}
           </label>
           <select
@@ -134,7 +134,7 @@ export function VirtualIPVoiceSettingsForm({
             disabled={!hasProvider || voiceLoading}
             className="h-8 w-full rounded-md border border-gray-200 bg-white px-2 text-xs focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:bg-gray-50"
           >
-            <option value="">选择声音</option>
+            <option value="">Select a voice</option>
             {voiceOptions.map((item) => (
               <option key={item.value} value={item.value}>
                 {item.label}
@@ -142,8 +142,8 @@ export function VirtualIPVoiceSettingsForm({
             ))}
           </select>
           <p className="mt-1 text-xs text-gray-500">
-            来源：{voiceSettings.provider || "未选择"} /{" "}
-            {voiceSettings.model || "未选择"}
+            Source: {voiceSettings.provider || "Not selected"} /{" "}
+            {voiceSettings.model || "Not selected"}
           </p>
         </div>
       </div>

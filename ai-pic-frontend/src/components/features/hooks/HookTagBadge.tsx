@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Hook 类型对应的样式配置
+ * Style configuration for each hook type
  */
 const HOOK_STYLES: Record<
   string,
@@ -10,67 +10,67 @@ const HOOK_STYLES: Record<
   hook: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "钩子",
+    label: "Hook",
     code: "H",
   },
   reversal: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "反转",
+    label: "Reversal",
     code: "R",
   },
   payoff: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "爽点",
+    label: "Payoff",
     code: "P",
   },
   cliffhanger: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "卡点",
+    label: "Cliffhanger",
     code: "C",
   },
   betrayal: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "背叛",
+    label: "Betrayal",
     code: "B",
   },
   reveal: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "揭露",
+    label: "Reveal",
     code: "V",
   },
   revenge: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "复仇",
+    label: "Revenge",
     code: "X",
   },
   reunion: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "重逢",
+    label: "Reunion",
     code: "U",
   },
   threat: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "威胁",
+    label: "Threat",
     code: "T",
   },
   taboo: {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "禁忌",
+    label: "Taboo",
     code: "N",
   },
   "power-shift": {
     bg: "bg-gray-100 dark:bg-gray-800",
     text: "text-gray-700 dark:text-gray-300",
-    label: "权力转移",
+    label: "Power Shift",
     code: "S",
   },
 };
@@ -78,27 +78,27 @@ const HOOK_STYLES: Record<
 const DEFAULT_STYLE = {
   bg: "bg-gray-100 dark:bg-gray-800",
   text: "text-gray-600 dark:text-gray-400",
-  label: "标记",
+  label: "Tag",
   code: "M",
 };
 
 interface HookTagBadgeProps {
-  /** hook 类型：hook/reversal/payoff/cliffhanger/betrayal/reveal/revenge/reunion/threat/taboo/power-shift */
+  /** Hook type: hook/reversal/payoff/cliffhanger/betrayal/reveal/revenge/reunion/threat/taboo/power-shift */
   hookType: string;
-  /** 强度：low/medium/high */
+  /** Intensity: low/medium/high */
   intensity?: string;
-  /** 是否显示完整标签（否则只显示图标） */
+  /** Whether to show the full label (otherwise only the icon is shown) */
   showLabel?: boolean;
-  /** 点击回调 */
+  /** Click callback */
   onClick?: () => void;
-  /** 额外的 className */
+  /** Additional className */
   className?: string;
 }
 
 /**
- * Hook 标签徽章组件
+ * Hook tag badge component
  *
- * 用于在分镜帧上显示 hook 类型（钩子/反转/爽点/卡点等）
+ * Used to display the hook type on storyboard frames (hook/reversal/payoff/cliffhanger, etc.)
  */
 export function HookTagBadge({
   hookType,
@@ -110,7 +110,7 @@ export function HookTagBadge({
   const normalizedType = hookType?.toLowerCase().replace(/\s+/g, "-") || "";
   const style = HOOK_STYLES[normalizedType] || DEFAULT_STYLE;
 
-  // 强度对应的边框样式
+  // Border style for each intensity level
   const intensityBorder =
     intensity === "high"
       ? "ring-2 ring-offset-1 ring-current"

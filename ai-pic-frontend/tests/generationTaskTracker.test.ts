@@ -36,7 +36,7 @@ function Harness({
   ) => void;
 }) {
   const tracker = useGenerationTaskTracker<Kind>({
-    labels: { script: "剧本", episodes: "剧集" },
+    labels: { script: "Script", episodes: "Episodes" },
     onCompleted,
     onNotify,
     pollIntervalMs: 10,
@@ -101,7 +101,7 @@ describe("generation task tracker", () => {
       notices.some(
         (notice) =>
           notice.variant === "success" &&
-          notice.message.includes("剧本已生成完成"),
+          notice.message.includes("Script generated"),
       ),
     );
   });
@@ -169,7 +169,7 @@ describe("generation task tracker", () => {
       ) => void;
     }) {
       const tracker = useGenerationTaskTracker<Kind>({
-        labels: (kind) => (kind === "script" ? "剧本" : "剧集"),
+        labels: (kind) => (kind === "script" ? "Script" : "Episodes"),
         onNotify: (message: string) => notices.push(message),
         pollIntervalMs: 10,
         maxPollMs: 50,
@@ -193,7 +193,7 @@ describe("generation task tracker", () => {
     await waitFor(() => assert.equal(latestTasks.script?.phase, "timeout"), {
       timeout: 3000,
     });
-    assert.ok(notices.some((message) => message.includes("等待超时")));
+    assert.ok(notices.some((message) => message.includes("Timed out waiting")));
   });
 
   it("replaces a tracked task of the same kind", async () => {

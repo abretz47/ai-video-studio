@@ -66,7 +66,7 @@ export function TimelineRenderPanel({
           </div>
           <span
             data-timeline-render-readiness-meter="inline-count"
-            title={`${readyClipCount}/${readiness.videoClipCount} 个片段就绪`}
+            title={`${readyClipCount}/${readiness.videoClipCount} clips ready`}
             className="ml-1 inline-flex items-center gap-1.5 whitespace-nowrap text-[11px] font-semibold text-slate-600"
           >
             <span
@@ -81,15 +81,15 @@ export function TimelineRenderPanel({
               />
             </span>
             <span>
-              {readyClipCount}/{readiness.videoClipCount} 已备
+              {readyClipCount}/{readiness.videoClipCount} ready
             </span>
           </span>
           <span
             data-timeline-render-missing-action="inline-link"
-            title="查看缺失片段"
+            title="View missing clips"
             className="inline-flex h-6 items-center whitespace-nowrap px-1 text-[11px] font-semibold text-slate-600 hover:text-slate-950"
           >
-            查看
+            View
           </span>
         </summary>
         <div className="mt-2 border-t border-gray-100 pt-2">
@@ -134,14 +134,14 @@ export function TimelineRenderPanel({
 
       {latestJob?.status === "failed" ? (
         <div className="mt-3 text-xs text-red-700">
-          失败原因：{renderJobFailureText(latestJob, missingFromJob)}
+          Failure reason: {renderJobFailureText(latestJob, missingFromJob)}
         </div>
       ) : null}
 
       {outputUrl && latestJob?.status === "succeeded" ? (
         <div className="mt-3 grid gap-3 rounded-md border border-green-200 bg-green-50 p-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
           <video
-            aria-label="播放渲染成片"
+            aria-label="Play rendered final cut"
             className="w-full rounded-md border border-green-200 bg-black"
             controls
             preload="none"
@@ -149,7 +149,7 @@ export function TimelineRenderPanel({
           />
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs font-medium text-green-800">
-              {renderTypeLabel(latestJob.render_type)}已就绪
+              {renderTypeLabel(latestJob.render_type)} is ready
             </span>
             <a
               href={outputUrl}
@@ -158,7 +158,7 @@ export function TimelineRenderPanel({
               rel="noreferrer"
               className={operatorButtonClass("primary")}
             >
-              下载成片
+              Download final cut
             </a>
             <a
               href={outputUrl}
@@ -166,7 +166,7 @@ export function TimelineRenderPanel({
               rel="noreferrer"
               className="text-xs font-medium text-blue-700 hover:text-blue-900"
             >
-              在新标签页打开
+              Open in new tab
             </a>
           </div>
         </div>
@@ -174,7 +174,7 @@ export function TimelineRenderPanel({
 
       {renderInFlight ? (
         <div className="mt-3 text-xs text-gray-500">
-          渲染任务 #{latestJob?.id} 正在处理
+          Render task #{latestJob?.id} is in progress
         </div>
       ) : null}
     </div>

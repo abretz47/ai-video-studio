@@ -25,7 +25,7 @@ export function ImageGrid({
   const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
 
   if (images.length === 0) {
-    return <OperatorState title="暂无图片" detail="开始上传或生成图片。" />;
+    return <OperatorState title="No images yet" detail="Start by uploading or generating images." />;
   }
 
   return (
@@ -54,10 +54,10 @@ export function ImageGrid({
               showActionsOnHover
               badges={[
                 ...(image.is_default
-                  ? [{ label: "默认", tone: "green" as const }]
+                  ? [{ label: "Default", tone: "green" as const }]
                   : []),
                 ...(isAiGenerated
-                  ? [{ label: "AI生成", tone: "blue" as const }]
+                  ? [{ label: "AI-generated", tone: "blue" as const }]
                   : []),
               ]}
               onPreview={() => onPreview(image)}
@@ -68,7 +68,7 @@ export function ImageGrid({
                   ? []
                   : [
                       {
-                        label: "设为默认",
+                        label: "Set as default",
                         onClick: () => onSetDefault(image.id),
                         tone: "primary",
                       },
@@ -132,12 +132,12 @@ function StyleDetailsSection({ generationParams }: StyleDetailsSectionProps) {
   return (
     <details className="mb-3 rounded border border-gray-200 bg-gray-50 p-2 text-[11px] text-gray-700">
       <summary className="cursor-pointer select-none text-xs font-medium text-gray-700">
-        风格详情
+        Style details
       </summary>
-      <div className="mt-2 break-all">预设：{presetId || "—"}</div>
-      <div className="mt-1 break-all">规格：{JSON.stringify(spec ?? null)}</div>
+      <div className="mt-2 break-all">Preset: {presetId || "—"}</div>
+      <div className="mt-1 break-all">Spec: {JSON.stringify(spec ?? null)}</div>
       <div className="mt-1 break-all">
-        分辨率：{JSON.stringify(resolution ?? null)}
+        Resolution: {JSON.stringify(resolution ?? null)}
       </div>
     </details>
   );

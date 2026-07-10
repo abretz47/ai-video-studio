@@ -105,17 +105,17 @@ export function useGenerationTaskTracker<K extends string>({
       });
       const label = labelFor(kind);
       if (phase === "completed") {
-        onNotifyRef.current?.(`${label}已生成完成，结果已刷新`, "success");
+        onNotifyRef.current?.(`${label} generation completed and results have been refreshed`, "success");
         void onCompletedRef.current?.(kind, taskId, task);
       } else if (phase === "failed") {
         onNotifyRef.current?.(
-          `${label}生成失败：${error || "未知错误"}`,
+          `${label} generation failed: ${error || "Unknown error"}`,
           "error",
         );
         void onFailedRef.current?.(kind, taskId, error);
       } else if (phase === "timeout") {
         onNotifyRef.current?.(
-          `${label}任务 #${taskId} 等待超时，请稍后在任务列表查看`,
+          `${label} task #${taskId} timed out. Please check the task list later.`,
           "warning",
         );
       }

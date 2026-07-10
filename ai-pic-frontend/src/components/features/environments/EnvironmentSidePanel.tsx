@@ -30,7 +30,7 @@ export function EnvironmentSidePanel({
   const { showAlert } = useAlertModal();
   const { notify } = useToast();
   const tracker = useGenerationTaskTracker<"environment-images">({
-    labels: { "environment-images": "环境参考图" },
+    labels: { "environment-images": "Environment Reference Images" },
     onCompleted: () => onImagesGenerated?.(),
     onNotify: notify,
   });
@@ -44,7 +44,7 @@ export function EnvironmentSidePanel({
 
   const handleUpload = async () => {
     if (!selectedFile || !envKey) {
-      showAlert({ message: "请选择图片文件", variant: "warning" });
+      showAlert({ message: "Please select an image file", variant: "warning" });
       return;
     }
     try {
@@ -56,13 +56,13 @@ export function EnvironmentSidePanel({
       if (res.success && res.data) {
         onImageUploaded(res.data.url);
         setSelectedFile(null);
-        showAlert({ message: "上传成功", variant: "success" });
+        showAlert({ message: "Upload successful", variant: "success" });
       } else {
-        showAlert({ message: res.error || "上传失败", variant: "error" });
+        showAlert({ message: res.error || "Upload failed", variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "上传失败", variant: "error" });
+      showAlert({ message: "Upload failed", variant: "error" });
     } finally {
       setUploading(false);
     }
@@ -70,7 +70,7 @@ export function EnvironmentSidePanel({
 
   const handleGenerate = async () => {
     if (!envKey) {
-      showAlert({ message: "环境信息缺失", variant: "warning" });
+      showAlert({ message: "Missing environment information", variant: "warning" });
       return;
     }
     try {
@@ -97,16 +97,16 @@ export function EnvironmentSidePanel({
       );
       if (res.success && res.data) {
         notify(
-          `环境参考图任务已提交 #${res.data.task_id}，完成后自动刷新图片列表`,
+          `Environment reference image task #${res.data.task_id} has been submitted. The image list will refresh automatically when it completes.`,
           "info",
         );
         tracker.track("environment-images", res.data.task_id);
       } else {
-        showAlert({ message: res.error || "生成失败", variant: "error" });
+        showAlert({ message: res.error || "Generation failed", variant: "error" });
       }
     } catch (error) {
       console.error(error);
-      showAlert({ message: "生成失败", variant: "error" });
+      showAlert({ message: "Generation failed", variant: "error" });
     } finally {
       setGenerating(false);
     }
@@ -120,9 +120,9 @@ export function EnvironmentSidePanel({
   return (
     <div className={containerClassName}>
       <div className="min-w-0">
-        <h3 className="text-sm font-semibold text-gray-950">上传参考图</h3>
+        <h3 className="text-sm font-semibold text-gray-950">Upload Reference Images</h3>
         <p className="mt-0.5 text-xs text-gray-500">
-          支持常见图片格式，自动走 OSS 持久化。
+          Supports common image formats and automatically persists them to OSS.
         </p>
         <input
           type="file"
@@ -136,15 +136,15 @@ export function EnvironmentSidePanel({
           disabled={uploading || !selectedFile}
           className={operatorButtonClass("primary", "mt-3 w-full")}
         >
-          {uploading ? "上传中..." : "上传图片"}
+          {uploading ? "Uploading..." : "Upload Image"}
         </button>
       </div>
 
       <div className="min-w-0 space-y-3 border-t border-gray-200 pt-4">
         <div>
-          <h3 className="text-sm font-semibold text-gray-950">AI 生成参考图</h3>
+          <h3 className="text-sm font-semibold text-gray-950">AI-Generated Reference Images</h3>
           <p className="mt-0.5 text-xs text-gray-500">
-            可选提示词，不填则按环境描述生成。
+            Optional prompt. Leave blank to generate from the environment description.
           </p>
         </div>
         <EnvironmentGenerationFields
@@ -161,10 +161,10 @@ export function EnvironmentSidePanel({
           disabled={generating}
           className={operatorButtonClass("primary", "w-full")}
         >
-          {generating ? "提交任务中..." : "创建生成任务"}
+          {generating ? "Submitting task..." : "Create Generation Task"}
         </button>
         <GenerationTaskStatusLine
-          label="环境参考图"
+          label="Environment Reference Images"
           task={tracker.tasks["environment-images"]}
         />
       </div>

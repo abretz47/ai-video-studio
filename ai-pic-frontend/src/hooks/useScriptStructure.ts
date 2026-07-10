@@ -31,7 +31,7 @@ export function useScriptStructure(scriptId?: number) {
       } catch (err) {
         if (!cancelled) {
           console.error("Failed to load structured scenes", err);
-          setError("加载结构化场景失败");
+          setError("Failed to load structured scenes");
         }
       } finally {
         if (!cancelled) setLoading(false);

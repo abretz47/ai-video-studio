@@ -65,12 +65,12 @@ export function VirtualIPReferenceImagesField({
       <div className="flex items-center justify-between gap-2">
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            参考图（可选）
+            Reference images (optional)
           </label>
           <p className="text-xs text-gray-500">
-            仅对支持 reference_images 的模型生效（将作为风格/构图参考）
+            Only applies to models that support reference_images (used as style/composition references)
             {typeof maxSelection === "number" && maxSelection > 0
-              ? `；最多 ${maxSelection} 张（超过会自动替换最早选择）`
+              ? `; up to ${maxSelection} images (the oldest selection will be replaced if exceeded)`
               : null}
           </p>
         </div>
@@ -81,7 +81,7 @@ export function VirtualIPReferenceImagesField({
             className="text-xs text-gray-600 hover:text-gray-900"
             disabled={loading}
           >
-            刷新
+            Refresh
           </button>
           {value.length > 0 ? (
             <button
@@ -90,16 +90,16 @@ export function VirtualIPReferenceImagesField({
               className="text-xs text-blue-600 hover:text-blue-800"
               disabled={disabled}
             >
-              清空
+              Clear
             </button>
           ) : null}
         </div>
       </div>
 
       {loading ? (
-        <p className="text-xs text-gray-500">加载参考图中...</p>
+        <p className="text-xs text-gray-500">Loading reference images...</p>
       ) : images.length === 0 ? (
-        <p className="text-xs text-gray-500">暂无可选参考图</p>
+        <p className="text-xs text-gray-500">No reference images available</p>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {images.map((img) => {
@@ -129,7 +129,7 @@ export function VirtualIPReferenceImagesField({
                 />
                 {isSelected ? (
                   <span className="absolute right-1 top-1 rounded bg-blue-600 px-1.5 py-0.5 text-[10px] text-white">
-                    已选
+                    Selected
                   </span>
                 ) : null}
               </button>
