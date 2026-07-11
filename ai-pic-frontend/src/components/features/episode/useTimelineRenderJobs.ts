@@ -134,12 +134,44 @@ export function useTimelineRenderJobs({
     [loadRenderJobs, renderReadiness, selectedTimelineSpec, showAlert],
   );
 
+  const restartRenderJob = useCallback(
+    async (renderJobId: number) => {
+      if (!selectedTimelineSpec?.id) return;
+      setBusy(true);
+      try {
+        const res = await timelineAPI.restartTimelineRenderJob(
+          selectedTimelineSpec.id,
+          renderJobId,
+        );
+        if (res.success && res.data) {
+          setError(null);
+          showAlert({
+            message: `Render restarted (render_job_id=${res.data.id})`,
+            variant: "info",
+          });
+          void loadRenderJobs();
+        } else {
+          setError(res.error || "Failed to restart render job");
+          showAlert({
+            message: res.error || "Failed to restart render job",
+            variant: "error",
+          });
+        }
+      } finally {
+        setBusy(false);
+      }
+    },
+    [loadRenderJobs, selectedTimelineSpec, showAlert],
+  );
+
   return {
+    renderJobs,
     latestJob,
     loading,
     busy,
     error,
     queueRender,
+    restartRenderJob,
     reloadRenderJobs: loadRenderJobs,
   };
 }

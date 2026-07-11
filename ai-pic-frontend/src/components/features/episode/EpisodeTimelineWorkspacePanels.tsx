@@ -35,11 +35,13 @@ interface EpisodeTimelineWorkspacePanelsProps {
   pipelineTask?: { taskId: number; phase: string; error: string | null } | null;
   renderReadiness: TimelineRenderReadiness;
   latestRenderJob: TimelineRenderJobResponse | null;
+  renderJobs: TimelineRenderJobResponse[];
   renderJobsLoading: boolean;
   renderBusy: boolean;
   renderError: string | null;
   onQueueRender: (renderType: TimelineRenderType) => void;
   onRetryRender: (renderType: TimelineRenderType) => void;
+  onRestartRenderJob: (jobId: number) => void;
   selection: {
     item: TimelineTrack["items"][number] | null;
     track: TimelineTrack | null;
@@ -93,11 +95,13 @@ export function EpisodeTimelineWorkspacePanels({
   pipelineTask,
   renderReadiness,
   latestRenderJob,
+  renderJobs,
   renderJobsLoading,
   renderBusy,
   renderError,
   onQueueRender,
   onRetryRender,
+  onRestartRenderJob,
   selection,
   selectedScene,
   episodeId,
@@ -149,6 +153,7 @@ export function EpisodeTimelineWorkspacePanels({
           pipelineTask={pipelineTask}
           renderReadiness={renderReadiness}
           latestRenderJob={latestRenderJob}
+          renderJobs={renderJobs}
           renderJobsLoading={renderJobsLoading}
           renderBusy={renderBusy}
           renderError={renderError}
@@ -190,6 +195,7 @@ export function EpisodeTimelineWorkspacePanels({
           }
           onQueueRender={onQueueRender}
           onRetryRender={onRetryRender}
+          onRestartRenderJob={onRestartRenderJob}
         />
       }
     />

@@ -187,7 +187,7 @@ export function renderTypeLabel(value: string) {
   return value;
 }
 
-function renderStatusLabel(value: string) {
+export function renderStatusLabel(value: string) {
   if (value === "queued") return "Queued";
   if (value === "running") return "Rendering";
   if (value === "succeeded") return "Completed";
@@ -201,6 +201,14 @@ function renderJobClass(status: string) {
   if (status === "failed" || status === "cancelled") {
     return "border-red-200 text-red-700";
   }
+  if (status === "running") return "border-amber-200 text-amber-700";
+  if (status === "queued") return "border-blue-200 text-blue-700";
+  return "border-gray-200 text-gray-600";
+}
+
+export function renderJobHistoryClass(status: string) {
+  if (status === "succeeded") return "border-emerald-200 text-emerald-700";
+  if (status === "failed" || status === "cancelled") return "border-red-200 text-red-700";
   if (status === "running") return "border-amber-200 text-amber-700";
   if (status === "queued") return "border-blue-200 text-blue-700";
   return "border-gray-200 text-gray-600";

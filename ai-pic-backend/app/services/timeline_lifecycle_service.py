@@ -16,6 +16,8 @@ from app.schemas.timeline import (
     TimelineVersionRequest,
 )
 from app.services.timeline_clip_asset_lineage import TimelineClipAssetLineageService
+from app.services.timeline_render_dispatch import dispatch_timeline_render_job
+from app.services.timeline_render_hash import render_preset_hash
 from app.services.timeline_responses import render_job_response, timeline_response
 from app.services.timeline_revision_service import TimelineRevisionService
 from app.services.timeline_spec_api_guard import validate_persisted_timeline_spec_or_400
@@ -153,6 +155,43 @@ class TimelineLifecycleService:
         self.db.commit()
         self.db.refresh(job)
         return render_job_response(job)
+
+    def restart_render_job(
+        self,
+        timeline_id: int,
+        render_job_id: int,
+        current_user: User,
+    ) -> RenderJobResponse:
+        timeline = self._get_timeline_or_404(timeline_id, current_user)
+        job = self._get_render_job_or_404(timeline, render_job_id)
+        if job.status not in {"failed", "cancelled"}:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="restart is only allowed for failed or cancelled render jobs",
+            )
+        old_preset = job.preset
+        old_timeline_version = job.timeline_version
+        old_render_type = job.render_type
+        job.soft_delete(
+            user_id=current_user.id,
+            reason="restarted",
+        )
+        self.db.flush()
+        new_job = self.render_jobs.create(
+            timeline_id=timeline.id,
+            timeline_version=old_timeline_version,
+            render_type=old_render_type,
+            preset_hash=render_preset_hash(old_preset),
+            preset=old_preset,
+            status="queued",
+            progress=0,
+            created_by=current_user.id,
+        )
+        self.db.commit()
+        self.db.refresh(new_job)
+        dispatch_timeline_render_job(new_job, current_user)
+        self.db.refresh(new_job)
+        return render_job_response(new_job)
 
     def _get_timeline_or_404(
         self,

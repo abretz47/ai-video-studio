@@ -217,8 +217,73 @@ def test_timeline_rollback_creates_new_version_and_preserves_render_jobs(
     assert [item.timeline_version for item in revisions] == [1, 2, 3]
 
 
-def test_timeline_lifecycle_access_is_scoped_to_story_owner(client, db_session):
+def test_render_job_restart_creates_new_queued_job(
+    client,
+    db_session,
+    monkeypatch,
+):
+    dispatch_calls = []
+    monkeypatch.setattr(
+        "app.services.timeline_service.dispatch_timeline_render_job",
+        lambda _job, _user: None,
+    )
+    monkeypatch.setattr(
+        "app.services.timeline_lifecycle_service.dispatch_timeline_render_job",
+        lambda job, _user: dispatch_calls.append(job.id),
+    )
     episode, script = _bootstrap_episode(db_session)
+    timeline = _create_timeline(client, episode, script)
+    render_job = _queue_render(client, timeline["id"], timeline["version"])
+
+    # Simulate a failed job by updating the status directly
+    from app.models.timeline import RenderJob
+
+    db_session.query(RenderJob).filter(RenderJob.id == render_job["id"]).update(
+        {"status": "failed", "log": {"code": "render_exception", "message": "boom"}}
+    )
+    db_session.commit()
+
+    restart_resp = client.post(
+        f"/api/v1/timelines/{timeline['id']}/render-jobs/{render_job['id']}/restart"
+    )
+    assert restart_resp.status_code == 200
+    new_job = restart_resp.json()
+    assert new_job["id"] != render_job["id"]
+    assert new_job["status"] == "queued"
+    assert new_job["render_type"] == render_job["render_type"]
+    assert new_job["timeline_version"] == render_job["timeline_version"]
+    assert len(dispatch_calls) == 1
+    assert dispatch_calls[0] == new_job["id"]
+
+    # Original job is soft-deleted
+    jobs = client.get(f"/api/v1/timelines/{timeline['id']}/render-jobs")
+    assert jobs.status_code == 200
+    job_ids = [j["id"] for j in jobs.json()["items"]]
+    assert new_job["id"] in job_ids
+    assert render_job["id"] not in job_ids
+
+
+def test_render_job_restart_rejected_for_non_failed_job(
+    client,
+    db_session,
+    monkeypatch,
+):
+    monkeypatch.setattr(
+        "app.services.timeline_service.dispatch_timeline_render_job",
+        lambda _job, _user: None,
+    )
+    episode, script = _bootstrap_episode(db_session)
+    timeline = _create_timeline(client, episode, script)
+    render_job = _queue_render(client, timeline["id"], timeline["version"])
+
+    # Job is still queued — restart should be rejected
+    restart_resp = client.post(
+        f"/api/v1/timelines/{timeline['id']}/render-jobs/{render_job['id']}/restart"
+    )
+    assert restart_resp.status_code == 409
+
+
+def test_timeline_lifecycle_access_is_scoped_to_story_owner(client, db_session):
     timeline = _create_timeline(client, episode, script)
     other_user = User(
         username="timeline_lifecycle_other",

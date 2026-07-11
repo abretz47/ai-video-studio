@@ -35,12 +35,14 @@ export function EpisodeTimelineMainPanel({
   pipelineTask,
   renderReadiness,
   latestRenderJob,
+  renderJobs,
   renderJobsLoading,
   renderBusy,
   renderError,
   clipProductionPanel,
   onQueueRender,
   onRetryRender,
+  onRestartRenderJob,
 }: {
   tracks: TimelineTrack[];
   selectedItemId: string | null;
@@ -62,12 +64,14 @@ export function EpisodeTimelineMainPanel({
   } | null;
   renderReadiness: TimelineRenderReadiness;
   latestRenderJob: TimelineRenderJobResponse | null;
+  renderJobs: TimelineRenderJobResponse[];
   renderJobsLoading: boolean;
   renderBusy: boolean;
   renderError: string | null;
   clipProductionPanel?: ReactNode;
   onQueueRender: (renderType: TimelineRenderType) => void;
   onRetryRender: (renderType: TimelineRenderType) => void;
+  onRestartRenderJob: (jobId: number) => void;
 }) {
   return (
     <OperatorMainCanvas>
@@ -101,11 +105,13 @@ export function EpisodeTimelineMainPanel({
           <TimelineRenderPanel
             readiness={renderReadiness}
             latestJob={latestRenderJob}
+            renderJobs={renderJobs}
             loading={renderJobsLoading}
             busy={renderBusy}
             error={renderError}
             onQueueRender={onQueueRender}
             onRetryRender={onRetryRender}
+            onRestartRenderJob={onRestartRenderJob}
           />
         </section>
       </div>

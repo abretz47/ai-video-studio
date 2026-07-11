@@ -317,3 +317,18 @@ def restore_timeline_render_job(
 ) -> RenderJobResponse:
     service = TimelineLifecycleService(db)
     return service.restore_render_job(timeline_id, render_job_id, payload, current_user)
+
+
+@router.post(
+    "/timelines/{timeline_id}/render-jobs/{render_job_id}/restart",
+    response_model=RenderJobResponse,
+    summary="Restart a failed or cancelled render job",
+)
+def restart_timeline_render_job(
+    timeline_id: int,
+    render_job_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+) -> RenderJobResponse:
+    service = TimelineLifecycleService(db)
+    return service.restart_render_job(timeline_id, render_job_id, current_user)

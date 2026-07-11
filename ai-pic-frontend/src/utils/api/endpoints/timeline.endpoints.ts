@@ -86,6 +86,16 @@ async function listTimelineRenderJobs(
   );
 }
 
+async function restartTimelineRenderJob(
+  timelineId: number | string,
+  renderJobId: number,
+): Promise<ApiResponse<TimelineRenderJobResponse>> {
+  return httpClient<TimelineRenderJobResponse>(
+    `/api/v1/timelines/${timelineId}/render-jobs/${renderJobId}/restart`,
+    { method: "POST" },
+  );
+}
+
 async function listTimelineClipAssets(
   timelineId: number | string,
   params: TimelineClipAssetListParams = {},
@@ -176,6 +186,7 @@ export const timelineAPI = {
   updateTimeline,
   queueTimelineRender,
   listTimelineRenderJobs,
+  restartTimelineRenderJob,
   listTimelineClipAssets,
   listTimelineClipTasks,
   listTimelineResolvedVideos,

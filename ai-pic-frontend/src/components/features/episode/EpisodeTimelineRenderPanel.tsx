@@ -11,27 +11,33 @@ import {
   TimelineRenderActionButtons,
   TimelineRenderStatusHeader,
   renderJobFailureText,
+  renderJobHistoryClass,
   renderJobMissingClipCount,
   renderJobOutputUrl,
+  renderStatusLabel,
   renderTypeLabel,
 } from "./EpisodeTimelineRenderPanelParts";
 
 export function TimelineRenderPanel({
   readiness,
   latestJob,
+  renderJobs,
   loading,
   busy,
   error,
   onQueueRender,
   onRetryRender,
+  onRestartRenderJob,
 }: {
   readiness: TimelineRenderReadiness;
   latestJob: TimelineRenderJobResponse | null;
+  renderJobs: TimelineRenderJobResponse[];
   loading: boolean;
   busy: boolean;
   error: string | null;
   onQueueRender: (renderType: TimelineRenderType) => void;
   onRetryRender: (renderType: TimelineRenderType) => void;
+  onRestartRenderJob: (jobId: number) => void;
 }) {
   const outputUrl = renderJobOutputUrl(latestJob);
   const missingFromJob = renderJobMissingClipCount(latestJob);
@@ -176,6 +182,40 @@ export function TimelineRenderPanel({
         <div className="mt-3 text-xs text-gray-500">
           Render task #{latestJob?.id} is in progress
         </div>
+      ) : null}
+
+      {renderJobs.length > 1 ? (
+        <details className="mt-3">
+          <summary className="cursor-pointer text-[11px] font-medium text-slate-500 hover:text-slate-800">
+            Job history ({renderJobs.length})
+          </summary>
+          <ul className="mt-1.5 space-y-1">
+            {renderJobs.map((job) => (
+              <li
+                key={job.id}
+                className="flex items-center gap-2 text-[11px] text-slate-600"
+              >
+                <span className="font-medium">#{job.id}</span>
+                <span>{renderTypeLabel(job.render_type)}</span>
+                <span
+                  className={`rounded-sm border px-1 py-0.5 ${renderJobHistoryClass(job.status)}`}
+                >
+                  {renderStatusLabel(job.status)}
+                </span>
+                {(job.status === "failed" || job.status === "cancelled") ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => onRestartRenderJob(job.id)}
+                    className="ml-auto text-[11px] font-medium text-blue-600 hover:text-blue-900 disabled:opacity-50"
+                  >
+                    Restart
+                  </button>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </details>
       ) : null}
     </div>
   );

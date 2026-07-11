@@ -118,11 +118,13 @@ export function EpisodeTimelineWorkspace(props: EpisodeTimelineWorkspaceProps) {
     ? buildTimelineRenderReadinessFromResolvedVideos(resolvedVideos)
     : buildTimelineRenderReadiness(selectedTimelineSpec, selectedStoryboard);
   const {
+    renderJobs,
     latestJob: latestRenderJob,
     loading: renderJobsLoading,
     busy: renderBusy,
     error: renderError,
     queueRender,
+    restartRenderJob,
     reloadRenderJobs,
   } = useTimelineRenderJobs({
     selectedTimelineSpec,
@@ -185,11 +187,13 @@ export function EpisodeTimelineWorkspace(props: EpisodeTimelineWorkspaceProps) {
       pipelineTask={pipelineTask}
       renderReadiness={renderReadiness}
       latestRenderJob={latestRenderJob}
+      renderJobs={renderJobs}
       renderJobsLoading={renderJobsLoading}
       renderBusy={renderBusy}
       renderError={renderError}
       onQueueRender={(renderType) => void queueRender(renderType, false)}
       onRetryRender={(renderType) => void queueRender(renderType, true)}
+      onRestartRenderJob={(jobId) => void restartRenderJob(jobId)}
       selection={selection}
       selectedScene={selectedScene}
       episodeId={effectiveEpisodeId}
